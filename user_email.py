@@ -1,9 +1,11 @@
 import smtplib
-import config
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
+from AS_programming_loginscreen import forgot_system
+from tkinter import messagebox, END
+import random
 
 
 def sendEmail(subject,msg,recipientemail):
@@ -11,14 +13,14 @@ def sendEmail(subject,msg,recipientemail):
 		server=smtplib.SMTP('smtp.gmail.com:587')
 		server.ehlo()
 		server.starttls()
-		server.login(config.emailAddress,config.password)
+		server.login(forgot_system,AS_programming_loginscreen.forgot_password)
 		#message= 'Subject: {} \n\n {}'.format(subject,msg)
 
-		server.sendmail(config.emailAddress,recipientemail,text)
+		server.sendmail(forgot_system(),recipientemail,text)
 		server.quit()
-		print("Email sent successfully")
+		messagebox.showinfo('info','The email was sent successfully')
 	except:
-		print("Email not sent")
+		messagebox.showinfo('info','The email was not sent successfully', icon='error')
 
 
 
@@ -34,12 +36,13 @@ def sendEmail(subject,msg,recipientemail):
 #	sendEmail(subject,msg,email)
 
 
-subject="New deal avaliable"
+subject="Verification Code For Lisburn Raquets Club"
 msg=MIMEMultipart()
-msg['From'] = config.emailAddress
+msg['From'] = "twoods@lisburnracquets.co.uk"
 msg['To'] = config.recipientemail
 msg['Subject'] = subject
-body = "Hello, this is sent by python"
+verification_code = random.randint(100000,999999)
+body = "The verification code is " , "\n\n" , verification_code , "\n\n", "Thank you for choosing Lisburn raquets club"
 msg.attach(MIMEText (body,'plain'))
 
 filename = "?.docx"
