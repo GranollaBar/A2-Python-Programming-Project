@@ -15,8 +15,7 @@ from tkinter.ttk import Combobox
 from tkinter import simpledialog
 from tkcalendar import Calendar, DateEntry
 import tkinter as tk
-
-from user_email import sendEmail
+from tkinter import *
 
 root = tkinter.Tk()
 root.title('Lisburn Raquets Club')
@@ -27,6 +26,9 @@ conn = sqlite3.connect('Badmington_club.db')
 
 c = conn.cursor()
 
+def raise_frame(frame_name):
+    frame_name.tkraise()
+
 '''
 c.execute("""CREATE TABLE users (
 				username text,
@@ -34,9 +36,10 @@ c.execute("""CREATE TABLE users (
 				)""")
 '''
 
+update_frame = tkinter.Frame(root, bg ="white", width =500, height =500)
+
 username = tkinter.StringVar()
 password = tkinter.StringVar()
-
 
 def validate_not_empty(value, fieldname):
     if (value == ''):
@@ -60,6 +63,7 @@ def validate_username(value, fieldname):
 
 
 def forgot_system():
+
     conn = sqlite3.connect('Badmington_club.db')
 
     c = conn.cursor()
@@ -68,19 +72,29 @@ def forgot_system():
     forgot_password = simpledialog.askstring("Info", "Enter your old password")
 
     isValid = True
-    isValid = isValid and validate_username(forgot_username.get(), "Username")
-    isValid = isValid and validate_not_empty(forgot_password.get(), "Password")
+    isValid = isValid and validate_username(forgot_username, "Username")
+    isValid = isValid and validate_not_empty(forgot_password, "Password")
 
     if isValid:
-        user_email.sendEmail()
+        pass
+        #user_email.sendEmail(forgot_username,forgot_password)
 
     conn.commit()
     conn.close()
 
+def open_update_frame():
+    raise_frame(update_frame)
 
 def login_update():
-    pass
+    conn = sqlite3.connect('Badmington_club.db')
 
+    c = conn.cursor()
+
+    open_update_frame()
+    print('hello')
+
+    conn.commit()
+    conn.close()
 
 def login_submit():
     conn = sqlite3.connect('Badmington_club.db')
@@ -127,21 +141,36 @@ def login_clear():
         username_entry.delete(0, END)
         password_entry.delete(0, END)
 
+def show_password(bruh):
+    password_entry.config(show="")
 
-title_label = tkinter.Label(root, text="Raquets Club Login", font=('Verdana', 24, 'underline', 'bold'), fg='red', bg='white')
+def dont_show_password(bruh):
+    password_entry.config(show="*")
+
+title_label = tkinter.Label(root, text="Racquets Club Login", font=('Verdana', 24, 'underline', 'bold'), fg='red', bg='white')
 title_label.place(rely=0.08, relx=0.5, anchor='center')
 
-username_label = tkinter.Label(root, text="Username/Email:", font=('Georgia', 20, 'bold'), fg='black', bg='white')
-username_label.place(rely=0.3, relx=0.28, anchor='center')
+username_label = tkinter.Label(root, text="Username:", font=('Georgia', 20, 'bold'), fg='black', bg='white')
+username_label.place(rely=0.3, relx=0.295, anchor='center')
 
 password_label = tkinter.Label(root, text="Password:", font=('Georgia', 20, 'bold'), fg='black', bg='white')
 password_label.place(rely=0.45, relx=0.3, anchor='center')
 
-username_entry = tkinter.Entry(root, width=30)
-username_entry.place(rely=0.304, relx=0.75, anchor='center')
+username_entry = tkinter.Entry(root, width=30, borderwidth=2)
+username_entry.place(rely=0.304, relx=0.7, anchor='center')
 
-password_entry = tkinter.Entry(root, width=30, show="*")
-password_entry.place(rely=0.454, relx=0.75, anchor='center')
+password_entry = tkinter.Entry(root, width=30, show="*", borderwidth=2)
+password_entry.place(rely=0.454, relx=0.7, anchor='center')
+
+
+password_button_image = PhotoImage(file='eye.png')
+image_label = Label(image=password_button_image)
+
+password_button = Button(root, image=password_button_image, borderwidth=3)
+password_button.place(rely=0.454, relx=0.93, anchor='center')
+password_button.bind("<ButtonRelease-1>", show_password)
+password_button.bind("<Double-Button-1>", dont_show_password)
+
 
 forgot_password_button = tkinter.Button(root, text="Forgot Password", command=forgot_system, fg='white', bg='black', relief='groove', font=('Segoe UI Black', 11, 'bold'), padx=10)
 forgot_password_button.place(rely=0.6, relx=0.5, anchor='center')

@@ -3,20 +3,19 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
-from AS_programming_loginscreen import forgot_system
 from tkinter import messagebox, END
 import random
 
 
-def sendEmail(subject,msg,recipientemail):
+def sendEmail(subject,msg,recipientemail,forgot_username,forgot_password):
 	try:
 		server=smtplib.SMTP('smtp.gmail.com:587')
 		server.ehlo()
 		server.starttls()
-		server.login(forgot_system,AS_programming_loginscreen.forgot_password)
+		server.login(forgot_username,forgot_password)
 		#message= 'Subject: {} \n\n {}'.format(subject,msg)
 
-		server.sendmail(forgot_system(),recipientemail,text)
+		server.sendmail(forgot_username,recipientemail)
 		server.quit()
 		messagebox.showinfo('info','The email was sent successfully')
 	except:
@@ -39,20 +38,10 @@ def sendEmail(subject,msg,recipientemail):
 subject="Verification Code For Lisburn Raquets Club"
 msg=MIMEMultipart()
 msg['From'] = "twoods@lisburnracquets.co.uk"
-msg['To'] = config.recipientemail
+msg['To'] = "monkey@gmail.com"
 msg['Subject'] = subject
 verification_code = random.randint(100000,999999)
 body = "The verification code is " , "\n\n" , verification_code , "\n\n", "Thank you for choosing Lisburn raquets club"
 msg.attach(MIMEText (body,'plain'))
 
-filename = "?.docx"
-attachment = open(filename, 'rb')
-
-part = MIMEBase('application','octet-stream')
-part.set_payload((attachment).read())
-encoders.encode_base64(part)
-part.add_header('Content-Disposition',"attachment; filename= "+filename)
-msg.attach(part)
-text = msg.as_string()
-
-sendEmail(subject,msg,config.recipientemail)
+#sendEmail(subject,msg,recipientemail)
