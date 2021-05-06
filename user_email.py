@@ -1,4 +1,5 @@
 import smtplib
+import sys
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
@@ -7,19 +8,26 @@ from tkinter import messagebox, END
 import random
 
 
-def sendEmail(subject,msg,recipientemail,forgot_username,forgot_password):
+def sendEmail(subject, userMsg, recipientEmail):
 	try:
-		server=smtplib.SMTP('smtp.gmail.com:587')
+		server=smtplib.SMTP('smtp.gmail.com', 587)
 		server.ehlo()
 		server.starttls()
-		server.login(forgot_username,forgot_password)
+		server.login('brinoble1113@gmail.com', 'bn11bn11')
 		#message= 'Subject: {} \n\n {}'.format(subject,msg)
 
-		server.sendmail(forgot_username,recipientemail)
+		msg=MIMEMultipart()
+		msg['From'] = "twoods@lisburnracquets.co.uk"
+		msg['To'] = recipientEmail
+		msg['Subject'] = subject
+		msg.attach(MIMEText (userMsg,'plain'))
+
+		server.sendmail(None, "twoods@lisburnracquets.co.uk", recipientEmail, msg, None, None)
 		server.quit()
 		messagebox.showinfo('info','The email was sent successfully')
 	except:
-		messagebox.showinfo('info','The email was not sent successfully', icon='error')
+		e = sys.exc_info()[0]
+		messagebox.showinfo('info','The email was not sent successfully ' + str(e), icon='error')
 
 
 
@@ -35,13 +43,6 @@ def sendEmail(subject,msg,recipientemail,forgot_username,forgot_password):
 #	sendEmail(subject,msg,email)
 
 
-subject="Verification Code For Lisburn Raquets Club"
-msg=MIMEMultipart()
-msg['From'] = "twoods@lisburnracquets.co.uk"
-msg['To'] = "monkey@gmail.com"
-msg['Subject'] = subject
-verification_code = random.randint(100000,999999)
-body = "The verification code is " , "\n\n" , verification_code , "\n\n", "Thank you for choosing Lisburn raquets club"
-msg.attach(MIMEText (body,'plain'))
+
 
 #sendEmail(subject,msg,recipientemail)

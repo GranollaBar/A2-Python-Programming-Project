@@ -17,6 +17,8 @@ from tkcalendar import Calendar, DateEntry
 import tkinter as tk
 from tkinter import *
 
+import user_email
+
 root = tkinter.Tk()
 root.title('Lisburn Raquets Club')
 root.geometry('500x500')
@@ -76,8 +78,7 @@ def forgot_system():
     isValid = isValid and validate_not_empty(forgot_password, "Password")
 
     if isValid:
-        pass
-        #user_email.sendEmail(forgot_username,forgot_password)
+        user_email.sendEmail("hello","from joe","josnoble113@gmail.com")
 
     conn.commit()
     conn.close()
@@ -157,19 +158,25 @@ password_label = tkinter.Label(root, text="Password:", font=('Georgia', 20, 'bol
 password_label.place(rely=0.45, relx=0.3, anchor='center')
 
 username_entry = tkinter.Entry(root, width=30, borderwidth=2)
-username_entry.place(rely=0.304, relx=0.7, anchor='center')
+username_entry.place(rely=0.306, relx=0.66, anchor='center')
 
 password_entry = tkinter.Entry(root, width=30, show="*", borderwidth=2)
-password_entry.place(rely=0.454, relx=0.7, anchor='center')
+password_entry.place(rely=0.456, relx=0.66, anchor='center')
 
 
 password_button_image = PhotoImage(file='eye.png')
 image_label = Label(image=password_button_image)
 
 password_button = Button(root, image=password_button_image, borderwidth=3)
-password_button.place(rely=0.454, relx=0.93, anchor='center')
+password_button.place(rely=0.454, relx=0.885, anchor='center')
 password_button.bind("<ButtonRelease-1>", show_password)
-password_button.bind("<Double-Button-1>", dont_show_password)
+
+notpassword_button_image = PhotoImage(file='noteye.png')
+notimage_label = Label(image=notpassword_button_image)
+
+notpassword_button = Button(root, image=notpassword_button_image, borderwidth=3)
+notpassword_button.place(rely=0.454, relx=0.955, anchor='center')
+notpassword_button.bind("<ButtonRelease-1>", dont_show_password)
 
 
 forgot_password_button = tkinter.Button(root, text="Forgot Password", command=forgot_system, fg='white', bg='black', relief='groove', font=('Segoe UI Black', 11, 'bold'), padx=10)
