@@ -7,28 +7,22 @@ from email import encoders
 from tkinter import messagebox, END
 import random
 
-
+'''
 def sendEmail(subject, userMsg, recipientEmail):
 	try:
 		server=smtplib.SMTP('smtp.gmail.com', 587)
 		server.ehlo()
 		server.starttls()
-		server.login('brinoble1113@gmail.com', 'bn11bn11')
-		#message= 'Subject: {} \n\n {}'.format(subject,msg)
+		server.login('josnoble113@gmail.com', 'Jn11jn11')
+		message= 'Subject: {} \n\n {}'.format(subject,msg)
 
-		msg=MIMEMultipart()
-		msg['From'] = "twoods@lisburnracquets.co.uk"
-		msg['To'] = recipientEmail
-		msg['Subject'] = subject
-		msg.attach(MIMEText (userMsg,'plain'))
-
-		server.sendmail(None, "twoods@lisburnracquets.co.uk", recipientEmail, msg, None, None)
+		server.sendmail("josnoble113@gmail.com", recipientEmail, message)
 		server.quit()
 		messagebox.showinfo('info','The email was sent successfully')
 	except:
 		e = sys.exc_info()[0]
 		messagebox.showinfo('info','The email was not sent successfully ' + str(e), icon='error')
-
+'''
 
 
 #If you want to send one email to recipient
@@ -46,3 +40,22 @@ def sendEmail(subject, userMsg, recipientEmail):
 
 
 #sendEmail(subject,msg,recipientemail)
+
+def sendEmail(subject, msg, recipientemail):
+	try:
+		server = smtplib.SMTP('smtp.gmail.com:587')
+		server.ehlo()
+		server.starttls()
+		server.login("josnoble113@gmail.com", "jn11jn11")
+		message = 'Subject: {} \n\n {}'.format(subject, msg)
+		server.sendmail("josnoble113@gmail.com", recipientemail, message)
+		server.quit()
+		messagebox.showinfo("Info","The verification code to change passwords was sent to "+ recipientemail)
+
+		return True
+
+	except:
+		messagebox.showinfo('info','The email was not sent successfully to '+ recipientemail, icon='error')
+		messagebox.showinfo('info','Make sure the username entered exists', icon='error')
+
+		return False
