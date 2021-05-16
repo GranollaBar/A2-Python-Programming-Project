@@ -6,13 +6,13 @@ from email import encoders
 from tkinter import messagebox
 import memberWordDocument
 
-def memberEmail(subject,msg,recipientemail):
+def memberEmail(subject, msg, recipientemail, doc):
 	try:
 		server=smtplib.SMTP('smtp.gmail.com:587')
 		server.ehlo()
 		server.starttls()
 		server.login("josnoble113@gmail.com", "jn11jn11")
-		emailText = buildEmailMsg(subject, msg, recipientemail)
+		emailText = buildEmailMsg(subject, msg, recipientemail, doc)
 		server.sendmail("josnoble113@gmail.com",recipientemail,emailText)
 		server.quit()
 		messagebox.showinfo("Info","The details of the user were sent to "+ recipientemail)
@@ -22,19 +22,18 @@ def memberEmail(subject,msg,recipientemail):
 		messagebox.showinfo('info','The email was not sent successfully to '+ recipientemail + "\n" + "Make sure the username entered exists", icon='error')
 		return False
 
-def buildEmailMsg(subject, msgBody, recipientemail):
-
+def buildEmailMsg(subject, msgBody, recipientemail, attachment):
 	msg = MIMEMultipart()
 	msg['From'] = "josnoble113@gmail.com"
 	msg['To'] = recipientemail
 	msg['Subject'] = subject
 	msg.attach(MIMEText (msgBody,'plain'))
 
-	attachment = memberWordDocument.sendMemberDocument()
-
 	part = MIMEBase('application','octet-stream')
+
 	part.set_payload((attachment).read())
 	encoders.encode_base64(part)
-	part.add_header('Content-Disposition',"attachment; filename= "+filename)
+	part.add_header('Content-Disposition',"attachment; filename=Member_Account_Details.docx")
 	msg.attach(part)
 	return msg.as_string()
+

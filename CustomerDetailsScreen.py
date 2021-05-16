@@ -109,22 +109,186 @@ def validate_age(value, fieldname):
 
 	return True
 
+
 def ageToGroup(value):
 	return math.ceil(value.get()/5)
 
+
+def clearTv():
+	record=member_search_Tv.get_children()
+	for elements in record:
+		member_search_Tv.delete(elements)
+
+
 def treeviewPopulate():
-	pass
+	clearTv()
+
+	conn = sqlite3.connect('Badmington_club.db')
+
+	c = conn.cursor()
+
+	c.execute("SELECT * From member")
+	items = c.fetchall()
+	for row in items:
+		member_search_Tv.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4],row[5],row[6],row[7]))
+
+	conn.commit()
+	conn.close()
+
+
+def update_member_address():
+	conn = sqlite3.connect('Badmington_club.db')
+
+	c = conn.cursor()
+
+	memberUsername = simpledialog.askstring("info", "Enter the username of the member you want to see information for")
+	if memberUsername != '' and len(memberUsername) <25:
+		c.execute(f"SELECT * FROM member WHERE username=?", (memberUsername,))
+		data = c.fetchone()
+		if not data:
+			messagebox.showinfo("Warning", "The username entered was not found in the database", icon='error')
+
+		else:
+
+			new_address = simpledialog.askstring("info", "Enter the new address of the member")
+
+			if new_address != '' and len(new_address) < 30:
+
+				c.execute("""UPDATE member SET address = :new_address""", {'new_address': new_address})
+				messagebox.showinfo("info", "The members address is now "+new_address)
+
+			else:
+
+				messagebox.showinfo("Warning", "The address entered does not meet the rules", icon='error')
+
+	else:
+
+		messagebox.showinfo("Warning", "The username entered does not meet the rules", icon='error')
+
+	conn.commit()
+	conn.close()
+
+	treeviewPopulate()
+
+
+def update_member_postcode():
+	conn = sqlite3.connect('Badmington_club.db')
+
+	c = conn.cursor()
+
+	memberUsername = simpledialog.askstring("info", "Enter the username of the member you want to see information for")
+	if memberUsername != '' and len(memberUsername) <25:
+		c.execute(f"SELECT * FROM member WHERE username=?", (memberUsername,))
+		data = c.fetchone()
+		if not data:
+			messagebox.showinfo("Warning", "The username entered was not found in the database", icon='error')
+
+		else:
+
+			new_postcode = simpledialog.askstring("info", "Enter the new postcode of the member")
+
+			if new_postcode != '' and len(new_postcode) < 9:
+
+				c.execute("""UPDATE member SET postcode = :new_postcode""", {'new_postcode': new_postcode})
+				messagebox.showinfo("info", "The members postcode is now "+new_postcode)
+
+			else:
+
+				messagebox.showinfo("Warning", "The postcode entered does not meet the rules", icon='error')
+
+	else:
+
+		messagebox.showinfo("Warning", "The username entered does not meet the rules", icon='error')
+
+	conn.commit()
+	conn.close()
+
+	treeviewPopulate()
+
 
 def deleteAccountDetails():
-	pass
+	conn = sqlite3.connect('Badmington_club.db')
+
+	c = conn.cursor()
+
+	response = askyesno("Are you sure?", "Do you want to delete a member")
+	if response == False:
+		showinfo("Info", "Deletion cancelled")
+
+	else:
+
+		accountUsername = simpledialog.askstring("Info", "Enter the username of the member you want to delete")
+
+		if accountUsername !='' and len(accountUsername) <25:
+
+			c.execute(f"SELECT * FROM member WHERE username =?", (accountUsername,))
+			data = c.fetchone()
+			if not data:
+				messagebox.showinfo("Warning", "The username entered was not found in the database", icon='error')
+
+			else:
+
+				c.execute(f"DELETE FROM member WHERE username =?", (accountUsername,))
+				messagebox.showinfo("info", "The member with username "+accountUsername+" has been deleted from the database")
+
+		else:
+
+			messagebox.showinfo("Warning", "The username entered does not meet the rules", icon='error')
+
+	conn.commit()
+	conn.close()
+
+	treeviewPopulate()
 
 
 def updateAccountDetails():
-	pass
+	response = askyesno("Are you sure?", "Do you want to update a students details")
+	if response == False:
+		showinfo("Info", "Update cancelled")
+
+	else:
+
+		update_member=Toplevel(bg="white")
+
+		title_label =Label(update_member,text = 'Update Member' , fg ='SpringGreen3',bg='white',font=('Verdana',15,'bold'))
+		title_label.place(rely=0.13,relx=0.5,anchor=CENTER)
+
+		update_address=Button(update_member,text = 'Update Address', command = update_member_address, fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20, pady =10)
+		update_address.place(rely=0.43,relx=0.5,anchor=CENTER)
+
+		update_postcode=Button(update_member,text = 'Update Postcode', command = update_member_postcode, fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20, pady =10)
+		update_postcode.place(rely=0.75,relx=0.5,anchor=CENTER)
+
 
 def searchAccountDetails():
-	pass
+	conn = sqlite3.connect('Badmington_club.db')
 
+	c = conn.cursor()
+
+	response = askyesno("Are you sure?", "Do you want to search a members details")
+	if response == False:
+		showinfo("Info", "Search cancelled")
+
+	else:
+
+		memberUsername = simpledialog.askstring("info", "Enter the username of the member you want to see information for")
+		if memberUsername != '' and len(memberUsername) <25:
+			c.execute(f"SELECT * FROM member WHERE username=?", (memberUsername,))
+			data = c.fetchone()
+			if not data:
+				messagebox.showinfo("Warning", "The username entered was not found in the database", icon='error')
+			else:
+
+				messagebox.showinfo("info", "The members details are listed below" + "\n\n" + "Username: " + str(data[0]) + "\n" + "Password: " + str(data[1]) + "\n" + "Firstname: " + str(data[2]) + "\n" + "Surname: " + str(data[3]) + "\n" + "Address: " + str(data[4]) + "\n" + "Postcode: " + str(data[5]) + "\n" + "Age: " + str(data[6]) + "\n" + "Group: " + str(data[7]))
+
+		else:
+
+			messagebox.showinfo("Warning", "The username entered does not meet the rules", icon='error')
+
+	conn.commit()
+	conn.close()
+
+	treeviewPopulate()
 
 
 def saveAccountDetails():
@@ -158,8 +322,8 @@ def saveAccountDetails():
 
 		else:
 
-			memberWordDocument.sendMemberDocument(account_username,account_password,account_firstname,account_surname,account_address,account_postcode,account_age,account_group)
-			found = member_email("Lisburn Racquets Account Added","You have been accepted into Lisburn Raquets Club." + "\n" + "Your details can be found in the document below." + "\n\n" + "Thanks for choosing Lisburn Racquets Club", account_username)
+			doc = memberWordDocument.buildMemberDocument(account_username, account_password, account_firstname, account_surname, account_address, account_postcode, account_age, account_group)
+			found = member_email.memberEmail("Lisburn Racquets Account Added","You have been accepted into Lisburn Raquets Club." + "\n" + "Your details can be found in the document below." + "\n\n" + "Thanks for choosing Lisburn Racquets Club", account_username, doc)
 			if found:
 
 				c.execute("INSERT INTO member VALUES (:username, :password, :firstname, :surname, :address, :postcode, :age, :member_group)",
@@ -186,17 +350,13 @@ def saveAccountDetails():
 		conn.commit()
 		conn.close()
 
-
-
-
-
+		treeviewPopulate()
 
 
 def selection():
 	pass
 
-global account_password_entry
-global account_password2_entry
+
 
 username = StringVar()
 password = StringVar()
@@ -231,7 +391,7 @@ age_label.place(rely=0.231, relx=0.85, anchor='center')
 username_entry = tkinter.Entry(member, width=25, textvariable=username, bd=2, relief='ridge')
 username_entry.place(rely=0.153, relx=0.25, anchor='center')
 
-password_entry = tkinter.Entry(member, width=15, textvariable=password, bd=2, relief='ridge')
+password_entry = tkinter.Entry(member, width=15, textvariable=password, show='*', bd=2, relief='ridge')
 password_entry.place(rely=0.233, relx=0.217, anchor='center')
 
 firstname_entry = tkinter.Entry(member, width=15, textvariable=firstname, bd=2, relief='ridge')
@@ -256,7 +416,7 @@ delete_button.place(rely=0.35, relx=0.15, anchor='center')
 update_button = tkinter.Button(member, text="Update Member", command=updateAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 11, 'bold'), padx=20)
 update_button.place(rely=0.35, relx=0.39, anchor='center')
 
-clear_button = tkinter.Button(member, text="Clear Details", command=searchAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 11, 'bold'), padx=20)
+clear_button = tkinter.Button(member, text="Search Details", command=searchAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 11, 'bold'), padx=20)
 clear_button.place(rely=0.35, relx=0.625, anchor='center')
 
 create_button = tkinter.Button(member, text="Save Member", command=saveAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 11, 'bold'), padx=20)
@@ -268,7 +428,7 @@ member_search_Tv.place(relx=0.5,rely=0.69,anchor=CENTER)
 
 
 member_search_Tv.heading("#0",text='Username')
-member_search_Tv.column("#0",minwidth=0,width=140)
+member_search_Tv.column("#0",minwidth=0,width=190)
 member_search_Tv.heading("#1",text='Password')
 member_search_Tv.column("#1",minwidth=0,width=90)
 member_search_Tv.heading("#2",text='Firstname')
@@ -285,12 +445,12 @@ member_search_Tv.heading("#7",text='Group')
 member_search_Tv.column("#7",minwidth=0,width=80)
 
 student_ysearch_scrollbar = Scrollbar(member, orient = 'vertical', command = member_search_Tv.yview)
-student_ysearch_scrollbar.place(relx=0.94,rely=0.69,anchor='center',height=307)
+student_ysearch_scrollbar.place(relx=0.96,rely=0.69,anchor='center',height=307)
 member_search_Tv.configure(yscrollcommand=student_ysearch_scrollbar.set)
 
 member_search_Tv.bind("<ButtonRelease-1>", selection)
 
-
+treeviewPopulate()
 
 member.mainloop()
 

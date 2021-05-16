@@ -3,7 +3,7 @@ import os
 from docx.shared import Inches
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
-def sendMemberDocument(username,password,firstname,surname,address,postcode,age,group):
+def buildMemberDocument(username, password, firstname, surname, address, postcode, age, group):
     doc = docx.Document()
     heading = doc.add_heading('Lisburn Racquets Account Details',0)
     heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -21,5 +21,6 @@ def sendMemberDocument(username,password,firstname,surname,address,postcode,age,
     parag.add_run("\n\n" + "Thanks for choosing Lisburn Racquets Club").bold=True
     doc.add_picture('rsz_lisburnraquetsclub.png',width=Inches(3))
 
-    doc.save("Member_Account_Details.docx")
-    os.system("start Member_Account_Details.docx")
+    filename = "Member_Account_Details.docx"
+    doc.save(filename)
+    return open(filename,'rb')
