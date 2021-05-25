@@ -6,59 +6,58 @@ from tkinter.messagebox import showinfo
 from tkinter.messagebox import askyesno
 import sqlite3
 from tkinter import *
-import user_email
+import webbrowser
+from LoginFrame.test_email import sendEmail
 
-root = tkinter.Tk()
-root.title('Lisburn Raquets Club')
-root.geometry('500x550')
-root.configure(bg='white')
+login = tkinter.Tk()
+login.title('Lisburn Raquets Club')
+login.geometry('500x550')
+login.configure(bg='white')
 
 conn = sqlite3.connect('Badmington_club.db')
 
 c = conn.cursor()
 
-def raise_frame(frame_name):
-    frame_name.tkraise()
 
-'''
-c.execute("""CREATE TABLE account (
-				username text,
-				password text
-				)""")
-'''
+# c.execute("""CREATE TABLE account (
+# 				username text,
+# 				password text
+# 				)""")
 
-createAccountFrame = tkinter.Frame(root, bg ="white", width =500, height =500)
 
-monkey = tkinter.Frame(root, bg ="white", width =500, height =500)
-
-for frame in(createAccountFrame,monkey):
-    frame.grid(row = 0 , column=0,sticky='nesw')
-
-def validate_password(value, fieldname):
+def validate_password(value, fieldname, label):
     if (value == ''):
+        label.config(fg="red")
         messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be Empty")
         return False
     if (len(value) < 8):
+        label.config(fg="red")
         messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Must have between 8 and 15 characters")
         return False
     if (len(value) > 15):
+        label.config(fg="red")
         messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Must have between 8 and 15 characters")
         return False
 
+    label.config(fg="SpringGreen3")
     return True
 
 
-def validate_username(value, fieldname):
+def validate_username(value, fieldname, label):
     if (value == ''):
+        label.config(fg="red")
         messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be empty")
         return False
     if ('@' not in value):
+        label.config(fg="red")
         messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must contain @")
         return False
     if ('.' not in value):
+        label.config(fg="red")
         messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must contain a .")
         return False
 
+    label.config(fg="SpringGreen3")
     return True
 
 
@@ -81,7 +80,7 @@ def forgot_system():
 
         else:
 
-            found = user_email.sendEmail("Lisburn Racquets Verification code","\n" + "This is an automated message sent from Lisburn Racquet's Club" + "\n" + "The verification code to change passwords is " + "\n\n" + str(verificationCode) + "\n\n" + "Please do not respond to this email",recipient)
+            found = sendEmail("Lisburn Racquets Verification code","\n" + "This is an automated message sent from Lisburn Racquet's Club" + "\n" + "The verification code to change passwords is " + "\n\n" + str(verificationCode) + "\n\n" + "Please do not respond to this email",recipient)
             if found:
 
                 forgot_password=Toplevel(width=300, height=200, bg="white")
@@ -134,22 +133,31 @@ def login_submit(login_username, login_password):
     c = conn.cursor()
 
     isValid = True
-    isValid = isValid and validate_username(login_username, "Username")
-    isValid = isValid and validate_password(login_password, "Password")
+    isValid = isValid and validate_username(login_username, "Username", username_label)
+    isValid = isValid and validate_password(login_password, "Password", password_label)
 
     if isValid:
         c.execute(f"SELECT * FROM account WHERE username =? and password =?", (login_username, login_password,))
         data = c.fetchone()
         if not data:
+            username_label.config(fg="red")
+            password_label.config(fg="red")
             messagebox.showinfo("Warning", "The user with username " + login_username + " and password " + login_password + " was not found in the database", icon='error')
 
         else:
 
             messagebox.showinfo("info", "Login Successful")
-            raise_frame(monkey)
 
-            login_username.delete(0, END)
-            login_password.delete(0, END)
+            username_label.config(fg="black")
+            password_label.config(fg="black")
+
+            #login_username.delete(0, END)
+            #login_password.delete(0, END)
+
+            login.destroy()
+
+            from CustomerFrame import CustomerDetailsScreen
+            CustomerDetailsScreen.member.tkraise()
 
     conn.commit()
     conn.close()
@@ -165,48 +173,73 @@ def login_clear():
         username_entry.delete(0, END)
         password_entry.delete(0, END)
 
+
 def show_password(self):
     password_entry.config(show="")
+
 
 def dont_show_password(self):
     password_entry.config(show="*")
 
 
+def twitterLink():
+    webbrowser.open("https://twitter.com/lisburnracquets")
+
+
+def facebookLink():
+    webbrowser.open("https://www.facebook.com/LisburnRacquetsClub")
+
+
+
 loginUsername = StringVar()
 loginPassword = StringVar()
 
-title_label = tkinter.Label(root, text="Lisburn Racquets Club Login", font=('Verdana', 20, 'underline', 'bold'), fg='red', bg='white')
+title_label = tkinter.Label(login, text="Welcome To Lisburn Racquets Club", font=('Verdana', 18, 'underline', 'bold'), fg='SpringGreen3', bg='white')
 title_label.place(rely=0.06, relx=0.5, anchor='center')
 
-username_label = tkinter.Label(root, text="Username:", font=('Georgia', 20, 'bold'),fg='black', bg='white')
+username_label = tkinter.Label(login, text="Username:", font=('Georgia', 20, 'bold'),fg='black', bg='white')
 username_label.place(rely=0.45, relx=0.295, anchor='center')
 
-password_label = tkinter.Label(root, text="Password:", font=('Georgia', 20, 'bold'), fg='black', bg='white')
+password_label = tkinter.Label(login, text="Password:", font=('Georgia', 20, 'bold'), fg='black', bg='white')
 password_label.place(rely=0.6, relx=0.3, anchor='center')
 
-username_entry = tkinter.Entry(root, width=30, textvariable = loginUsername, bd=4, relief='ridge')
+username_entry = tkinter.Entry(login, width=30, textvariable = loginUsername, bd=4, relief='ridge')
 username_entry.place(rely=0.454, relx=0.655, anchor='center')
 
-password_entry = tkinter.Entry(root, width=30, show="*", textvariable = loginPassword, bd=4, relief='ridge')
+password_entry = tkinter.Entry(login, width=30, show="*", textvariable = loginPassword, bd=4, relief='ridge')
 password_entry.place(rely=0.604, relx=0.655, anchor='center')
+
+
+click_twitter_btn = PhotoImage(file='twitter.png')
+twitter_img_label = Label(image=click_twitter_btn)
+
+twitter_button = Button(login, image=click_twitter_btn, command= twitterLink)
+twitter_button.place(rely=0.25, relx=0.86, anchor='center')
+
+
+click_facebook_btn = PhotoImage(file='facebook5.png')
+facebook_img_label = Label(image=click_facebook_btn)
+
+facebook_button = Button(login, image=click_facebook_btn, command= facebookLink)
+facebook_button.place(rely=0.25, relx=0.14, anchor='center')
 
 
 password_button_image = PhotoImage(file='eye.png')
 image_label = Label(image=password_button_image)
 
-password_button = Button(root, image=password_button_image, borderwidth=3)
+password_button = Button(login, image=password_button_image, borderwidth=3)
 password_button.place(rely=0.604, relx=0.885, anchor='center')
 password_button.bind("<ButtonRelease-1>", show_password)
 
 notpassword_button_image = PhotoImage(file='noteye.png')
 notimage_label = Label(image=notpassword_button_image)
 
-notpassword_button = Button(root, image=notpassword_button_image, borderwidth=3)
+notpassword_button = Button(login, image=notpassword_button_image, borderwidth=3)
 notpassword_button.place(rely=0.604, relx=0.955, anchor='center')
 notpassword_button.bind("<ButtonRelease-1>", dont_show_password)
 
 
-background_entry_canvas = Canvas(root,width=218, height=130, bg = "white")
+background_entry_canvas = Canvas(login,width=218, height=130, bg = "white")
 background_entry_canvas.place(rely=0.26,relx=0.5,anchor=CENTER)
 
 background_entry_image = PhotoImage(file ="rsz_LisburnRaquetsClub.png")
@@ -215,16 +248,18 @@ background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_im
 background_entry_canvas.background_entry_image = background_entry_image
 
 
-forgot_password_button = tkinter.Button(root, text="Forgot Password", command=forgot_system, fg='white', bg='black', bd=6, relief='ridge', font=('Segoe UI Black', 12, 'bold'), padx=10)
+forgot_password_button = tkinter.Button(login, text="Forgot Password", command=forgot_system, fg='white', bg='black', bd=6, relief='ridge', font=('Segoe UI Black', 12, 'bold'), padx=10)
 forgot_password_button.place(rely=0.7, relx=0.5, anchor='center')
 
-clear_button = tkinter.Button(root, text="Clear", command=login_clear, fg='white', bg='black', bd=6, relief='groove', font=('Segoe UI Black', 16, 'bold'), padx=50)
+clear_button = tkinter.Button(login, text="Clear", command=login_clear, fg='white', bg='black', bd=6, relief='groove', font=('Segoe UI Black', 16, 'bold'), padx=50)
 clear_button.place(rely=0.9, relx=0.27, anchor='center')
 
 def completeLogin():
     login_submit(loginUsername.get(), loginPassword.get())
 
-login_button = tkinter.Button(root, text="Login", command=completeLogin, fg='white', bg='black', bd=6, relief='groove', font=('Segoe UI Black', 16, 'bold'), padx=50)
+login_button = tkinter.Button(login, text="Login", command=completeLogin, fg='white', bg='black', bd=6, relief='groove', font=('Segoe UI Black', 16, 'bold'), padx=50)
 login_button.place(rely=0.9, relx=0.73, anchor='center')
 
-root.mainloop()
+
+
+login.mainloop()

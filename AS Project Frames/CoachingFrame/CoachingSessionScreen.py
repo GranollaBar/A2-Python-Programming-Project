@@ -1,25 +1,16 @@
-import tkinter
 from tkinter import ttk
-from tkinter import messagebox, END
-import csv
-import random
+from tkinter import messagebox
 import tkinter.simpledialog
-import math
-import datetime
-import string
-import time
 from tkinter.messagebox import showinfo
 from tkinter.messagebox import askyesno
 import sqlite3
-from tkinter.ttk import Combobox
 from tkinter import simpledialog
-from tkcalendar import Calendar, DateEntry
-import tkinter as tk
 from tkinter import *
-from functools import partial
 import math
-import member_email
-import memberWordDocument
+from functools import partial
+
+from CustomerFrame.member_email import memberEmail
+from CustomerFrame.memberWordDocument import buildMemberDocument
 
 member = Tk()
 member.geometry('900x600')
@@ -52,61 +43,90 @@ c.execute("""CREATE TABLE member (
             )""")
 '''
 
-def validate_password(value, fieldname):
+def raise_frame(frame_name):
+	frame_name.tkraise()
+
+def memberOpen():
+	member.mainloop()
+
+
+def validate_password(value, fieldname, label):
 	if (value == ''):
+		label.config(fg="red")
 		messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be Empty")
 		return False
 	if (len(value) < 8):
+		label.config(fg="red")
 		messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Must have between 8 and 15 characters")
 		return False
 	if (len(value) > 15):
+		label.config(fg="red")
 		messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Must have between 8 and 15 characters")
 		return False
 
+	label.config(fg="SpringGreen3")
 	return True
 
 
-def validate_username(value, fieldname):
+def validate_username(value, fieldname, label):
 	if (value == ''):
+		label.config(fg="red")
 		messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be empty")
 		return False
+
 	if ('@' not in value):
+		label.config(fg="red")
 		messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must contain @")
 		return False
+
 	if ('.' not in value):
+		label.config(fg="red")
 		messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must contain a .")
 		return False
 
+	label.config(fg="SpringGreen3")
 	return True
 
-def validate_not_empty_string(value, fieldname):
+def validate_not_empty_string(value, fieldname, label):
 	if (value == ""):
+		label.config(fg="red")
 		messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be Empty")
 		return False
+
 	if (value.isdigit()):
+		label.config(fg="red")
 		messagebox.showinfo("Validation Error", "The Value for Field " + fieldname + " Can not Contain Whole Numbers")
 		return False
+
 	if (len(value) >15):
+		label.config(fg="red")
 		messagebox.showinfo("Validation Error", "The Value for Field " + fieldname + " Can only Contain a max of 15 characters")
 		return False
 
+	label.config(fg="SpringGreen3")
 	return True
 
-def validate_empty(value, fieldname):
+def validate_empty(value, fieldname, label):
 	if (value == ''):
+		label.config(fg="red")
 		messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be Empty")
 		return False
 
+	label.config(fg="SpringGreen3")
 	return True
 
-def validate_age(value, fieldname):
+def validate_age(value, fieldname, label):
 	if (int(value) >100):
+		label.config(fg="red")
 		messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be over 100")
 		return False
+
 	if (value ==''):
+		label.config(fg="red")
 		messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be empty")
 		return False
 
+	label.config(fg="SpringGreen3")
 	return True
 
 
@@ -129,11 +149,57 @@ def treeviewPopulate():
 
 	c.execute("SELECT * From member")
 	items = c.fetchall()
-	for row in items:
-		member_search_Tv.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4],row[5],row[6],row[7]))
-
 	conn.commit()
 	conn.close()
+
+	member_search_Tv.tag_configure("even",background="green")
+	member_search_Tv.tag_configure("odd",background="red")
+
+	count=0
+	for row in items:
+		if row == []:
+			pass
+		else:
+			if count%2==0:
+				member_search_Tv.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4],row[5],row[6],row[7]),tags=["even"])
+			else:
+				member_search_Tv.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4],row[5],row[6],row[7]),tags=["odd"])
+			count+=1
+
+
+
+
+
+
+
+def returnColour(usernameReturn, passwordReturn, firstnameReturn, surnameReturn, addressReturn, postcodeReturn, ageReturn):
+	usernameReturn.config(fg="black")
+	passwordReturn.config(fg="black")
+	firstnameReturn.config(fg="black")
+	surnameReturn.config(fg="black")
+	addressReturn.config(fg="black")
+	postcodeReturn.config(fg="black")
+	ageReturn.config(fg="black")
+
+
+def updateAccountDetails():
+	response = askyesno("Are you sure?", "Do you want to update a students details")
+	if response == False:
+		showinfo("Info", "Update cancelled")
+
+	else:
+
+		update_member=Toplevel(bg="white")
+
+		title_label =Label(update_member,text = 'Update Member' , fg ='SpringGreen3',bg='white',font=('Verdana',15,'bold'))
+		title_label.place(rely=0.13,relx=0.5,anchor=CENTER)
+
+		update_address=Button(update_member,text = 'Update Address', command = update_member_address, fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20, pady =10)
+		update_address.place(rely=0.43,relx=0.5,anchor=CENTER)
+
+		update_postcode=Button(update_member,text = 'Update Postcode', command = update_member_postcode, fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20, pady =10)
+		update_postcode.place(rely=0.75,relx=0.5,anchor=CENTER)
+
 
 
 def update_member_address():
@@ -241,25 +307,6 @@ def deleteAccountDetails():
 	treeviewPopulate()
 
 
-def updateAccountDetails():
-	response = askyesno("Are you sure?", "Do you want to update a students details")
-	if response == False:
-		showinfo("Info", "Update cancelled")
-
-	else:
-
-		update_member=Toplevel(bg="white")
-
-		title_label =Label(update_member,text = 'Update Member' , fg ='SpringGreen3',bg='white',font=('Verdana',15,'bold'))
-		title_label.place(rely=0.13,relx=0.5,anchor=CENTER)
-
-		update_address=Button(update_member,text = 'Update Address', command = update_member_address, fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20, pady =10)
-		update_address.place(rely=0.43,relx=0.5,anchor=CENTER)
-
-		update_postcode=Button(update_member,text = 'Update Postcode', command = update_member_postcode, fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20, pady =10)
-		update_postcode.place(rely=0.75,relx=0.5,anchor=CENTER)
-
-
 def searchAccountDetails():
 	conn = sqlite3.connect('Badmington_club.db')
 
@@ -297,13 +344,13 @@ def saveAccountDetails():
 	c = conn.cursor()
 
 	isValid = True
-	isValid = isValid and validate_username(username.get(), "Username")
-	isValid = isValid and validate_password(password.get(), "Password")
-	isValid = isValid and validate_not_empty_string(firstname.get(), "Firstname")
-	isValid = isValid and validate_not_empty_string(surname.get(), "Surname")
-	isValid = isValid and validate_empty(address.get(), "Address")
-	isValid = isValid and validate_empty(postcode.get(), "Postcode")
-	isValid = isValid and validate_age(age.get(), "Age")
+	isValid = isValid and validate_username(username.get(), "Username", username_label)
+	isValid = isValid and validate_password(password.get(), "Password", password_label)
+	isValid = isValid and validate_not_empty_string(firstname.get(), "Firstname", firstname_label)
+	isValid = isValid and validate_not_empty_string(surname.get(), "Surname", surname_label)
+	isValid = isValid and validate_empty(address.get(), "Address", address_label)
+	isValid = isValid and validate_empty(postcode.get(), "Postcode", postcode_label)
+	isValid = isValid and validate_age(age.get(), "Age", age_label)
 
 	if isValid:
 		account_username = username.get()
@@ -322,8 +369,8 @@ def saveAccountDetails():
 
 		else:
 
-			doc = memberWordDocument.buildMemberDocument(account_username, account_password, account_firstname, account_surname, account_address, account_postcode, account_age, account_group)
-			found = member_email.memberEmail("Lisburn Racquets Account Added","You have been accepted into Lisburn Raquets Club." + "\n" + "Your details can be found in the document below." + "\n\n" + "Thanks for choosing Lisburn Racquets Club", account_username, doc)
+			doc = buildMemberDocument(account_username, account_password, account_firstname, account_surname, account_address, account_postcode, account_age, account_group)
+			found = memberEmail("Lisburn Racquets Account Added", "You have been accepted into Lisburn Raquets Club." + "\n" + "Your details can be found in the document below." + "\n\n" + "Thanks for choosing Lisburn Racquets Club", account_username, doc, username_label)
 			if found:
 
 				c.execute("INSERT INTO member VALUES (:username, :password, :firstname, :surname, :address, :postcode, :age, :member_group)",
@@ -346,6 +393,8 @@ def saveAccountDetails():
 				postcode.set('')
 				age.set('')
 
+				returnColour(username_label, password_label, firstname_label, surname_label, address_label, postcode_label, age_label)
+
 
 		conn.commit()
 		conn.close()
@@ -355,6 +404,24 @@ def saveAccountDetails():
 
 def selection():
 	pass
+
+def coachingSession():
+	pass
+
+
+
+coaching_session_button = tkinter.Button(header, text="Coaching Session", command=coachingSession, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 12, 'bold'), padx=10)
+coaching_session_button.place(rely=0.5, relx=0.3, anchor='center')
+
+add_member_button = tkinter.Button(header, text="Add Member", command=coachingSession, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 12, 'bold'), padx=10)
+add_member_button.place(rely=0.5, relx=0.1, anchor='center')
+
+
+
+
+
+
+
 
 
 
@@ -410,21 +477,22 @@ age_entry = tkinter.Entry(member, width=4, textvariable=age, bd=2, relief='ridge
 age_entry.place(rely=0.233, relx=0.905, anchor='center')
 age.set('')
 
-delete_button = tkinter.Button(member, text="Delete Member", command=deleteAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 11, 'bold'), padx=20)
-delete_button.place(rely=0.35, relx=0.15, anchor='center')
 
-update_button = tkinter.Button(member, text="Update Member", command=updateAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 11, 'bold'), padx=20)
-update_button.place(rely=0.35, relx=0.39, anchor='center')
+delete_button = tkinter.Button(member, text="Delete Member", command=deleteAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
+delete_button.place(rely=0.41, relx=0.23, anchor='center')
 
-clear_button = tkinter.Button(member, text="Search Details", command=searchAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 11, 'bold'), padx=20)
-clear_button.place(rely=0.35, relx=0.625, anchor='center')
+update_button = tkinter.Button(member, text="Update Member", command=updateAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
+update_button.place(rely=0.33, relx=0.23, anchor='center')
 
-create_button = tkinter.Button(member, text="Save Member", command=saveAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 11, 'bold'), padx=20)
-create_button.place(rely=0.35, relx=0.85, anchor='center')
+clear_button = tkinter.Button(member, text="Search Details", command=searchAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
+clear_button.place(rely=0.41, relx=0.77, anchor='center')
+
+create_button = tkinter.Button(member, text="Save Member", command=saveAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
+create_button.place(rely=0.33, relx=0.77, anchor='center')
 
 
 member_search_Tv=ttk.Treeview(member,height=14,columns=('Password','Firstname','Surname','Address','Postcode','Age','Group'))
-member_search_Tv.place(relx=0.5,rely=0.69,anchor=CENTER)
+member_search_Tv.place(relx=0.5,rely=0.71,anchor=CENTER)
 
 
 member_search_Tv.heading("#0",text='Username')
@@ -445,12 +513,30 @@ member_search_Tv.heading("#7",text='Group')
 member_search_Tv.column("#7",minwidth=0,width=80)
 
 student_ysearch_scrollbar = Scrollbar(member, orient = 'vertical', command = member_search_Tv.yview)
-student_ysearch_scrollbar.place(relx=0.96,rely=0.69,anchor='center',height=307)
+student_ysearch_scrollbar.place(relx=0.96,rely=0.71,anchor='center',height=307)
 member_search_Tv.configure(yscrollcommand=student_ysearch_scrollbar.set)
 
-member_search_Tv.bind("<ButtonRelease-1>", selection)
+
+
 
 treeviewPopulate()
-
 member.mainloop()
 
+'''
+def onTreeviewPopup(event):
+	try:
+		rowItem = member_search_Tv.treeview.identify_row(event.y)
+		tvPopup.selection = member_search_Tv.treeview.set(rowItem)
+
+		member_search_Tv.treeview.selection_set(rowItem)
+		member_search_Tv.treeview.focus(rowItem)
+		tvPopup.post(event.x_root, event.y_root)
+	finally:
+		tvPopup.grab_release()
+
+
+tvPopup = Menu(member, tearoff = 0)
+tvPopup.add_command(label = "Update", command = partial(updateAccountDetails, True))
+tvPopup.add_separator()
+tvPopup.add_command(label = "Delete", command = partial(deleteAccountDetails,True))
+'''

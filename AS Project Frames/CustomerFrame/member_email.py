@@ -4,9 +4,9 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 from tkinter import messagebox
-import memberWordDocument
+from CustomerFrame.memberWordDocument import buildMemberDocument
 
-def memberEmail(subject, msg, recipientemail, doc):
+def memberEmail(subject, msg, recipientemail, doc, label):
 	try:
 		server=smtplib.SMTP('smtp.gmail.com:587')
 		server.ehlo()
