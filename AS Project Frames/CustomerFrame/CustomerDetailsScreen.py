@@ -165,6 +165,12 @@ def treeviewPopulate():
 
 
 
+def destroyAddMemberFrame():
+	username_label.destroy()
+	password_label.destroy()
+	firstname_label.destroy()
+
+
 
 
 

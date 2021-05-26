@@ -424,102 +424,92 @@ add_member_button.place(rely=0.5, relx=0.1, anchor='center')
 
 
 
-
-username = StringVar()
-password = StringVar()
-firstname=StringVar()
-surname=StringVar()
-address=StringVar()
-postcode=StringVar()
-age=IntVar()
-
-
-username_label = tkinter.Label(member, text="Username:", font=('Georgia', 14, 'bold'), fg='black', bg='white')
-username_label.place(rely=0.15, relx=0.09, anchor='center')
-
-password_label = tkinter.Label(member, text="Password:", font=('Georgia', 14, 'bold'), fg='black', bg='white')
-password_label.place(rely=0.23, relx=0.09, anchor='center')
-
-firstname_label = tkinter.Label(member, text="Firstname:", font=('Georgia', 14, 'bold'), fg='black', bg='white')
-firstname_label.place(rely=0.152, relx=0.43, anchor='center')
-
-surname_label = tkinter.Label(member, text="Surname:", font=('Georgia', 14, 'bold'), fg='black', bg='white')
-surname_label.place(rely=0.231, relx=0.36, anchor='center')
-
-address_label = tkinter.Label(member, text="Address:", font=('Georgia', 14, 'bold'), fg='black', bg='white')
-address_label.place(rely=0.152, relx=0.7, anchor='center')
-
-postcode_label = tkinter.Label(member, text="Postcode:", font=('Georgia', 14, 'bold'), fg='black', bg='white')
-postcode_label.place(rely=0.231, relx=0.64, anchor='center')
-
-age_label = tkinter.Label(member, text="Age:", font=('Georgia', 14, 'bold'), fg='black', bg='white')
-age_label.place(rely=0.231, relx=0.85, anchor='center')
-
-username_entry = tkinter.Entry(member, width=25, textvariable=username, bd=2, relief='ridge')
-username_entry.place(rely=0.153, relx=0.25, anchor='center')
-
-password_entry = tkinter.Entry(member, width=15, textvariable=password, show='*', bd=2, relief='ridge')
-password_entry.place(rely=0.233, relx=0.217, anchor='center')
-
-firstname_entry = tkinter.Entry(member, width=15, textvariable=firstname, bd=2, relief='ridge')
-firstname_entry.place(rely=0.155, relx=0.56, anchor='center')
-
-surname_entry = tkinter.Entry(member, width=15, textvariable=surname, bd=2, relief='ridge')
-surname_entry.place(rely=0.235, relx=0.483, anchor='center')
-
-address_entry = tkinter.Entry(member, width=25, textvariable=address, bd=2, relief='ridge')
-address_entry.place(rely=0.155, relx=0.85, anchor='center')
-
-postcode_entry = tkinter.Entry(member, width=10, textvariable=postcode, bd=2, relief='ridge')
-postcode_entry.place(rely=0.234, relx=0.743, anchor='center')
-
-age_entry = tkinter.Entry(member, width=4, textvariable=age, bd=2, relief='ridge')
-age_entry.place(rely=0.233, relx=0.905, anchor='center')
-age.set('')
+CoachName=StringVar()
+timeStart=StringVar()
+timeEnd=StringVar()
+date=StringVar()
+people=StringVar()
+level=StringVar()
+hourlyRate=StringVar()
+notes=StringVar()
 
 
-delete_button = tkinter.Button(member, text="Delete Member", command=deleteAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
-delete_button.place(rely=0.41, relx=0.23, anchor='center')
+name_label = tkinter.Label(member, text="Full Name:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+name_label.place(rely=0.3, relx=0.1, anchor='center')
 
-update_button = tkinter.Button(member, text="Update Member", command=updateAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
-update_button.place(rely=0.33, relx=0.23, anchor='center')
+starttime_label = tkinter.Label(member, text="Start Time:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+starttime_label.place(rely=0.38, relx=0.1, anchor='center')
 
-clear_button = tkinter.Button(member, text="Search Details", command=searchAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
-clear_button.place(rely=0.41, relx=0.77, anchor='center')
+endtime_label = tkinter.Label(member, text="End Time:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+endtime_label.place(rely=0.46, relx=0.1, anchor='center')
 
-create_button = tkinter.Button(member, text="Save Member", command=saveAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
-create_button.place(rely=0.33, relx=0.77, anchor='center')
+date_label = tkinter.Label(member, text="Session Date:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+date_label.place(rely=0.54, relx=0.1, anchor='center')
+
+nopeople_label = tkinter.Label(member, text="No. Members:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+nopeople_label.place(rely=0.62, relx=0.1, anchor='center')
+
+level_label = tkinter.Label(member, text="Group Level:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+level_label.place(rely=0.7, relx=0.1, anchor='center')
+
+hourlyrate_label = tkinter.Label(member, text="Hourly Rate:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+hourlyrate_label.place(rely=0.78, relx=0.1, anchor='center')
+
+notes_label = tkinter.Label(member, text="Extra Notes:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+notes_label.place(rely=0.86, relx=0.1, anchor='center')
+
+# dot_label = tkinter.Label(member, text=".", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+# dot_label.place(rely=0.231, relx=0.85, anchor='center')
+#
+# # canvas = Canvas(member, width=550, height=820)
+# # canvas.place(rely=0.5, relx=0.5, anchor='center')
+# #
+# # png = PhotoImage(file = 'rectangle.png') # Just an example
+# # canvas.create_image(0, 0, image = png, anchor = "nw")
+# #
+# # a = canvas.create_rectangle(50, 0, 50, 0, fill='red')
+# # canvas.move(a, 20, 20)
 
 
-member_search_Tv=ttk.Treeview(member,height=14,columns=('Password','Firstname','Surname','Address','Postcode','Age','Group'))
-member_search_Tv.place(relx=0.5,rely=0.71,anchor=CENTER)
+name_entry = tkinter.Entry(member, width=30, textvariable=CoachName, bd=2, relief='ridge')
+name_entry.place(rely=0.153, relx=0.25, anchor='center')
 
+starttime_entry = tkinter.Entry(member, width=15, textvariable=timeStart, show='*', bd=2, relief='ridge')
+starttime_entry.place(rely=0.233, relx=0.217, anchor='center')
 
-member_search_Tv.heading("#0",text='Username')
-member_search_Tv.column("#0",minwidth=0,width=190)
-member_search_Tv.heading("#1",text='Password')
-member_search_Tv.column("#1",minwidth=0,width=90)
-member_search_Tv.heading("#2",text='Firstname')
-member_search_Tv.column("#2",minwidth=0,width=100)
-member_search_Tv.heading("#3",text='Surname')
-member_search_Tv.column("#3",minwidth=0,width=100)
-member_search_Tv.heading("#4",text='Address')
-member_search_Tv.column("#4",minwidth=0,width=140)
-member_search_Tv.heading("#5",text='Postcode')
-member_search_Tv.column("#5",minwidth=0,width=90)
-member_search_Tv.heading("#6",text='Age')
-member_search_Tv.column("#6",minwidth=0,width=50)
-member_search_Tv.heading("#7",text='Group')
-member_search_Tv.column("#7",minwidth=0,width=80)
+endtime_entry = tkinter.Entry(member, width=15, textvariable=timeEnd, bd=2, relief='ridge')
+endtime_entry.place(rely=0.155, relx=0.56, anchor='center')
 
-student_ysearch_scrollbar = Scrollbar(member, orient = 'vertical', command = member_search_Tv.yview)
-student_ysearch_scrollbar.place(relx=0.96,rely=0.71,anchor='center',height=307)
-member_search_Tv.configure(yscrollcommand=student_ysearch_scrollbar.set)
+date_entry = tkinter.Entry(member, width=15, textvariable=date, bd=2, relief='ridge')
+date_entry.place(rely=0.235, relx=0.483, anchor='center')
+
+nopeople_entry = tkinter.Entry(member, width=25, textvariable=people, bd=2, relief='ridge')
+nopeople_entry.place(rely=0.155, relx=0.85, anchor='center')
+
+level_entry = tkinter.Entry(member, width=10, textvariable=level, bd=2, relief='ridge')
+level_entry.place(rely=0.234, relx=0.743, anchor='center')
+
+hourlyrate_entry = tkinter.Entry(member, width=4, textvariable=hourlyRate, bd=2, relief='ridge')
+hourlyrate_entry.place(rely=0.233, relx=0.905, anchor='center')
+
+notes_entry = tkinter.Entry(member, width=4, textvariable=notes, bd=2, relief='ridge')
+notes_entry.place(rely=0.233, relx=0.905, anchor='center')
+
+#
+# delete_button = tkinter.Button(member, text="Delete Member", command=deleteAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
+# delete_button.place(rely=0.41, relx=0.23, anchor='center')
+#
+# update_button = tkinter.Button(member, text="Update Member", command=updateAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
+# update_button.place(rely=0.33, relx=0.23, anchor='center')
+#
+# clear_button = tkinter.Button(member, text="Search Details", command=searchAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
+# clear_button.place(rely=0.41, relx=0.77, anchor='center')
+#
+# create_button = tkinter.Button(member, text="Save Member", command=saveAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
+# create_button.place(rely=0.33, relx=0.77, anchor='center')
 
 
 
-
-treeviewPopulate()
 member.mainloop()
 
 '''
