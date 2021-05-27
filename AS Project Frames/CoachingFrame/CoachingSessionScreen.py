@@ -8,9 +8,13 @@ from tkinter import simpledialog
 from tkinter import *
 import math
 from functools import partial
+import datetime
+from tkcalendar import Calendar, DateEntry
 
 from CustomerFrame.member_email import memberEmail
 from CustomerFrame.memberWordDocument import buildMemberDocument
+
+from CustomerFrame import CustomerDetailsScreen
 
 member = Tk()
 member.geometry('900x600')
@@ -43,8 +47,198 @@ c.execute("""CREATE TABLE member (
             )""")
 '''
 
+
+
+def dateEntryCheck(dob):
+	def assign_dob():
+		eventDate.set(cal.selection_get())
+
+	top = Toplevel(member)
+
+	cal = Calendar(top,
+				   font="Tahoma 16", selectmode='day',
+				   cursor="tcross", year=2021, month=4, day=29)
+	cal.pack(fill="both", expand=True)
+	ttk.Button(top, text="ok", command=assign_dob).pack()
+
+
+court1=IntVar()
+court2=IntVar()
+court3=IntVar()
+court4=IntVar()
+court5=IntVar()
+court6=IntVar()
+court7=IntVar()
+court8=IntVar()
+court9=IntVar()
+court10=IntVar()
+court11=IntVar()
+court12=IntVar()
+
+
+def courtsRequired():
+	courts = Toplevel(member, bg="white")
+	courts.geometry('500x500')
+
+	title_label = tkinter.Label(courts, text="Check the No. Courts Needed For The Session", font=('Tahoma', 16, 'underline', 'bold'), fg='black', bg='white')
+	title_label.place(rely=0.03, relx=0.5, anchor='center')
+
+	confirm_button = tkinter.Button(courts, text="Confirm Selection", command=lambda : confirmSelection(courts), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 10, 'bold'), padx=35, cursor="tcross")
+	confirm_button.place(rely=0.112, relx=0.5, anchor='center')
+
+	confirm_court1 = Checkbutton(courts, cursor="tcross",text="Court 1  V", variable=court1,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_court1.place(rely=0.2, relx=0.15, anchor='center')
+
+	confirm_court2 = Checkbutton(courts, cursor="tcross",text="Court 2  V", variable=court2,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_court2.place(rely=0.4, relx=0.15, anchor='center')
+
+	confirm_court3 = Checkbutton(courts, cursor="tcross",text="Court 3  V", variable=court3,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_court3.place(rely=0.6, relx=0.15, anchor='center')
+
+	confirm_court4 = Checkbutton(courts, cursor="tcross",text="Court 4  V", variable=court4,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_court4.place(rely=0.8, relx=0.15, anchor='center')
+
+	confirm_court5 = Checkbutton(courts, cursor="tcross",text="Court 5  V", variable=court5,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_court5.place(rely=0.2, relx=0.5, anchor='center')
+
+	confirm_court6 = Checkbutton(courts, cursor="tcross",text="Court 6  V", variable=court6,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_court6.place(rely=0.4, relx=0.5, anchor='center')
+
+	confirm_court7 = Checkbutton(courts, cursor="tcross",text="Court 7  V", variable=court7,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_court7.place(rely=0.6, relx=0.5, anchor='center')
+
+	confirm_court8 = Checkbutton(courts, cursor="tcross",text="Court 8  V", variable=court8,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_court8.place(rely=0.8, relx=0.5, anchor='center')
+
+	confirm_court9 = Checkbutton(courts, cursor="tcross",text="Court 9  V", variable=court9,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_court9.place(rely=0.2, relx=0.85, anchor='center')
+
+	confirm_court10 = Checkbutton(courts, cursor="tcross",text="Court 10  V", variable=court10,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_court10.place(rely=0.4, relx=0.85, anchor='center')
+
+	confirm_court11 = Checkbutton(courts, cursor="tcross",text="Court 11 V", variable=court11,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_court11.place(rely=0.6, relx=0.85, anchor='center')
+
+	confirm_court12 = Checkbutton(courts, cursor="tcross",text="Court 12 V", variable=court12,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_court12.place(rely=0.8, relx=0.85, anchor='center')
+
+
+	background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
+	background_entry_canvas.place(rely=0.3,relx=0.15,anchor=CENTER)
+
+	background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+
+	background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
+	background_entry_canvas.background_entry_image = background_entry_image
+
+
+	background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
+	background_entry_canvas.place(rely=0.5,relx=0.15,anchor=CENTER)
+
+	background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+
+	background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
+	background_entry_canvas.background_entry_image = background_entry_image
+
+
+	background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
+	background_entry_canvas.place(rely=0.7,relx=0.15,anchor=CENTER)
+
+	background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+
+	background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
+	background_entry_canvas.background_entry_image = background_entry_image
+
+
+	background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
+	background_entry_canvas.place(rely=0.9,relx=0.15,anchor=CENTER)
+
+	background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+
+	background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
+	background_entry_canvas.background_entry_image = background_entry_image
+
+
+	background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
+	background_entry_canvas.place(rely=0.3,relx=0.5,anchor=CENTER)
+
+	background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+
+	background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
+	background_entry_canvas.background_entry_image = background_entry_image
+
+
+	background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
+	background_entry_canvas.place(rely=0.5,relx=0.5,anchor=CENTER)
+
+	background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+
+	background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
+	background_entry_canvas.background_entry_image = background_entry_image
+
+
+	background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
+	background_entry_canvas.place(rely=0.7,relx=0.5,anchor=CENTER)
+
+	background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+
+	background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
+	background_entry_canvas.background_entry_image = background_entry_image
+
+
+	background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
+	background_entry_canvas.place(rely=0.9,relx=0.5,anchor=CENTER)
+
+	background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+
+	background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
+	background_entry_canvas.background_entry_image = background_entry_image
+
+
+	background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
+	background_entry_canvas.place(rely=0.3,relx=0.85,anchor=CENTER)
+
+	background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+
+	background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
+	background_entry_canvas.background_entry_image = background_entry_image
+
+
+	background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
+	background_entry_canvas.place(rely=0.5,relx=0.85,anchor=CENTER)
+
+	background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+
+	background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
+	background_entry_canvas.background_entry_image = background_entry_image
+
+
+	background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
+	background_entry_canvas.place(rely=0.7,relx=0.85,anchor=CENTER)
+
+	background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+
+	background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
+	background_entry_canvas.background_entry_image = background_entry_image
+
+
+	background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
+	background_entry_canvas.place(rely=0.9,relx=0.85,anchor=CENTER)
+
+	background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+
+	background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
+	background_entry_canvas.background_entry_image = background_entry_image
+
+
+
+def confirmSelection(frame):
+	frame.withdraw()
+
+
 def raise_frame(frame_name):
 	frame_name.tkraise()
+
 
 def memberOpen():
 	member.mainloop()
@@ -410,6 +604,12 @@ def coachingSession():
 
 
 
+def showCoachingScreen():
+	name_label.place(rely=0.32, relx=0.12, anchor='center')
+
+
+
+
 coaching_session_button = tkinter.Button(header, text="Coaching Session", command=coachingSession, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 12, 'bold'), padx=10)
 coaching_session_button.place(rely=0.5, relx=0.3, anchor='center')
 
@@ -427,7 +627,7 @@ add_member_button.place(rely=0.5, relx=0.1, anchor='center')
 CoachName=StringVar()
 timeStart=StringVar()
 timeEnd=StringVar()
-date=StringVar()
+eventDate=StringVar()
 people=StringVar()
 level=StringVar()
 hourlyRate=StringVar()
@@ -435,65 +635,53 @@ notes=StringVar()
 
 
 name_label = tkinter.Label(member, text="Full Name:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-name_label.place(rely=0.3, relx=0.1, anchor='center')
+name_label.place(rely=0.32, relx=0.12, anchor='center')
 
 starttime_label = tkinter.Label(member, text="Start Time:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-starttime_label.place(rely=0.38, relx=0.1, anchor='center')
+starttime_label.place(rely=0.4, relx=0.12, anchor='center')
 
 endtime_label = tkinter.Label(member, text="End Time:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-endtime_label.place(rely=0.46, relx=0.1, anchor='center')
+endtime_label.place(rely=0.48, relx=0.12, anchor='center')
 
 date_label = tkinter.Label(member, text="Session Date:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-date_label.place(rely=0.54, relx=0.1, anchor='center')
+date_label.place(rely=0.56, relx=0.12, anchor='center')
 
-nopeople_label = tkinter.Label(member, text="No. Members:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-nopeople_label.place(rely=0.62, relx=0.1, anchor='center')
+courts_needed_label = tkinter.Label(member, text="Courts Required:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+courts_needed_label.place(rely=0.64, relx=0.12, anchor='center')
 
 level_label = tkinter.Label(member, text="Group Level:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-level_label.place(rely=0.7, relx=0.1, anchor='center')
+level_label.place(rely=0.72, relx=0.12, anchor='center')
 
 hourlyrate_label = tkinter.Label(member, text="Hourly Rate:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-hourlyrate_label.place(rely=0.78, relx=0.1, anchor='center')
+hourlyrate_label.place(rely=0.8, relx=0.12, anchor='center')
 
 notes_label = tkinter.Label(member, text="Extra Notes:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-notes_label.place(rely=0.86, relx=0.1, anchor='center')
-
-# dot_label = tkinter.Label(member, text=".", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-# dot_label.place(rely=0.231, relx=0.85, anchor='center')
-#
-# # canvas = Canvas(member, width=550, height=820)
-# # canvas.place(rely=0.5, relx=0.5, anchor='center')
-# #
-# # png = PhotoImage(file = 'rectangle.png') # Just an example
-# # canvas.create_image(0, 0, image = png, anchor = "nw")
-# #
-# # a = canvas.create_rectangle(50, 0, 50, 0, fill='red')
-# # canvas.move(a, 20, 20)
+notes_label.place(rely=0.88, relx=0.12, anchor='center')
 
 
-name_entry = tkinter.Entry(member, width=30, textvariable=CoachName, bd=2, relief='ridge')
-name_entry.place(rely=0.153, relx=0.25, anchor='center')
+name_entry = tkinter.Entry(member, width=30, textvariable=CoachName, bd=3, relief='ridge', cursor="tcross")
+name_entry.place(rely=0.323, relx=0.3, anchor='center')
 
-starttime_entry = tkinter.Entry(member, width=15, textvariable=timeStart, show='*', bd=2, relief='ridge')
-starttime_entry.place(rely=0.233, relx=0.217, anchor='center')
+starttime_spinbox_hours = Spinbox(member, width=7,font=("Tahoma",12, 'bold'), bd=3, relief='ridge', cursor="tcross",textvariable=timeStart, values=('8.00', '8.15', '8.30', '8.45', '9.00', '9.15', '9.30', '9.45', '10.00', '10.15', '10.30', '10.45', '11.00', '11.15', '11.30', '11.45', '12.00', '12.15','12.30','12.45','13.00','13.15','13.30','13.45','14.00','14.15','14.30','14.45','15.00','15.15','15.30','15.45','16.00','16.15','16.30','16.45','17.00','17.15','17.30','17.45','18.00','18.15','18.30','18.45','19.00','19.15','19.30','19.45','20.00','20.15','20.30','20.45','21.00','21.15','21.30','21.45','22.00'))
+starttime_spinbox_hours.place(rely=0.4025, relx=0.3, anchor='center')
 
-endtime_entry = tkinter.Entry(member, width=15, textvariable=timeEnd, bd=2, relief='ridge')
-endtime_entry.place(rely=0.155, relx=0.56, anchor='center')
+starttime_spinbox_hours = Spinbox(member, width=7,font=("Tahoma",12, 'bold'), bd=3, relief='ridge', cursor="tcross", textvariable=timeEnd, values=('9.00', '9.15', '9.30', '9.45', '10.00', '10.15', '10.30', '10.45', '11.00', '11.15', '11.30', '11.45', '12.00', '12.15','12.30','12.45','13.00','13.15','13.30','13.45','14.00','14.15','14.30','14.45','15.00','15.15','15.30','15.45','16.00','16.15','16.30','16.45','17.00','17.15','17.30','17.45','18.00','18.15','18.30','18.45','19.00','19.15','19.30','19.45','20.00','20.15','20.30','20.45','21.00','21.15','21.30','21.45','22.00','22.15','22.30','22.45','23.00'))
+starttime_spinbox_hours.place(rely=0.4825, relx=0.3, anchor='center')
 
-date_entry = tkinter.Entry(member, width=15, textvariable=date, bd=2, relief='ridge')
-date_entry.place(rely=0.235, relx=0.483, anchor='center')
+date_entry = Button(member, text='Select Date',font=("Tahoma",11, 'bold'), cursor="tcross",command=lambda : dateEntryCheck(eventDate), padx=10, bd=4, relief="ridge")
+date_entry.place(rely=0.565, relx=0.3, anchor='center')
 
-nopeople_entry = tkinter.Entry(member, width=25, textvariable=people, bd=2, relief='ridge')
-nopeople_entry.place(rely=0.155, relx=0.85, anchor='center')
+Courts_needed_button = Button(member, text='Select Courts',font=("Tahoma",11, 'bold'), cursor="tcross",command=lambda : courtsRequired(), padx=10, bd=4, relief="ridge")
+Courts_needed_button.place(rely=0.645, relx=0.3, anchor='center')
 
-level_entry = tkinter.Entry(member, width=10, textvariable=level, bd=2, relief='ridge')
-level_entry.place(rely=0.234, relx=0.743, anchor='center')
+level_entry = tkinter.Entry(member, width=10, textvariable=level, bd=3, relief='ridge', cursor="tcross")
+level_entry.place(rely=0.723, relx=0.3, anchor='center')
 
-hourlyrate_entry = tkinter.Entry(member, width=4, textvariable=hourlyRate, bd=2, relief='ridge')
-hourlyrate_entry.place(rely=0.233, relx=0.905, anchor='center')
+hourlyrate_entry = tkinter.Entry(member, width=4, textvariable=hourlyRate, bd=3, relief='ridge', cursor="tcross")
+hourlyrate_entry.place(rely=0.803, relx=0.3, anchor='center')
 
-notes_entry = tkinter.Entry(member, width=4, textvariable=notes, bd=2, relief='ridge')
-notes_entry.place(rely=0.233, relx=0.905, anchor='center')
+notes_entry = tkinter.Entry(member, width=4, textvariable=notes, bd=3, relief='ridge', cursor="tcross")
+notes_entry.place(rely=0.883, relx=0.3, anchor='center', width=100, height=50)
 
 #
 # delete_button = tkinter.Button(member, text="Delete Member", command=deleteAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)

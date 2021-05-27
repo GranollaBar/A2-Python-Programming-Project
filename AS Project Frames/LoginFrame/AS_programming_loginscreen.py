@@ -203,38 +203,38 @@ username_label.place(rely=0.45, relx=0.295, anchor='center')
 password_label = tkinter.Label(login, text="Password:", font=('Georgia', 20, 'bold'), fg='black', bg='white')
 password_label.place(rely=0.6, relx=0.3, anchor='center')
 
-username_entry = tkinter.Entry(login, width=30, textvariable = loginUsername, bd=4, relief='ridge')
+username_entry = tkinter.Entry(login, width=30, textvariable = loginUsername, bd=4, relief='ridge', cursor="tcross")
 username_entry.place(rely=0.454, relx=0.655, anchor='center')
 
-password_entry = tkinter.Entry(login, width=30, show="*", textvariable = loginPassword, bd=4, relief='ridge')
+password_entry = tkinter.Entry(login, width=30, show="*", textvariable = loginPassword, bd=4, relief='ridge', cursor="tcross")
 password_entry.place(rely=0.604, relx=0.655, anchor='center')
 
 
 click_twitter_btn = PhotoImage(file='twitter.png')
 twitter_img_label = Label(image=click_twitter_btn)
 
-twitter_button = Button(login, image=click_twitter_btn, command= twitterLink)
+twitter_button = Button(login, image=click_twitter_btn, command= twitterLink, cursor="tcross")
 twitter_button.place(rely=0.25, relx=0.86, anchor='center')
 
 
 click_facebook_btn = PhotoImage(file='facebook5.png')
 facebook_img_label = Label(image=click_facebook_btn)
 
-facebook_button = Button(login, image=click_facebook_btn, command= facebookLink)
+facebook_button = Button(login, image=click_facebook_btn, command= facebookLink, cursor="tcross")
 facebook_button.place(rely=0.25, relx=0.14, anchor='center')
 
 
 password_button_image = PhotoImage(file='eye.png')
 image_label = Label(image=password_button_image)
 
-password_button = Button(login, image=password_button_image, borderwidth=3)
+password_button = Button(login, image=password_button_image, borderwidth=3, cursor="tcross")
 password_button.place(rely=0.604, relx=0.885, anchor='center')
 password_button.bind("<ButtonRelease-1>", show_password)
 
 notpassword_button_image = PhotoImage(file='noteye.png')
 notimage_label = Label(image=notpassword_button_image)
 
-notpassword_button = Button(login, image=notpassword_button_image, borderwidth=3)
+notpassword_button = Button(login, image=notpassword_button_image, borderwidth=3, cursor="tcross")
 notpassword_button.place(rely=0.604, relx=0.955, anchor='center')
 notpassword_button.bind("<ButtonRelease-1>", dont_show_password)
 
@@ -248,16 +248,16 @@ background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_im
 background_entry_canvas.background_entry_image = background_entry_image
 
 
-forgot_password_button = tkinter.Button(login, text="Forgot Password", command=forgot_system, fg='white', bg='black', bd=6, relief='ridge', font=('Segoe UI Black', 12, 'bold'), padx=10)
+forgot_password_button = tkinter.Button(login, cursor="tcross", text="Forgot Password", command=forgot_system, fg='white', bg='black', bd=6, relief='ridge', font=('Segoe UI Black', 12, 'bold'), padx=10)
 forgot_password_button.place(rely=0.7, relx=0.5, anchor='center')
 
-clear_button = tkinter.Button(login, text="Clear", command=login_clear, fg='white', bg='black', bd=6, relief='groove', font=('Segoe UI Black', 16, 'bold'), padx=50)
+clear_button = tkinter.Button(login, cursor="tcross", text="Clear", command=login_clear, fg='white', bg='black', bd=6, relief='groove', font=('Segoe UI Black', 16, 'bold'), padx=50)
 clear_button.place(rely=0.9, relx=0.27, anchor='center')
 
 def completeLogin():
     login_submit(loginUsername.get(), loginPassword.get())
 
-login_button = tkinter.Button(login, text="Login", command=completeLogin, fg='white', bg='black', bd=6, relief='groove', font=('Segoe UI Black', 16, 'bold'), padx=50)
+login_button = tkinter.Button(login, cursor="tcross",text="Login", command=completeLogin, fg='white', bg='black', bd=6, relief='groove', font=('Segoe UI Black', 16, 'bold'), padx=50)
 login_button.place(rely=0.9, relx=0.73, anchor='center')
 
 

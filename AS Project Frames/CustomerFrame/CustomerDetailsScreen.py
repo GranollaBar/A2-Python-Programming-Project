@@ -7,7 +7,6 @@ import sqlite3
 from tkinter import simpledialog
 from tkinter import *
 import math
-from Common.ScreenHeader import getHeader
 from functools import partial
 
 from CustomerFrame.member_email import memberEmail
@@ -16,7 +15,7 @@ from CustomerFrame.memberWordDocument import buildMemberDocument
 member = Tk()
 member.geometry('900x600')
 
-header = getHeader(member)
+header = Frame(member, bg='pale green')
 content = Frame(member, bg='white')
 
 member.columnconfigure(0, weight=1)
@@ -409,9 +408,71 @@ def selection():
 	pass
 
 
+def hideMemberFrame():
+	username_label.place_forget()
+	password_label.place_forget()
+	firstname_label.place_forget()
+	surname_label.place_forget()
+	address_label.place_forget()
+	postcode_label.place_forget()
+	age_label.place_forget()
+
+	username_entry.place_forget()
+	password_entry.place_forget()
+	firstname_entry.place_forget()
+	surname_entry.place_forget()
+	address_entry.place_forget()
+	postcode_entry.place_forget()
+	age_entry.place_forget()
+
+	delete_button.place_forget()
+	update_button.place_forget()
+	search_button.place_forget()
+	create_button.place_forget()
+
+	background_entry_canvas.place_forget()
+
+	member_search_Tv.place_forget()
+	student_ysearch_scrollbar.place_forget()
+
+	#from CoachingFrame import CoachingSessionScreen
+	#CoachingSessionScreen.showCoachingScreen()
+
+def showMemberFrame():
+	username_label.place(rely=0.15, relx=0.09, anchor='center')
+	password_label.place(rely=0.23, relx=0.09, anchor='center')
+	firstname_label.place(rely=0.152, relx=0.43, anchor='center')
+	surname_label.place(rely=0.231, relx=0.36, anchor='center')
+	address_label.place(rely=0.152, relx=0.7, anchor='center')
+	postcode_label.place(rely=0.231, relx=0.64, anchor='center')
+	age_label.place(rely=0.231, relx=0.85, anchor='center')
+
+	username_entry.place(rely=0.153, relx=0.25, anchor='center')
+	password_entry.place(rely=0.233, relx=0.217, anchor='center')
+	firstname_entry.place(rely=0.155, relx=0.56, anchor='center')
+	surname_entry.place(rely=0.235, relx=0.483, anchor='center')
+	address_entry.place(rely=0.155, relx=0.85, anchor='center')
+	postcode_entry.place(rely=0.234, relx=0.743, anchor='center')
+	age_entry.place(rely=0.233, relx=0.905, anchor='center')
+
+	delete_button.place(rely=0.41, relx=0.23, anchor='center')
+	update_button.place(rely=0.33, relx=0.23, anchor='center')
+	search_button.place(rely=0.41, relx=0.77, anchor='center')
+	create_button.place(rely=0.33, relx=0.77, anchor='center')
+
+	background_entry_canvas.place(rely=0.367,relx=0.5,anchor=CENTER)
+
+	member_search_Tv.place(relx=0.5,rely=0.71,anchor=CENTER)
+	student_ysearch_scrollbar.place(relx=0.96,rely=0.71,anchor='center',height=307)
 
 
 
+
+coaching_session_button = tkinter.Button(header, cursor="tcross",text="Coaching Session", command=hideMemberFrame, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 12, 'bold'), padx=10)
+coaching_session_button.place(rely=0.5, relx=0.3, anchor='center')
+
+add_member_button = tkinter.Button(header, cursor="tcross",text="Add Member", command=showMemberFrame, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 12, 'bold'), padx=10)
+add_member_button.place(rely=0.5, relx=0.1, anchor='center')
 
 
 
@@ -449,47 +510,47 @@ postcode_label.place(rely=0.231, relx=0.64, anchor='center')
 age_label = tkinter.Label(member, text="Age:", font=('Georgia', 14, 'bold'), fg='black', bg='white')
 age_label.place(rely=0.231, relx=0.85, anchor='center')
 
-username_entry = tkinter.Entry(member, width=25, textvariable=username, bd=2, relief='ridge')
+username_entry = tkinter.Entry(member, width=25, textvariable=username, bd=3, relief='ridge', cursor="tcross")
 username_entry.place(rely=0.153, relx=0.25, anchor='center')
 
-password_entry = tkinter.Entry(member, width=15, textvariable=password, show='*', bd=2, relief='ridge')
+password_entry = tkinter.Entry(member, width=15, textvariable=password, show='*', bd=3, relief='ridge', cursor="tcross")
 password_entry.place(rely=0.233, relx=0.217, anchor='center')
 
-firstname_entry = tkinter.Entry(member, width=15, textvariable=firstname, bd=2, relief='ridge')
+firstname_entry = tkinter.Entry(member, width=15, textvariable=firstname, bd=3, relief='ridge', cursor="tcross")
 firstname_entry.place(rely=0.155, relx=0.56, anchor='center')
 
-surname_entry = tkinter.Entry(member, width=15, textvariable=surname, bd=2, relief='ridge')
+surname_entry = tkinter.Entry(member, width=15, textvariable=surname, bd=3, relief='ridge', cursor="tcross")
 surname_entry.place(rely=0.235, relx=0.483, anchor='center')
 
-address_entry = tkinter.Entry(member, width=25, textvariable=address, bd=2, relief='ridge')
+address_entry = tkinter.Entry(member, width=25, textvariable=address, bd=3, relief='ridge', cursor="tcross")
 address_entry.place(rely=0.155, relx=0.85, anchor='center')
 
-postcode_entry = tkinter.Entry(member, width=10, textvariable=postcode, bd=2, relief='ridge')
+postcode_entry = tkinter.Entry(member, width=10, textvariable=postcode, bd=3, relief='ridge', cursor="tcross")
 postcode_entry.place(rely=0.234, relx=0.743, anchor='center')
 
-age_entry = tkinter.Entry(member, width=4, textvariable=age, bd=2, relief='ridge')
+age_entry = tkinter.Entry(member, width=4, textvariable=age, bd=3, relief='ridge', cursor="tcross")
 age_entry.place(rely=0.233, relx=0.905, anchor='center')
 age.set('')
 
 
-#background_entry_canvas = Canvas(member,width=131, height=78, bg = "white")
-#background_entry_canvas.place(rely=0.367,relx=0.5,anchor=CENTER)
+background_entry_canvas = Canvas(member,width=131, height=78, bg = "white")
+background_entry_canvas.place(rely=0.367,relx=0.5,anchor=CENTER)
 
-#background_entry_image = PhotoImage(file = "rsz_lisburnraquetsclub_60.png")
+background_entry_image = PhotoImage(file = "rsz_lisburnraquetsclub_60.png")
 
-#background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
-#background_entry_canvas.background_entry_image = background_entry_image
+background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
+background_entry_canvas.background_entry_image = background_entry_image
 
-delete_button = tkinter.Button(member, text="Delete Member", command=deleteAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
+delete_button = tkinter.Button(member, cursor="tcross",text="Delete Member", command=deleteAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
 delete_button.place(rely=0.41, relx=0.23, anchor='center')
 
-update_button = tkinter.Button(member, text="Update Member", command=updateAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
+update_button = tkinter.Button(member, cursor="tcross",text="Update Member", command=updateAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
 update_button.place(rely=0.33, relx=0.23, anchor='center')
 
-clear_button = tkinter.Button(member, text="Search Details", command=searchAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
-clear_button.place(rely=0.41, relx=0.77, anchor='center')
+search_button = tkinter.Button(member, cursor="tcross",text="Search Details", command=searchAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
+search_button.place(rely=0.41, relx=0.77, anchor='center')
 
-create_button = tkinter.Button(member, text="Save Member", command=saveAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
+create_button = tkinter.Button(member, cursor="tcross",text="Save Member", command=saveAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
 create_button.place(rely=0.33, relx=0.77, anchor='center')
 
 
@@ -514,11 +575,37 @@ member_search_Tv.column("#6",minwidth=0,width=50)
 member_search_Tv.heading("#7",text='Group')
 member_search_Tv.column("#7",minwidth=0,width=80)
 
-student_ysearch_scrollbar = Scrollbar(member, orient = 'vertical', command = member_search_Tv.yview)
+student_ysearch_scrollbar = Scrollbar(member, orient = 'vertical', command = member_search_Tv.yview, cursor="tcross")
 student_ysearch_scrollbar.place(relx=0.96,rely=0.71,anchor='center',height=307)
 member_search_Tv.configure(yscrollcommand=student_ysearch_scrollbar.set)
 
 
+
+username_label.place_forget()
+password_label.place_forget()
+firstname_label.place_forget()
+surname_label.place_forget()
+address_label.place_forget()
+postcode_label.place_forget()
+age_label.place_forget()
+
+username_entry.place_forget()
+password_entry.place_forget()
+firstname_entry.place_forget()
+surname_entry.place_forget()
+address_entry.place_forget()
+postcode_entry.place_forget()
+age_entry.place_forget()
+
+delete_button.place_forget()
+update_button.place_forget()
+search_button.place_forget()
+create_button.place_forget()
+
+background_entry_canvas.place_forget()
+
+member_search_Tv.place_forget()
+student_ysearch_scrollbar.place_forget()
 
 
 treeviewPopulate()
