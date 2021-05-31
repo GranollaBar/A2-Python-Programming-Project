@@ -784,10 +784,6 @@ class CoachingSessionContent:
 		cal.place(rely=0.7, relx=0.71, anchor='center')
 
 
-
-		self.member.mainloop()
-
-
 	def coachingSession(self):
 		pass
 

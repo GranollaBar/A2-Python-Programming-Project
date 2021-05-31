@@ -2,6 +2,13 @@ import tkinter.simpledialog
 from tkinter import *
 from CoachingFrame.CoachingSessionScreen import CoachingSessionContent
 
+
+def clearContent():
+    global content
+    content.destroy()
+    content = Frame(mainScreen, bg='white')
+    content.grid(row=1, sticky="nsew")
+
 mainScreen = Tk()
 mainScreen.geometry('900x600')
 
@@ -16,6 +23,7 @@ header.grid(row=0, sticky="nsew")
 content.grid(row=1, sticky="nsew")
 
 myCoaching = CoachingSessionContent(mainScreen)
+myCoaching.generateContnt()
 
 add_member_button = tkinter.Button(header, text="Add Member", command=myCoaching.coachingSession(), fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 12, 'bold'), padx=10)
 add_member_button.place(rely=0.5, relx=0.1, anchor='center')
@@ -26,4 +34,9 @@ coaching_session_button.place(rely=0.5, relx=0.3, anchor='center')
 #test_button = tkinter.Button(header, text="test", command=myCoaching.coachSelection(), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 14, 'bold'), padx=10, cursor="tcross")
 #test_button.place(rely=0.5, relx=0.5, anchor='center')
 
-myCoaching.generateContnt()
+test_button = tkinter.Button(header, text="test", command=clearContent, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 14, 'bold'), padx=10, cursor="tcross")
+test_button.place(rely=0.5, relx=0.5, anchor='center')
+
+mainScreen.mainloop()
+
+
