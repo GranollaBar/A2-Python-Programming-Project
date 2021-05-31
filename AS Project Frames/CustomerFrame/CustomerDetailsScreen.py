@@ -26,6 +26,10 @@ member.rowconfigure(1, weight=9)
 header.grid(row=0, sticky="nsew")
 content.grid(row=1, sticky="nsew")
 
+conn = sqlite3.connect('BadmintonClub.db')
+
+c = conn.cursor()
+
 '''
 c.execute("""CREATE TABLE member (
 			username text,
@@ -139,7 +143,7 @@ def clearTv():
 def treeviewPopulate():
 	clearTv()
 
-	conn = sqlite3.connect('Badmington_club.db')
+	conn = sqlite3.connect('BadmintonClub.db')
 
 	c = conn.cursor()
 
@@ -161,13 +165,6 @@ def treeviewPopulate():
 			else:
 				member_search_Tv.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4],row[5],row[6],row[7]),tags=["odd"])
 			count+=1
-
-
-
-def destroyAddMemberFrame():
-	username_label.destroy()
-	password_label.destroy()
-	firstname_label.destroy()
 
 
 
@@ -205,7 +202,7 @@ def updateAccountDetails():
 
 
 def update_member_address():
-	conn = sqlite3.connect('Badmington_club.db')
+	conn = sqlite3.connect('BadmintonClub.db')
 
 	c = conn.cursor()
 
@@ -240,7 +237,7 @@ def update_member_address():
 
 
 def update_member_postcode():
-	conn = sqlite3.connect('Badmington_club.db')
+	conn = sqlite3.connect('BadmintonClub.db')
 
 	c = conn.cursor()
 
@@ -275,7 +272,7 @@ def update_member_postcode():
 
 
 def deleteAccountDetails():
-	conn = sqlite3.connect('Badmington_club.db')
+	conn = sqlite3.connect('BadmintonClub.db')
 
 	c = conn.cursor()
 
@@ -310,7 +307,7 @@ def deleteAccountDetails():
 
 
 def searchAccountDetails():
-	conn = sqlite3.connect('Badmington_club.db')
+	conn = sqlite3.connect('BadmintonClub.db')
 
 	c = conn.cursor()
 
@@ -341,7 +338,7 @@ def searchAccountDetails():
 
 
 def saveAccountDetails():
-	conn = sqlite3.connect('Badmington_club.db')
+	conn = sqlite3.connect('BadmintonClub.db')
 
 	c = conn.cursor()
 
@@ -435,8 +432,16 @@ def hideMemberFrame():
 	member_search_Tv.place_forget()
 	student_ysearch_scrollbar.place_forget()
 
-	#from CoachingFrame import CoachingSessionScreen
-	#CoachingSessionScreen.showCoachingScreen()
+
+	# CoachingSessionScreen.name_label.place(rely=0.32, relx=0.12, anchor='center')
+	# CoachingSessionScreen.starttime_label.place(rely=0.4, relx=0.12, anchor='center')
+	# CoachingSessionScreen.endtime_label.place(rely=0.48, relx=0.12, anchor='center')
+	# CoachingSessionScreen.date_label.place(rely=0.56, relx=0.12, anchor='center')
+	# CoachingSessionScreen.courts_needed_label.place(rely=0.64, relx=0.12, anchor='center')
+	# CoachingSessionScreen.level_label.place(rely=0.72, relx=0.12, anchor='center')
+	# CoachingSessionScreen.hourlyrate_label.place(rely=0.8, relx=0.12, anchor='center')
+	# CoachingSessionScreen.notes_label.place(rely=0.88, relx=0.12, anchor='center')
+
 
 def showMemberFrame():
 	username_label.place(rely=0.15, relx=0.09, anchor='center')
@@ -536,7 +541,7 @@ age.set('')
 background_entry_canvas = Canvas(member,width=131, height=78, bg = "white")
 background_entry_canvas.place(rely=0.367,relx=0.5,anchor=CENTER)
 
-background_entry_image = PhotoImage(file = "rsz_lisburnraquetsclub_60.png")
+background_entry_image = PhotoImage(file = "C:\Users\Josh\pyqt tutorial\AS-Programming-Project\AS Project Frames\CustomerFrame\LisburnRacquetsClub_50.png")
 
 background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 background_entry_canvas.background_entry_image = background_entry_image

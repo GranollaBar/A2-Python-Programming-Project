@@ -14,8 +14,6 @@ from tkcalendar import Calendar, DateEntry
 from CustomerFrame.member_email import memberEmail
 from CustomerFrame.memberWordDocument import buildMemberDocument
 
-from CustomerFrame import CustomerDetailsScreen
-
 member = Tk()
 member.geometry('900x600')
 
@@ -52,12 +50,11 @@ c.execute("""CREATE TABLE member (
 def dateEntryCheck(dob):
 	def assign_dob():
 		eventDate.set(cal.selection_get())
+		#top.withdraw()
 
 	top = Toplevel(member)
 
-	cal = Calendar(top,
-				   font="Tahoma 16", selectmode='day',
-				   cursor="tcross", year=2021, month=4, day=29)
+	cal = Calendar(top, font="Tahoma 16", selectmode='day', cursor="tcross", year=2021, month=5, day=29)
 	cal.pack(fill="both", expand=True)
 	ttk.Button(top, text="ok", command=assign_dob).pack()
 
@@ -233,6 +230,106 @@ def courtsRequired():
 
 
 def confirmSelection(frame):
+	frame.withdraw()
+
+
+group1=IntVar()
+group2=IntVar()
+group3=IntVar()
+group4=IntVar()
+group5=IntVar()
+group6=IntVar()
+group7=IntVar()
+group8=IntVar()
+group9=IntVar()
+group10=IntVar()
+group11=IntVar()
+group12=IntVar()
+group13=IntVar()
+group14=IntVar()
+group15=IntVar()
+group16=IntVar()
+group17=IntVar()
+group18=IntVar()
+group19=IntVar()
+group20=IntVar()
+
+
+
+
+def groupsRequired():
+	groups = Toplevel(member, bg="white")
+	groups.geometry('450x350')
+
+	title_label = tkinter.Label(groups, text="Check the No. Groups Needed For The Session", font=('Tahoma', 13, 'underline', 'bold'), fg='black', bg='white')
+	title_label.place(rely=0.03, relx=0.5, anchor='center')
+
+	confirm_button = tkinter.Button(groups, text="Confirm Selection", command=lambda : confirmSelection2(groups), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 9, 'bold'), padx=35, cursor="tcross")
+	confirm_button.place(rely=0.15, relx=0.5, anchor='center')
+
+
+	confirm_group1 = Checkbutton(groups, cursor="tcross",text="Group 1", variable=group1,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_group1.place(rely=0.3, relx=0.15, anchor='center')
+
+	confirm_group2 = Checkbutton(groups, cursor="tcross",text="Group 2", variable=group2,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_group2.place(rely=0.3, relx=0.38, anchor='center')
+
+	confirm_group3 = Checkbutton(groups, cursor="tcross",text="Group 3", variable=group3,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_group3.place(rely=0.3, relx=0.61, anchor='center')
+
+	confirm_group4 = Checkbutton(groups, cursor="tcross",text="Group 4", variable=group4,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_group4.place(rely=0.3, relx=0.84, anchor='center')
+
+	confirm_group5 = Checkbutton(groups, cursor="tcross",text="Group 5", variable=group5,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_group5.place(rely=0.45, relx=0.15, anchor='center')
+
+	confirm_group6 = Checkbutton(groups, cursor="tcross",text="Group 6", variable=group6,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_group6.place(rely=0.45, relx=0.38, anchor='center')
+
+	confirm_group7 = Checkbutton(groups, cursor="tcross",text="Group 7", variable=group7,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_group7.place(rely=0.45, relx=0.61, anchor='center')
+
+	confirm_group8 = Checkbutton(groups, cursor="tcross",text="Group 8", variable=group8,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_group8.place(rely=0.45, relx=0.84, anchor='center')
+
+	confirm_group9 = Checkbutton(groups, cursor="tcross",text="Group 9", variable=group9,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_group9.place(rely=0.6, relx=0.15, anchor='center')
+
+	confirm_group10 = Checkbutton(groups, cursor="tcross",text="Group 10", variable=group10,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_group10.place(rely=0.6, relx=0.38, anchor='center')
+
+	confirm_group11 = Checkbutton(groups, cursor="tcross",text="Group 11", variable=group11,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_group11.place(rely=0.6, relx=0.61, anchor='center')
+
+	confirm_group12 = Checkbutton(groups, cursor="tcross",text="Group 12", variable=group12,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_group12.place(rely=0.6, relx=0.84, anchor='center')
+
+	confirm_group13 = Checkbutton(groups, cursor="tcross",text="Group 13", variable=group13,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_group13.place(rely=0.75, relx=0.15, anchor='center')
+
+	confirm_group14 = Checkbutton(groups, cursor="tcross",text="Group 14", variable=group14,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_group14.place(rely=0.75, relx=0.38, anchor='center')
+
+	confirm_group15 = Checkbutton(groups, cursor="tcross",text="Group 15", variable=group15,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_group15.place(rely=0.75, relx=0.61, anchor='center')
+
+	confirm_group16 = Checkbutton(groups, cursor="tcross",text="Group 16", variable=group16,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_group16.place(rely=0.75, relx=0.84, anchor='center')
+
+	confirm_group17 = Checkbutton(groups, cursor="tcross",text="Group 17", variable=group17,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_group17.place(rely=0.9, relx=0.15, anchor='center')
+
+	confirm_group18 = Checkbutton(groups, cursor="tcross",text="Group 18", variable=group18,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_group18.place(rely=0.9, relx=0.38, anchor='center')
+
+	confirm_group19 = Checkbutton(groups, cursor="tcross",text="Group 19", variable=group19,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_group19.place(rely=0.9, relx=0.61, anchor='center')
+
+	confirm_group20 = Checkbutton(groups, cursor="tcross",text="Group 20", variable=group20,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'))
+	confirm_group20.place(rely=0.9, relx=0.84, anchor='center')
+
+
+def confirmSelection2(frame):
 	frame.withdraw()
 
 
@@ -532,7 +629,7 @@ def searchAccountDetails():
 	treeviewPopulate()
 
 
-def saveAccountDetails():
+def submitSession():
 	conn = sqlite3.connect('Badmington_club.db')
 
 	c = conn.cursor()
@@ -602,19 +699,64 @@ def selection():
 def coachingSession():
 	pass
 
+def updateSession():
+	pass
+
+def deleteSession():
+	pass
+
 
 
 def showCoachingScreen():
 	name_label.place(rely=0.32, relx=0.12, anchor='center')
+	starttime_label.place(rely=0.4, relx=0.12, anchor='center')
+	endtime_label.place(rely=0.48, relx=0.12, anchor='center')
+	date_label.place(rely=0.56, relx=0.12, anchor='center')
+	courts_needed_label.place(rely=0.64, relx=0.12, anchor='center')
+	level_label.place(rely=0.72, relx=0.12, anchor='center')
+	hourlyrate_label.place(rely=0.8, relx=0.12, anchor='center')
+	notes_label.place(rely=0.88, relx=0.12, anchor='center')
 
 
 
+def coachSelection():
+	coach_name_choices = get_coach_details()
+	if (len(coach_name_choices) > 0) :
+		coach_selection_dropdown = OptionMenu(member, coachNamesAndPasswords, *coach_name_choices)
+		coach_selection_dropdown.place(rely=0.385, relx=0.3, anchor='center')
+
+
+def get_coach_details():
+	conn = sqlite3.connect('login.db')
+	c = conn.cursor()
+
+	coach_name_list = []
+
+	c.execute("SELECT * From account")
+	items = c.fetchall()
+
+	for row in items:
+		if row == []:
+			pass
+		else:
+			coach_name = row[0]
+			coach_name_list.append(coach_name)
+
+	return coach_name_list
+
+	conn.commit()
+	conn.close()
+
+
+
+add_member_button = tkinter.Button(header, text="Add Member", command=coachingSession, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 12, 'bold'), padx=10)
+add_member_button.place(rely=0.5, relx=0.1, anchor='center')
 
 coaching_session_button = tkinter.Button(header, text="Coaching Session", command=coachingSession, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 12, 'bold'), padx=10)
 coaching_session_button.place(rely=0.5, relx=0.3, anchor='center')
 
-add_member_button = tkinter.Button(header, text="Add Member", command=coachingSession, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 12, 'bold'), padx=10)
-add_member_button.place(rely=0.5, relx=0.1, anchor='center')
+test_button = tkinter.Button(header, text="test", command=coachSelection, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 14, 'bold'), padx=10, cursor="tcross")
+test_button.place(rely=0.5, relx=0.5, anchor='center')
 
 
 
@@ -633,68 +775,82 @@ level=StringVar()
 hourlyRate=StringVar()
 notes=StringVar()
 
+coachNamesAndPasswords = StringVar()
 
-name_label = tkinter.Label(member, text="Full Name:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-name_label.place(rely=0.32, relx=0.12, anchor='center')
+
+username_label = tkinter.Label(member, text="Username:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+username_label.place(rely=0.38, relx=0.12, anchor='center')
 
 starttime_label = tkinter.Label(member, text="Start Time:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-starttime_label.place(rely=0.4, relx=0.12, anchor='center')
+starttime_label.place(rely=0.47, relx=0.12, anchor='center')
 
 endtime_label = tkinter.Label(member, text="End Time:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-endtime_label.place(rely=0.48, relx=0.12, anchor='center')
+endtime_label.place(rely=0.56, relx=0.12, anchor='center')
 
 date_label = tkinter.Label(member, text="Session Date:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-date_label.place(rely=0.56, relx=0.12, anchor='center')
+date_label.place(rely=0.65, relx=0.12, anchor='center')
 
 courts_needed_label = tkinter.Label(member, text="Courts Required:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-courts_needed_label.place(rely=0.64, relx=0.12, anchor='center')
+courts_needed_label.place(rely=0.74, relx=0.12, anchor='center')
 
 level_label = tkinter.Label(member, text="Group Level:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-level_label.place(rely=0.72, relx=0.12, anchor='center')
-
-hourlyrate_label = tkinter.Label(member, text="Hourly Rate:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-hourlyrate_label.place(rely=0.8, relx=0.12, anchor='center')
-
-notes_label = tkinter.Label(member, text="Extra Notes:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-notes_label.place(rely=0.88, relx=0.12, anchor='center')
+level_label.place(rely=0.83, relx=0.12, anchor='center')
 
 
-name_entry = tkinter.Entry(member, width=30, textvariable=CoachName, bd=3, relief='ridge', cursor="tcross")
-name_entry.place(rely=0.323, relx=0.3, anchor='center')
 
-starttime_spinbox_hours = Spinbox(member, width=7,font=("Tahoma",12, 'bold'), bd=3, relief='ridge', cursor="tcross",textvariable=timeStart, values=('8.00', '8.15', '8.30', '8.45', '9.00', '9.15', '9.30', '9.45', '10.00', '10.15', '10.30', '10.45', '11.00', '11.15', '11.30', '11.45', '12.00', '12.15','12.30','12.45','13.00','13.15','13.30','13.45','14.00','14.15','14.30','14.45','15.00','15.15','15.30','15.45','16.00','16.15','16.30','16.45','17.00','17.15','17.30','17.45','18.00','18.15','18.30','18.45','19.00','19.15','19.30','19.45','20.00','20.15','20.30','20.45','21.00','21.15','21.30','21.45','22.00'))
-starttime_spinbox_hours.place(rely=0.4025, relx=0.3, anchor='center')
+starttime_spinbox = Spinbox(member, width=7,font=("Tahoma",12, 'bold'), bd=3, relief='ridge', cursor="tcross",textvariable=timeStart, values=('8.00', '8.15', '8.30', '8.45', '9.00', '9.15', '9.30', '9.45', '10.00', '10.15', '10.30', '10.45', '11.00', '11.15', '11.30', '11.45', '12.00', '12.15','12.30','12.45','13.00','13.15','13.30','13.45','14.00','14.15','14.30','14.45','15.00','15.15','15.30','15.45','16.00','16.15','16.30','16.45','17.00','17.15','17.30','17.45','18.00','18.15','18.30','18.45','19.00','19.15','19.30','19.45','20.00','20.15','20.30','20.45','21.00','21.15','21.30','21.45','22.00'))
+starttime_spinbox.place(rely=0.4725, relx=0.3, anchor='center')
 
-starttime_spinbox_hours = Spinbox(member, width=7,font=("Tahoma",12, 'bold'), bd=3, relief='ridge', cursor="tcross", textvariable=timeEnd, values=('9.00', '9.15', '9.30', '9.45', '10.00', '10.15', '10.30', '10.45', '11.00', '11.15', '11.30', '11.45', '12.00', '12.15','12.30','12.45','13.00','13.15','13.30','13.45','14.00','14.15','14.30','14.45','15.00','15.15','15.30','15.45','16.00','16.15','16.30','16.45','17.00','17.15','17.30','17.45','18.00','18.15','18.30','18.45','19.00','19.15','19.30','19.45','20.00','20.15','20.30','20.45','21.00','21.15','21.30','21.45','22.00','22.15','22.30','22.45','23.00'))
-starttime_spinbox_hours.place(rely=0.4825, relx=0.3, anchor='center')
+endtime_spinbox = Spinbox(member, width=7,font=("Tahoma",12, 'bold'), bd=3, relief='ridge', cursor="tcross", textvariable=timeEnd, values=('9.00', '9.15', '9.30', '9.45', '10.00', '10.15', '10.30', '10.45', '11.00', '11.15', '11.30', '11.45', '12.00', '12.15','12.30','12.45','13.00','13.15','13.30','13.45','14.00','14.15','14.30','14.45','15.00','15.15','15.30','15.45','16.00','16.15','16.30','16.45','17.00','17.15','17.30','17.45','18.00','18.15','18.30','18.45','19.00','19.15','19.30','19.45','20.00','20.15','20.30','20.45','21.00','21.15','21.30','21.45','22.00','22.15','22.30','22.45','23.00'))
+endtime_spinbox.place(rely=0.5625, relx=0.3, anchor='center')
 
 date_entry = Button(member, text='Select Date',font=("Tahoma",11, 'bold'), cursor="tcross",command=lambda : dateEntryCheck(eventDate), padx=10, bd=4, relief="ridge")
-date_entry.place(rely=0.565, relx=0.3, anchor='center')
+date_entry.place(rely=0.653, relx=0.3, anchor='center')
 
-Courts_needed_button = Button(member, text='Select Courts',font=("Tahoma",11, 'bold'), cursor="tcross",command=lambda : courtsRequired(), padx=10, bd=4, relief="ridge")
-Courts_needed_button.place(rely=0.645, relx=0.3, anchor='center')
+courts_needed_button = Button(member, text='Select Courts',font=("Tahoma",11, 'bold'), cursor="tcross",command=lambda : courtsRequired(), padx=10, bd=4, relief="ridge")
+courts_needed_button.place(rely=0.743, relx=0.3, anchor='center')
 
-level_entry = tkinter.Entry(member, width=10, textvariable=level, bd=3, relief='ridge', cursor="tcross")
-level_entry.place(rely=0.723, relx=0.3, anchor='center')
+groups_needed_button = Button(member, text='Select Groups',font=("Tahoma",11, 'bold'), cursor="tcross",command=lambda : groupsRequired(), padx=10, bd=4, relief="ridge")
+groups_needed_button.place(rely=0.833, relx=0.3, anchor='center')
 
-hourlyrate_entry = tkinter.Entry(member, width=4, textvariable=hourlyRate, bd=3, relief='ridge', cursor="tcross")
-hourlyrate_entry.place(rely=0.803, relx=0.3, anchor='center')
+delete_button = tkinter.Button(member, text="Delete", command=deleteSession, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 14, 'bold'), padx=10, cursor="tcross")
+delete_button.place(rely=0.94, relx=0.07, anchor='center')
 
-notes_entry = tkinter.Entry(member, width=4, textvariable=notes, bd=3, relief='ridge', cursor="tcross")
-notes_entry.place(rely=0.883, relx=0.3, anchor='center', width=100, height=50)
+update_button = tkinter.Button(member, text="Update", command=updateSession, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 14, 'bold'), padx=10, cursor="tcross")
+update_button.place(rely=0.94, relx=0.21, anchor='center')
 
-#
-# delete_button = tkinter.Button(member, text="Delete Member", command=deleteAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
-# delete_button.place(rely=0.41, relx=0.23, anchor='center')
-#
-# update_button = tkinter.Button(member, text="Update Member", command=updateAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
-# update_button.place(rely=0.33, relx=0.23, anchor='center')
-#
-# clear_button = tkinter.Button(member, text="Search Details", command=searchAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
-# clear_button.place(rely=0.41, relx=0.77, anchor='center')
-#
-# create_button = tkinter.Button(member, text="Save Member", command=saveAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
-# create_button.place(rely=0.33, relx=0.77, anchor='center')
+submit_button = tkinter.Button(member, text="Submit", command=submitSession, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 14, 'bold'), padx=10, cursor="tcross")
+submit_button.place(rely=0.94, relx=0.35, anchor='center')
+
+
+coach_search_Tv=ttk.Treeview(member,height=4,columns=('Start Time','End Time','Date','Courts','Groups','No. People','Recurrence'))
+coach_search_Tv.place(relx=0.5,rely=0.22,anchor=CENTER)
+
+
+coach_search_Tv.heading("#0",text='Username')
+coach_search_Tv.column("#0",minwidth=0,width=160)
+coach_search_Tv.heading("#1",text='Start Time')
+coach_search_Tv.column("#1",minwidth=0,width=90)
+coach_search_Tv.heading("#2",text='End Time')
+coach_search_Tv.column("#2",minwidth=0,width=90)
+coach_search_Tv.heading("#3",text='Date')
+coach_search_Tv.column("#3",minwidth=0,width=100)
+coach_search_Tv.heading("#4",text='Courts')
+coach_search_Tv.column("#4",minwidth=0,width=100)
+coach_search_Tv.heading("#5",text='Groups')
+coach_search_Tv.column("#5",minwidth=0,width=100)
+coach_search_Tv.heading("#6",text='No. People')
+coach_search_Tv.column("#6",minwidth=0,width=80)
+coach_search_Tv.heading("#7",text='Recurrence')
+coach_search_Tv.column("#7",minwidth=0,width=80)
+
+coach_ysearch_scrollbar = Scrollbar(member, orient = 'vertical', command = coach_search_Tv.yview, cursor="tcross")
+coach_ysearch_scrollbar.place(relx=0.95,rely=0.22,anchor='center',height=109)
+coach_search_Tv.configure(yscrollcommand=coach_ysearch_scrollbar.set)
+
+
+cal = Calendar(member, font="Tahoma 19", selectmode='day', cursor="tcross", year=2021, month=5, day=29)
+cal.place(rely=0.7, relx=0.71, anchor='center')
 
 
 
@@ -717,4 +873,14 @@ tvPopup = Menu(member, tearoff = 0)
 tvPopup.add_command(label = "Update", command = partial(updateAccountDetails, True))
 tvPopup.add_separator()
 tvPopup.add_command(label = "Delete", command = partial(deleteAccountDetails,True))
+'''
+
+
+
+'''
+
+'''
+
+'''
+
 '''

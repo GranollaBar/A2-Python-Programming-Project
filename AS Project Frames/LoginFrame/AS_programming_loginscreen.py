@@ -14,7 +14,7 @@ login.title('Lisburn Raquets Club')
 login.geometry('500x550')
 login.configure(bg='white')
 
-conn = sqlite3.connect('Badmington_club.db')
+conn = sqlite3.connect('login.db')
 
 c = conn.cursor()
 
@@ -109,7 +109,7 @@ def forgot_system():
 
 
 def newPasswordUpdate(newPassword, verificationCode, verification_entry):
-    conn = sqlite3.connect('Badmington_club.db')
+    conn = sqlite3.connect('login.db')
 
     c = conn.cursor()
 
@@ -128,7 +128,7 @@ def newPasswordUpdate(newPassword, verificationCode, verification_entry):
 
 
 def login_submit(login_username, login_password):
-    conn = sqlite3.connect('Badmington_club.db')
+    conn = sqlite3.connect('login.db')
 
     c = conn.cursor()
 
@@ -151,8 +151,8 @@ def login_submit(login_username, login_password):
             username_label.config(fg="black")
             password_label.config(fg="black")
 
-            #login_username.delete(0, END)
-            #login_password.delete(0, END)
+            loginUsername.set('')
+            loginPassword.set('')
 
             login.destroy()
 
@@ -170,8 +170,8 @@ def login_clear():
 
     else:
 
-        username_entry.delete(0, END)
-        password_entry.delete(0, END)
+        loginUsername.set('')
+        loginPassword.set('')
 
 
 def show_password(self):
@@ -217,7 +217,7 @@ twitter_button = Button(login, image=click_twitter_btn, command= twitterLink, cu
 twitter_button.place(rely=0.25, relx=0.86, anchor='center')
 
 
-click_facebook_btn = PhotoImage(file='facebook5.png')
+click_facebook_btn = PhotoImage(file='facebook.png')
 facebook_img_label = Label(image=click_facebook_btn)
 
 facebook_button = Button(login, image=click_facebook_btn, command= facebookLink, cursor="tcross")
