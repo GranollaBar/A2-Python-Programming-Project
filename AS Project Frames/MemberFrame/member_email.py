@@ -4,7 +4,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 from tkinter import messagebox
-from CustomerFrame.memberWordDocument import buildMemberDocument
+from MemberFrame.memberWordDocument import buildMemberDocument
 
 def memberEmail(subject, msg, recipientemail, doc, label):
 	try:

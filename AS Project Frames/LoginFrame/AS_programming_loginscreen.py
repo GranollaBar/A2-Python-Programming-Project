@@ -9,13 +9,14 @@ from tkinter import *
 import webbrowser
 from LoginFrame.test_email import sendEmail
 
+
 login = tkinter.Tk()
 login.title('Lisburn Raquets Club')
 login.geometry('500x550')
 login.configure(bg='white')
 
-conn = sqlite3.connect('login.db')
 
+conn = sqlite3.connect('login.db')
 c = conn.cursor()
 
 
@@ -62,6 +63,9 @@ def validate_username(value, fieldname, label):
 
 
 def forgot_system():
+    conn = sqlite3.connect('login.db')
+    c = conn.cursor()
+
     verification = IntVar()
     newpassword = StringVar()
     verificationCode = random.randint(100000,999999)
@@ -110,7 +114,6 @@ def forgot_system():
 
 def newPasswordUpdate(newPassword, verificationCode, verification_entry):
     conn = sqlite3.connect('login.db')
-
     c = conn.cursor()
 
     if verification_entry != verificationCode:
@@ -129,7 +132,6 @@ def newPasswordUpdate(newPassword, verificationCode, verification_entry):
 
 def login_submit(login_username, login_password):
     conn = sqlite3.connect('login.db')
-
     c = conn.cursor()
 
     isValid = True
@@ -156,8 +158,8 @@ def login_submit(login_username, login_password):
 
             login.destroy()
 
-            from CustomerFrame import CustomerDetailsScreen
-            CustomerDetailsScreen.member.tkraise()
+            from Common import MainScreen
+            MainScreen.mainScreen.tkraise()
 
     conn.commit()
     conn.close()
@@ -193,6 +195,8 @@ def facebookLink():
 
 loginUsername = StringVar()
 loginPassword = StringVar()
+
+
 
 title_label = tkinter.Label(login, text="Welcome To Lisburn Racquets Club", font=('Verdana', 18, 'underline', 'bold'), fg='SpringGreen3', bg='white')
 title_label.place(rely=0.06, relx=0.5, anchor='center')
