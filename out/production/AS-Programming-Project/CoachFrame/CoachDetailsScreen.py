@@ -36,7 +36,7 @@ class CoachContent:
 
 		def dateEntryCheck(dob):
 			def assign_dob():
-				dateOfBirth.set(cal.get_date())
+				dateOfBirth.set(cal.selection_get())
 				top.withdraw()
 
 			top = Toplevel(self.coach)
@@ -181,7 +181,7 @@ class CoachContent:
 			availabilityReturn.config(fg="black")
 
 
-		def updateCoachDetails(self):
+		def updateCoachDetails():
 			response = askyesno("Are you sure?", "Do you want to update a coach's details")
 			if response == False:
 				showinfo("Info", "Update cancelled")
@@ -219,11 +219,7 @@ class CoachContent:
 
 					if new_postcode != '' and len(new_postcode) < 9 and ' ' in new_postcode:
 
-						c.execute("""UPDATE coach SET postcode = :new_postcode WHERE username=:username""", {
-							"new_postcode": str(new_postcode),
-							"username": coachUsername
-						})
-
+						c.execute("""UPDATE coach SET postcode = :new_postcode""", {'new_postcode': new_postcode})
 						messagebox.showinfo("info", "The coach's postcode is now "+new_postcode)
 
 					else:
@@ -258,8 +254,8 @@ class CoachContent:
 					updateAvailiability=Toplevel(bg="white")
 					updateAvailiability.geometry('200x200')
 
-					title_label =Label(updateAvailiability,text ="Select Available Days" , fg ='SpringGreen3',bg='white',font=('Verdana',11,'bold','underline'))
-					title_label.place(rely=0.07,relx=0.5,anchor=CENTER)
+					title_label =Label(updateAvailiability,text ="Select Available Days" , fg ='SpringGreen3',bg='white',font=('Verdana',9,'bold','underline'))
+					title_label.place(rely=0.1,relx=0.5,anchor=CENTER)
 
 					avaliability_monday = Checkbutton(updateAvailiability, cursor="tcross",text="Monday", variable=mondayNewAvaliability,bg="white",bd=2, relief="sunken", font=('Segoe UI Black', 8,'bold'),onvalue=1, offvalue=0)
 					avaliability_monday.place(rely=0.3, relx=0.28, anchor='center')
@@ -282,14 +278,14 @@ class CoachContent:
 					avaliability_sunday = Checkbutton(updateAvailiability, cursor="tcross",text="Sunday", variable=sundayNewAvaliability,bg="white",bd=2, relief="sunken", font=('Segoe UI Black', 8,'bold'),onvalue=1, offvalue=0)
 					avaliability_sunday.place(rely=0.75, relx=0.5, anchor='center')
 
-					availiable_update_button=Button(updateAvailiability,text = 'Confirm Update', command = lambda : availableUpdate(updateAvailiability, coachUsername), fg ='white', bg='black', relief= 'groove', font = ('Verdana',11,'bold'), padx =30)
+					availiable_update_button=Button(updateAvailiability,text = 'Confirm Update', command = lambda : availableUpdate(updateAvailiability), fg ='white', bg='black', relief= 'groove', font = ('Verdana',11,'bold'), padx =30)
 					availiable_update_button.place(rely=0.93,relx=0.5,anchor=CENTER)
 
 			conn.commit()
 			conn.close()
 
 
-		def availableUpdate(frame, username):
+		def availableUpdate(frame):
 			conn = sqlite3.connect('CoachDetails.db')
 			c = conn.cursor()
 
@@ -315,12 +311,8 @@ class CoachContent:
 				if (sundayNewAvaliability.get() ==1):
 					new_final_avaliability = new_final_avaliability + 'sunday'
 
-				c.execute("""UPDATE coach SET availability = :new_availability WHERE username=:username""", {
-					"new_availability": str(new_final_avaliability),
-					"username": username
-				})
-
-				messagebox.showinfo("info", "The coach's availability is now "+new_final_avaliability)
+				c.execute("""UPDATE coach SET availability = :new_availabilty""", {'new_availabilty': new_final_avaliability})
+				messagebox.showinfo("info", "The coach's avaliability is now "+new_final_avaliability)
 
 
 
@@ -330,7 +322,7 @@ class CoachContent:
 			treeviewPopulate()
 
 
-		def deleteCoachDetails(self):
+		def deleteCoachDetails():
 			conn = sqlite3.connect('CoachDetails.db')
 			c = conn.cursor()
 
@@ -591,10 +583,10 @@ class CoachContent:
 		background_entry_canvas.background_entry_image = background_entry_image
 
 
-		delete_button = tkinter.Button(self.coach, cursor="tcross",text="Delete", command=lambda : deleteCoachDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 11, 'bold'), padx=10)
+		delete_button = tkinter.Button(self.coach, cursor="tcross",text="Delete", command=deleteCoachDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 11, 'bold'), padx=10)
 		delete_button.place(rely=0.95, relx=0.058, anchor='center')
 
-		update_button = tkinter.Button(self.coach, cursor="tcross",text="Update", command=lambda : updateCoachDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 11, 'bold'), padx=10)
+		update_button = tkinter.Button(self.coach, cursor="tcross",text="Update", command=updateCoachDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 11, 'bold'), padx=10)
 		update_button.place(rely=0.95, relx=0.16, anchor='center')
 
 		search_button = tkinter.Button(self.coach, cursor="tcross",text="Search", command=searchCoachDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 11, 'bold'), padx=10)
@@ -632,20 +624,21 @@ class CoachContent:
 		treeviewPopulate()
 
 
-		def onTreeviewPopup(tvPopup, event=None):
+		'''
+		def onTreeviewPopup(event):
 			try:
-				rowItem = coach_search_Tv.identify_row(event.y)
-				tvPopup.selection = coach_search_Tv.set(rowItem)
-
-				coach_search_Tv.selection_set(rowItem)
-				coach_search_Tv.focus(rowItem)
+				rowItem = member_search_Tv.treeview.identify_row(event.y)
+				tvPopup.selection = member_search_Tv.treeview.set(rowItem)
+		
+				member_search_Tv.treeview.selection_set(rowItem)
+				member_search_Tv.treeview.focus(rowItem)
 				tvPopup.post(event.x_root, event.y_root)
 			finally:
 				tvPopup.grab_release()
-
-		tvPopup = Menu(self.coach, tearoff = 0)
-		tvPopup.add_command(label = "Update", command = partial(updateCoachDetails, True))
+		
+		
+		tvPopup = Menu(member, tearoff = 0)
+		tvPopup.add_command(label = "Update", command = partial(updateAccountDetails, True))
 		tvPopup.add_separator()
-		tvPopup.add_command(label = "Delete", command = partial(deleteCoachDetails,True))
-
-		coach_search_Tv.bind("<Button-3>", partial(onTreeviewPopup, tvPopup))
+		tvPopup.add_command(label = "Delete", command = partial(deleteAccountDetails,True))
+		'''

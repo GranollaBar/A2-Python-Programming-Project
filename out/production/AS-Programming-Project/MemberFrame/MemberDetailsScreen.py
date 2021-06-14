@@ -134,6 +134,7 @@ class MemberContent:
 			clearTv()
 
 			conn = sqlite3.connect('BadmintonClub.db')
+
 			c = conn.cursor()
 
 			c.execute("SELECT * From member")
@@ -166,7 +167,7 @@ class MemberContent:
 			ageReturn.config(fg="black")
 
 
-		def updateAccountDetails(self):
+		def updateAccountDetails():
 			response = askyesno("Are you sure?", "Do you want to update a students details")
 			if response == False:
 				showinfo("Info", "Update cancelled")
@@ -178,18 +179,17 @@ class MemberContent:
 				title_label =Label(update_member,text = 'Update Member' , fg ='SpringGreen3',bg='white',font=('Verdana',15,'bold'))
 				title_label.place(rely=0.13,relx=0.5,anchor=CENTER)
 
-				update_address=Button(update_member,text = 'Update Address', command = lambda : update_member_address(update_member), fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20, pady =10)
+				update_address=Button(update_member,text = 'Update Address', command = update_member_address, fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20, pady =10)
 				update_address.place(rely=0.43,relx=0.5,anchor=CENTER)
 
-				update_postcode=Button(update_member,text = 'Update Postcode', command = lambda : update_member_postcode(update_member), fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20, pady =10)
+				update_postcode=Button(update_member,text = 'Update Postcode', command = update_member_postcode, fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20, pady =10)
 				update_postcode.place(rely=0.75,relx=0.5,anchor=CENTER)
 
 
-		def update_member_address(frame):
+		def update_member_address():
 			conn = sqlite3.connect('BadmintonClub.db')
-			c = conn.cursor()
 
-			frame.withdraw()
+			c = conn.cursor()
 
 			memberUsername = simpledialog.askstring("info", "Enter the username of the member you want to update")
 			if memberUsername != '' and len(memberUsername) <25 and '@' in memberUsername and '.' in memberUsername:
@@ -204,11 +204,7 @@ class MemberContent:
 
 					if new_address != '' and len(new_address) < 30:
 
-						c.execute("""UPDATE member SET address = :new_address WHERE username=:username""", {
-							"new_address": str(new_address),
-							"username": memberUsername
-						})
-
+						c.execute("""UPDATE member SET address = :new_address""", {'new_address': new_address})
 						messagebox.showinfo("info", "The members address is now "+new_address)
 
 					else:
@@ -225,11 +221,10 @@ class MemberContent:
 			treeviewPopulate()
 
 
-		def update_member_postcode(frame):
+		def update_member_postcode():
 			conn = sqlite3.connect('BadmintonClub.db')
-			c = conn.cursor()
 
-			frame.withdraw()
+			c = conn.cursor()
 
 			memberUsername = simpledialog.askstring("info", "Enter the username of the member you want to update")
 			if memberUsername != '' and len(memberUsername) <25 and '@' in memberUsername and '.' in memberUsername:
@@ -244,11 +239,7 @@ class MemberContent:
 
 					if new_postcode != '' and len(new_postcode) < 9:
 
-						c.execute("""UPDATE member SET postcode = :new_postcode WHERE username=:username""", {
-							"new_postcode": str(new_postcode),
-							"username": memberUsername
-						})
-
+						c.execute("""UPDATE member SET postcode = :new_postcode""", {'new_postcode': new_postcode})
 						messagebox.showinfo("info", "The members postcode is now "+new_postcode)
 
 					else:
@@ -265,8 +256,9 @@ class MemberContent:
 			treeviewPopulate()
 
 
-		def deleteAccountDetails(self):
+		def deleteAccountDetails():
 			conn = sqlite3.connect('BadmintonClub.db')
+
 			c = conn.cursor()
 
 			response = askyesno("Are you sure?", "Do you want to delete a member")
@@ -301,6 +293,7 @@ class MemberContent:
 
 		def searchAccountDetails():
 			conn = sqlite3.connect('BadmintonClub.db')
+
 			c = conn.cursor()
 
 			response = askyesno("Are you sure?", "Do you want to search a members details")
@@ -464,10 +457,10 @@ class MemberContent:
 		background_entry2_canvas.background_entry2_image = background_entry2_image
 
 
-		delete_button = tkinter.Button(self.member, cursor="tcross",text="Delete Member", command=lambda : deleteAccountDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
+		delete_button = tkinter.Button(self.member, cursor="tcross",text="Delete Member", command=deleteAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
 		delete_button.place(rely=0.41, relx=0.37, anchor='center')
 
-		update_button = tkinter.Button(self.member, cursor="tcross",text="Update Member", command=lambda : updateAccountDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
+		update_button = tkinter.Button(self.member, cursor="tcross",text="Update Member", command=updateAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
 		update_button.place(rely=0.33, relx=0.37, anchor='center')
 
 		search_button = tkinter.Button(self.member, cursor="tcross",text="Search Details", command=searchAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
@@ -505,20 +498,21 @@ class MemberContent:
 		treeviewPopulate()
 
 
-		def onTreeviewPopup(tvPopup, event=None):
+		'''
+		def onTreeviewPopup(event):
 			try:
-				rowItem = member_search_Tv.identify_row(event.y)
-				tvPopup.selection = member_search_Tv.set(rowItem)
-
-				member_search_Tv.selection_set(rowItem)
-				member_search_Tv.focus(rowItem)
+				rowItem = member_search_Tv.treeview.identify_row(event.y)
+				tvPopup.selection = member_search_Tv.treeview.set(rowItem)
+		
+				member_search_Tv.treeview.selection_set(rowItem)
+				member_search_Tv.treeview.focus(rowItem)
 				tvPopup.post(event.x_root, event.y_root)
 			finally:
 				tvPopup.grab_release()
-
-		tvPopup = Menu(self.member, tearoff = 0)
+		
+		
+		tvPopup = Menu(member, tearoff = 0)
 		tvPopup.add_command(label = "Update", command = partial(updateAccountDetails, True))
 		tvPopup.add_separator()
 		tvPopup.add_command(label = "Delete", command = partial(deleteAccountDetails,True))
-
-		member_search_Tv.bind("<Button-3>", partial(onTreeviewPopup, tvPopup))
+		'''

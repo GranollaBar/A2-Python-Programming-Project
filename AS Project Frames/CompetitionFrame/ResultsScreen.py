@@ -7,16 +7,15 @@ import sqlite3
 from tkinter import simpledialog
 from tkinter import *
 from functools import partial
-import datetime
 from tkcalendar import Calendar
 
 MemberCounter=0
 
-class CoachingSessionContent:
+class ResultsContent:
 
 	def __init__(self, mainScreen):
-		self.coachSession = mainScreen
-		self.conn = sqlite3.connect('CoachDetails.db')
+		self.results = mainScreen
+		self.conn = sqlite3.connect('results.db')
 		self.c = self.conn.cursor()
 
 
@@ -32,7 +31,7 @@ class CoachingSessionContent:
 		# 			)""")
 
 
-	def generateCoachSessionContnt(self):
+	def generateResultsContnt(self):
 
 
 		def courtsRequired():
@@ -1450,7 +1449,7 @@ class CoachingSessionContent:
 								'technique': final_technique,
 							})
 
-					changeCalendarColour()
+					# changeCalendarColour(self)
 
 					self.coachNamesAndPasswords.set('')
 					timeStart.set('8.00')
@@ -1526,175 +1525,45 @@ class CoachingSessionContent:
 			conn.commit()
 			conn.close()
 
-		def changeCalendarColour():
-			cal = Calendar(self.coachSession, font="Tahoma 21", selectmode='day', cursor="tcross", year=2021, month=5, day=29)
-			cal.place(rely=0.62, relx=0.71, anchor='center')
 
-			cal.calevent_remove("all")
-			conn = sqlite3.connect('CoachDetails.db')
-			c = conn.cursor()
 
-			c.execute("SELECT * FROM coachSession")
-			session_array = c.fetchall()
-
-			for row in session_array:
-				cal.calevent_create(datetime.date(int(row[3][6:10]), int(row[3][3:5]), int(row[3][0:2])),"Monkey","message")
-
-			cal.tag_config("message", background="black", foreground="green")
-
-			conn.commit()
-			conn.close()
+		startDate=StringVar()
+		endDate=StringVar()
 
 
 
+		username_label = tkinter.Label(self.results, text="Username:", font=('Tahoma', 15, 'bold'), fg='black', bg='white')
+		username_label.place(rely=0.18, relx=0.12, anchor='center')
 
-		timeStart=StringVar()
-		timeEnd=StringVar()
-		eventDate=StringVar()
-		technique=IntVar()
+		start_date_label = tkinter.Label(self.results, text="Start Date:", font=('Tahoma', 15, 'bold'), fg='black', bg='white')
+		start_date_label.place(rely=0.25, relx=0.12, anchor='center')
 
-		court1=IntVar()
-		court2=IntVar()
-		court3=IntVar()
-		court4=IntVar()
-		court5=IntVar()
-		court6=IntVar()
-		court7=IntVar()
-		court8=IntVar()
-		court9=IntVar()
-		court10=IntVar()
-		court11=IntVar()
-		court12=IntVar()
-
-		group1=IntVar()
-		group2=IntVar()
-		group3=IntVar()
-		group4=IntVar()
-		group5=IntVar()
-		group6=IntVar()
-		group7=IntVar()
-		group8=IntVar()
-		group9=IntVar()
-		group10=IntVar()
-		group11=IntVar()
-		group12=IntVar()
-		group13=IntVar()
-		group14=IntVar()
-		group15=IntVar()
-		group16=IntVar()
-		group17=IntVar()
-		group18=IntVar()
-		group19=IntVar()
-		group20=IntVar()
-
-
-		new_start_time = StringVar()
-		new_end_time = StringVar()
-		newEventDate=StringVar()
-
-		newcourt1=IntVar()
-		newcourt2=IntVar()
-		newcourt3=IntVar()
-		newcourt4=IntVar()
-		newcourt5=IntVar()
-		newcourt6=IntVar()
-		newcourt7=IntVar()
-		newcourt8=IntVar()
-		newcourt9=IntVar()
-		newcourt10=IntVar()
-		newcourt11=IntVar()
-		newcourt12=IntVar()
-
-		newgroup1=IntVar()
-		newgroup2=IntVar()
-		newgroup3=IntVar()
-		newgroup4=IntVar()
-		newgroup5=IntVar()
-		newgroup6=IntVar()
-		newgroup7=IntVar()
-		newgroup8=IntVar()
-		newgroup9=IntVar()
-		newgroup10=IntVar()
-		newgroup11=IntVar()
-		newgroup12=IntVar()
-		newgroup13=IntVar()
-		newgroup14=IntVar()
-		newgroup15=IntVar()
-		newgroup16=IntVar()
-		newgroup17=IntVar()
-		newgroup18=IntVar()
-		newgroup19=IntVar()
-		newgroup20=IntVar()
-
-		newtechnique=IntVar()
+		end_date_label = tkinter.Label(self.results, text="End Date:", font=('Tahoma', 15, 'bold'), fg='black', bg='white')
+		end_date_label.place(rely=0.32, relx=0.12, anchor='center')
 
 
 
-		username_label = tkinter.Label(self.coachSession, text="Username:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-		username_label.place(rely=0.36, relx=0.12, anchor='center')
+		start_date_entry = Button(self.results, text='Select Start Date',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : dateEntryCheck(startDate), padx=10, bd=4, relief="ridge")
+		start_date_entry.place(rely=0.253, relx=0.3, anchor='center')
 
-		starttime_label = tkinter.Label(self.coachSession, text="Start Time:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-		starttime_label.place(rely=0.44, relx=0.12, anchor='center')
-
-		endtime_label = tkinter.Label(self.coachSession, text="End Time:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-		endtime_label.place(rely=0.52, relx=0.12, anchor='center')
-
-		date_label = tkinter.Label(self.coachSession, text="Session Date:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-		date_label.place(rely=0.6, relx=0.12, anchor='center')
-
-		courts_needed_label = tkinter.Label(self.coachSession, text="Courts Required:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-		courts_needed_label.place(rely=0.68, relx=0.12, anchor='center')
-
-		groups_label = tkinter.Label(self.coachSession, text="Group Level:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-		groups_label.place(rely=0.76, relx=0.12, anchor='center')
-
-		techniques_label = tkinter.Label(self.coachSession, text="Techniques:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-		techniques_label.place(rely=0.84, relx=0.12, anchor='center')
+		end_date_entry = Button(self.results, text='Select End Date',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : dateEntryCheck(endDate), padx=10, bd=4, relief="ridge")
+		end_date_entry.place(rely=0.323, relx=0.3, anchor='center')
 
 
-		starttime_spinbox = Spinbox(self.coachSession, width=7,font=("Tahoma",12, 'bold'), bd=3, relief='ridge', cursor="tcross",textvariable=timeStart, values=('8.00', '8.15', '8.30', '8.45', '9.00', '9.15', '9.30', '9.45', '10.00', '10.15', '10.30', '10.45', '11.00', '11.15', '11.30', '11.45', '12.00', '12.15','12.30','12.45','13.00','13.15','13.30','13.45','14.00','14.15','14.30','14.45','15.00','15.15','15.30','15.45','16.00','16.15','16.30','16.45','17.00','17.15','17.30','17.45','18.00','18.15','18.30','18.45','19.00','19.15','19.30','19.45','20.00','20.15','20.30','20.45','21.00','21.15','21.30','21.45','22.00'))
-		starttime_spinbox.place(rely=0.4425, relx=0.3, anchor='center')
-
-		endtime_spinbox = Spinbox(self.coachSession, width=7,font=("Tahoma",12, 'bold'), bd=3, relief='ridge', cursor="tcross", textvariable=timeEnd, values=('9.00', '9.15', '9.30', '9.45', '10.00', '10.15', '10.30', '10.45', '11.00', '11.15', '11.30', '11.45', '12.00', '12.15','12.30','12.45','13.00','13.15','13.30','13.45','14.00','14.15','14.30','14.45','15.00','15.15','15.30','15.45','16.00','16.15','16.30','16.45','17.00','17.15','17.30','17.45','18.00','18.15','18.30','18.45','19.00','19.15','19.30','19.45','20.00','20.15','20.30','20.45','21.00','21.15','21.30','21.45','22.00','22.15','22.30','22.45','23.00'))
-		endtime_spinbox.place(rely=0.5225, relx=0.3, anchor='center')
-
-		date_entry = Button(self.coachSession, text='Select Date',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : dateEntryCheck(eventDate), padx=10, bd=4, relief="ridge")
-		date_entry.place(rely=0.603, relx=0.3, anchor='center')
-
-		courts_needed_button = Button(self.coachSession, text='Select Courts',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : courtsRequired(), padx=10, bd=4, relief="ridge")
-		courts_needed_button.place(rely=0.683, relx=0.3, anchor='center')
-
-		groups_needed_button = Button(self.coachSession, text='Select Groups',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : groupsRequired(), padx=10, bd=4, relief="ridge")
-		groups_needed_button.place(rely=0.763, relx=0.3, anchor='center')
-
-		technique1_radiobutton = Radiobutton(self.coachSession, text="Net Play", variable=technique, value=1, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
-		technique1_radiobutton.place(rely=0.82, relx=0.25, anchor='center')
-
-		technique2_radiobutton = Radiobutton(self.coachSession, text="Smash", variable=technique, value=2, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
-		technique2_radiobutton.place(rely=0.87, relx=0.25, anchor='center')
-
-		technique3_radiobutton = Radiobutton(self.coachSession, text="Rally", variable=technique, value=3, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
-		technique3_radiobutton.place(rely=0.82, relx=0.35, anchor='center')
-
-		technique4_radiobutton = Radiobutton(self.coachSession, text="Back Court", variable=technique, value=4, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
-		technique4_radiobutton.place(rely=0.87, relx=0.355, anchor='center')
-		technique.set("1")
+		# delete_button = tkinter.Button(self.results, cursor="tcross",text="Delete", command=lambda : deleteCoachSessionDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, pady=5)
+		# delete_button.place(rely=0.95, relx=0.058, anchor='center')
+		#
+		# update_button = tkinter.Button(self.results, cursor="tcross",text="Update", command=lambda : updateCoachSessionDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, pady=5)
+		# update_button.place(rely=0.95, relx=0.168, anchor='center')
+		#
+		# search_button = tkinter.Button(self.results, cursor="tcross",text="Search", command=searchCoachSessionDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, pady=5)
+		# search_button.place(rely=0.95, relx=0.276, anchor='center')
+		#
+		# create_button = tkinter.Button(self.results, cursor="tcross",text="Submit", command=submitCoachSession, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, pady=5)
+		# create_button.place(rely=0.95, relx=0.384, anchor='center')
 
 
-		delete_button = tkinter.Button(self.coachSession, cursor="tcross",text="Delete", command=lambda : deleteCoachSessionDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, pady=5)
-		delete_button.place(rely=0.95, relx=0.058, anchor='center')
-
-		update_button = tkinter.Button(self.coachSession, cursor="tcross",text="Update", command=lambda : updateCoachSessionDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, pady=5)
-		update_button.place(rely=0.95, relx=0.168, anchor='center')
-
-		search_button = tkinter.Button(self.coachSession, cursor="tcross",text="Search", command=searchCoachSessionDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, pady=5)
-		search_button.place(rely=0.95, relx=0.276, anchor='center')
-
-		create_button = tkinter.Button(self.coachSession, cursor="tcross",text="Submit", command=submitCoachSession, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, pady=5)
-		create_button.place(rely=0.95, relx=0.384, anchor='center')
-
-
-		coachsession_search_Tv=ttk.Treeview(self.coachSession,height=4,columns=('Start Time','End Time','Date','Courts','Groups','No. People','Technique'))
+		coachsession_search_Tv=ttk.Treeview(self.results,height=4,columns=('Start Time','End Time','Date','Courts','Groups','No. People','Technique'))
 		coachsession_search_Tv.place(relx=0.5,rely=0.22,anchor=CENTER)
 
 		coachsession_search_Tv.heading("#0",text='Username')
@@ -1714,15 +1583,12 @@ class CoachingSessionContent:
 		coachsession_search_Tv.heading("#7",text='Technique')
 		coachsession_search_Tv.column("#7",minwidth=0,width=100)
 
-		coachsession_ysearch_scrollbar = Scrollbar(self.coachSession, orient = 'vertical', command = coachsession_search_Tv.yview, cursor="tcross")
+		coachsession_ysearch_scrollbar = Scrollbar(self.results, orient = 'vertical', command = coachsession_search_Tv.yview, cursor="tcross")
 		coachsession_ysearch_scrollbar.place(relx=0.95,rely=0.22,anchor='center',height=109)
 		coachsession_search_Tv.configure(yscrollcommand=coachsession_ysearch_scrollbar.set)
 
-		#cal.bind("<<CalendarSelected>>", CalendarSelection)
-
 
 		treeviewPopulate()
-		changeCalendarColour()
 
 
 		def onTreeviewPopup(tvPopup, event=None):
@@ -1736,7 +1602,7 @@ class CoachingSessionContent:
 			finally:
 				tvPopup.grab_release()
 
-		tvPopup = Menu(self.coachSession, tearoff = 0)
+		tvPopup = Menu(self.results, tearoff = 0)
 		tvPopup.add_command(label = "Update", command = partial(updateCoachSessionDetails, True))
 		tvPopup.add_separator()
 		tvPopup.add_command(label = "Delete", command = partial(deleteCoachSessionDetails,True))
@@ -1750,7 +1616,7 @@ class CoachingSessionContent:
 		coach_name_choices = self.get_coach_details()
 		if (len(coach_name_choices) > 0) :
 			coach_selection_dropdown = OptionMenu(self.coachSession, self.coachNamesAndPasswords, *coach_name_choices)
-			coach_selection_dropdown.place(rely=0.365, relx=0.305, anchor='center')
+			coach_selection_dropdown.place(rely=0.205, relx=0.3, anchor='center')
 
 
 	def get_coach_details(self):
@@ -1773,3 +1639,19 @@ class CoachingSessionContent:
 		conn.close()
 
 		return coach_name_list
+
+	# def changeCalendarColour(self):
+	# 	cal.calevent_remove("all")
+	# 	conn = sqlite3.connect('CoachDetails.db')
+	# 	c = conn.cursor()
+	#
+	# 	c.execute("SELECT * FROM coachSession")
+	# 	session_array = c.fetchall()
+	#
+	# 	for row in session_array:
+	# 		cal.calevent_create(datetime.date(int(row[3][6:10]), int(row[3][3:5]), int(row[3][0:2])),"Monkey","message")
+	#
+	# 	cal.tag_config("message", background="black", foreground="green")
+	#
+	# 	conn.commit()
+	# 	conn.close()

@@ -1,9 +1,8 @@
 import tkinter.simpledialog
 from tkinter import *
 from MemberFrame.MemberDetailsScreen import MemberContent
-from CoachFrame.CoachDetailsScreen import CoachContent
 from CoachingSessionFrame.CoachingSessionScreen import CoachingSessionContent
-from CompetitionFrame.ResultsScreen import ResultsContent
+from CoachFrame.CoachDetailsScreen import CoachContent
 
 
 
@@ -33,11 +32,6 @@ def openCoachSessionContent():
     myCoaching.generateCoachSessionContnt()
 
 
-def openCompetitionContent():
-    clearContent()
-    resultsContent = ResultsContent(mainScreen)
-    resultsContent.generateResultsContnt()
-
 
 mainScreen = Tk()
 mainScreen.geometry('985x650')
@@ -66,8 +60,6 @@ add_coach_button.place(rely=0.5, relx=0.24, anchor='center')
 coaching_session_button = tkinter.Button(header, text="Coaching Session", command=openCoachSessionContent, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
 coaching_session_button.place(rely=0.5, relx=0.408, anchor='center')
 
-competition_button = tkinter.Button(header, text="Competition", command=openCompetitionContent, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
-competition_button.place(rely=0.5, relx=0.584, anchor='center')
 
 
 mainScreen.mainloop()
