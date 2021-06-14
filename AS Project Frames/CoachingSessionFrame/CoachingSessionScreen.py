@@ -1331,9 +1331,6 @@ class CoachingSessionContent:
 
 
 		def submitCoachSession():
-			conn = sqlite3.connect('CoachDetails.db')
-			c = conn.cursor()
-
 			isValid = True
 			isValid = isValid and validate_username(self.coachNamesAndPasswords.get(), "Username", username_label)
 			isValid = isValid and validate_start_time(timeStart.get(), timeEnd.get(),"Start Time", starttime_label)
@@ -1438,6 +1435,8 @@ class CoachingSessionContent:
 					showinfo("Info", "submition cancelled")
 
 				else:
+					conn = sqlite3.connect('CoachDetails.db')
+					c = conn.cursor()
 					c.execute("INSERT INTO coachSession VALUES (:username, :startTime, :endTime, :date, :courts, :groups, :people, :technique)",
 							{
 								'username': coachsession_username,
@@ -1449,6 +1448,8 @@ class CoachingSessionContent:
 								'people': MemberCounter,
 								'technique': final_technique,
 							})
+					conn.commit()
+					conn.close()
 
 					changeCalendarColour()
 
@@ -1493,9 +1494,6 @@ class CoachingSessionContent:
 
 					returnColour(username_label, starttime_label, endtime_label, date_label, courts_needed_label, groups_label, techniques_label)
 					messagebox.showinfo("info", "Details have been successfully stored")
-
-			conn.commit()
-			conn.close()
 
 			treeviewPopulate()
 
