@@ -150,6 +150,11 @@ class ResultsContent:
 				label2.config(fg="red")
 				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname1 + " and " + fieldname2 + " Must have one score equal to 21")
 				return False
+			if (int(value1) == 21 and int(value2) == 21):
+				label1.config(fg="red")
+				label2.config(fg="red")
+				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname1 + " and " + fieldname2 + " Must only have one score equal to 21")
+				return False
 
 			label1.config(fg="SpringGreen3")
 			label2.config(fg="SpringGreen3")
@@ -315,6 +320,16 @@ class ResultsContent:
 
 						contestant2_label.config(text= member2[2] + " " + member2[3])
 
+
+					c.execute("SELECT * From competition WHERE competitionID=?", (member_group_selected,))
+					items = c.fetchone()
+					if not items:
+						messagebox.showinfo("info", "There is no group that exists with that number")
+
+					else:
+
+						contestant_winner_label.config(text=items[5])
+
 				returnColour(username_label, username2_label, start_date_label, end_date_label, view_group_label)
 				messagebox.showinfo("info", "The competition has now been populated")
 
@@ -453,11 +468,11 @@ class ResultsContent:
 							member_winner = member2[2] + " " + member2[3]
 
 
-
 					c.execute("""UPDATE competition SET winner = :winner WHERE competitionID=:competitionID""", {
 						"winner": str(member_winner),
 						"competitionID": memberID
 					})
+
 
 					messagebox.showinfo("info", "The final score has been saved as " + str(final_score))
 					messagebox.showinfo("info", "The winner is " + str(member_winner))
@@ -537,6 +552,7 @@ class ResultsContent:
 
 		background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 		background_entry_canvas.background_entry_image = background_entry_image
+
 
 		contestant_winner_label = tkinter.Label(self.results, text="", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
 		contestant_winner_label.place(rely=0.25, relx=0.658, anchor='center')
