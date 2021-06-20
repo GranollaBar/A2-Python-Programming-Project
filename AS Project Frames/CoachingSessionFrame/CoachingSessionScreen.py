@@ -468,7 +468,18 @@ class CoachingSessionContent:
 			return True
 
 
-		def validate_date(label):
+		def validate_date(value, fieldname, label):
+			presentDate = datetime.datetime.now()
+			date_formated = presentDate.strftime("%d/%m/%Y")
+
+			d1 = datetime.datetime.strptime(value, "%d/%m/%Y").date()
+			d2 = datetime.datetime.strptime(str(date_formated), "%d/%m/%Y").date()
+
+			if d2>d1:
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be before the current date")
+				return False
+
 			label.config(fg="SpringGreen3")
 			return True
 
@@ -1335,7 +1346,7 @@ class CoachingSessionContent:
 			isValid = isValid and validate_username(self.coachNamesAndPasswords.get(), "Username", username_label)
 			isValid = isValid and validate_start_time(timeStart.get(), timeEnd.get(),"Start Time", starttime_label)
 			isValid = isValid and validate_end_time(timeEnd.get(), "End Time", endtime_label)
-			isValid = isValid and validate_date(date_label)
+			isValid = isValid and validate_date(eventDate.get(), "Date", date_label)
 			isValid = isValid and validate_courts(court1.get(), court2.get(),court3.get(), court4.get(), court5.get(), court6.get(), court7.get(), court8.get(), court9.get(), court10.get(), court11.get(), court12.get(),  "Court", courts_needed_label)
 			isValid = isValid and validate_groups(group1.get(), group2.get(), group3.get(), group4.get(), group5.get(), group6.get(), group7.get(), group8.get(), group9.get(), group10.get(), group11.get(), group12.get(), group13.get(), group14.get(), group15.get(), group16.get(), group17.get(), group18.get(), group19.get(), group20.get(), "Group", groups_label)
 			isValid = isValid and validate_techniques(techniques_label)
@@ -1502,9 +1513,14 @@ class CoachingSessionContent:
 			conn = sqlite3.connect('CoachDetails.db')
 			c = conn.cursor()
 
-			print(cal.get_date())
+			date = cal.get_date()
+			date=str(date).split('/')
+			newdate=date[0],date[1],date[2]
+			a_date = datetime.date(int('20'+newdate[2]),int(newdate[0]), int(newdate[1]))
 
-			c.execute("SELECT * From coachSession WHERE date=?", (cal.get_date(),))
+			string_date = a_date.strftime("%d/%m/%Y")
+
+			c.execute("SELECT * From coachSession WHERE date=?", (string_date,))
 			items = c.fetchone()
 			if not items:
 				messagebox.showinfo("info", "There is no coaching session on this date")
@@ -1524,10 +1540,8 @@ class CoachingSessionContent:
 			conn.commit()
 			conn.close()
 
-		def changeCalendarColour():
-			cal = Calendar(self.coachSession, font="Tahoma 21", selectmode='day', cursor="tcross", year=2021, month=5, day=29)
-			cal.place(rely=0.62, relx=0.71, anchor='center')
 
+		def changeCalendarColour():
 			cal.calevent_remove("all")
 			conn = sqlite3.connect('CoachDetails.db')
 			c = conn.cursor()
@@ -1536,9 +1550,9 @@ class CoachingSessionContent:
 			session_array = c.fetchall()
 
 			for row in session_array:
-				cal.calevent_create(datetime.date(int(row[3][6:10]), int(row[3][3:5]), int(row[3][0:2])),"Monkey","message")
+				cal.calevent_create(datetime.date(int(row[3][6:10]), int(row[3][3:5]), int(row[3][0:2])),"View Coaching Session Details","message")
 
-			cal.tag_config("message", background="black", foreground="green")
+			cal.tag_config("message", background="red", foreground="black")
 
 			conn.commit()
 			conn.close()
@@ -1716,7 +1730,10 @@ class CoachingSessionContent:
 		coachsession_ysearch_scrollbar.place(relx=0.95,rely=0.22,anchor='center',height=109)
 		coachsession_search_Tv.configure(yscrollcommand=coachsession_ysearch_scrollbar.set)
 
-		#cal.bind("<<CalendarSelected>>", CalendarSelection)
+		cal = Calendar(self.coachSession, font="Tahoma 21", selectmode='day', cursor="tcross", year=2021, month=5, day=29)
+		cal.place(rely=0.62, relx=0.71, anchor='center')
+
+		cal.bind("<<CalendarSelected>>", CalendarSelection)
 
 
 		treeviewPopulate()

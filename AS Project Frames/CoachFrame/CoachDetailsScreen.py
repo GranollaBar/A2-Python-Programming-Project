@@ -10,6 +10,7 @@ from functools import partial
 from tkcalendar import Calendar
 from CoachFrame.coachEmail import coachEmail
 from CoachFrame.coachWordDocument import buildCoachDocument
+import datetime
 
 
 class CoachContent:
@@ -41,7 +42,7 @@ class CoachContent:
 
 			top = Toplevel(self.coach)
 
-			cal = Calendar(top, font="Tahoma 16", selectmode='day', cursor="tcross", day=29, month=5, year=2021)
+			cal = Calendar(top, date_pattern='dd/mm/yyyy', font="Tahoma 16", selectmode='day', cursor="tcross", day=29, month=5, year=2021)
 			cal.pack(fill="both", expand=True)
 			ttk.Button(top, text="Select", command=assign_dob).pack()
 
@@ -125,7 +126,18 @@ class CoachContent:
 			return True
 
 
-		def validate_DOB(label):
+		def validate_DOB(value, fieldname, label):
+			presentDate = datetime.datetime.now()
+			date_formated = presentDate.strftime("%d/%m/%Y")
+
+			d1 = datetime.datetime.strptime(value, "%d/%m/%Y").date()
+			d2 = datetime.datetime.strptime(str(date_formated), "%d/%m/%Y").date()
+
+			if d1>d2:
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be after the current date")
+				return False
+
 			label.config(fg="SpringGreen3")
 			return True
 
@@ -404,7 +416,7 @@ class CoachContent:
 			isValid = isValid and validate_not_empty_string(firstname.get(), "Firstname", firstname_label)
 			isValid = isValid and validate_not_empty_string(surname.get(), "Surname", surname_label)
 			isValid = isValid and validate_gender(gender_label)
-			isValid = isValid and validate_DOB(DOB_label)
+			isValid = isValid and validate_DOB(dateOfBirth.get(), "DOB", DOB_label)
 			isValid = isValid and validate_empty(postcode.get(), "Postcode", postcode_label)
 			isValid = isValid and validate_availability(mondayAvaliability.get(), tuesdayAvaliability.get(), wednesdayAvaliability.get(), thursdayAvaliability.get(), fridayAvaliability.get(), satrudayAvaliability.get(), sundayAvaliability.get(),"Availability", avaliability_label)
 

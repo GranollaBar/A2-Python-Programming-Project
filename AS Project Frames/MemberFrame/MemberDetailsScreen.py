@@ -20,18 +20,19 @@ class MemberContent:
 		self.c = self.conn.cursor()
 
 
-		'''
-		self.c.execute("""CREATE TABLE member (
-					username text,
-					password text,
-					firstname text,
-					surname text,
-					address text,
-					postcode text,
-					age integer,
-					member_group integer
-					)""")
-		'''
+
+		# self.c.execute("""CREATE TABLE member (
+		# 			username text,
+		# 			password text,
+		# 			firstname text,
+		# 			surname text,
+		# 			address text,
+		# 			postcode text,
+		# 			age integer,
+		# 			member_group integer,
+		# 			competition_status string
+		# 			)""")
+
 
 
 	def generateMemberContnt(self):
@@ -353,6 +354,13 @@ class MemberContent:
 
 				account_group = ageToGroup(age)
 
+				CompetitionConfirmation = messagebox.askquestion ('Question','Are you comfortable with doing competitions')
+				if CompetitionConfirmation == 'yes':
+					finalCompetition = 'yes'
+				else:
+					finalCompetition = 'no'
+
+
 				response = askyesno("Are you sure?", "Are you sure that all information above is correct?")
 				if response == False:
 					showinfo("Info", "submition cancelled")
@@ -363,7 +371,7 @@ class MemberContent:
 					found = memberEmail("Lisburn Racquets Account Added", "You have been accepted into Lisburn Raquets Club." + "\n" + "Your details can be found in the document below." + "\n\n" + "Thanks for choosing Lisburn Racquets Club", account_username, doc, username_label)
 					if found:
 
-						c.execute("INSERT INTO member VALUES (:username, :password, :firstname, :surname, :address, :postcode, :age, :member_group)",
+						c.execute("INSERT INTO member VALUES (:username, :password, :firstname, :surname, :address, :postcode, :age, :member_group, :competition_status)",
 								  {
 									  'username': account_username,
 									  'password': account_password,
@@ -373,6 +381,7 @@ class MemberContent:
 									  'postcode': account_postcode,
 									  'age': account_age,
 									  'member_group': account_group,
+									  'competition_status': finalCompetition,
 								  })
 
 						username.set('')

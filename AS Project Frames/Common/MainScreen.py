@@ -36,6 +36,8 @@ def openCoachSessionContent():
 def openCompetitionContent():
     clearContent()
     resultsContent = ResultsContent(mainScreen)
+    resultsContent.memberSelection()
+    resultsContent.memberGroupSelection()
     resultsContent.generateResultsContnt()
 
 
