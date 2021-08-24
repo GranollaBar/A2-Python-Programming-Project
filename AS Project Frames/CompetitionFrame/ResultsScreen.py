@@ -10,6 +10,7 @@ from functools import partial
 from tkcalendar import Calendar
 import datetime
 
+
 class ResultsContent:
 
 	def __init__(self, mainScreen):
@@ -161,6 +162,41 @@ class ResultsContent:
 			return True
 
 
+		def validate_competition_date(MemberID):
+			conn = sqlite3.connect('BadmintonClub.db')
+			c = conn.cursor()
+
+			c.execute("SELECT * From competition WHERE competitionID=?", (MemberID,))
+			items = c.fetchone()
+			if not items:
+				messagebox.showinfo("info", "There is no group that exists with that number")
+
+			else:
+				member_start_date = items[2]
+				member_end_date = items[3]
+
+				presentDate = datetime.datetime.now()
+				date_formated = presentDate.strftime("%d/%m/%Y")
+
+				d1 = datetime.datetime.strptime(member_start_date, "%d/%m/%Y").date()
+				d2 = datetime.datetime.strptime(member_end_date, "%d/%m/%Y").date()
+				d3 = datetime.datetime.strptime(str(date_formated), "%d/%m/%Y").date()
+
+				if d3>d2:
+					messagebox.showinfo("Validation Error", "The competition cannot be ran after " + member_end_date)
+					return False
+				if d3<d1:
+					messagebox.showinfo("Validation Error", "The competition cannot be ran before " + member_start_date)
+					return False
+
+				conn.commit()
+				conn.close()
+
+				return True
+
+
+
+
 		def clearTv():
 			record=competition_TV.get_children()
 			for elements in record:
@@ -175,11 +211,9 @@ class ResultsContent:
 
 			c.execute("SELECT * From competition")
 			items = c.fetchall()
+
 			conn.commit()
 			conn.close()
-
-			competition_TV.tag_configure("even",background="green")
-			competition_TV.tag_configure("odd",background="red")
 
 			count=0
 			for row in items:
@@ -187,9 +221,9 @@ class ResultsContent:
 					pass
 				else:
 					if count%2==0:
-						competition_TV.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4],row[5],row[6]),tags=["even"])
+						competition_TV.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4],row[5],row[6]))
 					else:
-						competition_TV.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4],row[5],row[6]),tags=["odd"])
+						competition_TV.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4],row[5],row[6]))
 					count+=1
 
 
@@ -234,6 +268,8 @@ class ResultsContent:
 			conn.commit()
 			conn.close()
 
+			treeviewPopulate()
+
 
 		def submitDateToCompetition():
 			conn = sqlite3.connect('BadmintonClub.db')
@@ -274,11 +310,15 @@ class ResultsContent:
 							"CompetitionID": CompetitionID
 						})
 
+						memberGroupSelection()
+
 					returnColour(username_label, username2_label, start_date_label, end_date_label, view_group_label)
 					messagebox.showinfo("info", "User's has been successfully stored for the competition")
 
 			conn.commit()
 			conn.close()
+
+			treeviewPopulate()
 
 
 		def confirmCompetition():
@@ -341,79 +381,84 @@ class ResultsContent:
 			conn = sqlite3.connect('BadmintonClub.db')
 			c = conn.cursor()
 
-			if label1 == "" or label2 == "":
-				messagebox.showinfo("info", "No Group has been selected yet", icon="error")
+			isDateValid = True
+			isDateValid = isDateValid and validate_competition_date(self.memberGroups.get())
 
-			else:
+			if isDateValid:
 
-				isValid = True
-				isValid = isValid and validate_group_selected(self.memberGroups.get(), "Member Group Selected", view_group_label)
+				if label1 == "" or label2 == "":
+					messagebox.showinfo("info", "No Group has been selected yet", icon="error")
 
-				if isValid:
-					member_group_selected = self.memberGroups.get()
+				else:
 
-					c.execute("SELECT * From competition WHERE competitionID=?", (member_group_selected,))
-					items = c.fetchone()
-					if not items:
-						messagebox.showinfo("info", "There is no group that exists with that number", icon="error")
+					isValid = True
+					isValid = isValid and validate_group_selected(self.memberGroups.get(), "Member Group Selected", view_group_label)
 
-					else:
+					if isValid:
+						member_group_selected = self.memberGroups.get()
 
-						memberUsername = items[0]
-						memberUsername2 = items[1]
-
-
-						completeFrame=Toplevel(bg="white")
-						completeFrame.geometry('200x200')
-
-						title_label =Label(completeFrame,text ="Input Competition Scores" , fg ='SpringGreen3',bg='white',font=('Tahoma',11,'bold','underline'))
-						title_label.place(rely=0.06,relx=0.5,anchor=CENTER)
-
-						contestant1_score_label = tkinter.Label(completeFrame, text="", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
-						contestant1_score_label.place(rely=0.3, relx=0.35, anchor='center')
-
-						c.execute("SELECT * From member WHERE username=?", (memberUsername,))
-						member1 = c.fetchone()
-						if not member1:
-							messagebox.showinfo("info", "There is no username named " + memberUsername)
-							completeFrame.withdraw()
+						c.execute("SELECT * From competition WHERE competitionID=?", (member_group_selected,))
+						items = c.fetchone()
+						if not items:
+							messagebox.showinfo("info", "There is no group that exists with that number", icon="error")
 
 						else:
 
-							contestant1_score_label.config(text= member1[2] + " " + member1[3] + ":")
-
-						contestant2_score_label = tkinter.Label(completeFrame, text="", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
-						contestant2_score_label.place(rely=0.5, relx=0.35, anchor='center')
-
-						c.execute("SELECT * From member WHERE username=?", (memberUsername2,))
-						member2 = c.fetchone()
-						if not member2:
-							messagebox.showinfo("info", "There is no username named " + memberUsername2)
-							completeFrame.withdraw()
-
-						else:
-
-							contestant2_score_label.config(text= member2[2] + " " + member2[3] + ":")
-
-						contestant1_score_entry = tkinter.Entry(completeFrame, width=4, textvariable=contestant1Score, bd=4, relief='ridge', cursor="tcross", font=('Tahoma', 10, 'bold'))
-						contestant1_score_entry.place(rely=0.3, relx=0.8, anchor='center')
-						contestant1Score.set('')
-
-						contestant2_score_entry = tkinter.Entry(completeFrame, width=4, textvariable=contestant2Score, bd=4, relief='ridge', cursor="tcross", font=('Tahoma', 10, 'bold'))
-						contestant2_score_entry.place(rely=0.5, relx=0.8, anchor='center')
-						contestant2Score.set('')
-
-						confirm_scores_button=Button(completeFrame,text = 'Confirm Scores', command = lambda : finalCompetitionCompletition(completeFrame, contestant1_score_label, contestant2_score_label, contestant1_score_label, contestant2_score_label), fg ='white', bg='black', relief= 'groove', font = ('Verdana',11,'bold'), padx =35)
-						confirm_scores_button.place(rely=0.93,relx=0.5,anchor=CENTER)
+							memberUsername = items[0]
+							memberUsername2 = items[1]
 
 
-					returnColour(username_label, username2_label, start_date_label, end_date_label, view_group_label)
+							completeFrame=Toplevel(bg="white")
+							completeFrame.geometry('200x200')
+
+							title_label =Label(completeFrame,text ="Input Competition Scores" , fg ='SpringGreen3',bg='white',font=('Tahoma',11,'bold','underline'))
+							title_label.place(rely=0.06,relx=0.5,anchor=CENTER)
+
+							contestant1_score_label = tkinter.Label(completeFrame, text="", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
+							contestant1_score_label.place(rely=0.3, relx=0.35, anchor='center')
+
+							c.execute("SELECT * From member WHERE username=?", (memberUsername,))
+							member1 = c.fetchone()
+							if not member1:
+								messagebox.showinfo("info", "There is no username named " + memberUsername)
+								completeFrame.withdraw()
+
+							else:
+
+								contestant1_score_label.config(text= member1[2] + " " + member1[3] + ":")
+
+							contestant2_score_label = tkinter.Label(completeFrame, text="", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
+							contestant2_score_label.place(rely=0.5, relx=0.35, anchor='center')
+
+							c.execute("SELECT * From member WHERE username=?", (memberUsername2,))
+							member2 = c.fetchone()
+							if not member2:
+								messagebox.showinfo("info", "There is no username named " + memberUsername2)
+								completeFrame.withdraw()
+
+							else:
+
+								contestant2_score_label.config(text= member2[2] + " " + member2[3] + ":")
+
+							contestant1_score_entry = tkinter.Entry(completeFrame, width=4, textvariable=contestant1Score, bd=4, relief='ridge', cursor="tcross", font=('Tahoma', 10, 'bold'))
+							contestant1_score_entry.place(rely=0.3, relx=0.8, anchor='center')
+							contestant1Score.set('')
+
+							contestant2_score_entry = tkinter.Entry(completeFrame, width=4, textvariable=contestant2Score, bd=4, relief='ridge', cursor="tcross", font=('Tahoma', 10, 'bold'))
+							contestant2_score_entry.place(rely=0.5, relx=0.8, anchor='center')
+							contestant2Score.set('')
+
+							confirm_scores_button=Button(completeFrame,text = 'Confirm Scores', command = lambda : finalCompetitionCompletition(completeFrame, contestant1_score_label, contestant2_score_label), fg ='white', bg='black', relief= 'groove', font = ('Verdana',11,'bold'), padx =35)
+							confirm_scores_button.place(rely=0.93,relx=0.5,anchor=CENTER)
+
+
+						returnColour(username_label, username2_label, start_date_label, end_date_label, view_group_label)
 
 			conn.commit()
 			conn.close()
 
 
-		def finalCompetitionCompletition(frame, username1, username2, label1, label2):
+		def finalCompetitionCompletition(frame, label1, label2):
 			conn = sqlite3.connect('BadmintonClub.db')
 			c = conn.cursor()
 
@@ -484,12 +529,44 @@ class ResultsContent:
 			treeviewPopulate()
 
 
+		def memberGroupSelection():
+			memberGroups = StringVar()
+
+			group_name_choices = get_group_details()
+			if (len(group_name_choices) > 0) :
+				group_selection_dropdown = OptionMenu(self.results, memberGroups, *group_name_choices)
+				group_selection_dropdown.place(rely=0.163, relx=0.73, anchor='center')
+
+
+		def get_group_details():
+			conn = sqlite3.connect('BadmintonClub.db')
+			c = conn.cursor()
+
+			group_name_list = []
+
+			c.execute("SELECT * From competition")
+			items = c.fetchall()
+
+			for row in items:
+				if row == [] or row[2] == '' or row[3] == '' or row[5] != '':
+					pass
+				else:
+					group_name = row[6]
+					group_name_list.append(group_name)
+
+			conn.commit()
+			conn.close()
+
+			return group_name_list
+
+
 
 		startDate=StringVar()
 		endDate=StringVar()
 
 		contestant1Score = StringVar()
 		contestant2Score = StringVar()
+
 
 
 
@@ -609,6 +686,7 @@ class ResultsContent:
 		competition_TV.configure(yscrollcommand=competition_ysearch_scrollbar.set)
 
 
+		memberGroupSelection()
 		treeviewPopulate()
 
 
@@ -664,34 +742,3 @@ class ResultsContent:
 		conn.close()
 
 		return member_name_list
-
-
-	def memberGroupSelection(self):
-		self.memberGroups = StringVar()
-
-		group_name_choices = self.get_group_details()
-		if (len(group_name_choices) > 0) :
-			group_selection_dropdown = OptionMenu(self.results, self.memberGroups, *group_name_choices)
-			group_selection_dropdown.place(rely=0.163, relx=0.73, anchor='center')
-
-
-	def get_group_details(self):
-		conn = sqlite3.connect('BadmintonClub.db')
-		c = conn.cursor()
-
-		group_name_list = []
-
-		c.execute("SELECT * From competition")
-		items = c.fetchall()
-
-		for row in items:
-			if row == [] or row[2] == '' or row[3] == '':
-				pass
-			else:
-				group_name = row[6]
-				group_name_list.append(group_name)
-
-		conn.commit()
-		conn.close()
-
-		return group_name_list
