@@ -36,14 +36,15 @@ def openCoachSessionContent():
 
 def openCompetitionContent():
     clearContent()
-    resultsContent = ResultsContent(mainScreen)
-    resultsContent.memberSelection()
-    resultsContent.generateResultsContnt()
+    resultscontent = ResultsContent(mainScreen)
+    resultscontent.memberSelection()
+    resultscontent.generateResultsContnt()
 
 
 def openMemberBooking():
     clearContent()
     bookingcontent = BookingContent(mainScreen)
+    bookingcontent.memberSelection()
     bookingcontent.generateBookingContnt()
 
 
