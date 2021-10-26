@@ -48,8 +48,13 @@ def openMemberBooking():
     bookingcontent.generateBookingContnt()
 
 
+def openStaticstics():
+    clearContent()
+
+
 mainScreen = Tk()
 mainScreen.geometry('985x650')
+mainScreen.resizable(0,0)
 
 header = Frame(mainScreen, bg='pale green')
 content = Frame(mainScreen, bg='white')
@@ -80,6 +85,9 @@ competition_button.place(rely=0.5, relx=0.546, anchor='center')
 
 member_booking_button = tkinter.Button(header, text="Booking", command=openMemberBooking, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
 member_booking_button.place(rely=0.5, relx=0.676, anchor='center')
+
+statistics_button = tkinter.Button(header, text="Stats", command=openStaticstics, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
+statistics_button.place(rely=0.5, relx=0.71, anchor='center')
 
 
 mainScreen.mainloop()

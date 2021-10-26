@@ -117,7 +117,7 @@ class CoachingSessionContent:
 			background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
 			background_entry_canvas.place(rely=0.3,relx=0.15,anchor=CENTER)
 
-			background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+			background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 			background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 			background_entry_canvas.background_entry_image = background_entry_image
@@ -126,7 +126,7 @@ class CoachingSessionContent:
 			background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
 			background_entry_canvas.place(rely=0.5,relx=0.15,anchor=CENTER)
 
-			background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+			background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 			background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 			background_entry_canvas.background_entry_image = background_entry_image
@@ -135,7 +135,7 @@ class CoachingSessionContent:
 			background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
 			background_entry_canvas.place(rely=0.7,relx=0.15,anchor=CENTER)
 
-			background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+			background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 			background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 			background_entry_canvas.background_entry_image = background_entry_image
@@ -144,7 +144,7 @@ class CoachingSessionContent:
 			background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
 			background_entry_canvas.place(rely=0.9,relx=0.15,anchor=CENTER)
 
-			background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+			background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 			background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 			background_entry_canvas.background_entry_image = background_entry_image
@@ -153,7 +153,7 @@ class CoachingSessionContent:
 			background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
 			background_entry_canvas.place(rely=0.3,relx=0.5,anchor=CENTER)
 
-			background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+			background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 			background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 			background_entry_canvas.background_entry_image = background_entry_image
@@ -162,7 +162,7 @@ class CoachingSessionContent:
 			background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
 			background_entry_canvas.place(rely=0.5,relx=0.5,anchor=CENTER)
 
-			background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+			background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 			background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 			background_entry_canvas.background_entry_image = background_entry_image
@@ -171,7 +171,7 @@ class CoachingSessionContent:
 			background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
 			background_entry_canvas.place(rely=0.7,relx=0.5,anchor=CENTER)
 
-			background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+			background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 			background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 			background_entry_canvas.background_entry_image = background_entry_image
@@ -180,7 +180,7 @@ class CoachingSessionContent:
 			background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
 			background_entry_canvas.place(rely=0.9,relx=0.5,anchor=CENTER)
 
-			background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+			background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 			background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 			background_entry_canvas.background_entry_image = background_entry_image
@@ -189,7 +189,7 @@ class CoachingSessionContent:
 			background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
 			background_entry_canvas.place(rely=0.3,relx=0.85,anchor=CENTER)
 
-			background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+			background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 			background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 			background_entry_canvas.background_entry_image = background_entry_image
@@ -198,7 +198,7 @@ class CoachingSessionContent:
 			background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
 			background_entry_canvas.place(rely=0.5,relx=0.85,anchor=CENTER)
 
-			background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+			background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 			background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 			background_entry_canvas.background_entry_image = background_entry_image
@@ -207,7 +207,7 @@ class CoachingSessionContent:
 			background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
 			background_entry_canvas.place(rely=0.7,relx=0.85,anchor=CENTER)
 
-			background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+			background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 			background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 			background_entry_canvas.background_entry_image = background_entry_image
@@ -216,7 +216,7 @@ class CoachingSessionContent:
 			background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
 			background_entry_canvas.place(rely=0.9,relx=0.85,anchor=CENTER)
 
-			background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+			background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 			background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 			background_entry_canvas.background_entry_image = background_entry_image
@@ -888,7 +888,7 @@ class CoachingSessionContent:
 					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
 					background_entry_canvas.place(rely=0.3,relx=0.15,anchor=CENTER)
 
-					background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 					background_entry_canvas.background_entry_image = background_entry_image
@@ -897,7 +897,7 @@ class CoachingSessionContent:
 					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
 					background_entry_canvas.place(rely=0.5,relx=0.15,anchor=CENTER)
 
-					background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 					background_entry_canvas.background_entry_image = background_entry_image
@@ -906,7 +906,7 @@ class CoachingSessionContent:
 					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
 					background_entry_canvas.place(rely=0.7,relx=0.15,anchor=CENTER)
 
-					background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 					background_entry_canvas.background_entry_image = background_entry_image
@@ -915,7 +915,7 @@ class CoachingSessionContent:
 					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
 					background_entry_canvas.place(rely=0.9,relx=0.15,anchor=CENTER)
 
-					background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 					background_entry_canvas.background_entry_image = background_entry_image
@@ -924,7 +924,7 @@ class CoachingSessionContent:
 					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
 					background_entry_canvas.place(rely=0.3,relx=0.5,anchor=CENTER)
 
-					background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 					background_entry_canvas.background_entry_image = background_entry_image
@@ -933,7 +933,7 @@ class CoachingSessionContent:
 					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
 					background_entry_canvas.place(rely=0.5,relx=0.5,anchor=CENTER)
 
-					background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 					background_entry_canvas.background_entry_image = background_entry_image
@@ -942,7 +942,7 @@ class CoachingSessionContent:
 					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
 					background_entry_canvas.place(rely=0.7,relx=0.5,anchor=CENTER)
 
-					background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 					background_entry_canvas.background_entry_image = background_entry_image
@@ -951,7 +951,7 @@ class CoachingSessionContent:
 					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
 					background_entry_canvas.place(rely=0.9,relx=0.5,anchor=CENTER)
 
-					background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 					background_entry_canvas.background_entry_image = background_entry_image
@@ -960,7 +960,7 @@ class CoachingSessionContent:
 					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
 					background_entry_canvas.place(rely=0.3,relx=0.85,anchor=CENTER)
 
-					background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 					background_entry_canvas.background_entry_image = background_entry_image
@@ -969,7 +969,7 @@ class CoachingSessionContent:
 					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
 					background_entry_canvas.place(rely=0.5,relx=0.85,anchor=CENTER)
 
-					background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 					background_entry_canvas.background_entry_image = background_entry_image
@@ -978,7 +978,7 @@ class CoachingSessionContent:
 					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
 					background_entry_canvas.place(rely=0.7,relx=0.85,anchor=CENTER)
 
-					background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 					background_entry_canvas.background_entry_image = background_entry_image
@@ -987,7 +987,7 @@ class CoachingSessionContent:
 					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
 					background_entry_canvas.place(rely=0.9,relx=0.85,anchor=CENTER)
 
-					background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 					background_entry_canvas.background_entry_image = background_entry_image

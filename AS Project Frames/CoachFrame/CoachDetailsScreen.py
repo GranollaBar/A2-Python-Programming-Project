@@ -543,7 +543,7 @@ class CoachContent:
 		postcode_label = tkinter.Label(self.coach, text="Postcode:", font=('Segoe UI Black', 14, 'bold'), fg='black', bg='white')
 		postcode_label.place(rely=0.63, relx=0.09, anchor='center')
 
-		avaliability_label = tkinter.Label(self.coach, text="Avaliability:", font=('Segoe UI Black', 14, 'bold'), fg='black', bg='white')
+		avaliability_label = tkinter.Label(self.coach, text="Availability:", font=('Segoe UI Black', 14, 'bold'), fg='black', bg='white')
 		avaliability_label.place(rely=0.77, relx=0.09, anchor='center')
 
 
@@ -597,7 +597,7 @@ class CoachContent:
 		background_entry_canvas = Canvas(self.coach,width=500, height=227, bg = "white")
 		background_entry_canvas.place(rely=0.8,relx=0.7,anchor=CENTER)
 
-		background_entry_image = PhotoImage(file = "kids_racquets.png")
+		background_entry_image = PhotoImage(file = "C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/kids_racquets.png")
 
 		background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 		background_entry_canvas.background_entry_image = background_entry_image

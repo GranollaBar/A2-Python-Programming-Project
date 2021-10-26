@@ -10,6 +10,7 @@ import math
 from functools import partial
 from MemberFrame.member_email import memberEmail
 from MemberFrame.memberWordDocument import buildMemberDocument
+from MainScreens.SMSSystem import MemberJoingSMS
 
 
 class MemberContent:
@@ -19,6 +20,10 @@ class MemberContent:
 		self.conn = sqlite3.connect('BadmintonClub.db')
 		self.c = self.conn.cursor()
 
+		self.conn2 = sqlite3.connect('login.db')
+		self.c2 = self.conn2.cursor()
+
+
 
 
 		# self.c.execute("""CREATE TABLE member (
@@ -26,7 +31,7 @@ class MemberContent:
 		# 			password text,
 		# 			firstname text,
 		# 			surname text,
-		# 			address text,
+		# 			telephone text,
 		# 			postcode text,
 		# 			age integer,
 		# 			member_group integer,
@@ -73,6 +78,20 @@ class MemberContent:
 				return False
 
 			label.config(fg="SpringGreen3")
+			return True
+
+
+		def validate_telephone(value, fieldname):
+			if (value == ''):
+				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be empty")
+				return False
+			if (len(value) < 11):
+				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be less than 11 characters")
+				return False
+			if (len(value) > 11):
+				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be greater than 11 characters")
+				return False
+
 			return True
 
 
@@ -157,12 +176,12 @@ class MemberContent:
 					count+=1
 
 
-		def returnColour(usernameReturn, passwordReturn, firstnameReturn, surnameReturn, addressReturn, postcodeReturn, ageReturn):
+		def returnColour(usernameReturn, passwordReturn, firstnameReturn, surnameReturn, telephoneReturn, postcodeReturn, ageReturn):
 			usernameReturn.config(fg="black")
 			passwordReturn.config(fg="black")
 			firstnameReturn.config(fg="black")
 			surnameReturn.config(fg="black")
-			addressReturn.config(fg="black")
+			telephoneReturn.config(fg="black")
 			postcodeReturn.config(fg="black")
 			ageReturn.config(fg="black")
 
@@ -179,14 +198,14 @@ class MemberContent:
 				title_label =Label(update_member,text = 'Update Member' , fg ='SpringGreen3',bg='white',font=('Verdana',15,'bold'))
 				title_label.place(rely=0.13,relx=0.5,anchor=CENTER)
 
-				update_address=Button(update_member,text = 'Update Address', command = lambda : update_member_address(update_member), fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20, pady =10)
-				update_address.place(rely=0.43,relx=0.5,anchor=CENTER)
+				update_telephone=Button(update_member,text = 'Update Telephone', command = lambda : update_member_telephone(update_member), fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20, pady =10)
+				update_telephone.place(rely=0.43,relx=0.5,anchor=CENTER)
 
 				update_postcode=Button(update_member,text = 'Update Postcode', command = lambda : update_member_postcode(update_member), fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20, pady =10)
 				update_postcode.place(rely=0.75,relx=0.5,anchor=CENTER)
 
 
-		def update_member_address(frame):
+		def update_member_telephone(frame):
 			conn = sqlite3.connect('BadmintonClub.db')
 			c = conn.cursor()
 
@@ -201,20 +220,20 @@ class MemberContent:
 
 				else:
 
-					new_address = simpledialog.askstring("info", "Enter the new address of the member")
+					new_telephone = simpledialog.askstring("info", "Enter the new telephone number of the member")
 
-					if new_address != '' and len(new_address) < 30:
+					if new_telephone != '' and len(new_telephone) < 30:
 
-						c.execute("""UPDATE member SET address = :new_address WHERE username=:username""", {
-							"new_address": str(new_address),
+						c.execute("""UPDATE member SET telephone = :new_telephone WHERE username=:username""", {
+							"new_telephone": str(new_telephone),
 							"username": memberUsername
 						})
 
-						messagebox.showinfo("info", "The members address is now "+new_address)
+						messagebox.showinfo("info", "The members telephone number is now "+new_telephone)
 
 					else:
 
-						messagebox.showinfo("Warning", "The address entered does not meet the rules", icon='error')
+						messagebox.showinfo("Warning", "The telephone number entered does not meet the rules", icon='error')
 
 			else:
 
@@ -318,7 +337,7 @@ class MemberContent:
 						messagebox.showinfo("Warning", "The username entered was not found in the database", icon='error')
 					else:
 
-						messagebox.showinfo("info", "The members details are listed below" + "\n\n" + "Username: " + str(data[0]) + "\n" + "Password: " + str(data[1]) + "\n" + "Firstname: " + str(data[2]) + "\n" + "Surname: " + str(data[3]) + "\n" + "Address: " + str(data[4]) + "\n" + "Postcode: " + str(data[5]) + "\n" + "Age: " + str(data[6]) + "\n" + "Group: " + str(data[7]))
+						messagebox.showinfo("info", "The members details are listed below" + "\n\n" + "Username: " + str(data[0]) + "\n" + "Password: " + str(data[1]) + "\n" + "Firstname: " + str(data[2]) + "\n" + "Surname: " + str(data[3]) + "\n" + "Telephone: " + str(data[4]) + "\n" + "Postcode: " + str(data[5]) + "\n" + "Age: " + str(data[6]) + "\n" + "Group: " + str(data[7]))
 
 				else:
 
@@ -334,12 +353,15 @@ class MemberContent:
 			conn = sqlite3.connect('BadmintonClub.db')
 			c = conn.cursor()
 
+			conn2 = sqlite3.connect('login.db')
+			c2 = conn2.cursor()
+
 			isValid = True
 			isValid = isValid and validate_username(username.get(), "Username", username_label)
 			isValid = isValid and validate_password(password.get(), "Password", password_label)
 			isValid = isValid and validate_not_empty_string(firstname.get(), "Firstname", firstname_label)
 			isValid = isValid and validate_not_empty_string(surname.get(), "Surname", surname_label)
-			isValid = isValid and validate_empty(address.get(), "Address", address_label)
+			isValid = isValid and validate_empty(telephone.get(), "Telephone number", telephone_label)
 			isValid = isValid and validate_empty(postcode.get(), "Postcode", postcode_label)
 			isValid = isValid and validate_age(age.get(), "Age", age_label)
 
@@ -348,7 +370,7 @@ class MemberContent:
 				account_password = password.get()
 				account_firstname = firstname.get()
 				account_surname = surname.get()
-				account_address = address.get()
+				account_telephone = telephone.get()
 				account_postcode = postcode.get()
 				account_age = age.get()
 
@@ -360,39 +382,51 @@ class MemberContent:
 				else:
 					finalCompetition = 'no'
 
+				telephone = tkinter.simpledialog.askstring("Info","Enter your telephone number")
 
-				response = askyesno("Are you sure?", "Are you sure that all information above is correct?")
-				if response == False:
-					showinfo("Info", "submition cancelled")
+				isValid = True
+				isValid = isValid and validate_telephone(telephone, "Telephone")
 
-				else:
+				if isValid:
+					response = askyesno("Are you sure?", "Are you sure that all information above is correct?")
+					if response == False:
+						showinfo("Info", "submition cancelled")
 
-					doc = buildMemberDocument(account_username, account_password, account_firstname, account_surname, account_address, account_postcode, account_age, account_group)
-					found = memberEmail("Lisburn Racquets Account Added", "You have been accepted into Lisburn Raquets Club." + "\n" + "Your details can be found in the document below." + "\n\n" + "Thanks for choosing Lisburn Racquets Club", account_username, doc, username_label)
-					if found:
+					else:
 
-						c.execute("INSERT INTO member VALUES (:username, :password, :firstname, :surname, :address, :postcode, :age, :member_group, :competition_status)",
-								  {
-									  'username': account_username,
-									  'password': account_password,
-									  'firstname': account_firstname,
-									  'surname': account_surname,
-									  'address': account_address,
-									  'postcode': account_postcode,
-									  'age': account_age,
-									  'member_group': account_group,
-									  'competition_status': finalCompetition,
-								  })
+						doc = buildMemberDocument(account_username, account_password, account_firstname, account_surname, account_telephone, account_postcode, account_age, account_group)
+						found = memberEmail("Lisburn Racquets Account Added", "You have been accepted into Lisburn Raquets Club." + "\n" + "Your details can be found in the document below." + "\n\n" + "Thanks for choosing Lisburn Racquets Club", account_username, doc, username_label)
+						if found:
 
-						username.set('')
-						password.set('')
-						firstname.set('')
-						surname.set('')
-						address.set('')
-						postcode.set('')
-						age.set('')
+							c.execute("INSERT INTO member VALUES (:username, :password, :firstname, :surname, :telephone, :postcode, :age, :member_group, :competition_status)",
+									  {
+										  'username': account_username,
+										  'password': account_password,
+										  'firstname': account_firstname,
+										  'surname': account_surname,
+										  'telephone': account_telephone,
+										  'postcode': account_postcode,
+										  'age': account_age,
+										  'member_group': account_group,
+										  'competition_status': finalCompetition,
+									  })
 
-						returnColour(username_label, password_label, firstname_label, surname_label, address_label, postcode_label, age_label)
+							c2.execute("INSERT INTO account VALUES (:username, :password, :status)",
+									  {
+										  'username': account_username,
+										  'password': account_password,
+										  'status': 'member',
+									  })
+
+							username.set('')
+							password.set('')
+							firstname.set('')
+							surname.set('')
+							telephone.set('')
+							postcode.set('')
+							age.set('')
+
+							returnColour(username_label, password_label, firstname_label, surname_label, telephone_label, postcode_label, age_label)
 
 
 				conn.commit()
@@ -406,7 +440,7 @@ class MemberContent:
 		password = StringVar()
 		firstname=StringVar()
 		surname=StringVar()
-		address=StringVar()
+		telephone=StringVar()
 		postcode=StringVar()
 		age=IntVar()
 
@@ -424,8 +458,8 @@ class MemberContent:
 		surname_label = tkinter.Label(self.member, text="Surname:", font=('Georgia', 14, 'bold'), fg='black', bg='white')
 		surname_label.place(rely=0.231, relx=0.36, anchor='center')
 
-		address_label = tkinter.Label(self.member, text="Address:", font=('Georgia', 14, 'bold'), fg='black', bg='white')
-		address_label.place(rely=0.152, relx=0.7, anchor='center')
+		telephone_label = tkinter.Label(self.member, text="Telephone:", font=('Georgia', 14, 'bold'), fg='black', bg='white')
+		telephone_label.place(rely=0.152, relx=0.7, anchor='center')
 
 		postcode_label = tkinter.Label(self.member, text="Postcode:", font=('Georgia', 14, 'bold'), fg='black', bg='white')
 		postcode_label.place(rely=0.231, relx=0.64, anchor='center')
@@ -446,8 +480,8 @@ class MemberContent:
 		surname_entry = tkinter.Entry(self.member, width=15, textvariable=surname, bd=3, relief='ridge', cursor="tcross")
 		surname_entry.place(rely=0.235, relx=0.483, anchor='center')
 
-		address_entry = tkinter.Entry(self.member, width=25, textvariable=address, bd=3, relief='ridge', cursor="tcross")
-		address_entry.place(rely=0.155, relx=0.85, anchor='center')
+		telephone_entry = tkinter.Entry(self.member, width=25, textvariable=telephone, bd=3, relief='ridge', cursor="tcross")
+		telephone_entry.place(rely=0.155, relx=0.85, anchor='center')
 
 		postcode_entry = tkinter.Entry(self.member, width=10, textvariable=postcode, bd=3, relief='ridge', cursor="tcross")
 		postcode_entry.place(rely=0.234, relx=0.743, anchor='center')
@@ -459,7 +493,7 @@ class MemberContent:
 		background_entry_canvas = Canvas(self.member,width=160, height=90, bg = "white")
 		background_entry_canvas.place(rely=0.37,relx=0.13,anchor=CENTER)
 
-		background_entry_image = PhotoImage(file = "tennis_160x90.png")
+		background_entry_image = PhotoImage(file = "C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/tennis2.png")
 
 		background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 		background_entry_canvas.background_entry_image = background_entry_image
@@ -467,7 +501,7 @@ class MemberContent:
 		background_entry2_canvas = Canvas(self.member,width=123, height=88, bg = "white")
 		background_entry2_canvas.place(rely=0.37,relx=0.87,anchor=CENTER)
 
-		background_entry2_image = PhotoImage(file = "squash_123x88.png")
+		background_entry2_image = PhotoImage(file = "C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/squash.png")
 
 		background_entry2_canvas.create_image(0,0, anchor = NW, image=background_entry2_image)
 		background_entry2_canvas.background_entry2_image = background_entry2_image
@@ -486,7 +520,7 @@ class MemberContent:
 		create_button.place(rely=0.33, relx=0.63, anchor='center')
 
 
-		member_search_Tv=ttk.Treeview(self.member,height=14,columns=('Password','Firstname','Surname','Address','Postcode','Age','Group'))
+		member_search_Tv=ttk.Treeview(self.member,height=14,columns=('Password','Firstname','Surname','Telephone','Postcode','Age','Group'))
 		member_search_Tv.place(relx=0.5,rely=0.71,anchor=CENTER)
 
 		member_search_Tv.heading("#0",text='Username')
@@ -497,7 +531,7 @@ class MemberContent:
 		member_search_Tv.column("#2",minwidth=0,width=100)
 		member_search_Tv.heading("#3",text='Surname')
 		member_search_Tv.column("#3",minwidth=0,width=100)
-		member_search_Tv.heading("#4",text='Address')
+		member_search_Tv.heading("#4",text='Telephone')
 		member_search_Tv.column("#4",minwidth=0,width=140)
 		member_search_Tv.heading("#5",text='Postcode')
 		member_search_Tv.column("#5",minwidth=0,width=90)

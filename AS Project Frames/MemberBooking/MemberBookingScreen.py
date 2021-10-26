@@ -18,18 +18,116 @@ class BookingContent:
 		self.booking = mainScreen
 		self.conn = sqlite3.connect('BadmintonClub.db')
 		self.c = self.conn.cursor()
+		self.conn2 = sqlite3.connect('BadmintonClub.db')
+		self.c2 = self.conn2.cursor()
 
 
-		# self.c.execute("""CREATE TABLE competition (
+		# self.c.execute("""CREATE TABLE booking (
 		# 			username text,
 		# 			username2 text,
 		# 			date text,
 		# 			time text,
-		# 			court text
+		# 			court text,
+		# 			bookingID integer
 		# 			)""")
 
 
 	def generateBookingContnt(self):
+
+		def validate_time(value, fieldname, label):
+			if (value ==0):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must have at least 1 selected")
+				return False
+
+			label.config(fg="SpringGreen3")
+			return True
+
+
+		def validate_court(value, fieldname, label):
+			if (value ==0):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must have at least 1 selected")
+				return False
+
+			label.config(fg="SpringGreen3")
+			return True
+
+
+		def validate_member(value, fieldname, label):
+			if (value == ""):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must have at least 1 selected")
+				return False
+
+			label.config(fg="SpringGreen3")
+			return True
+
+
+		def returnColour(label):
+			label.config(fg="black")
+
+
+		def returnColour2(label, label2):
+			label.config(fg="black")
+			label2.config(fg="black")
+
+
+
+		def clearTv():
+			record=booking_TV.get_children()
+			for elements in record:
+				booking_TV.delete(elements)
+
+
+		def treeviewPopulate():
+			clearTv()
+
+			conn = sqlite3.connect('BadmintonClub.db')
+			c = conn.cursor()
+
+			c.execute("SELECT * From booking")
+			items = c.fetchall()
+
+			conn.commit()
+			conn.close()
+
+			count=0
+			for row in items:
+				if row == []:
+					pass
+				else:
+					if count%2==0:
+						booking_TV.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4]))
+					else:
+						booking_TV.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4]))
+					count+=1
+
+
+		def newTreeviewPopulate():
+			clearTv()
+
+			conn = sqlite3.connect('BadmintonClub.db')
+			c = conn.cursor()
+
+			c.execute("SELECT * From booking")
+			items = c.fetchall()
+
+			conn.commit()
+			conn.close()
+
+			count=0
+			for row in items:
+				if row == [] or row[1] == "" or row[2] == "":
+					pass
+				else:
+					if count%2==0:
+						booking_TV.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4]))
+					else:
+						booking_TV.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4]))
+					count+=1
+
+
 
 		def dateSelectionleft():
 			currentDateSelected = date_label.cget("text")
@@ -67,7 +165,7 @@ class BookingContent:
 				date_label.config(text=fiveDayWordDate)
 			if (currentDateSelected == sevenDayWordDate):
 				date_label.config(text=sixDayWordDate)
-				next_date_button.place(rely=0.654, relx=0.535, anchor='center')
+				next_date_button.place(rely=0.643, relx=0.535, anchor='center')
 
 
 		def dateSelectionRight():
@@ -93,7 +191,7 @@ class BookingContent:
 
 			if (currentDateSelected == todaysWordDate):
 				date_label.config(text=oneDayWordDate)
-				previous_date_button.place(rely=0.654, relx=0.085, anchor='center')
+				previous_date_button.place(rely=0.643, relx=0.085, anchor='center')
 			if (currentDateSelected == oneDayWordDate):
 				date_label.config(text=twoDayWordDate)
 			if (currentDateSelected == twoDayWordDate):
@@ -113,8 +211,150 @@ class BookingContent:
 			pass
 
 
+		def AutoFillButton():
+			conn = sqlite3.connect('BadmintonClub.db')
+			c = conn.cursor()
+
+			isValid = True
+			isValid = isValid and validate_time(time.get(), "Time", title_label)
+			isValid = isValid and validate_court(court.get(), "Court", title_label)
+
+			if isValid:
+				if (time.get() ==1):
+					final_time = '9-10am'
+				if (time.get() ==2):
+					final_time = '10-11am'
+				if (time.get() ==3):
+					final_time = '11-12am'
+				if (time.get() ==4):
+					final_time = '12-1pm'
+				if (time.get() ==5):
+					final_time = '1-2pm'
+				if (time.get() ==6):
+					final_time = '2-3pm'
+				if (time.get() ==7):
+					final_time = '3-4pm'
+				if (time.get() ==8):
+					final_time = '4-5pm'
+				if (time.get() ==9):
+					final_time = '5-6pm'
+				if (time.get() ==10):
+					final_time = '6-7pm'
+				if (time.get() ==11):
+					final_time = '7-8pm'
+				if (time.get() ==12):
+					final_time = '8-9pm'
+				if (time.get() ==13):
+					final_time = '9-10pm'
+				if (time.get() ==14):
+					final_time = '10-11pm'
+
+				if (court.get() ==1):
+					final_court = '1'
+				if (court.get() ==2):
+					final_court = '2'
+				if (court.get() ==3):
+					final_court = '3'
+				if (court.get() ==4):
+					final_court = '4'
+				if (court.get() ==5):
+					final_court = '5'
+				if (court.get() ==6):
+					final_court = '6'
+				if (court.get() ==7):
+					final_court = '7'
+				if (court.get() ==8):
+					final_court = '8'
+				if (court.get() ==9):
+					final_court = '9'
+				if (court.get() ==10):
+					final_court = '10'
+				if (court.get() ==11):
+					final_court = '11'
+				if (court.get() ==12):
+					final_court = '12'
+
+				currentDateSelected = date_label.cget("text")
+
+				response = askyesno("Are you sure?", "Are you sure that the details selected are correct?")
+				if response == False:
+					returnColour(title_label)
+					showinfo("Info", "submition cancelled")
+
+				else:
+					c.execute("SELECT * FROM booking")
+					booking_array = c.fetchall()
+
+					newId = len(booking_array) + 1
+
+					c.execute("INSERT INTO booking VALUES(?, ?, ?, ?, ?, ?)", (
+						"","",currentDateSelected,final_time,final_court,newId
+
+					))
+
+					messagebox.showinfo("info", "User's has been successfully stored for the competition")
+
+				today = datetime.date.today()
+				todaysWordDate = today.strftime("%B %d, %Y")
+				date_label.config(text=todaysWordDate)
+				time.set("1")
+				court.set("1")
+
+				returnColour(title_label)
+
+			conn.commit()
+			conn.close()
+
+			treeviewPopulate()
 
 
+		def confirmBooking():
+			conn = sqlite3.connect('BadmintonClub.db')
+			c = conn.cursor()
+
+			isValid = True
+			isValid = isValid and validate_member(self.memberNamesAndPasswords.get(), "Member 1", member_label)
+			isValid = isValid and validate_member(self.memberNamesAndPasswords2.get(), "Member 2", member2_label)
+
+			if isValid:
+				finalMember = self.memberNamesAndPasswords.get()
+				finalMember2 = self.memberNamesAndPasswords2.get()
+
+				response = askyesno("Are you sure?", "Are you sure that the members selected are correct?")
+				if response == False:
+					returnColour2(member_label, member2_label)
+					showinfo("Info", "submition cancelled")
+
+				else:
+					response2 = askyesno("Are you sure?", "These new members will update the latest booking added, is this okay?")
+					if response2 == False:
+						returnColour2(member_label, member2_label)
+						showinfo("Info", "submition cancelled")
+
+					else:
+
+						c.execute("SELECT * FROM booking")
+						competition_array = c.fetchall()
+
+						BookingID = len(competition_array)
+
+						c.execute("""UPDATE booking SET username = :username WHERE bookingID=:bookingID""", {
+							"username": finalMember,
+							"bookingID": BookingID
+						})
+
+						c.execute("""UPDATE booking SET username2 = :username2 WHERE bookingID=:bookingID""", {
+							"username2": finalMember2,
+							"bookingID": BookingID
+						})
+
+					returnColour2(member_label, member2_label)
+					messagebox.showinfo("info", "Booking has been completed")
+
+			conn.commit()
+			conn.close()
+
+			treeviewPopulate()
 
 
 
@@ -122,10 +362,16 @@ class BookingContent:
 		court=IntVar()
 
 
+
+		line1 = Canvas(self.booking, width=3, height=190)
+		line1.config(bg='black')
+		line1.create_line(3, 0, 200, 100000)
+		line1.place(rely=0.86, relx=0.566, anchor='center')
+
 		background_entry_canvas = Canvas(self.booking,width=900, height=400, bg = "white")
 		background_entry_canvas.place(rely=0.41,relx=0.5,anchor=CENTER)
 
-		background_entry_image = PhotoImage(file ="rectangleHeader2_800x3002_1_900x4003.png")
+		background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/BookingTable.png")
 
 		background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 		background_entry_canvas.background_entry_image = background_entry_image
@@ -222,19 +468,19 @@ class BookingContent:
 		date_label.place(rely=0.64, relx=0.313, anchor='center')
 
 
-		left_date_photo = PhotoImage(file="blackTriangleleft3_6_57x68.png")
+		left_date_photo = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/ArrowLeft.png")
 		previous_date_button = Button(self.booking, image=left_date_photo, command=dateSelectionleft, borderwidth=0, cursor="tcross")
 		previous_date_button.image = left_date_photo
-		previous_date_button.place(rely=0.644, relx=0.085, anchor='center')
+		previous_date_button.place(rely=0.643, relx=0.085, anchor='center')
 		previous_date_button.place_forget()
 
-		right_date_photo = PhotoImage(file="blackTriangle3_6_57x68.png")
+		right_date_photo = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/ArrowRight.png")
 		next_date_button = Button(self.booking, image=right_date_photo, command=dateSelectionRight, borderwidth=0, cursor="tcross")
 		next_date_button.image = right_date_photo
-		next_date_button.place(rely=0.644, relx=0.535, anchor='center')
+		next_date_button.place(rely=0.643, relx=0.535, anchor='center')
 
 
-		autofill_booking_button = tkinter.Button(self.booking, cursor="tcross",text="Auto-Fill Booking", command=firstTime, fg='black', bg='white', bd=5, relief='ridge', font=('Tahoma', 14, 'bold'), padx=25, pady=3)
+		autofill_booking_button = tkinter.Button(self.booking, cursor="tcross",text="Auto-Fill Booking", command=AutoFillButton, fg='black', bg='white', bd=5, relief='ridge', font=('Tahoma', 14, 'bold'), padx=25, pady=3)
 		autofill_booking_button.place(rely=0.64, relx=0.755, anchor='center')
 
 
@@ -245,8 +491,30 @@ class BookingContent:
 		member2_label.place(rely=0.845, relx=0.66, anchor='center')
 
 
-		booking_submit_button = tkinter.Button(self.booking, cursor="tcross",text="Confirm Booking", command=firstTime, fg='white', bg='black', bd=5, relief='ridge', font=('Tahoma', 14, 'bold'), padx=15)
+		booking_submit_button = tkinter.Button(self.booking, cursor="tcross",text="Confirm Booking", command=confirmBooking, fg='white', bg='black', bd=5, relief='ridge', font=('Tahoma', 14, 'bold'), padx=15)
 		booking_submit_button.place(rely=0.94, relx=0.755, anchor='center')
+
+
+		booking_TV=ttk.Treeview(self.booking,height=7,columns=('Member2','Date','Time','Court'))
+		booking_TV.place(relx=0.278,rely=0.86, anchor=CENTER)
+
+		booking_TV.heading("#0",text='Member1')
+		booking_TV.column("#0",minwidth=0,width=155)
+		booking_TV.heading("#1",text='Member2')
+		booking_TV.column("#1",minwidth=0,width=155)
+		booking_TV.heading("#2",text='Date')
+		booking_TV.column("#2",minwidth=0,width=125)
+		booking_TV.heading("#3",text='Time')
+		booking_TV.column("#3",minwidth=0,width=55)
+		booking_TV.heading("#4",text='Court')
+		booking_TV.column("#4",minwidth=0,width=40)
+
+		booking_ysearch_scrollbar = Scrollbar(self.booking, orient = 'vertical', command = booking_TV.yview, cursor="tcross")
+		booking_ysearch_scrollbar.place(relx=0.554,rely=0.861,anchor='center',height=168)
+		booking_TV.configure(yscrollcommand=booking_ysearch_scrollbar.set)
+
+
+		treeviewPopulate()
 
 
 
@@ -273,7 +541,7 @@ class BookingContent:
 		items = c.fetchall()
 
 		for row in items:
-			if row[8] == "no" or row == []:
+			if row == []:
 				pass
 			else:
 				member_name = row[0]

@@ -529,7 +529,7 @@ class ResultsContent:
 			treeviewPopulate()
 
 
-		def memberGroupSelection():
+		def memberGroupSelection(self):
 			memberGroups = StringVar()
 
 			group_name_choices = get_group_details()
@@ -538,7 +538,7 @@ class ResultsContent:
 				group_selection_dropdown.place(rely=0.163, relx=0.73, anchor='center')
 
 
-		def get_group_details():
+		def get_group_details(self):
 			conn = sqlite3.connect('BadmintonClub.db')
 			c = conn.cursor()
 
@@ -580,7 +580,7 @@ class ResultsContent:
 		background_entry_canvas = Canvas(self.results,width=257, height=28, bg = "white")
 		background_entry_canvas.place(rely=0.5,relx=0.46,anchor=CENTER)
 
-		background_entry_image = PhotoImage(file ="newestbox_260x30.png")
+		background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/Competition_boxes.png")
 
 		background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 		background_entry_canvas.background_entry_image = background_entry_image
@@ -592,7 +592,7 @@ class ResultsContent:
 		background_entry_canvas = Canvas(self.results,width=257, height=28, bg = "white")
 		background_entry_canvas.place(rely=0.5,relx=0.856,anchor=CENTER)
 
-		background_entry_image = PhotoImage(file ="newestbox_260x30.png")
+		background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/Competition_boxes.png")
 
 		background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 		background_entry_canvas.background_entry_image = background_entry_image
@@ -625,7 +625,7 @@ class ResultsContent:
 		background_entry_canvas = Canvas(self.results,width=257, height=28, bg = "white")
 		background_entry_canvas.place(rely=0.25,relx=0.658,anchor=CENTER)
 
-		background_entry_image = PhotoImage(file ="newestbox_260x30.png")
+		background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/Competition_boxes.png")
 
 		background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 		background_entry_canvas.background_entry_image = background_entry_image
@@ -654,6 +654,7 @@ class ResultsContent:
 
 		submit_member_button = tkinter.Button(self.results, cursor="tcross",text="Submit Members To Competition", command=submitMemberToCompetition, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 10, 'bold'), padx=5, pady=2)
 		submit_member_button.place(rely=0.32, relx=0.17, anchor='center')
+		submit_member_button.config(relief="flat")
 
 		submit_date_button = tkinter.Button(self.results, cursor="tcross",text="Submit Dates of Competition", command=submitDateToCompetition, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 10, 'bold'), padx=5, pady=2)
 		submit_date_button.place(rely=0.59, relx=0.17, anchor='center')
