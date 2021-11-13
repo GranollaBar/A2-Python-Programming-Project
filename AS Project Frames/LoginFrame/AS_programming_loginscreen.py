@@ -18,11 +18,8 @@ login.configure(bg='white')
 login.resizable(0,0)
 
 
-conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Databases/Login.db')
+conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 c = conn.cursor()
-
-conn2 = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Databases/BadmintonClub.db')
-c2 = conn2.cursor()
 
 
 # c.execute("""CREATE TABLE account (
@@ -198,16 +195,31 @@ def newPasswordUpdate(newPassword, verificationCode, verification_entry, frame, 
         messagebox.showinfo("Warning","The password entered did not comply with the rules", icon='error')
 
     else:
+        c.execute(f"SELECT * FROM account WHERE username=?", (finalname,))
+        data = c.fetchone()
 
         c.execute("""UPDATE account SET password = :newPassword WHERE username=:username""", {
             "newPassword": newPassword,
             "username": finalname
         })
 
-        c2.execute("""UPDATE member SET password = :newPassword WHERE username=:username""", {
-            "newPassword": newPassword,
-            "username": finalname
-        })
+        if (data[2] == 'member'):
+            c.execute("""UPDATE member SET password = :newPassword WHERE username=:username""", {
+                "newPassword": newPassword,
+                "username": finalname
+            })
+
+        if (data[2] == 'coach'):
+            c.execute("""UPDATE coach SET password = :newPassword WHERE username=:username""", {
+                "newPassword": newPassword,
+                "username": finalname
+            })
+
+        if (data[2] == 'manager'):
+            c.execute("""UPDATE manager SET password = :newPassword WHERE username=:username""", {
+                "newPassword": newPassword,
+                "username": finalname
+            })
 
         frame.destroy()
         messagebox.showinfo("info", "The users password is now "+newPassword)
@@ -216,9 +228,6 @@ def newPasswordUpdate(newPassword, verificationCode, verification_entry, frame, 
 
     conn.commit()
     conn.close()
-
-    conn2.commit()
-    conn2.close()
 
 
 def login_submit(login_username, login_password):
@@ -246,7 +255,7 @@ def login_submit(login_username, login_password):
 
             login.destroy()
 
-            from Common import MainScreen
+            from MainScreens import MainScreen
             MainScreen.mainScreen.tkraise()
 
     conn.commit()
@@ -287,13 +296,13 @@ choosing=IntVar()
 
 
 
-title_label = tkinter.Label(login, text="Welcome To Lisburn Racquets Club", font=('Verdana', 18, 'underline', 'bold'), fg='SpringGreen3', bg='white')
+title_label = tkinter.Label(login, text="Welcome To Lisburn Racquets Club", font=('Tahoma', 18, 'underline', 'bold'), fg='SpringGreen3', bg='white')
 title_label.place(rely=0.06, relx=0.5, anchor='center')
 
-username_label = tkinter.Label(login, text="Username:", font=('Georgia', 20, 'bold'),fg='black', bg='white')
+username_label = tkinter.Label(login, text="Username:", font=('Tahoma', 20, 'bold'),fg='black', bg='white')
 username_label.place(rely=0.45, relx=0.295, anchor='center')
 
-password_label = tkinter.Label(login, text="Password:", font=('Georgia', 20, 'bold'), fg='black', bg='white')
+password_label = tkinter.Label(login, text="Password:", font=('Tahoma', 20, 'bold'), fg='black', bg='white')
 password_label.place(rely=0.6, relx=0.3, anchor='center')
 
 
@@ -304,26 +313,26 @@ password_entry = tkinter.Entry(login, width=30, show="*", textvariable = loginPa
 password_entry.place(rely=0.604, relx=0.655, anchor='center')
 
 
-click_twitter_btn = PhotoImage(file='C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/twitter.png')
+click_twitter_btn = PhotoImage(file='C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/twitter.png')
 twitter_img_label = Label(image=click_twitter_btn)
 
 twitter_button = Button(login, image=click_twitter_btn, command= twitterLink, cursor="tcross")
 twitter_button.place(rely=0.25, relx=0.86, anchor='center')
 
-click_facebook_btn = PhotoImage(file='C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/facebook.png')
+click_facebook_btn = PhotoImage(file='C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/facebook.png')
 facebook_img_label = Label(image=click_facebook_btn)
 
 facebook_button = Button(login, image=click_facebook_btn, command= facebookLink, cursor="tcross")
 facebook_button.place(rely=0.25, relx=0.14, anchor='center')
 
-password_button_image = PhotoImage(file='C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/eye.png')
+password_button_image = PhotoImage(file='C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/eye.png')
 image_label = Label(image=password_button_image)
 
 password_button = Button(login, image=password_button_image, borderwidth=3, cursor="tcross")
 password_button.place(rely=0.604, relx=0.885, anchor='center')
 password_button.bind("<ButtonRelease-1>", show_password)
 
-notpassword_button_image = PhotoImage(file='C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/noteye.png')
+notpassword_button_image = PhotoImage(file='C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/noteye.png')
 notimage_label = Label(image=notpassword_button_image)
 
 notpassword_button = Button(login, image=notpassword_button_image, borderwidth=3, cursor="tcross")
@@ -333,7 +342,7 @@ notpassword_button.bind("<ButtonRelease-1>", dont_show_password)
 background_entry_canvas = Canvas(login,width=218, height=130, bg = "white")
 background_entry_canvas.place(rely=0.26,relx=0.5,anchor=CENTER)
 
-background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/lisburnraquetsclub.png")
+background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/lisburnraquetsclub.png")
 
 background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 background_entry_canvas.background_entry_image = background_entry_image

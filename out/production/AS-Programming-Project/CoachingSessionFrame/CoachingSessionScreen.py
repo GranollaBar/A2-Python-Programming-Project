@@ -6,13 +6,11 @@ from tkinter.messagebox import askyesno
 import sqlite3
 from tkinter import simpledialog
 from tkinter import *
-import math
 from functools import partial
 import datetime
-from tkcalendar import Calendar, DateEntry
+from tkcalendar import Calendar
 
-from MemberFrame.member_email import memberEmail
-from MemberFrame.memberWordDocument import buildMemberDocument
+MemberCounter=0
 
 class CoachingSessionContent:
 
@@ -119,7 +117,7 @@ class CoachingSessionContent:
 			background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
 			background_entry_canvas.place(rely=0.3,relx=0.15,anchor=CENTER)
 
-			background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+			background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 			background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 			background_entry_canvas.background_entry_image = background_entry_image
@@ -128,7 +126,7 @@ class CoachingSessionContent:
 			background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
 			background_entry_canvas.place(rely=0.5,relx=0.15,anchor=CENTER)
 
-			background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+			background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 			background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 			background_entry_canvas.background_entry_image = background_entry_image
@@ -137,7 +135,7 @@ class CoachingSessionContent:
 			background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
 			background_entry_canvas.place(rely=0.7,relx=0.15,anchor=CENTER)
 
-			background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+			background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 			background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 			background_entry_canvas.background_entry_image = background_entry_image
@@ -146,7 +144,7 @@ class CoachingSessionContent:
 			background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
 			background_entry_canvas.place(rely=0.9,relx=0.15,anchor=CENTER)
 
-			background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+			background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 			background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 			background_entry_canvas.background_entry_image = background_entry_image
@@ -155,7 +153,7 @@ class CoachingSessionContent:
 			background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
 			background_entry_canvas.place(rely=0.3,relx=0.5,anchor=CENTER)
 
-			background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+			background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 			background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 			background_entry_canvas.background_entry_image = background_entry_image
@@ -164,7 +162,7 @@ class CoachingSessionContent:
 			background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
 			background_entry_canvas.place(rely=0.5,relx=0.5,anchor=CENTER)
 
-			background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+			background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 			background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 			background_entry_canvas.background_entry_image = background_entry_image
@@ -173,7 +171,7 @@ class CoachingSessionContent:
 			background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
 			background_entry_canvas.place(rely=0.7,relx=0.5,anchor=CENTER)
 
-			background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+			background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 			background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 			background_entry_canvas.background_entry_image = background_entry_image
@@ -182,7 +180,7 @@ class CoachingSessionContent:
 			background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
 			background_entry_canvas.place(rely=0.9,relx=0.5,anchor=CENTER)
 
-			background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+			background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 			background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 			background_entry_canvas.background_entry_image = background_entry_image
@@ -191,7 +189,7 @@ class CoachingSessionContent:
 			background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
 			background_entry_canvas.place(rely=0.3,relx=0.85,anchor=CENTER)
 
-			background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+			background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 			background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 			background_entry_canvas.background_entry_image = background_entry_image
@@ -200,7 +198,7 @@ class CoachingSessionContent:
 			background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
 			background_entry_canvas.place(rely=0.5,relx=0.85,anchor=CENTER)
 
-			background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+			background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 			background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 			background_entry_canvas.background_entry_image = background_entry_image
@@ -209,7 +207,7 @@ class CoachingSessionContent:
 			background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
 			background_entry_canvas.place(rely=0.7,relx=0.85,anchor=CENTER)
 
-			background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+			background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 			background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 			background_entry_canvas.background_entry_image = background_entry_image
@@ -218,7 +216,7 @@ class CoachingSessionContent:
 			background_entry_canvas = Canvas(courts,width=100, height=58, bg = "white")
 			background_entry_canvas.place(rely=0.9,relx=0.85,anchor=CENTER)
 
-			background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+			background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 			background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 			background_entry_canvas.background_entry_image = background_entry_image
@@ -470,7 +468,18 @@ class CoachingSessionContent:
 			return True
 
 
-		def validate_date(label):
+		def validate_date(value, fieldname, label):
+			presentDate = datetime.datetime.now()
+			date_formated = presentDate.strftime("%d/%m/%Y")
+
+			d1 = datetime.datetime.strptime(value, "%d/%m/%Y").date()
+			d2 = datetime.datetime.strptime(str(date_formated), "%d/%m/%Y").date()
+
+			if d2>d1:
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be before the current date")
+				return False
+
 			label.config(fg="SpringGreen3")
 			return True
 
@@ -551,27 +560,90 @@ class CoachingSessionContent:
 
 		def dateEntryCheck(dob):
 			def assign_dob():
-				eventDate.set(cal.selection_get())
+				eventDate.set(cal.get_date())
 				top.withdraw()
 
 			top = Toplevel(self.coachSession)
 
-			cal = Calendar(top, font="Tahoma 16", selectmode='day', cursor="tcross", year=2021, month=5, day=29)
+			cal = Calendar(top, font="Tahoma 16", date_pattern='dd/mm/yyyy',selectmode='day', cursor="tcross", year=2021, month=5, day=29)
 			cal.pack(fill="both", expand=True)
 			ttk.Button(top, text="ok", command=assign_dob).pack()
 
 
+		def PeopleCounter():
+			conn = sqlite3.connect('BadmintonClub.db')
+			c = conn.cursor()
+
+			c.execute("SELECT member_group From member")
+			items = c.fetchall()
+
+			if items =='':
+				pass
+
+			else:
+
+				MemberCounter = 0
+				if '1' in str(items) and group1.get() ==1:
+					MemberCounter = MemberCounter + 1
+				if '2' in str(items) and group2.get() ==1:
+					MemberCounter = MemberCounter + 1
+				if '3' in str(items) and group3.get() ==1:
+					MemberCounter = MemberCounter + 1
+				if '4' in str(items) and group4.get() ==1:
+					MemberCounter = MemberCounter + 1
+				if '5' in str(items) and group5.get() ==1:
+					MemberCounter = MemberCounter + 1
+				if '6' in str(items) and group6.get() ==1:
+					MemberCounter = MemberCounter + 1
+				if '7' in str(items) and group7.get() ==1:
+					MemberCounter = MemberCounter + 1
+				if '8' in str(items) and group8.get() ==1:
+					MemberCounter = MemberCounter + 1
+				if '9' in str(items) and group9.get() ==1:
+					MemberCounter = MemberCounter + 1
+				if '10' in str(items) and group10.get() ==1:
+					MemberCounter = MemberCounter + 1
+				if '11' in str(items) and group11.get() ==1:
+					MemberCounter = MemberCounter + 1
+				if '12' in str(items) and group12.get() ==1:
+					MemberCounter = MemberCounter + 1
+				if '13' in str(items) and group13.get() ==1:
+					MemberCounter = MemberCounter + 1
+				if '14' in str(items) and group14.get() ==1:
+					MemberCounter = MemberCounter + 1
+				if '15' in str(items) and group15.get() ==1:
+					MemberCounter = MemberCounter + 1
+				if '16' in str(items) and group16.get() ==1:
+					MemberCounter = MemberCounter + 1
+				if '17' in str(items) and group17.get() ==1:
+					MemberCounter = MemberCounter + 1
+				if '18' in str(items) and group18.get() ==1:
+					MemberCounter = MemberCounter + 1
+				if '19' in str(items) and group19.get() ==1:
+					MemberCounter = MemberCounter + 1
+				if '20' in str(items) and group20.get() ==1:
+					MemberCounter = MemberCounter + 1
+
+			conn.commit()
+			conn.close()
+
+			return MemberCounter
+
 		def updateCoachSessionDate(newDate, frame):
-			def new_assign_dob():
+			def new_assign_dob(username):
 				conn = sqlite3.connect('CoachDetails.db')
 				c = conn.cursor()
 
-				newEventDate.set(newcal.selection_get())
+				newEventDate.set(newcal.get_date())
 				top.withdraw()
 
 				newCoachSessionDate = newEventDate.get()
 
-				c.execute("""UPDATE coachSession SET date = :newDate""", {'newDate': newCoachSessionDate})
+				c.execute("""UPDATE coachSession SET date = :newDate WHERE username=:username""", {
+					"newDate": str(newCoachSessionDate),
+					"username": username
+				})
+
 				messagebox.showinfo("info", "The coach's session date is now " + newCoachSessionDate)
 
 				conn.commit()
@@ -597,7 +669,7 @@ class CoachingSessionContent:
 
 					newcal = Calendar(top, font="Tahoma 16", selectmode='day', cursor="tcross", year=2021, month=5, day=29)
 					newcal.pack(fill="both", expand=True)
-					ttk.Button(top, text="Update", command=new_assign_dob).pack()
+					ttk.Button(top, text="Update", command= lambda : new_assign_dob(coachUsername)).pack()
 
 
 		def clearTv():
@@ -642,7 +714,7 @@ class CoachingSessionContent:
 			techniqueReturn.config(fg="black")
 
 
-		def updateCoachSessionDetails():
+		def updateCoachSessionDetails(self):
 			response = askyesno("Are you sure?", "Do you want to update a coach's session")
 			if response == False:
 				showinfo("Info", "Update cancelled")
@@ -704,7 +776,7 @@ class CoachingSessionContent:
 					update_endtime_spinbox = Spinbox(updateTimes, width=7,font=("Tahoma",8, 'bold'), bd=3, relief='ridge', cursor="tcross", textvariable=new_end_time, values=('9.00', '9.15', '9.30', '9.45', '10.00', '10.15', '10.30', '10.45', '11.00', '11.15', '11.30', '11.45', '12.00', '12.15','12.30','12.45','13.00','13.15','13.30','13.45','14.00','14.15','14.30','14.45','15.00','15.15','15.30','15.45','16.00','16.15','16.30','16.45','17.00','17.15','17.30','17.45','18.00','18.15','18.30','18.45','19.00','19.15','19.30','19.45','20.00','20.15','20.30','20.45','21.00','21.15','21.30','21.45','22.00','22.15','22.30','22.45','23.00'))
 					update_endtime_spinbox.place(rely=0.553, relx=0.79, anchor='center')
 
-					update_time_button = Button(updateTimes, text='Confirm Update',font=("Tahoma",10, 'bold'), fg='white', bg='black',cursor="tcross",command=lambda : confirmNewTimes(updateTimes), padx=10, bd=4, relief="ridge")
+					update_time_button = Button(updateTimes, text='Confirm Update',font=("Tahoma",10, 'bold'), fg='white', bg='black',cursor="tcross",command=lambda : confirmNewTimes(updateTimes, coachUsername), padx=10, bd=4, relief="ridge")
 					update_time_button.place(rely=0.85, relx=0.5, anchor='center')
 
 			conn.commit()
@@ -713,7 +785,7 @@ class CoachingSessionContent:
 			treeviewPopulate()
 
 
-		def confirmNewTimes(frame):
+		def confirmNewTimes(frame, username):
 			conn = sqlite3.connect('CoachDetails.db')
 			c = conn.cursor()
 
@@ -727,8 +799,14 @@ class CoachingSessionContent:
 				newCoachSessionStartTime = new_start_time.get()
 				newCoachSessionEndTime = new_end_time.get()
 
-				c.execute("""UPDATE coachSession SET startTime = :newStartTime""", {'newStartTime': newCoachSessionStartTime})
-				c.execute("""UPDATE coachSession SET endTime = :newEndTime""", {'newEndTime': newCoachSessionEndTime})
+				c.execute("""UPDATE coachSession SET startTime = :new_start_time WHERE username=:username""", {
+					"new_start_time": str(new_start_time.get()),
+					"username": username
+				})
+				c.execute("""UPDATE coachSession SET endTime = :new_end_time WHERE username=:username""", {
+					"new_end_time": str(new_end_time.get()),
+					"username": username
+				})
 
 				messagebox.showinfo("info", "The coach's new session start time is now "+newCoachSessionStartTime)
 				messagebox.showinfo("info", "The coach's new session end time is now "+newCoachSessionEndTime)
@@ -757,10 +835,10 @@ class CoachingSessionContent:
 					newcourts = Toplevel(self.coachSession, bg="white")
 					newcourts.geometry('500x500')
 
-					title_label = tkinter.Label(newcourts, text="Update the No. Courts Needed For The Session", font=('Tahoma', 15, 'underline', 'bold'), fg='black', bg='white')
+					title_label = tkinter.Label(newcourts, text="Update the No. Courts Needed For The Session", font=('Tahoma', 15, 'underline', 'bold'), fg='SpringGreen3', bg='white')
 					title_label.place(rely=0.03, relx=0.5, anchor='center')
 
-					confirm_button = tkinter.Button(newcourts, text="Confirm Selection", command=lambda : updateCourts(newcourts), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 10, 'bold'), padx=35, cursor="tcross")
+					confirm_button = tkinter.Button(newcourts, text="Confirm Selection", command=lambda : updateCourts(newcourts, coachUsername), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 10, 'bold'), padx=35, cursor="tcross")
 					confirm_button.place(rely=0.112, relx=0.5, anchor='center')
 
 					all_button = tkinter.Button(newcourts, text="Select All", command=lambda : addAllCourts(newcourt1, newcourt2, newcourt3, newcourt4, newcourt5, newcourt6, newcourt7, newcourt8, newcourt9, newcourt10, newcourt11, newcourt12), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 8, 'bold'), padx=10, cursor="tcross")
@@ -810,7 +888,7 @@ class CoachingSessionContent:
 					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
 					background_entry_canvas.place(rely=0.3,relx=0.15,anchor=CENTER)
 
-					background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 					background_entry_canvas.background_entry_image = background_entry_image
@@ -819,7 +897,7 @@ class CoachingSessionContent:
 					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
 					background_entry_canvas.place(rely=0.5,relx=0.15,anchor=CENTER)
 
-					background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 					background_entry_canvas.background_entry_image = background_entry_image
@@ -828,7 +906,7 @@ class CoachingSessionContent:
 					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
 					background_entry_canvas.place(rely=0.7,relx=0.15,anchor=CENTER)
 
-					background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 					background_entry_canvas.background_entry_image = background_entry_image
@@ -837,7 +915,7 @@ class CoachingSessionContent:
 					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
 					background_entry_canvas.place(rely=0.9,relx=0.15,anchor=CENTER)
 
-					background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 					background_entry_canvas.background_entry_image = background_entry_image
@@ -846,7 +924,7 @@ class CoachingSessionContent:
 					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
 					background_entry_canvas.place(rely=0.3,relx=0.5,anchor=CENTER)
 
-					background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 					background_entry_canvas.background_entry_image = background_entry_image
@@ -855,7 +933,7 @@ class CoachingSessionContent:
 					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
 					background_entry_canvas.place(rely=0.5,relx=0.5,anchor=CENTER)
 
-					background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 					background_entry_canvas.background_entry_image = background_entry_image
@@ -864,7 +942,7 @@ class CoachingSessionContent:
 					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
 					background_entry_canvas.place(rely=0.7,relx=0.5,anchor=CENTER)
 
-					background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 					background_entry_canvas.background_entry_image = background_entry_image
@@ -873,7 +951,7 @@ class CoachingSessionContent:
 					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
 					background_entry_canvas.place(rely=0.9,relx=0.5,anchor=CENTER)
 
-					background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 					background_entry_canvas.background_entry_image = background_entry_image
@@ -882,7 +960,7 @@ class CoachingSessionContent:
 					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
 					background_entry_canvas.place(rely=0.3,relx=0.85,anchor=CENTER)
 
-					background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 					background_entry_canvas.background_entry_image = background_entry_image
@@ -891,7 +969,7 @@ class CoachingSessionContent:
 					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
 					background_entry_canvas.place(rely=0.5,relx=0.85,anchor=CENTER)
 
-					background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 					background_entry_canvas.background_entry_image = background_entry_image
@@ -900,7 +978,7 @@ class CoachingSessionContent:
 					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
 					background_entry_canvas.place(rely=0.7,relx=0.85,anchor=CENTER)
 
-					background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 					background_entry_canvas.background_entry_image = background_entry_image
@@ -909,7 +987,7 @@ class CoachingSessionContent:
 					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
 					background_entry_canvas.place(rely=0.9,relx=0.85,anchor=CENTER)
 
-					background_entry_image = PhotoImage(file ="blueRectangle_100x58.png")
+					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
 					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 					background_entry_canvas.background_entry_image = background_entry_image
@@ -918,7 +996,7 @@ class CoachingSessionContent:
 			conn.close()
 
 
-		def updateCourts(frame):
+		def updateCourts(frame, username):
 			conn = sqlite3.connect('CoachDetails.db')
 			c = conn.cursor()
 
@@ -954,7 +1032,10 @@ class CoachingSessionContent:
 				if (newcourt12.get() ==1):
 					final_courts = final_courts + '12'
 
-				c.execute("""UPDATE coachSession SET courts = :newCourts""", {'newCourts': final_courts})
+				c.execute("""UPDATE coachSession SET courts = :newCourts WHERE username=:username""", {
+					"newCourts": str(final_courts),
+					"username": username
+				})
 
 				messagebox.showinfo("info", "The session's new courts are now "+final_courts)
 
@@ -982,10 +1063,10 @@ class CoachingSessionContent:
 					groups = Toplevel(self.coachSession, bg="white")
 					groups.geometry('450x350')
 
-					title_label = tkinter.Label(groups, text="Update the No. Groups Needed For The Session", font=('Tahoma', 12, 'underline', 'bold'), fg='black', bg='white')
+					title_label = tkinter.Label(groups, text="Update the No. Groups Needed For The Session", font=('Tahoma', 12, 'underline', 'bold'), fg='SpringGreen3', bg='white')
 					title_label.place(rely=0.03, relx=0.5, anchor='center')
 
-					confirm_button = tkinter.Button(groups, text="Confirm Selection", command=lambda : updateGroups(groups), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 9, 'bold'), padx=35, cursor="tcross")
+					confirm_button = tkinter.Button(groups, text="Confirm Selection", command=lambda : updateGroups(groups, coachUsername), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 9, 'bold'), padx=35, cursor="tcross")
 					confirm_button.place(rely=0.15, relx=0.5, anchor='center')
 
 					all_button = tkinter.Button(groups, text="Select All", command=lambda : addAllGroups(newgroup1, newgroup2, newgroup3, newgroup4, newgroup5, newgroup6, newgroup7, newgroup8, newgroup9, newgroup10, newgroup11, newgroup12, newgroup13, newgroup14, newgroup15, newgroup16, newgroup17, newgroup18, newgroup19, newgroup20), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 8, 'bold'), padx=10, cursor="tcross")
@@ -1055,8 +1136,11 @@ class CoachingSessionContent:
 					confirm_group20 = Checkbutton(groups, cursor="tcross",text="Group 20", variable=newgroup20,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'),onvalue=1, offvalue=0)
 					confirm_group20.place(rely=0.9, relx=0.84, anchor='center')
 
+			conn.commit()
+			conn.close()
 
-		def updateGroups(frame):
+
+		def updateGroups(frame, username):
 			conn = sqlite3.connect('CoachDetails.db')
 			c = conn.cursor()
 
@@ -1108,7 +1192,10 @@ class CoachingSessionContent:
 				if (newgroup20.get() ==1):
 					final_groups = final_groups + '20'
 
-				c.execute("""UPDATE coachSession SET groups = :newGroups""", {'newGroups': final_groups})
+				c.execute("""UPDATE coachSession SET groups = :newGroups WHERE username=:username""", {
+					"newGroups": str(final_groups),
+					"username": username
+				})
 
 				messagebox.showinfo("info", "The session's new groups are now "+final_groups)
 
@@ -1151,14 +1238,14 @@ class CoachingSessionContent:
 					technique4_radiobutton = Radiobutton(updateTechnique, text="Back Court", variable=newtechnique, value=4, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 					technique4_radiobutton.place(rely=0.76, relx=0.5, anchor='center')
 
-					technique_update_button=Button(updateTechnique,text = 'Confirm Update', command = lambda : techniqueUpdate(updateTechnique), fg ='white', bg='black', relief= 'groove', font = ('Verdana',11,'bold'), padx =30)
+					technique_update_button=Button(updateTechnique,text = 'Confirm Update', command = lambda : techniqueUpdate(updateTechnique, coachUsername), fg ='white', bg='black', relief= 'groove', font = ('Verdana',11,'bold'), padx =30)
 					technique_update_button.place(rely=0.93,relx=0.5,anchor=CENTER)
 
 			conn.commit()
 			conn.close()
 
 
-		def techniqueUpdate(frame):
+		def techniqueUpdate(frame, username):
 			conn = sqlite3.connect('CoachDetails.db')
 			c = conn.cursor()
 
@@ -1177,7 +1264,10 @@ class CoachingSessionContent:
 				if (newtechnique.get() ==4):
 					final_technique = 'Back Court'
 
-				c.execute("""UPDATE coachSession SET technique = :newTechnique""", {'newTechnique': final_technique})
+				c.execute("""UPDATE coachSession SET technique = :newTechnique WHERE username=:username""", {
+					"newTechnique": str(final_technique),
+					"username": username
+				})
 
 				messagebox.showinfo("info", "The session's new technique is now "+ final_technique)
 
@@ -1187,7 +1277,7 @@ class CoachingSessionContent:
 			treeviewPopulate()
 
 
-		def deleteCoachSessionDetails():
+		def deleteCoachSessionDetails(self):
 			conn = sqlite3.connect('CoachDetails.db')
 			c = conn.cursor()
 
@@ -1252,14 +1342,11 @@ class CoachingSessionContent:
 
 
 		def submitCoachSession():
-			conn = sqlite3.connect('CoachDetails.db')
-			c = conn.cursor()
-
 			isValid = True
 			isValid = isValid and validate_username(self.coachNamesAndPasswords.get(), "Username", username_label)
 			isValid = isValid and validate_start_time(timeStart.get(), timeEnd.get(),"Start Time", starttime_label)
 			isValid = isValid and validate_end_time(timeEnd.get(), "End Time", endtime_label)
-			isValid = isValid and validate_date(date_label)
+			isValid = isValid and validate_date(eventDate.get(), "Date", date_label)
 			isValid = isValid and validate_courts(court1.get(), court2.get(),court3.get(), court4.get(), court5.get(), court6.get(), court7.get(), court8.get(), court9.get(), court10.get(), court11.get(), court12.get(),  "Court", courts_needed_label)
 			isValid = isValid and validate_groups(group1.get(), group2.get(), group3.get(), group4.get(), group5.get(), group6.get(), group7.get(), group8.get(), group9.get(), group10.get(), group11.get(), group12.get(), group13.get(), group14.get(), group15.get(), group16.get(), group17.get(), group18.get(), group19.get(), group20.get(), "Group", groups_label)
 			isValid = isValid and validate_techniques(techniques_label)
@@ -1352,12 +1439,15 @@ class CoachingSessionContent:
 				final_coach_starttime = format(float(coachsession_starttime), '.2f')
 				final_coach_endtime = format(float(coachsession_endtime), '.2f')
 
+				MemberCounter = PeopleCounter()
 
 				response = askyesno("Are you sure?", "Are you sure that all information above is correct?")
 				if response == False:
 					showinfo("Info", "submition cancelled")
 
 				else:
+					conn = sqlite3.connect('CoachDetails.db')
+					c = conn.cursor()
 					c.execute("INSERT INTO coachSession VALUES (:username, :startTime, :endTime, :date, :courts, :groups, :people, :technique)",
 							{
 								'username': coachsession_username,
@@ -1366,9 +1456,13 @@ class CoachingSessionContent:
 								'date': coachsession_date,
 								'courts': final_courts,
 								'groups': final_groups,
-								'people': 'cheicken',
+								'people': MemberCounter,
 								'technique': final_technique,
 							})
+					conn.commit()
+					conn.close()
+
+					changeCalendarColour()
 
 					self.coachNamesAndPasswords.set('')
 					timeStart.set('8.00')
@@ -1412,14 +1506,57 @@ class CoachingSessionContent:
 					returnColour(username_label, starttime_label, endtime_label, date_label, courts_needed_label, groups_label, techniques_label)
 					messagebox.showinfo("info", "Details have been successfully stored")
 
-			conn.commit()
-			conn.close()
-
 			treeviewPopulate()
 
 
-		def selection():
-			pass
+		def CalendarSelection(event):
+			conn = sqlite3.connect('CoachDetails.db')
+			c = conn.cursor()
+
+			date = cal.get_date()
+			date=str(date).split('/')
+			newdate=date[0],date[1],date[2]
+			a_date = datetime.date(int('20'+newdate[2]),int(newdate[0]), int(newdate[1]))
+
+			string_date = a_date.strftime("%d/%m/%Y")
+
+			c.execute("SELECT * From coachSession WHERE date=?", (string_date,))
+			items = c.fetchone()
+			if not items:
+				messagebox.showinfo("info", "There is no coaching session on this date")
+
+			else:
+
+				messagebox.showinfo("info", "There is a coaching session on this date" + "\n" +
+				"The details are listed below:" + "\n\n"
+				+ "Coach: " + items[0] + "\n"
+				+ "Start Time: " + str(items[1]) + "\n"
+				+ "End Time: " + str(items[2]) + "\n"
+				+ "Court(s): " + items[4] + "\n"
+				+ "Group(s): " + items[5] + "\n"
+				+ "No. People: " + str(items[6]) + "\n"
+			    + "Technique: " + items[7])
+
+			conn.commit()
+			conn.close()
+
+
+		def changeCalendarColour():
+			cal.calevent_remove("all")
+			conn = sqlite3.connect('CoachDetails.db')
+			c = conn.cursor()
+
+			c.execute("SELECT * FROM coachSession")
+			session_array = c.fetchall()
+
+			for row in session_array:
+				cal.calevent_create(datetime.date(int(row[3][6:10]), int(row[3][3:5]), int(row[3][0:2])),"View Coaching Session Details","message")
+
+			cal.tag_config("message", background="red", foreground="black")
+
+			conn.commit()
+			conn.close()
+
 
 
 
@@ -1556,10 +1693,10 @@ class CoachingSessionContent:
 		technique.set("1")
 
 
-		delete_button = tkinter.Button(self.coachSession, cursor="tcross",text="Delete", command=deleteCoachSessionDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, pady=5)
+		delete_button = tkinter.Button(self.coachSession, cursor="tcross",text="Delete", command=lambda : deleteCoachSessionDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, pady=5)
 		delete_button.place(rely=0.95, relx=0.058, anchor='center')
 
-		update_button = tkinter.Button(self.coachSession, cursor="tcross",text="Update", command=updateCoachSessionDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, pady=5)
+		update_button = tkinter.Button(self.coachSession, cursor="tcross",text="Update", command=lambda : updateCoachSessionDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, pady=5)
 		update_button.place(rely=0.95, relx=0.168, anchor='center')
 
 		search_button = tkinter.Button(self.coachSession, cursor="tcross",text="Search", command=searchCoachSessionDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, pady=5)
@@ -1593,12 +1730,33 @@ class CoachingSessionContent:
 		coachsession_ysearch_scrollbar.place(relx=0.95,rely=0.22,anchor='center',height=109)
 		coachsession_search_Tv.configure(yscrollcommand=coachsession_ysearch_scrollbar.set)
 
-
 		cal = Calendar(self.coachSession, font="Tahoma 21", selectmode='day', cursor="tcross", year=2021, month=5, day=29)
 		cal.place(rely=0.62, relx=0.71, anchor='center')
 
+		cal.bind("<<CalendarSelected>>", CalendarSelection)
+
 
 		treeviewPopulate()
+		changeCalendarColour()
+
+
+		def onTreeviewPopup(tvPopup, event=None):
+			try:
+				rowItem = coachsession_search_Tv.identify_row(event.y)
+				tvPopup.selection = coachsession_search_Tv.set(rowItem)
+
+				coachsession_search_Tv.selection_set(rowItem)
+				coachsession_search_Tv.focus(rowItem)
+				tvPopup.post(event.x_root, event.y_root)
+			finally:
+				tvPopup.grab_release()
+
+		tvPopup = Menu(self.coachSession, tearoff = 0)
+		tvPopup.add_command(label = "Update", command = partial(updateCoachSessionDetails, True))
+		tvPopup.add_separator()
+		tvPopup.add_command(label = "Delete", command = partial(deleteCoachSessionDetails,True))
+
+		coachsession_search_Tv.bind("<Button-3>", partial(onTreeviewPopup, tvPopup))
 
 
 	def coachSelection(self):
@@ -1611,12 +1769,12 @@ class CoachingSessionContent:
 
 
 	def get_coach_details(self):
-		conn = sqlite3.connect('login.db')
+		conn = sqlite3.connect('coachDetails.db')
 		c = conn.cursor()
 
 		coach_name_list = []
 
-		c.execute("SELECT * From account")
+		c.execute("SELECT * From coach")
 		items = c.fetchall()
 
 		for row in items:
@@ -1626,27 +1784,7 @@ class CoachingSessionContent:
 				coach_name = row[0]
 				coach_name_list.append(coach_name)
 
-		return coach_name_list
-
 		conn.commit()
 		conn.close()
 
-
-		'''
-		def onTreeviewPopup(event):
-			try:
-				rowItem = member_search_Tv.treeview.identify_row(event.y)
-				tvPopup.selection = member_search_Tv.treeview.set(rowItem)
-		
-				member_search_Tv.treeview.selection_set(rowItem)
-				member_search_Tv.treeview.focus(rowItem)
-				tvPopup.post(event.x_root, event.y_root)
-			finally:
-				tvPopup.grab_release()
-		
-		
-		tvPopup = Menu(member, tearoff = 0)
-		tvPopup.add_command(label = "Update", command = partial(updateAccountDetails, True))
-		tvPopup.add_separator()
-		tvPopup.add_command(label = "Delete", command = partial(deleteAccountDetails,True))
-		'''
+		return coach_name_list

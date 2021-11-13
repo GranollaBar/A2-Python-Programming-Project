@@ -3,7 +3,7 @@ from tkinter import *
 from MemberFrame.MemberDetailsScreen import MemberContent
 from CoachFrame.CoachDetailsScreen import CoachContent
 from CoachingSessionFrame.CoachingSessionScreen import CoachingSessionContent
-from CompetitionFrame.CompetitionScreen import CompetitionContent
+from CompetitionFrame.ResultsScreen import ResultsContent
 from MemberBooking.MemberBookingScreen import BookingContent
 
 
@@ -36,7 +36,7 @@ def openCoachSessionContent():
 
 def openCompetitionContent():
     clearContent()
-    resultscontent = CompetitionContent(mainScreen)
+    resultscontent = ResultsContent(mainScreen)
     resultscontent.memberSelection()
     resultscontent.generateResultsContnt()
 
@@ -53,7 +53,6 @@ def openStaticstics():
 
 
 mainScreen = Tk()
-mainScreen.title('Lisburn Raquets Club')
 mainScreen.geometry('985x650')
 mainScreen.resizable(0,0)
 

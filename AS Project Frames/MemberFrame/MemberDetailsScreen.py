@@ -17,13 +17,8 @@ class MemberContent:
 
 	def __init__(self, mainScreen):
 		self.member = mainScreen
-		self.conn = sqlite3.connect('BadmintonClub.db')
+		self.conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 		self.c = self.conn.cursor()
-
-		self.conn2 = sqlite3.connect('login.db')
-		self.c2 = self.conn2.cursor()
-
-
 
 
 		# self.c.execute("""CREATE TABLE member (
@@ -35,7 +30,7 @@ class MemberContent:
 		# 			postcode text,
 		# 			age integer,
 		# 			member_group integer,
-		# 			competition_status string
+		# 			competitions string
 		# 			)""")
 
 
@@ -81,17 +76,21 @@ class MemberContent:
 			return True
 
 
-		def validate_telephone(value, fieldname):
+		def validate_telephone(value, fieldname, label):
 			if (value == ''):
+				label.config(fg="red")
 				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be empty")
 				return False
 			if (len(value) < 11):
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be less than 11 characters")
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be under 11 numbers")
 				return False
 			if (len(value) > 11):
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be greater than 11 characters")
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be over 11 numbers")
 				return False
 
+			label.config(fg="SpringGreen3")
 			return True
 
 
@@ -153,16 +152,14 @@ class MemberContent:
 		def treeviewPopulate():
 			clearTv()
 
-			conn = sqlite3.connect('BadmintonClub.db')
+			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * From member")
 			items = c.fetchall()
+
 			conn.commit()
 			conn.close()
-
-			member_search_Tv.tag_configure("even",background="green")
-			member_search_Tv.tag_configure("odd",background="red")
 
 			count=0
 			for row in items:
@@ -170,9 +167,9 @@ class MemberContent:
 					pass
 				else:
 					if count%2==0:
-						member_search_Tv.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4],row[5],row[6],row[7]),tags=["even"])
+						member_search_Tv.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4],row[5],row[6],row[7]))
 					else:
-						member_search_Tv.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4],row[5],row[6],row[7]),tags=["odd"])
+						member_search_Tv.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4],row[5],row[6],row[7]))
 					count+=1
 
 
@@ -206,10 +203,10 @@ class MemberContent:
 
 
 		def update_member_telephone(frame):
-			conn = sqlite3.connect('BadmintonClub.db')
-			c = conn.cursor()
-
 			frame.withdraw()
+
+			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			c = conn.cursor()
 
 			memberUsername = simpledialog.askstring("info", "Enter the username of the member you want to update")
 			if memberUsername != '' and len(memberUsername) <25 and '@' in memberUsername and '.' in memberUsername:
@@ -246,10 +243,10 @@ class MemberContent:
 
 
 		def update_member_postcode(frame):
-			conn = sqlite3.connect('BadmintonClub.db')
-			c = conn.cursor()
-
 			frame.withdraw()
+
+			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			c = conn.cursor()
 
 			memberUsername = simpledialog.askstring("info", "Enter the username of the member you want to update")
 			if memberUsername != '' and len(memberUsername) <25 and '@' in memberUsername and '.' in memberUsername:
@@ -286,7 +283,7 @@ class MemberContent:
 
 
 		def deleteAccountDetails(self):
-			conn = sqlite3.connect('BadmintonClub.db')
+			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			response = askyesno("Are you sure?", "Do you want to delete a member")
@@ -307,7 +304,8 @@ class MemberContent:
 					else:
 
 						c.execute(f"DELETE FROM member WHERE username =?", (accountUsername,))
-						messagebox.showinfo("info", "The member with username "+accountUsername+" has been deleted from the database")
+						c.execute(f"DELETE FROM account WHERE username =?", (accountUsername,))
+						messagebox.showinfo("info", "The member with username "+accountUsername+" has been deleted from the system")
 
 				else:
 
@@ -320,7 +318,7 @@ class MemberContent:
 
 
 		def searchAccountDetails():
-			conn = sqlite3.connect('BadmintonClub.db')
+			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			response = askyesno("Are you sure?", "Do you want to search a members details")
@@ -350,18 +348,15 @@ class MemberContent:
 
 
 		def saveAccountDetails():
-			conn = sqlite3.connect('BadmintonClub.db')
+			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
-
-			conn2 = sqlite3.connect('login.db')
-			c2 = conn2.cursor()
 
 			isValid = True
 			isValid = isValid and validate_username(username.get(), "Username", username_label)
 			isValid = isValid and validate_password(password.get(), "Password", password_label)
 			isValid = isValid and validate_not_empty_string(firstname.get(), "Firstname", firstname_label)
 			isValid = isValid and validate_not_empty_string(surname.get(), "Surname", surname_label)
-			isValid = isValid and validate_empty(telephone.get(), "Telephone number", telephone_label)
+			isValid = isValid and validate_telephone(number.get(), "Telephone number", telephone_label)
 			isValid = isValid and validate_empty(postcode.get(), "Postcode", postcode_label)
 			isValid = isValid and validate_age(age.get(), "Age", age_label)
 
@@ -370,7 +365,7 @@ class MemberContent:
 				account_password = password.get()
 				account_firstname = firstname.get()
 				account_surname = surname.get()
-				account_telephone = telephone.get()
+				account_telephone = number.get()
 				account_postcode = postcode.get()
 				account_age = age.get()
 
@@ -381,11 +376,6 @@ class MemberContent:
 					finalCompetition = 'yes'
 				else:
 					finalCompetition = 'no'
-
-				telephone = tkinter.simpledialog.askstring("Info","Enter your telephone number")
-
-				isValid = True
-				isValid = isValid and validate_telephone(telephone, "Telephone")
 
 				if isValid:
 					response = askyesno("Are you sure?", "Are you sure that all information above is correct?")
@@ -398,7 +388,7 @@ class MemberContent:
 						found = memberEmail("Lisburn Racquets Account Added", "You have been accepted into Lisburn Raquets Club." + "\n" + "Your details can be found in the document below." + "\n\n" + "Thanks for choosing Lisburn Racquets Club", account_username, doc, username_label)
 						if found:
 
-							c.execute("INSERT INTO member VALUES (:username, :password, :firstname, :surname, :telephone, :postcode, :age, :member_group, :competition_status)",
+							c.execute("INSERT INTO member VALUES (:username, :password, :firstname, :surname, :telephone, :postcode, :age, :member_group, :competitions)",
 									  {
 										  'username': account_username,
 										  'password': account_password,
@@ -408,26 +398,27 @@ class MemberContent:
 										  'postcode': account_postcode,
 										  'age': account_age,
 										  'member_group': account_group,
-										  'competition_status': finalCompetition,
+										  'competitions': finalCompetition,
 									  })
 
-							c2.execute("INSERT INTO account VALUES (:username, :password, :status)",
+							c.execute("INSERT INTO account VALUES (:username, :password, :status)",
 									  {
 										  'username': account_username,
 										  'password': account_password,
 										  'status': 'member',
 									  })
 
+							messagebox.showinfo("Info","The members has been assigned to group " + str(account_group) + " because he/she is " + str(account_age) + " years old")
+
 							username.set('')
 							password.set('')
 							firstname.set('')
 							surname.set('')
-							telephone.set('')
+							number.set('')
 							postcode.set('')
 							age.set('')
 
 							returnColour(username_label, password_label, firstname_label, surname_label, telephone_label, postcode_label, age_label)
-
 
 				conn.commit()
 				conn.close()
@@ -436,35 +427,36 @@ class MemberContent:
 
 
 
+
 		username = StringVar()
 		password = StringVar()
 		firstname=StringVar()
 		surname=StringVar()
-		telephone=StringVar()
+		number=StringVar()
 		postcode=StringVar()
 		age=IntVar()
 
 
 
-		username_label = tkinter.Label(self.member, text="Username:", font=('Georgia', 14, 'bold'), fg='black', bg='white')
+		username_label = tkinter.Label(self.member, text="Username:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
 		username_label.place(rely=0.15, relx=0.09, anchor='center')
 
-		password_label = tkinter.Label(self.member, text="Password:", font=('Georgia', 14, 'bold'), fg='black', bg='white')
+		password_label = tkinter.Label(self.member, text="Password:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
 		password_label.place(rely=0.23, relx=0.09, anchor='center')
 
-		firstname_label = tkinter.Label(self.member, text="Firstname:", font=('Georgia', 14, 'bold'), fg='black', bg='white')
+		firstname_label = tkinter.Label(self.member, text="Firstname:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
 		firstname_label.place(rely=0.152, relx=0.43, anchor='center')
 
-		surname_label = tkinter.Label(self.member, text="Surname:", font=('Georgia', 14, 'bold'), fg='black', bg='white')
+		surname_label = tkinter.Label(self.member, text="Surname:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
 		surname_label.place(rely=0.231, relx=0.36, anchor='center')
 
-		telephone_label = tkinter.Label(self.member, text="Telephone:", font=('Georgia', 14, 'bold'), fg='black', bg='white')
+		telephone_label = tkinter.Label(self.member, text="Telephone:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
 		telephone_label.place(rely=0.152, relx=0.7, anchor='center')
 
-		postcode_label = tkinter.Label(self.member, text="Postcode:", font=('Georgia', 14, 'bold'), fg='black', bg='white')
+		postcode_label = tkinter.Label(self.member, text="Postcode:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
 		postcode_label.place(rely=0.231, relx=0.64, anchor='center')
 
-		age_label = tkinter.Label(self.member, text="Age:", font=('Georgia', 14, 'bold'), fg='black', bg='white')
+		age_label = tkinter.Label(self.member, text="Age:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
 		age_label.place(rely=0.231, relx=0.85, anchor='center')
 
 
@@ -480,7 +472,7 @@ class MemberContent:
 		surname_entry = tkinter.Entry(self.member, width=15, textvariable=surname, bd=3, relief='ridge', cursor="tcross")
 		surname_entry.place(rely=0.235, relx=0.483, anchor='center')
 
-		telephone_entry = tkinter.Entry(self.member, width=25, textvariable=telephone, bd=3, relief='ridge', cursor="tcross")
+		telephone_entry = tkinter.Entry(self.member, width=25, textvariable=number, bd=3, relief='ridge', cursor="tcross")
 		telephone_entry.place(rely=0.155, relx=0.85, anchor='center')
 
 		postcode_entry = tkinter.Entry(self.member, width=10, textvariable=postcode, bd=3, relief='ridge', cursor="tcross")
@@ -493,7 +485,7 @@ class MemberContent:
 		background_entry_canvas = Canvas(self.member,width=160, height=90, bg = "white")
 		background_entry_canvas.place(rely=0.37,relx=0.13,anchor=CENTER)
 
-		background_entry_image = PhotoImage(file = "C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/tennis2.png")
+		background_entry_image = PhotoImage(file = "C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/tennis2.png")
 
 		background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
 		background_entry_canvas.background_entry_image = background_entry_image
@@ -501,7 +493,7 @@ class MemberContent:
 		background_entry2_canvas = Canvas(self.member,width=123, height=88, bg = "white")
 		background_entry2_canvas.place(rely=0.37,relx=0.87,anchor=CENTER)
 
-		background_entry2_image = PhotoImage(file = "C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/squash.png")
+		background_entry2_image = PhotoImage(file = "C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/squash.png")
 
 		background_entry2_canvas.create_image(0,0, anchor = NW, image=background_entry2_image)
 		background_entry2_canvas.background_entry2_image = background_entry2_image

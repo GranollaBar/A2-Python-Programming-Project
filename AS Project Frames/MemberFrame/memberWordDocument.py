@@ -19,8 +19,8 @@ def buildMemberDocument(username, password, firstname, surname, telephone, postc
     parag.add_run("\n" + "Age: " + str(age))
     parag.add_run("\n" + "Group: " + str(group))
     parag.add_run("\n\n" + "Thanks for choosing Lisburn Racquets Club").bold=True
-    doc.add_picture('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/lisburnraquetsclub.png',width=Inches(3))
+    doc.add_picture('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/lisburnraquetsclub.png',width=Inches(3))
 
-    filename = "Member_Account_Details.docx"
+    filename = "C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Doc/Member_Account_Details.docx"
     doc.save(filename)
     return open(filename,'rb')
