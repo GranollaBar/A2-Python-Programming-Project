@@ -395,7 +395,7 @@ class CoachingSessionContent:
 				return GroupFinder
 
 
-		def findMembersAndEmail():
+		def findMembers():
 			global PeopleCounter
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -409,7 +409,6 @@ class CoachingSessionContent:
 				if row[7] != GroupFinder or row == []:
 					pass
 				else:
-					member_name = row[0]
 					PeopleCounter += 1
 
 			conn.commit()
@@ -1004,7 +1003,7 @@ class CoachingSessionContent:
 					showinfo("Info", "submition cancelled")
 
 				else:
-					findMembersAndEmail()
+					findMembers()
 
 					conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 					c = conn.cursor()
@@ -1210,16 +1209,18 @@ class CoachingSessionContent:
 		coachsession_ysearch_scrollbar.place(relx=0.95,rely=0.22,anchor='center',height=109)
 		coachsession_search_Tv.configure(yscrollcommand=coachsession_ysearch_scrollbar.set)
 
+		calendar_label =Label(self.coachSession, text = 'Coaching Session Dates', fg ='black',bg='white',font=('Tahoma',13,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+		calendar_label.place(rely=0.39,relx=0.715,anchor=CENTER)
 		today = datetime.date.today()
 		cal = Calendar(self.coachSession, font="Tahoma 21", selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
-		cal.place(rely=0.62, relx=0.71, anchor='center')
+		cal.place(rely=0.67, relx=0.715, anchor='center')
 
 		cal.bind("<<CalendarSelected>>", CalendarSelection)
 
 
 		treeviewPopulate()
 		changeCalendarColour()
-		findMembersAndEmail()
+		findMembers()
 
 
 		def onTreeviewPopup(tvPopup, event=None):

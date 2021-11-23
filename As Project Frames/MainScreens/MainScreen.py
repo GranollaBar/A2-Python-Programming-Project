@@ -5,6 +5,7 @@ from CoachFrame.CoachDetailsScreen import CoachContent
 from CoachingSessionFrame.CoachingSessionScreen import CoachingSessionContent
 from CompetitionFrame.CompetitionScreen import CompetitionContent
 from MemberBooking.MemberBookingScreen import BookingContent
+from NewCompetition.NewCompetitionScreen import NewCompetitionContent
 
 
 
@@ -39,6 +40,12 @@ def openCompetitionContent():
     resultscontent = CompetitionContent(mainScreen)
     resultscontent.memberSelection()
     resultscontent.generateResultsContnt()
+
+
+def openNewCompetitionContent():
+    clearContent()
+    competitioncontent = NewCompetitionContent(mainScreen)
+    competitioncontent.generateCompetitionContnt()
 
 
 def openMemberBooking():
@@ -84,11 +91,14 @@ coaching_session_button.place(rely=0.5, relx=0.38, anchor='center')
 competition_button = tkinter.Button(header, text="Competition", command=openCompetitionContent, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
 competition_button.place(rely=0.5, relx=0.546, anchor='center')
 
-member_booking_button = tkinter.Button(header, text="Booking", command=openMemberBooking, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
-member_booking_button.place(rely=0.5, relx=0.676, anchor='center')
+new_competition_button = tkinter.Button(header, text="New Competition", command=openNewCompetitionContent, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
+new_competition_button.place(rely=0.5, relx=0.73, anchor='center')
 
-statistics_button = tkinter.Button(header, text="Stats", command=openStaticstics, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
-statistics_button.place(rely=0.5, relx=0.71, anchor='center')
+# member_booking_button = tkinter.Button(header, text="Booking", command=openMemberBooking, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
+# member_booking_button.place(rely=0.5, relx=0.676, anchor='center')
+#
+# statistics_button = tkinter.Button(header, text="Stats", command=openStaticstics, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
+# statistics_button.place(rely=0.5, relx=0.71, anchor='center')
 
 
 mainScreen.mainloop()

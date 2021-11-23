@@ -28,7 +28,7 @@ class CoachContent:
 		# 			surname text,
 		# 			gender text,
 		# 			DOB text,
-		# 			postcode text,
+		# 			address text,
 		# 			availability text
 		# 			)""")
 		#
@@ -286,14 +286,14 @@ class CoachContent:
 					count+=1
 
 
-		def returnColour(usernameReturn, passwordReturn, firstnameReturn, surnameReturn, genderReturn, DOBReturn, postcodeReturn, mondayReturn, tuesdayReturn, wednesdayReturn, thursdayReturn, fridayReturn, saturdayReturn, sundayReturn):
+		def returnColour(usernameReturn, passwordReturn, firstnameReturn, surnameReturn, genderReturn, DOBReturn, addressReturn, mondayReturn, tuesdayReturn, wednesdayReturn, thursdayReturn, fridayReturn, saturdayReturn, sundayReturn):
 			usernameReturn.config(fg="black")
 			passwordReturn.config(fg="black")
 			firstnameReturn.config(fg="black")
 			surnameReturn.config(fg="black")
 			genderReturn.config(fg="black")
 			DOBReturn.config(fg="black")
-			postcodeReturn.config(fg="black")
+			addressReturn.config(fg="black")
 			mondayReturn.config(fg="black")
 			tuesdayReturn.config(fg="black")
 			wednesdayReturn.config(fg="black")
@@ -586,7 +586,7 @@ class CoachContent:
 						messagebox.showinfo("Warning", "The username entered was not found in the database", icon='error')
 					else:
 
-						messagebox.showinfo("info", "The coach's details are listed below" + "\n\n" + "Username: " + str(data[0]) + "\n" + "Password: " + str(data[1]) + "\n" + "Firstname: " + str(data[2]) + "\n" + "Surname: " + str(data[3]) + "\n" + "Gender: " + str(data[4]) + "\n" + "DOB: " + str(data[5]) + "\n" + "Postcode: " + str(data[6]) + "\n" + "Availability: " + str(data[7]))
+						messagebox.showinfo("info", "The coach's details are listed below" + "\n\n" + "Username: " + str(data[0]) + "\n" + "Password: " + str(data[1]) + "\n" + "Firstname: " + str(data[2]) + "\n" + "Surname: " + str(data[3]) + "\n" + "Gender: " + str(data[4]) + "\n" + "DOB: " + str(data[5]) + "\n" + "Address: " + str(data[6]) + "\n" + "Availability: " + str(data[7]))
 						messagebox.showinfo("info", "The coach's Timetable is listed below" + "\n\n" + "Username: " + str(data2[0]) + "\n" + "Monday: " + str(data2[1]) + "\n" + "Tuesday: " + str(data2[2]) + "\n" + "Wednesday: " + str(data2[3]) + "\n" + "Thursday: " + str(data2[4]) + "\n" + "Friday: " + str(data2[5]) + "\n" + "Saturday: " + str(data2[6]) + "\n" + "Sunday: " + str(data2[7]))
 
 				else:
@@ -611,7 +611,7 @@ class CoachContent:
 			isValid = isValid and validate_not_empty_string(surname.get(), "Surname", surname_label)
 			isValid = isValid and validate_gender(gender_label)
 			isValid = isValid and validate_DOB(dateOfBirth.get(), "DOB", DOB_label)
-			isValid = isValid and validate_empty(postcode.get(), "Postcode", postcode_label)
+			isValid = isValid and validate_empty(address.get(), "Address", address_label)
 			isValid = isValid and validate_all_availability(mondayAvaliability.get(), tuesdayAvaliability.get(), wednesdayAvaliability.get(), thursdayAvaliability.get(), fridayAvaliability.get(), saturdayAvaliability.get(), sundayAvaliability.get(),"Availability")
 			if (mondayAvaliability.get() ==1):
 				isValid = isValid and validate_monday_availability(monday_from_combobox.get(),monday_to_combobox.get(),"Monday Availability", monday_label)
@@ -635,7 +635,7 @@ class CoachContent:
 				coach_surname = surname.get()
 				coach_gender = gender.get()
 				coach_DOB = dateOfBirth.get()
-				coach_postcode = postcode.get()
+				coach_address = address.get()
 
 				if (coach_gender == 1):
 					final_coach_gender = 'Male'
@@ -701,11 +701,11 @@ class CoachContent:
 
 				else:
 
-					doc = buildCoachDocument(coach_username, coach_password, coach_firstname, coach_surname, final_coach_gender, coach_DOB, coach_postcode, mondayFinalAvaliability, tuesdayFinalAvaliability, wednesdayFinalAvaliability, thursdayFinalAvaliability, fridayFinalAvaliability, saturdayFinalAvaliability, sundayFinalAvaliability)
+					doc = buildCoachDocument(coach_username, coach_password, coach_firstname, coach_surname, final_coach_gender, coach_DOB, coach_address, mondayFinalAvaliability, tuesdayFinalAvaliability, wednesdayFinalAvaliability, thursdayFinalAvaliability, fridayFinalAvaliability, saturdayFinalAvaliability, sundayFinalAvaliability)
 					found = Email("Lisburn Racquets Coach Added", "Good work on securing a coach position at Lisburn Racquets Club" + "\n" + "Your details can be found in the document below." + "\n\n" + "Thanks for choosing Lisburn Racquets Club", coach_username, doc, username_label)
 					if found:
 
-						c.execute("INSERT INTO coach VALUES (:username, :password, :firstname, :surname, :gender, :DOB, :postcode, :availabilty)",
+						c.execute("INSERT INTO coach VALUES (:username, :password, :firstname, :surname, :gender, :DOB, :address, :availabilty)",
 								  {
 									  'username': coach_username,
 									  'password': coach_password,
@@ -713,7 +713,7 @@ class CoachContent:
 									  'surname': coach_surname,
 									  'gender': final_coach_gender,
 									  'DOB': coach_DOB,
-									  'postcode': coach_postcode,
+									  'address': coach_address,
 									  'availabilty': final_avaliability,
 								  })
 
@@ -741,7 +741,7 @@ class CoachContent:
 						firstname.set('')
 						surname.set('')
 						gender.set('1')
-						postcode.set('')
+						address.set('')
 						mondayAvaliability.set('0')
 						tuesdayAvaliability.set('0')
 						wednesdayAvaliability.set('0')
@@ -757,7 +757,7 @@ class CoachContent:
 						check_saturday_checkbox(saturdayAvaliability)
 						check_sunday_checkbox(sundayAvaliability)
 
-						returnColour(username_label, password_label, firstname_label, surname_label, gender_label, DOB_label, postcode_label, monday_label, tuesday_label, wednesday_label, thursday_label, friday_label, saturday_label, sunday_label)
+						returnColour(username_label, password_label, firstname_label, surname_label, gender_label, DOB_label, address_label, monday_label, tuesday_label, wednesday_label, thursday_label, friday_label, saturday_label, sunday_label)
 
 
 				conn.commit()
@@ -775,7 +775,7 @@ class CoachContent:
 		surname=StringVar()
 		gender=IntVar()
 		dateOfBirth=StringVar()
-		postcode=StringVar()
+		address=StringVar()
 		mondayAvaliability=IntVar()
 		tuesdayAvaliability=IntVar()
 		wednesdayAvaliability=IntVar()
@@ -828,8 +828,8 @@ class CoachContent:
 		DOB_label = tkinter.Label(self.coach, text="DOB:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
 		DOB_label.place(rely=0.495, relx=0.09, anchor='center')
 
-		postcode_label = tkinter.Label(self.coach, text="Postcode:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-		postcode_label.place(rely=0.57, relx=0.09, anchor='center')
+		address_label = tkinter.Label(self.coach, text="Address:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		address_label.place(rely=0.57, relx=0.09, anchor='center')
 
 
 		username_entry = tkinter.Entry(self.coach, width=25, textvariable=username, bd=3, relief='ridge', cursor="tcross")
@@ -854,8 +854,8 @@ class CoachContent:
 		DOB_button = Button(self.coach, text='Select DOB',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : dateEntryCheck(dateOfBirth), padx=10, bd=4, relief="ridge")
 		DOB_button.place(rely=0.498, relx=0.25, anchor='center')
 
-		postcode_entry = tkinter.Entry(self.coach, width=10, textvariable=postcode, bd=3, relief='ridge', cursor="tcross")
-		postcode_entry.place(rely=0.573, relx=0.25, anchor='center')
+		address_entry = tkinter.Entry(self.coach, width=25, textvariable=address, bd=3, relief='ridge', cursor="tcross")
+		address_entry.place(rely=0.573, relx=0.25, anchor='center')
 
 
 		line = Canvas(self.coach, width=360, height=1)
@@ -1039,7 +1039,7 @@ class CoachContent:
 		delete_button.place(rely=0.95, relx=0.91, anchor='center')
 
 
-		coach_search_Tv=ttk.Treeview(self.coach,height=15,columns=('Password','Firstname','Surname','Gender','DOB','Postcode','Availability'))
+		coach_search_Tv=ttk.Treeview(self.coach,height=15,columns=('Password','Firstname','Surname','Gender','DOB','Address','Availability'))
 		coach_search_Tv.place(relx=0.665,rely=0.365,anchor=CENTER)
 
 		coach_search_Tv.heading("#0",text='Username')
@@ -1054,7 +1054,7 @@ class CoachContent:
 		coach_search_Tv.column("#4",minwidth=0,width=70)
 		coach_search_Tv.heading("#5",text='DOB')
 		coach_search_Tv.column("#5",minwidth=0,width=80)
-		coach_search_Tv.heading("#6",text='Postcode')
+		coach_search_Tv.heading("#6",text='Address')
 		coach_search_Tv.column("#6",minwidth=0,width=70)
 		coach_search_Tv.heading("#7",text='Days')
 		coach_search_Tv.column("#7",minwidth=0,width=70)
