@@ -59,141 +59,160 @@ class CoachContent:
 			ttk.Button(top, text="Select", command=assign_dob).pack()
 
 
-		def validate_username(value, fieldname, label):
+		def validate_username(value, label):
 			if (value == ''):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be empty")
+				messagebox.showinfo("Validation Error", "The username field cannot be empty", icon='error')
 				return False
 			if ('@' not in value):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must contain @")
+				messagebox.showinfo("Validation Error", "The username field must contain @", icon='error')
 				return False
 			if ('.' not in value):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must contain a .")
+				messagebox.showinfo("Validation Error", "The username field must contain a .", icon='error')
 				return False
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		def validate_password(value, fieldname, label):
+		def validate_password(value, label):
 			if (value == ''):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be Empty")
+				messagebox.showinfo("Validation Error", "The password field cannot be empty", icon='error')
 				return False
 			if (len(value) < 8):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Must contain more than 8 characters")
+				messagebox.showinfo("Validation Error", "The password field must contain more than 7 characters", icon='error')
 				return False
 			if (len(value) > 15):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Must contain less than 15 characters")
+				messagebox.showinfo("Validation Error", "The password field must contain less than 16 characters", icon='error')
 				return False
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		def validate_not_empty_string(value, fieldname, label):
+		def validate_firstname(value, label):
 			if (value == ""):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be Empty")
+				messagebox.showinfo("Validation Error", "The firstname field cannot be empty", icon='error')
 				return False
 			if (value.isdigit()):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value for Field " + fieldname + " Can not Contain Whole Numbers")
+				messagebox.showinfo("Validation Error", "The firstname field can only contain letters", icon='error')
 				return False
 			if (len(value) >15):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value for Field " + fieldname + " Can only Contain a max of 15 characters")
+				messagebox.showinfo("Validation Error", "The firstname field can only contain 15 characters", icon='error')
 				return False
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		def validate_empty(value, fieldname, label):
+		def validate_surname(value, label):
+			if (value == ""):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The firstname field cannot be empty", icon='error')
+				return False
+			if (value.isdigit()):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The firstname field can only contain letters", icon='error')
+				return False
+			if (len(value) >15):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The firstname field can only contain 15 characters", icon='error')
+				return False
+
+			label.config(fg="SpringGreen3")
+			return True
+
+
+
+		def validate_address(value, label):
 			if (value == ''):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be Empty")
+				messagebox.showinfo("Validation Error", "The address field cannot be empty", icon='error')
 				return False
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		def validate_all_availability(value, value2, value3, value4, value5, value6, value7, fieldname):
+		def validate_all_availability(value, value2, value3, value4, value5, value6, value7):
 			if (value ==0 and value2 ==0 and value3 ==0 and value4 ==0 and value5 ==0 and value6 ==0 and value7 ==0):
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must have one selected")
+				messagebox.showinfo("Validation Error", "One availability should be selected", icon='error')
 				return False
 
 			return True
 
 
-		def validate_monday_availability(value, value2, fieldname, label):
+		def validate_monday_availability(value, value2, label):
 			if (float(value) >= float(value2)):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must have a lower start time than end time")
-				return False
-
-			label.config(fg="SpringGreen3")
-			return True
-
-
-		def validate_tuesday_availability(value, value2, fieldname, label):
-			if (float(value) >= float(value2)):
-				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must have a lower start time than end time")
+				messagebox.showinfo("Validation Error", "Monday start time must be before the end time", icon='error')
 				return False
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		def validate_wednesday_availability(value, value2, fieldname, label):
+		def validate_tuesday_availability(value, value2, label):
 			if (float(value) >= float(value2)):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must have a lower start time than end time")
-				return False
-
-			label.config(fg="SpringGreen3")
-			return True
-
-		def validate_thursday_availability(value, value2, fieldname, label):
-			if (float(value) >= float(value2)):
-				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must have a lower start time than end time")
+				messagebox.showinfo("Validation Error", "Tuesday start time must be before the end time", icon='error')
 				return False
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		def validate_friday_availability(value, value2, fieldname, label):
+		def validate_wednesday_availability(value, value2, label):
 			if (float(value) >= float(value2)):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must have a lower start time than end time")
+				messagebox.showinfo("Validation Error", "Wednesday start time must be before the end time", icon='error')
+				return False
+
+			label.config(fg="SpringGreen3")
+			return True
+
+		def validate_thursday_availability(value, value2, label):
+			if (float(value) >= float(value2)):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "Thursday start time must be before the end time", icon='error')
 				return False
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		def validate_saturday_availability(value, value2, fieldname, label):
+		def validate_friday_availability(value, value2, label):
 			if (float(value) >= float(value2)):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must have a lower start time than end time")
+				messagebox.showinfo("Validation Error", "Friday start time must be before the end time", icon='error')
 				return False
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		def validate_sunday_availability(value, value2, fieldname, label):
+		def validate_saturday_availability(value, value2, label):
 			if (float(value) >= float(value2)):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must have a lower start time than end time")
+				messagebox.showinfo("Validation Error", "Saturday start time must be before the end time", icon='error')
+				return False
+
+			label.config(fg="SpringGreen3")
+			return True
+
+
+		def validate_sunday_availability(value, value2, label):
+			if (float(value) >= float(value2)):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "Sunday start time must be before the end time", icon='error')
 				return False
 
 			label.config(fg="SpringGreen3")
@@ -205,7 +224,7 @@ class CoachContent:
 			return True
 
 
-		def validate_DOB(value, fieldname, label):
+		def validate_DOB(value, label):
 			presentDate = datetime.datetime.now()
 			date_formated = presentDate.strftime("%d/%m/%Y")
 
@@ -214,16 +233,16 @@ class CoachContent:
 
 			if d1>d2:
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be after the current date")
+				messagebox.showinfo("Validation Error", "The date selected cannot be after the current date", icon='error')
 				return False
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		def validate_new_availability(value, value2, value3, value4, value5, value6, value7, fieldname):
+		def validate_new_availability(value, value2, value3, value4, value5, value6, value7):
 			if (value ==0 and value2 ==0 and value3 ==0 and value4 ==0 and value5 ==0 and value6 ==0 and value7 ==0):
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must have one selected")
+				messagebox.showinfo("Validation Error", "One avaliablity day should be selected", icon='error')
 				return False
 
 			return True
@@ -261,6 +280,11 @@ class CoachContent:
 					else:
 						coach_search_Tv.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4],row[5],row[6],row[7]))
 					count+=1
+
+
+		def treeviewresizedisable(treeview, event):
+			if treeview.identify_region(event.x, event.y) == "separator":
+				return "break"
 
 
 		def timestreeviewPopulate():
@@ -381,9 +405,9 @@ class CoachContent:
 
 
 		def updateCoachDetails(self):
-			response = askyesno("Are you sure?", "Do you want to update a coach's details")
+			response = askyesno("Question", "Do you want to update a coach's details?", icon='question')
 			if response == False:
-				showinfo("Info", "Update cancelled")
+				showinfo("Info", "Update cancelled", icon='info')
 
 			else:
 
@@ -405,16 +429,16 @@ class CoachContent:
 
 			frame.withdraw()
 
-			coachUsername = simpledialog.askstring("info", "Enter the username of the coach you want to update")
+			coachUsername = simpledialog.askstring("Response", "Enter the username of the coach you want to update")
 			if coachUsername != '' and len(coachUsername) <25 and '@' in coachUsername and '.' in coachUsername:
 				c.execute(f"SELECT * FROM coach WHERE username=?", (coachUsername,))
 				data = c.fetchone()
 				if not data:
-					messagebox.showinfo("Warning", "The username entered was not found in the database", icon='error')
+					messagebox.showinfo("Error", "The username entered was not found in the database", icon='error')
 
 				else:
 
-					new_postcode = simpledialog.askstring("info", "Enter your new postcode")
+					new_postcode = simpledialog.askstring("Response", "Enter your new postcode")
 
 					if new_postcode != '' and len(new_postcode) < 9 and ' ' in new_postcode:
 
@@ -423,15 +447,15 @@ class CoachContent:
 							"username": coachUsername
 						})
 
-						messagebox.showinfo("info", "The coach's postcode is now "+new_postcode)
+						messagebox.showinfo("Info", "The coach's postcode is now "+new_postcode, icon='info')
 
 					else:
 
-						messagebox.showinfo("Warning", "The postcode entered does not meet the rules", icon='error')
+						messagebox.showinfo("Error", "The postcode entered does not meet the rules", icon='error')
 
 			else:
 
-				messagebox.showinfo("Warning", "The username entered does not meet the rules", icon='error')
+				messagebox.showinfo("Error", "The username entered does not meet the rules", icon='error')
 
 			conn.commit()
 			conn.close()
@@ -445,12 +469,12 @@ class CoachContent:
 
 			frame.withdraw()
 
-			coachUsername = simpledialog.askstring("info", "Enter the username of the coach you want to update")
+			coachUsername = simpledialog.askstring("Response", "Enter the username of the coach you want to update")
 			if coachUsername != '' and len(coachUsername) <25 and '@' in coachUsername and '.' in coachUsername:
 				c.execute(f"SELECT * FROM coach WHERE username=?", (coachUsername,))
 				data = c.fetchone()
 				if not data:
-					messagebox.showinfo("Warning", "The username entered was not found in the database", icon='error')
+					messagebox.showinfo("Error", "The username entered was not found in the database", icon='error')
 
 				else:
 
@@ -519,7 +543,7 @@ class CoachContent:
 					"username": username
 				})
 
-				messagebox.showinfo("info", "The coach's availability is now "+new_final_avaliability)
+				messagebox.showinfo("Info", "The coach's availability is now "+new_final_avaliability, icon='info')
 
 
 
@@ -534,30 +558,30 @@ class CoachContent:
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
-			response = askyesno("Are you sure?", "Do you want to delete a coach")
+			response = askyesno("Question", "Do you want to delete a coach?", icon='question')
 			if response == False:
-				showinfo("Info", "Deletion cancelled")
+				showinfo("Info", "Deletion cancelled", icon='info')
 
 			else:
 
-				coachUsername = simpledialog.askstring("Info", "Enter the username of the coach you want to delete")
+				coachUsername = simpledialog.askstring("Response", "Enter the username of the coach you want to delete")
 
 				if coachUsername !='' and len(coachUsername) <25 and '@' in coachUsername and '.' in coachUsername:
 
 					c.execute(f"SELECT * FROM coach WHERE username =?", (coachUsername,))
 					data = c.fetchone()
 					if not data:
-						messagebox.showinfo("Warning", "The username entered was not found in the database", icon='error')
+						messagebox.showinfo("Error", "The username entered was not found in the database", icon='error')
 
 					else:
 
 						c.execute(f"DELETE FROM coach WHERE username =?", (coachUsername,))
 						c.execute(f"DELETE FROM coachTimetable WHERE username =?", (coachUsername,))
-						messagebox.showinfo("info", "The coach with username "+coachUsername+" has been deleted from the database")
+						messagebox.showinfo("Info", "The coach with username "+coachUsername+" has been deleted from the database", icon='info')
 
 				else:
 
-					messagebox.showinfo("Warning", "The username entered does not meet the rules", icon='error')
+					messagebox.showinfo("Error", "The username entered does not meet the rules", icon='error')
 
 			conn.commit()
 			conn.close()
@@ -570,28 +594,28 @@ class CoachContent:
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
-			response = askyesno("Are you sure?", "Do you want to search a coach's details")
+			response = askyesno("Question", "Do you want to search a coach's details?", icon='question')
 			if response == False:
-				showinfo("Info", "Search cancelled")
+				showinfo("Info", "Search cancelled", icon='info')
 
 			else:
 
-				coachUsername = simpledialog.askstring("info", "Enter the username of the coach you want to see information for")
+				coachUsername = simpledialog.askstring("Response", "Enter the username of the coach you want to see information for")
 				if coachUsername != '' and len(coachUsername) <25 and '@' in coachUsername and '.' in coachUsername:
 					coachDetails1 = c.execute(f"SELECT * FROM coach WHERE username=?", (coachUsername,))
 					coachDetails2 = c.execute(f"SELECT * FROM coachTimetable WHERE username=?", (coachUsername,))
 					data = coachDetails1.fetchone()
 					data2 = coachDetails2.fetchone()
 					if not data:
-						messagebox.showinfo("Warning", "The username entered was not found in the database", icon='error')
+						messagebox.showinfo("Error", "The username entered was not found in the database", icon='error')
 					else:
 
-						messagebox.showinfo("info", "The coach's details are listed below" + "\n\n" + "Username: " + str(data[0]) + "\n" + "Password: " + str(data[1]) + "\n" + "Firstname: " + str(data[2]) + "\n" + "Surname: " + str(data[3]) + "\n" + "Gender: " + str(data[4]) + "\n" + "DOB: " + str(data[5]) + "\n" + "Address: " + str(data[6]) + "\n" + "Availability: " + str(data[7]))
-						messagebox.showinfo("info", "The coach's Timetable is listed below" + "\n\n" + "Username: " + str(data2[0]) + "\n" + "Monday: " + str(data2[1]) + "\n" + "Tuesday: " + str(data2[2]) + "\n" + "Wednesday: " + str(data2[3]) + "\n" + "Thursday: " + str(data2[4]) + "\n" + "Friday: " + str(data2[5]) + "\n" + "Saturday: " + str(data2[6]) + "\n" + "Sunday: " + str(data2[7]))
+						messagebox.showinfo("Info", "The coach's details are listed below" + "\n\n" + "Username: " + str(data[0]) + "\n" + "Password: " + str(data[1]) + "\n" + "Firstname: " + str(data[2]) + "\n" + "Surname: " + str(data[3]) + "\n" + "Gender: " + str(data[4]) + "\n" + "DOB: " + str(data[5]) + "\n" + "Address: " + str(data[6]) + "\n" + "Availability: " + str(data[7]), icon='info')
+						messagebox.showinfo("Info", "The coach's Timetable is listed below" + "\n\n" + "Username: " + str(data2[0]) + "\n" + "Monday: " + str(data2[1]) + "\n" + "Tuesday: " + str(data2[2]) + "\n" + "Wednesday: " + str(data2[3]) + "\n" + "Thursday: " + str(data2[4]) + "\n" + "Friday: " + str(data2[5]) + "\n" + "Saturday: " + str(data2[6]) + "\n" + "Sunday: " + str(data2[7]), icon='info')
 
 				else:
 
-					messagebox.showinfo("Warning", "The username entered does not meet the rules", icon='error')
+					messagebox.showinfo("Error", "The username entered does not meet the rules", icon='error')
 
 			conn.commit()
 			conn.close()
@@ -605,28 +629,28 @@ class CoachContent:
 			c = conn.cursor()
 
 			isValid = True
-			isValid = isValid and validate_username(username.get(), "Username", username_label)
-			isValid = isValid and validate_password(password.get(), "Password", password_label)
-			isValid = isValid and validate_not_empty_string(firstname.get(), "Firstname", firstname_label)
-			isValid = isValid and validate_not_empty_string(surname.get(), "Surname", surname_label)
+			isValid = isValid and validate_username(username.get(), username_label)
+			isValid = isValid and validate_password(password.get(), password_label)
+			isValid = isValid and validate_firstname(firstname.get(), firstname_label)
+			isValid = isValid and validate_surname(surname.get(), surname_label)
 			isValid = isValid and validate_gender(gender_label)
-			isValid = isValid and validate_DOB(dateOfBirth.get(), "DOB", DOB_label)
-			isValid = isValid and validate_empty(address.get(), "Address", address_label)
-			isValid = isValid and validate_all_availability(mondayAvaliability.get(), tuesdayAvaliability.get(), wednesdayAvaliability.get(), thursdayAvaliability.get(), fridayAvaliability.get(), saturdayAvaliability.get(), sundayAvaliability.get(),"Availability")
+			isValid = isValid and validate_DOB(dateOfBirth.get(), DOB_label)
+			isValid = isValid and validate_address(address.get(), address_label)
+			isValid = isValid and validate_all_availability(mondayAvaliability.get(), tuesdayAvaliability.get(), wednesdayAvaliability.get(), thursdayAvaliability.get(), fridayAvaliability.get(), saturdayAvaliability.get(), sundayAvaliability.get())
 			if (mondayAvaliability.get() ==1):
-				isValid = isValid and validate_monday_availability(monday_from_combobox.get(),monday_to_combobox.get(),"Monday Availability", monday_label)
+				isValid = isValid and validate_monday_availability(monday_from_combobox.get(),monday_to_combobox.get(), monday_label)
 			if (tuesdayAvaliability.get() ==1):
-				isValid = isValid and validate_tuesday_availability(tuesday_from_combobox.get(),tuesday_to_combobox.get(),"Tuesday Availability", tuesday_label)
+				isValid = isValid and validate_tuesday_availability(tuesday_from_combobox.get(),tuesday_to_combobox.get(), tuesday_label)
 			if (wednesdayAvaliability.get() ==1):
-				isValid = isValid and validate_wednesday_availability(wednesday_from_combobox.get(),wednesday_to_combobox.get(),"Wednesday Availability", wednesday_label)
+				isValid = isValid and validate_wednesday_availability(wednesday_from_combobox.get(),wednesday_to_combobox.get(), wednesday_label)
 			if (thursdayAvaliability.get() ==1):
-				isValid = isValid and validate_thursday_availability(thursday_from_combobox.get(),thursday_to_combobox.get(),"Thursday Availability", thursday_label)
+				isValid = isValid and validate_thursday_availability(thursday_from_combobox.get(),thursday_to_combobox.get(), thursday_label)
 			if (fridayAvaliability.get() ==1):
-				isValid = isValid and validate_friday_availability(friday_from_combobox.get(),friday_to_combobox.get(),"Friday Availability", friday_label)
+				isValid = isValid and validate_friday_availability(friday_from_combobox.get(),friday_to_combobox.get(), friday_label)
 			if (saturdayAvaliability.get() ==1):
-				isValid = isValid and validate_saturday_availability(saturday_from_combobox.get(),saturday_to_combobox.get(),"Saturday Availability", saturday_label)
+				isValid = isValid and validate_saturday_availability(saturday_from_combobox.get(),saturday_to_combobox.get(), saturday_label)
 			if (sundayAvaliability.get() ==1):
-				isValid = isValid and validate_sunday_availability(sunday_from_combobox.get(),sunday_to_combobox.get(),"Sunday Availability", sunday_label)
+				isValid = isValid and validate_sunday_availability(sunday_from_combobox.get(),sunday_to_combobox.get(), sunday_label)
 
 			if isValid:
 				coach_username = username.get()
@@ -695,9 +719,9 @@ class CoachContent:
 					sundayFinalAvaliability = sunday_from_combobox.get() + "-" + sunday_to_combobox.get()
 
 
-				response = askyesno("Are you sure?", "Are you sure that all information above is correct?")
+				response = askyesno("Question", "Are you sure that all information above is correct?", icon='question')
 				if response == False:
-					showinfo("Info", "submition cancelled")
+					showinfo("Info", "submition cancelled", icon='info')
 
 				else:
 
@@ -1058,6 +1082,7 @@ class CoachContent:
 		coach_search_Tv.column("#6",minwidth=0,width=70)
 		coach_search_Tv.heading("#7",text='Days')
 		coach_search_Tv.column("#7",minwidth=0,width=70)
+		coach_search_Tv.bind('<Button-1>', partial(treeviewresizedisable, coach_search_Tv))
 
 		coach_ysearch_scrollbar = Scrollbar(self.coach, orient = 'vertical', command = coach_search_Tv.yview, cursor="tcross")
 		coach_ysearch_scrollbar.place(relx=0.985,rely=0.365,anchor='center',height=327)
@@ -1083,6 +1108,7 @@ class CoachContent:
 		coach_times_search_Tv.column("#6",minwidth=0,width=67)
 		coach_times_search_Tv.heading("#7",text='Sun')
 		coach_times_search_Tv.column("#7",minwidth=0,width=67)
+		coach_times_search_Tv.bind('<Button-1>', partial(treeviewresizedisable, coach_times_search_Tv))
 
 		coach_times_ysearch_scrollbar = Scrollbar(self.coach, orient = 'vertical', command = coach_times_search_Tv.yview, cursor="tcross")
 		coach_times_ysearch_scrollbar.place(relx=0.99,rely=0.713,anchor='center',height=106)

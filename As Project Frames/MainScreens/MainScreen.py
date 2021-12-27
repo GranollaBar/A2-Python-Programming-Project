@@ -3,10 +3,9 @@ from tkinter import *
 from MemberFrame.MemberDetailsScreen import MemberContent
 from CoachFrame.CoachDetailsScreen import CoachContent
 from CoachingSessionFrame.CoachingSessionScreen import CoachingSessionContent
-from CompetitionFrame.CompetitionScreen import CompetitionContent
 from MemberBooking.MemberBookingScreen import BookingContent
 from NewCompetition.NewCompetitionScreen import NewCompetitionContent
-
+from HomeFrame.MemberHomeScreen import MemberHomeScreenContent
 
 
 def clearContent():
@@ -16,16 +15,16 @@ def clearContent():
     content.grid(row=1, sticky="nsew")
 
 
-def openCoachContent():
-    clearContent()
-    coachContent = CoachContent(mainScreen)
-    coachContent.generateCoachContnt()
-
-
 def openMemberContent():
     clearContent()
     memberContent = MemberContent(mainScreen)
     memberContent.generateMemberContnt()
+
+
+def openCoachContent():
+    clearContent()
+    coachContent = CoachContent(mainScreen)
+    coachContent.generateCoachContnt()
 
 
 def openCoachSessionContent():
@@ -43,6 +42,12 @@ def openCompetitionContent():
 
 
 def openNewCompetitionContent():
+    clearContent()
+    competitioncontent = NewCompetitionContent(mainScreen)
+    competitioncontent.generateCompetitionContnt()
+
+
+def openAttendCompetitionContent():
     clearContent()
     competitioncontent = NewCompetitionContent(mainScreen)
     competitioncontent.generateCompetitionContnt()
@@ -75,8 +80,8 @@ header.grid(row=0, sticky="nsew")
 content.grid(row=1, sticky="nsew")
 
 
-memberContent = MemberContent(mainScreen)
-memberContent.generateMemberContnt()
+memberHomeContent = MemberHomeScreenContent(mainScreen)
+memberHomeContent.generateMemberHomeScreenContnt()
 
 
 add_member_button = tkinter.Button(header, text="Add Member", command=openMemberContent, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
@@ -88,15 +93,15 @@ add_coach_button.place(rely=0.5, relx=0.22, anchor='center')
 coaching_session_button = tkinter.Button(header, text="Coaching Session", command=openCoachSessionContent, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
 coaching_session_button.place(rely=0.5, relx=0.38, anchor='center')
 
-competition_button = tkinter.Button(header, text="Competition", command=openCompetitionContent, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
-competition_button.place(rely=0.5, relx=0.546, anchor='center')
+new_competition_button = tkinter.Button(header, text="Competition", command=openNewCompetitionContent, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
+new_competition_button.place(rely=0.5, relx=0.546, anchor='center')
 
-new_competition_button = tkinter.Button(header, text="New Competition", command=openNewCompetitionContent, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
-new_competition_button.place(rely=0.5, relx=0.73, anchor='center')
+member_booking_button = tkinter.Button(header, text="Attend Competitions", command=openMemberBooking, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
+member_booking_button.place(rely=0.5, relx=0.676, anchor='center')
 
 # member_booking_button = tkinter.Button(header, text="Booking", command=openMemberBooking, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
 # member_booking_button.place(rely=0.5, relx=0.676, anchor='center')
-#
+
 # statistics_button = tkinter.Button(header, text="Stats", command=openStaticstics, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
 # statistics_button.place(rely=0.5, relx=0.71, anchor='center')
 

@@ -8,7 +8,7 @@ from tkinter import simpledialog
 from tkinter import *
 import math
 from functools import partial
-from MemberFrame.member_email import memberEmail
+from MainScreens.StakeholderEmail import Email
 from MemberFrame.memberWordDocument import buildMemberDocument
 from MainScreens.SMSSystem import MemberJoingSMS
 
@@ -37,102 +37,114 @@ class MemberContent:
 
 	def generateMemberContnt(self):
 
-
-		def validate_password(value, fieldname, label):
+		def validate_username(value, label):
 			if (value == ''):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be Empty")
+				messagebox.showinfo("Validation Error", "The username field cannot be empty", icon='error')
+				return False
+			if ('@' not in value):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The username field must contain @", icon='error')
+				return False
+			if ('.' not in value):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The username field must contain a .", icon='error')
+				return False
+
+			label.config(fg="SpringGreen3")
+			return True
+
+
+		def validate_password(value, label):
+			if (value == ''):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The password field cannot be empty", icon='error')
 				return False
 			if (len(value) < 8):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Must have between 8 and 15 characters")
+				messagebox.showinfo("Validation Error", "The password field must contain more than 7 characters", icon='error')
 				return False
 			if (len(value) > 15):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Must have between 8 and 15 characters")
+				messagebox.showinfo("Validation Error", "The password field must contain less than 16 characters", icon='error')
 				return False
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		def validate_username(value, fieldname, label):
+		def validate_telephone(value, label):
 			if (value == ''):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be empty")
-				return False
-
-			if ('@' not in value):
-				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must contain @")
-				return False
-
-			if ('.' not in value):
-				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must contain a .")
-				return False
-
-			label.config(fg="SpringGreen3")
-			return True
-
-
-		def validate_telephone(value, fieldname, label):
-			if (value == ''):
-				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be empty")
+				messagebox.showinfo("Validation Error", "The telephone field cannot be empty", icon='error')
 				return False
 			if (len(value) < 11):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be under 11 numbers")
+				messagebox.showinfo("Validation Error", "The telephone field cannot contain less than 11 numbers", icon='error')
 				return False
 			if (len(value) > 11):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be over 11 numbers")
+				messagebox.showinfo("Validation Error", "The telephone field cannot contain more than 11 numbers", icon='error')
 				return False
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		def validate_not_empty_string(value, fieldname, label):
+		def validate_firstname(value, label):
 			if (value == ""):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be Empty")
+				messagebox.showinfo("Validation Error", "The firstname field cannot be empty", icon='error')
 				return False
-
 			if (value.isdigit()):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value for Field " + fieldname + " Can not Contain Whole Numbers")
+				messagebox.showinfo("Validation Error", "The firstname field can only contain letters", icon='error')
 				return False
-
 			if (len(value) >15):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value for Field " + fieldname + " Can only Contain a max of 15 characters")
+				messagebox.showinfo("Validation Error", "The firstname field can only contain 15 characters", icon='error')
 				return False
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		def validate_empty(value, fieldname, label):
+		def validate_surname(value, label):
+			if (value == ""):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The firstname field cannot be empty", icon='error')
+				return False
+			if (value.isdigit()):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The firstname field can only contain letters", icon='error')
+				return False
+			if (len(value) >15):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The firstname field can only contain 15 characters", icon='error')
+				return False
+
+			label.config(fg="SpringGreen3")
+			return True
+
+
+		def validate_address(value, label):
 			if (value == ''):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be Empty")
+				messagebox.showinfo("Validation Error", "The address field cannot be empty", icon='error')
 				return False
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		def validate_age(value, fieldname, label):
-			if (int(value) >100):
-				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be over 100")
-				return False
-
+		def validate_age(value, label):
 			if (value ==''):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be empty")
+				messagebox.showinfo("Validation Error", "The age field cannot be empty", icon='error')
+				return False
+			if (int(value) >100):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The age field cannot be over 100", icon='error')
 				return False
 
 			label.config(fg="SpringGreen3")
@@ -173,6 +185,11 @@ class MemberContent:
 					count+=1
 
 
+		def treeviewresizedisable(treeview, event):
+			if treeview.identify_region(event.x, event.y) == "separator":
+				return "break"
+
+
 		def returnColour(usernameReturn, passwordReturn, firstnameReturn, surnameReturn, telephoneReturn, postcodeReturn, ageReturn):
 			usernameReturn.config(fg="black")
 			passwordReturn.config(fg="black")
@@ -184,9 +201,9 @@ class MemberContent:
 
 
 		def updateAccountDetails(self):
-			response = askyesno("Are you sure?", "Do you want to update a students details")
+			response = askyesno("Question", "Do you want to update a students details?", icon='question')
 			if response == False:
-				showinfo("Info", "Update cancelled")
+				showinfo("Info", "Update cancelled", icon='info')
 
 			else:
 
@@ -208,16 +225,16 @@ class MemberContent:
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
-			memberUsername = simpledialog.askstring("info", "Enter the username of the member you want to update")
+			memberUsername = simpledialog.askstring("Response", "Enter the username of the member you want to update")
 			if memberUsername != '' and len(memberUsername) <25 and '@' in memberUsername and '.' in memberUsername:
 				c.execute(f"SELECT * FROM member WHERE username=?", (memberUsername,))
 				data = c.fetchone()
 				if not data:
-					messagebox.showinfo("Warning", "The username entered was not found in the database", icon='error')
+					messagebox.showinfo("Error", "The username entered was not found in the database", icon='error')
 
 				else:
 
-					new_telephone = simpledialog.askstring("info", "Enter the new telephone number of the member")
+					new_telephone = simpledialog.askstring("Response", "Enter the new telephone number of the member")
 
 					if new_telephone != '' and len(new_telephone) < 30:
 
@@ -226,15 +243,15 @@ class MemberContent:
 							"username": memberUsername
 						})
 
-						messagebox.showinfo("info", "The members telephone number is now "+new_telephone)
+						messagebox.showinfo("Info", "The members telephone number is now "+new_telephone, icon='info')
 
 					else:
 
-						messagebox.showinfo("Warning", "The telephone number entered does not meet the rules", icon='error')
+						messagebox.showinfo("Error", "The telephone number entered does not meet the rules", icon='error')
 
 			else:
 
-				messagebox.showinfo("Warning", "The username entered does not meet the rules", icon='error')
+				messagebox.showinfo("Error", "The username entered does not meet the rules", icon='error')
 
 			conn.commit()
 			conn.close()
@@ -248,16 +265,16 @@ class MemberContent:
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
-			memberUsername = simpledialog.askstring("info", "Enter the username of the member you want to update")
+			memberUsername = simpledialog.askstring("Response", "Enter the username of the member you want to update")
 			if memberUsername != '' and len(memberUsername) <25 and '@' in memberUsername and '.' in memberUsername:
 				c.execute(f"SELECT * FROM member WHERE username=?", (memberUsername,))
 				data = c.fetchone()
 				if not data:
-					messagebox.showinfo("Warning", "The username entered was not found in the database", icon='error')
+					messagebox.showinfo("Error", "The username entered was not found in the database", icon='error')
 
 				else:
 
-					new_postcode = simpledialog.askstring("info", "Enter the new postcode of the member")
+					new_postcode = simpledialog.askstring("Response", "Enter the new postcode of the member")
 
 					if new_postcode != '' and len(new_postcode) < 9:
 
@@ -266,15 +283,15 @@ class MemberContent:
 							"username": memberUsername
 						})
 
-						messagebox.showinfo("info", "The members postcode is now "+new_postcode)
+						messagebox.showinfo("Info", "The members postcode is now "+new_postcode, icon='info')
 
 					else:
 
-						messagebox.showinfo("Warning", "The postcode entered does not meet the rules", icon='error')
+						messagebox.showinfo("Error", "The postcode entered does not meet the rules", icon='error')
 
 			else:
 
-				messagebox.showinfo("Warning", "The username entered does not meet the rules", icon='error')
+				messagebox.showinfo("Error", "The username entered does not meet the rules", icon='error')
 
 			conn.commit()
 			conn.close()
@@ -286,20 +303,20 @@ class MemberContent:
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
-			response = askyesno("Are you sure?", "Do you want to delete a member")
+			response = askyesno("Question", "Do you want to delete a member?", icon='question')
 			if response == False:
-				showinfo("Info", "Deletion cancelled")
+				showinfo("Info", "Deletion cancelled", icon='info')
 
 			else:
 
-				accountUsername = simpledialog.askstring("Info", "Enter the username of the member you want to delete")
+				accountUsername = simpledialog.askstring("Response", "Enter the username of the member you want to delete")
 
 				if accountUsername !='' and len(accountUsername) <25:
 
 					c.execute(f"SELECT * FROM member WHERE username =?", (accountUsername,))
 					data = c.fetchone()
 					if not data:
-						messagebox.showinfo("Warning", "The username entered was not found in the database", icon='error')
+						messagebox.showinfo("Error", "The username entered was not found in the database", icon='error')
 
 					else:
 
@@ -309,7 +326,7 @@ class MemberContent:
 
 				else:
 
-					messagebox.showinfo("Warning", "The username entered does not meet the rules", icon='error')
+					messagebox.showinfo("Error", "The username entered does not meet the rules", icon='error')
 
 			conn.commit()
 			conn.close()
@@ -321,25 +338,25 @@ class MemberContent:
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
-			response = askyesno("Are you sure?", "Do you want to search a members details")
+			response = askyesno("Question", "Do you want to search a members details?", icon='question')
 			if response == False:
-				showinfo("Info", "Search cancelled")
+				showinfo("Info", "Search cancelled", icon='info')
 
 			else:
 
-				memberUsername = simpledialog.askstring("info", "Enter the username of the member you want to see information for")
+				memberUsername = simpledialog.askstring("Response", "Enter the username of the member you want to see information for")
 				if memberUsername != '' and len(memberUsername) <25:
 					c.execute(f"SELECT * FROM member WHERE username=?", (memberUsername,))
 					data = c.fetchone()
 					if not data:
-						messagebox.showinfo("Warning", "The username entered was not found in the database", icon='error')
+						messagebox.showinfo("Error", "The username entered was not found in the database", icon='error')
 					else:
 
-						messagebox.showinfo("info", "The members details are listed below" + "\n\n" + "Username: " + str(data[0]) + "\n" + "Password: " + str(data[1]) + "\n" + "Firstname: " + str(data[2]) + "\n" + "Surname: " + str(data[3]) + "\n" + "Telephone: " + str(data[4]) + "\n" + "Postcode: " + str(data[5]) + "\n" + "Age: " + str(data[6]) + "\n" + "Group: " + str(data[7]))
+						messagebox.showinfo("Info", "The members details are listed below" + "\n\n" + "Username: " + str(data[0]) + "\n" + "Password: " + str(data[1]) + "\n" + "Firstname: " + str(data[2]) + "\n" + "Surname: " + str(data[3]) + "\n" + "Telephone: " + str(data[4]) + "\n" + "Postcode: " + str(data[5]) + "\n" + "Age: " + str(data[6]) + "\n" + "Group: " + str(data[7]), icon='info')
 
 				else:
 
-					messagebox.showinfo("Warning", "The username entered does not meet the rules", icon='error')
+					messagebox.showinfo("Error", "The username entered does not meet the rules", icon='error')
 
 			conn.commit()
 			conn.close()
@@ -352,13 +369,13 @@ class MemberContent:
 			c = conn.cursor()
 
 			isValid = True
-			isValid = isValid and validate_username(username.get(), "Username", username_label)
-			isValid = isValid and validate_password(password.get(), "Password", password_label)
-			isValid = isValid and validate_not_empty_string(firstname.get(), "Firstname", firstname_label)
-			isValid = isValid and validate_not_empty_string(surname.get(), "Surname", surname_label)
-			isValid = isValid and validate_telephone(number.get(), "Telephone number", telephone_label)
-			isValid = isValid and validate_empty(postcode.get(), "Postcode", postcode_label)
-			isValid = isValid and validate_age(age.get(), "Age", age_label)
+			isValid = isValid and validate_username(username.get(), username_label)
+			isValid = isValid and validate_password(password.get(), password_label)
+			isValid = isValid and validate_firstname(firstname.get(), firstname_label)
+			isValid = isValid and validate_surname(surname.get(), surname_label)
+			isValid = isValid and validate_telephone(number.get(), telephone_label)
+			isValid = isValid and validate_address(postcode.get(), postcode_label)
+			isValid = isValid and validate_age(age.get(), age_label)
 
 			if isValid:
 				account_username = username.get()
@@ -371,21 +388,21 @@ class MemberContent:
 
 				account_group = ageToGroup(age)
 
-				CompetitionConfirmation = messagebox.askquestion ('Question','Are you comfortable with doing competitions')
+				CompetitionConfirmation = messagebox.askquestion('Question','Are you comfortable with doing competitions', icon='question')
 				if CompetitionConfirmation == 'yes':
 					finalCompetition = 'yes'
 				else:
 					finalCompetition = 'no'
 
 				if isValid:
-					response = askyesno("Are you sure?", "Are you sure that all information above is correct?")
+					response = askyesno("Question", "Are you sure that all information above is correct?", icon='question')
 					if response == False:
-						showinfo("Info", "submition cancelled")
+						showinfo("Info", "submition cancelled", icon='info')
 
 					else:
 
 						doc = buildMemberDocument(account_username, account_password, account_firstname, account_surname, account_telephone, account_postcode, account_age, account_group)
-						found = memberEmail("Lisburn Racquets Account Added", "You have been accepted into Lisburn Raquets Club." + "\n" + "Your details can be found in the document below." + "\n\n" + "Thanks for choosing Lisburn Racquets Club", account_username, doc, username_label)
+						found = Email("Lisburn Racquets Account Added", "You have been accepted into Lisburn Raquets Club." + "\n" + "Your details can be found in the document below." + "\n\n" + "Thanks for choosing Lisburn Racquets Club", account_username, doc, username_label)
 						if found:
 
 							c.execute("INSERT INTO member VALUES (:username, :password, :firstname, :surname, :telephone, :postcode, :age, :member_group, :competitions)",
@@ -408,7 +425,7 @@ class MemberContent:
 										  'status': 'member',
 									  })
 
-							messagebox.showinfo("Info","The members has been assigned to group " + str(account_group) + " because he/she is " + str(account_age) + " years old")
+							messagebox.showinfo("Info","The members has been assigned to group " + str(account_group) + " because he/she is " + str(account_age) + " years old", icon='info')
 
 							username.set('')
 							password.set('')
@@ -531,6 +548,9 @@ class MemberContent:
 		member_search_Tv.column("#6",minwidth=0,width=50)
 		member_search_Tv.heading("#7",text='Group')
 		member_search_Tv.column("#7",minwidth=0,width=80)
+		member_search_Tv.bind('<Button-1>', partial(treeviewresizedisable, member_search_Tv))
+
+
 
 		student_ysearch_scrollbar = Scrollbar(self.member, orient = 'vertical', command = member_search_Tv.yview, cursor="tcross")
 		student_ysearch_scrollbar.place(relx=0.93,rely=0.71,anchor='center',height=307)

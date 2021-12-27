@@ -3,7 +3,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from tkinter import messagebox
 
-def SessionEmail(subject, msg, recipientemail, label):
+def ChangePassword(subject, msg, recipientemail):
 	try:
 		server=smtplib.SMTP('smtp.gmail.com:587')
 		server.ehlo()
@@ -15,7 +15,6 @@ def SessionEmail(subject, msg, recipientemail, label):
 		return True
 
 	except:
-		label.config(fg='red')
 		messagebox.showinfo('info','The email was not sent successfully to '+ recipientemail + "\n" + "Make sure the username entered exists", icon='error')
 		return False
 

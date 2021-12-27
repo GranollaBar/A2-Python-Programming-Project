@@ -40,52 +40,52 @@ class CoachingSessionContent:
 
 	def generateCoachSessionContnt(self):
 
-		def validate_username(value, fieldname, label):
+		def validate_username(value, label):
 			if (value == ''):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be empty")
+				messagebox.showinfo("Validation Error", "The username field cannot be empty", icon='error')
 				return False
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		def validate_start_time(value, value2, fieldname, label):
+		def validate_start_time(value, value2, label):
 			if (float(value) <8.00):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be before 8am")
+				messagebox.showinfo("Validation Error", "The start time cannot be before 8am", icon='error')
 				return False
 			if (float(value) >22.00):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be past 10pm")
+				messagebox.showinfo("Validation Error", "The start time cannot be past 10pm", icon='error')
 				return False
 			if (float(value) >= float(value2)):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be higher than the end time")
+				messagebox.showinfo("Validation Error", "The start time cannot be higher than the end time", icon='error')
 				return False
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		def validate_end_time(value, fieldname, label):
+		def validate_end_time(value, label):
 			if (float(value) <9.00):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be before 9am")
+				messagebox.showinfo("Validation Error", "The end time cannot be before 9am", icon='error')
 				return False
 			if (float(value) >23.00):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be past 11pm")
+				messagebox.showinfo("Validation Error", "The end time cannot be after 11pm", icon='error')
 				return False
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		def validate_date(value, fieldname, label):
+		def validate_date(value, label):
 			if (value == ''):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " not not be empty")
+				messagebox.showinfo("Validation Error", "The date cannot be empty", icon='error')
 				return False
 
 			presentDate = datetime.datetime.now()
@@ -96,7 +96,7 @@ class CoachingSessionContent:
 
 			if d2>d1:
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be before the current date")
+				messagebox.showinfo("Validation Error", "The start date cannot be before the current date", icon='error')
 				return False
 
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
@@ -108,7 +108,7 @@ class CoachingSessionContent:
 			for SessionDates in items:
 				if (value == SessionDates[3]):
 					date_label.config(fg='red')
-					messagebox.showinfo('Info', 'There is already a coaching session on ' + str(value) + '. There can only be one coaching session per day')
+					messagebox.showinfo('Validation Error', 'There is already a coaching session on ' + str(value) + '. There can only be one coaching session per day', icon='error')
 					return False
 				else:
 					pass
@@ -118,36 +118,36 @@ class CoachingSessionContent:
 			return True
 
 
-		def validate_courts(value, fieldname, label):
+		def validate_courts(value, label):
 			if (value != True):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must have at least 1 selected")
+				messagebox.showinfo("Validation Error", "The courts must have at least 1 selected", icon='error')
 				return False
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		def validate_entry_group(value, fieldname):
+		def validate_entry_group(value):
 			if value is None:
 				return False
 			if (value == ''):
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " can not be empty")
+				messagebox.showinfo("Validation Error", "The group cannot be empty", icon='error')
 				return False
 			if (value.isnumeric==False):
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must be a number")
+				messagebox.showinfo("Validation Error", "The group can only contain numbers", icon='error')
 				return False
 			if (int(value)>20):
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must be a number")
+				messagebox.showinfo("Validation Error", "The group cannot be over 20, as it doesn't exist", icon='error')
 				return False
 			if (int(value)<0):
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must be a number")
+				messagebox.showinfo("Validation Error", "The group cannot be below 0, as it doesn't exist", icon='error')
 				return False
 
 			return True
 
 
-		def validate_group(value, fieldname, label):
+		def validate_group(value, label):
 			GroupExistsCounter = 0
 
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
@@ -158,7 +158,7 @@ class CoachingSessionContent:
 
 			if (value != True):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must have at least 1 selected")
+				messagebox.showinfo("Validation Error", "A group must be selected", icon='error')
 				return False
 
 			for records in items:
@@ -167,7 +167,7 @@ class CoachingSessionContent:
 					pass
 					if (GroupExistsCounter == len(items)):
 						group_label.config(fg='red')
-						messagebox.showinfo('Info', 'There are no members in group ' + str(GroupFinder) + '. You must choose a group with members in order to create a valid coaching session')
+						messagebox.showinfo('Validation Error', 'There are no members in group ' + str(GroupFinder) + '. You must choose a group with members in order to create a valid coaching session', icon='error')
 						return False
 
 			label.config(fg="SpringGreen3")
@@ -179,15 +179,15 @@ class CoachingSessionContent:
 			return True
 
 
-		def validate_new_start_time(value, value2, fieldname):
+		def validate_new_start_time(value, value2):
 			if (float(value) <8.00):
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be before 8am")
+				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be before 8am", icon='error')
 				return False
 			if (float(value) >22.00):
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be past 10pm")
+				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be past 10pm", icon='error')
 				return False
 			if (float(value) > float(value2)):
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be higher than the end time")
+				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be higher than the end time", icon='error')
 				return False
 
 			return True
@@ -195,10 +195,10 @@ class CoachingSessionContent:
 
 		def validate_new_end_time(value, fieldname):
 			if (float(value) <9.00):
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be empty")
+				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be empty", icon='error')
 				return False
 			if (float(value) >23.00):
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be empty")
+				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be empty", icon='error')
 				return False
 
 			return True
@@ -358,10 +358,9 @@ class CoachingSessionContent:
 					  courtvalue7, courtvalue8, courtvalue9, courtvalue10, courtvalue11, courtvalue12]
 
 			if (courtvalue.cget('bg') != 'SpringGreen3' and courtvalue2.cget('bg') != 'SpringGreen3' and courtvalue3.cget('bg') != 'SpringGreen3' and courtvalue4.cget('bg') != 'SpringGreen3' and courtvalue5.cget('bg') != 'SpringGreen3' and courtvalue6.cget('bg') != 'SpringGreen3' and courtvalue7.cget('bg') != 'SpringGreen3' and courtvalue8.cget('bg') != 'SpringGreen3' and courtvalue9.cget('bg') != 'SpringGreen3' and courtvalue10.cget('bg') != 'SpringGreen3' and courtvalue11.cget('bg') != 'SpringGreen3' and courtvalue12.cget('bg') != 'SpringGreen3'):
-				messagebox.showinfo('Info', 'Please select a court to continue')
+				messagebox.showinfo('Error', 'Please select a court to continue', icon='error')
 
 			else:
-
 				CourtsTrue = True
 				frame.withdraw()
 				for court in courts:
@@ -383,10 +382,10 @@ class CoachingSessionContent:
 		def groupRequired():
 			global GroupFinder
 			global GroupTrue
-			groupNumber = tkinter.simpledialog.askstring("Info","Enter the group number that you want the coaching session for (1-20)")
+			groupNumber = tkinter.simpledialog.askstring("Response","Enter the group number that you want the coaching session for (1-20)")
 
 			isValid = True
-			isValid = isValid and validate_entry_group(groupNumber, "Group number")
+			isValid = isValid and validate_entry_group(groupNumber)
 
 			if isValid:
 				GroupTrue = True
@@ -432,7 +431,7 @@ class CoachingSessionContent:
 					"username": username
 				})
 
-				messagebox.showinfo("info", "The coach's session date is now " + newCoachSessionDate)
+				messagebox.showinfo("Info", "The coach's session date is now " + newCoachSessionDate, icon='info')
 
 				conn.commit()
 				conn.close()
@@ -444,12 +443,12 @@ class CoachingSessionContent:
 
 			frame.withdraw()
 
-			coachUsername = simpledialog.askstring("info", "Enter the username of the coach you want to update")
+			coachUsername = simpledialog.askstring("Response", "Enter the username of the coach you want to update", icon='error')
 			if coachUsername != '' and len(coachUsername) <25 and '@' in coachUsername and '.' in coachUsername:
 				c.execute(f"SELECT * FROM coachSessionDetails WHERE username=?", (coachUsername,))
 				data = c.fetchone()
 				if not data:
-					messagebox.showinfo("Warning", "The username entered was not found in the database", icon='error')
+					messagebox.showinfo("Error", "The username entered was not found in the database", icon='error')
 
 				else:
 
@@ -489,6 +488,11 @@ class CoachingSessionContent:
 					count+=1
 
 
+		def treeviewresizedisable(treeview, event):
+			if treeview.identify_region(event.x, event.y) == "separator":
+				return "break"
+
+
 		def returnColour(usernameReturn, startTimeReturn, endTimeReturn, dateReturn, courtReturn, groupReturn, techniqueReturn):
 			usernameReturn.config(fg="black")
 			startTimeReturn.config(fg="black")
@@ -500,9 +504,9 @@ class CoachingSessionContent:
 
 
 		def updateCoachSessionDetails(self):
-			response = askyesno("Are you sure?", "Do you want to update a coach's session")
+			response = askyesno("Question", "Do you want to update a coach's session?", icon='question')
 			if response == False:
-				showinfo("Info", "Update cancelled")
+				showinfo("Info", "Update cancelled", icon='info')
 
 			else:
 
@@ -534,12 +538,12 @@ class CoachingSessionContent:
 
 			frame.withdraw()
 
-			coachUsername = simpledialog.askstring("info", "Enter the username of the coach you want to update")
+			coachUsername = simpledialog.askstring("Response", "Enter the username of the coach you want to update")
 			if coachUsername != '' and len(coachUsername) <25 and '@' in coachUsername and '.' in coachUsername:
 				c.execute(f"SELECT * FROM coach WHERE username=?", (coachUsername,))
 				data = c.fetchone()
 				if not data:
-					messagebox.showinfo("Warning", "The username entered was not found in the database", icon='error')
+					messagebox.showinfo("Error", "The username entered was not found in the database", icon='error')
 
 				else:
 
@@ -577,7 +581,7 @@ class CoachingSessionContent:
 			frame.withdraw()
 
 			isValid = True
-			isValid = isValid and validate_new_start_time(new_start_time.get(), new_end_time.get(), "Start Time")
+			isValid = isValid and validate_new_start_time(new_start_time.get(), new_end_time.get())
 			isValid = isValid and validate_new_end_time(new_end_time.get(), "End Time")
 
 			if isValid:
@@ -593,8 +597,8 @@ class CoachingSessionContent:
 					"username": username
 				})
 
-				messagebox.showinfo("info", "The coach's new session start time is now "+newCoachSessionStartTime)
-				messagebox.showinfo("info", "The coach's new session end time is now "+newCoachSessionEndTime)
+				messagebox.showinfo("Info", "The coach's new session start time is now "+newCoachSessionStartTime, icon='info')
+				messagebox.showinfo("Info", "The coach's new session end time is now "+newCoachSessionEndTime, icon='info')
 
 			conn.commit()
 			conn.close()
@@ -608,12 +612,12 @@ class CoachingSessionContent:
 
 			frame.withdraw()
 
-			coachUsername = simpledialog.askstring("info", "Enter the username of the coach you want to update")
+			coachUsername = simpledialog.askstring("Response", "Enter the username of the coach you want to update")
 			if coachUsername != '' and len(coachUsername) <25 and '@' in coachUsername and '.' in coachUsername:
 				c.execute(f"SELECT * FROM coachSessionDetails WHERE username=?", (coachUsername,))
 				data = c.fetchone()
 				if not data:
-					messagebox.showinfo("Warning", "The username entered was not found in the database", icon='error')
+					messagebox.showinfo("Error", "The username entered was not found in the database", icon='error')
 
 				else:
 
@@ -822,7 +826,7 @@ class CoachingSessionContent:
 					"username": username
 				})
 
-				messagebox.showinfo("info", "The session's new courts are now "+final_courts)
+				messagebox.showinfo("Info", "The session's new courts are now "+final_courts, icon='info')
 
 			conn.commit()
 			conn.close()
@@ -836,12 +840,12 @@ class CoachingSessionContent:
 
 			frame.withdraw()
 
-			coachUsername = simpledialog.askstring("info", "Enter the username of the coach you want to update")
+			coachUsername = simpledialog.askstring("Response", "Enter the username of the coach you want to update")
 			if coachUsername != '' and len(coachUsername) <25 and '@' in coachUsername and '.' in coachUsername:
 				c.execute(f"SELECT * FROM coach WHERE username=?", (coachUsername,))
 				data = c.fetchone()
 				if not data:
-					messagebox.showinfo("Warning", "The username entered was not found in the database", icon='error')
+					messagebox.showinfo("Error", "The username entered was not found in the database", icon='error')
 
 				else:
 
@@ -894,7 +898,7 @@ class CoachingSessionContent:
 					"username": username
 				})
 
-				messagebox.showinfo("info", "The session's new technique is now "+ final_technique)
+				messagebox.showinfo("Info", "The session's new technique is now "+ final_technique, icon='info')
 
 			conn.commit()
 			conn.close()
@@ -906,29 +910,29 @@ class CoachingSessionContent:
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
-			response = askyesno("Are you sure?", "Do you want to delete a coach session")
+			response = askyesno("Question", "Do you want to delete a coach session?", icon='question')
 			if response == False:
-				showinfo("Info", "Deletion cancelled")
+				showinfo("Info", "Deletion cancelled", icon='info')
 
 			else:
 
-				coachUsername = simpledialog.askstring("Info", "Enter the username of the coach you want to delete")
+				coachUsername = simpledialog.askstring("Response", "Enter the username of the coach you want to delete")
 
 				if coachUsername !='' and len(coachUsername) <25 and '@' in coachUsername and '.' in coachUsername:
 
 					c.execute(f"SELECT * FROM coachSessionDetails WHERE username =?", (coachUsername,))
 					data = c.fetchone()
 					if not data:
-						messagebox.showinfo("Warning", "The username entered was not found in the database", icon='error')
+						messagebox.showinfo("Error", "The username entered was not found in the database", icon='error')
 
 					else:
 
 						c.execute(f"DELETE FROM coachSessionDetails WHERE username =?", (coachUsername,))
-						messagebox.showinfo("info", "The coach session associated with username "+coachUsername+" has been deleted from the database")
+						messagebox.showinfo("Info", "The coach session associated with username "+coachUsername+" has been deleted from the database", icon='info')
 
 				else:
 
-					messagebox.showinfo("Warning", "The username entered does not meet the rules", icon='error')
+					messagebox.showinfo("Error", "The username entered does not meet the rules", icon='error')
 
 			conn.commit()
 			conn.close()
@@ -940,25 +944,25 @@ class CoachingSessionContent:
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
-			response = askyesno("Are you sure?", "Do you want to search a coach's session")
+			response = askyesno("Question", "Do you want to search a coach's session?", icon='question')
 			if response == False:
-				showinfo("Info", "Search cancelled")
+				showinfo("Info", "Search cancelled", icon='info')
 
 			else:
 
-				coachUsername = simpledialog.askstring("info", "Enter the username of the coach you want to find the session on")
+				coachUsername = simpledialog.askstring("Response", "Enter the username of the coach you want to find the session on")
 				if coachUsername != '' and len(coachUsername) <25 and '@' in coachUsername and '.' in coachUsername:
 					c.execute(f"SELECT * FROM coachSessionDetails WHERE username=?", (coachUsername,))
 					data = c.fetchone()
 					if not data:
-						messagebox.showinfo("Warning", "The username entered was not found in the database", icon='error')
+						messagebox.showinfo("Error", "The username entered was not found in the database", icon='error')
 					else:
 
-						messagebox.showinfo("info", "The session's details are listed below" + "\n\n" + "Username: " + str(data[0]) + "\n" + "Start Time: " + str(data[1]) + "\n" + "End Time: " + str(data[2]) + "\n" + "Date: " + str(data[3]) + "\n" + "Courts: " + str(data[4]) + "\n" + "Group: " + str(data[5]) + "\n" + "People: " + str(data[6]) + "\n" + "Technique: " + str(data[7]))
+						messagebox.showinfo("Info", "The session's details are listed below" + "\n\n" + "Username: " + str(data[0]) + "\n" + "Start Time: " + str(data[1]) + "\n" + "End Time: " + str(data[2]) + "\n" + "Date: " + str(data[3]) + "\n" + "Courts: " + str(data[4]) + "\n" + "Group: " + str(data[5]) + "\n" + "People: " + str(data[6]) + "\n" + "Technique: " + str(data[7]), icon='info')
 
 				else:
 
-					messagebox.showinfo("Warning", "The username entered does not meet the rules", icon='error')
+					messagebox.showinfo("Error", "The username entered does not meet the rules", icon='error')
 
 			conn.commit()
 			conn.close()
@@ -970,12 +974,12 @@ class CoachingSessionContent:
 			AllEmailsComplete = 0
 
 			isValid = True
-			isValid = isValid and validate_username(self.coachNamesAndPasswords.get(), "Username", username_label)
-			isValid = isValid and validate_start_time(timeStart.get(), timeEnd.get(),"Start Time", starttime_label)
-			isValid = isValid and validate_end_time(timeEnd.get(), "End Time", endtime_label)
-			isValid = isValid and validate_date(eventDate.get(), "Date", date_label)
-			isValid = isValid and validate_courts(CourtsTrue, "Court", courts_needed_label)
-			isValid = isValid and validate_group(GroupTrue, "Group", group_label)
+			isValid = isValid and validate_username(self.coachNamesAndPasswords.get(), username_label)
+			isValid = isValid and validate_start_time(timeStart.get(), timeEnd.get(), starttime_label)
+			isValid = isValid and validate_end_time(timeEnd.get(), endtime_label)
+			isValid = isValid and validate_date(eventDate.get(), date_label)
+			isValid = isValid and validate_courts(CourtsTrue, courts_needed_label)
+			isValid = isValid and validate_group(GroupTrue, group_label)
 			isValid = isValid and validate_techniques(techniques_label)
 
 
@@ -998,9 +1002,9 @@ class CoachingSessionContent:
 					final_technique = 'Clears'
 
 
-				response = askyesno("Are you sure?", "Are you sure that all information above is correct?")
+				response = askyesno("Question", "Are you sure that all information above is correct?", icon='question')
 				if response == False:
-					showinfo("Info", "submition cancelled")
+					showinfo("Info", "submition cancelled", icon='info')
 
 				else:
 					findMembers()
@@ -1020,7 +1024,7 @@ class CoachingSessionContent:
 							SessionEmail("Coaching Session Date Set", "A coach at Lisburn Racquets Club has set up a new coaching session. The date and time of the session is listed below:" + "\n\n" + "Date: " + coachsession_date + "\n\n" + "From: " + coachsession_starttime + "\n" + "To: " + coachsession_endtime + "\n\n" + "Thanks for choosing Lisburn Racquets Club", member_name, username_label)
 							AllEmailsComplete += 1
 							if (AllEmailsComplete == len(items)):
-								messagebox.showinfo('Info', 'All members in group ' + str(GroupFinder) + ' have been sent information on the new coaching session')
+								messagebox.showinfo('Info', 'All members in group ' + str(GroupFinder) + ' have been sent information on the new coaching session', icon='info')
 
 					conn2 = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 					c2 = conn2.cursor()
@@ -1050,7 +1054,7 @@ class CoachingSessionContent:
 					technique.set('1')
 
 					returnColour(username_label, starttime_label, endtime_label, date_label, courts_needed_label, group_label, techniques_label)
-					messagebox.showinfo("info", "Details have been successfully stored")
+					messagebox.showinfo("Info", "Details have been successfully stored", icon='info')
 
 			treeviewPopulate()
 
@@ -1069,7 +1073,7 @@ class CoachingSessionContent:
 			c.execute("SELECT * From coachSessionDetails WHERE date=?", (string_date,))
 			items = c.fetchone()
 			if not items:
-				messagebox.showinfo("info", "There is no coaching session on this date")
+				messagebox.showinfo("Error", "There is no coaching session on this date", icon='error')
 
 			else:
 
@@ -1204,6 +1208,7 @@ class CoachingSessionContent:
 		coachsession_search_Tv.column("#6",minwidth=0,width=80)
 		coachsession_search_Tv.heading("#7",text='Technique')
 		coachsession_search_Tv.column("#7",minwidth=0,width=100)
+		coachsession_search_Tv.bind('<Button-1>', partial(treeviewresizedisable, coachsession_search_Tv))
 
 		coachsession_ysearch_scrollbar = Scrollbar(self.coachSession, orient = 'vertical', command = coachsession_search_Tv.yview, cursor="tcross")
 		coachsession_ysearch_scrollbar.place(relx=0.95,rely=0.22,anchor='center',height=109)

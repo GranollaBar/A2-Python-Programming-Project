@@ -7,9 +7,10 @@ from tkinter.messagebox import askyesno
 import sqlite3
 from tkinter import *
 import webbrowser
-from LoginFrame.test_email import sendEmail
+from MainScreens.ChangingPasswordEmail import ChangePassword
 from MainScreens.SMSSystem import MemberJoingSMS
 from MainScreens.SMSSystem import ChangingPassword
+
 
 login = tkinter.Tk()
 login.title('Lisburn Raquets Club')
@@ -29,51 +30,57 @@ c = conn.cursor()
 # 				)""")
 
 
-def validate_password(value, fieldname, label):
+def validate_password(value, label):
+    if value is None:
+        return False
     if (value == ''):
         label.config(fg="red")
-        messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be Empty")
+        messagebox.showinfo("Validation Error", "The password field must contain a .", icon='error')
         return False
     if (len(value) < 8):
         label.config(fg="red")
-        messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Must have between 8 and 15 characters")
+        messagebox.showinfo("Validation Error", "The password field must contain more than 7 characters", icon='error')
         return False
     if (len(value) > 15):
         label.config(fg="red")
-        messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Must have between 8 and 15 characters")
+        messagebox.showinfo("Validation Error", "The password field must contain less than 16 characters", icon='error')
         return False
 
     label.config(fg="SpringGreen3")
     return True
 
 
-def validate_username(value, fieldname, label):
+def validate_username(value, label):
+    if value is None:
+        return False
     if (value == ''):
         label.config(fg="red")
-        messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be empty")
+        messagebox.showinfo("Validation Error", "The username field cannot be empty", icon='error')
         return False
     if ('@' not in value):
         label.config(fg="red")
-        messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must contain @")
+        messagebox.showinfo("Validation Error", "The username field must contain @", icon='error')
         return False
     if ('.' not in value):
         label.config(fg="red")
-        messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must contain a .")
+        messagebox.showinfo("Validation Error", "The username field must contain a .", icon='error')
         return False
 
     label.config(fg="SpringGreen3")
     return True
 
 
-def validate_username2(value, fieldname):
+def validate_username2(value):
+    if value is None:
+        return False
     if (value == ''):
-        messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be empty")
+        messagebox.showinfo("Validation Error", "The username field cannot be empty", icon='error')
         return False
     if ('@' not in value):
-        messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must contain @")
+        messagebox.showinfo("Validation Error", "The username field must contain @", icon='error')
         return False
     if ('.' not in value):
-        messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must contain a .")
+        messagebox.showinfo("Validation Error", "The username field must contain a .", icon='error')
         return False
 
     return True
@@ -81,17 +88,17 @@ def validate_username2(value, fieldname):
 
 def forgot_system():
 
-    recipient = tkinter.simpledialog.askstring("Info","Enter the username of the user's password you want to change")
+    recipient = tkinter.simpledialog.askstring("Response","Enter the username of the user's password you want to change")
 
     isValid = True
-    isValid = isValid and validate_username2(recipient, "Username")
+    isValid = isValid and validate_username2(recipient)
 
     if isValid:
 
         c.execute(f"SELECT * FROM account WHERE username =?", (recipient,))
         data = c.fetchone()
         if not data:
-            messagebox.showinfo("Warning", "The username entered was not found in the database", icon='error')
+            messagebox.showinfo("Error", "The username entered was not found in the database", icon='error')
 
         else:
 
@@ -116,7 +123,7 @@ def completeVerification(value, name, frame):
     if (final_choosing == 1):
         emailSending(name, frame)
     if (final_choosing == 2):
-        SMSSending(frame)
+        SMSSending(name, frame)
 
 
 def emailSending(finalname, finalframe):
@@ -124,7 +131,7 @@ def emailSending(finalname, finalframe):
     newpassword = StringVar()
     verificationCode = random.randint(100000,999999)
 
-    found = sendEmail("Lisburn Racquets Verification code","\n" + "This is an automated message sent from Lisburn Racquet's Club" + "\n" + "The verification code to change passwords is " + "\n\n" + str(verificationCode) + "\n\n" + "Please do not respond to this email",finalname)
+    found = ChangePassword("Lisburn Racquets Verification code","\n" + "This is an automated message sent from Lisburn Racquet's Club" + "\n" + "The verification code to change your passwords is: " + "\n\n" + str(verificationCode) + "\n\n" + "Please do not respond to this email",finalname)
     if found:
 
         email_toplevel=Toplevel(width=300, height=200, bg="white")
@@ -154,45 +161,46 @@ def emailSending(finalname, finalframe):
         finalframe.destroy()
 
 
-def SMSSending(finalframe):
+def SMSSending(finalname, finalframe):
     verification = IntVar()
     newpassword = StringVar()
     verificationCode = random.randint(100000,999999)
 
-    ChangingPassword(str(verificationCode))
+    found = ChangingPassword(str(verificationCode), finalframe)
+    if found:
 
-    SMS_toplevel=Toplevel(width=300, height=200, bg="white")
+        SMS_toplevel=Toplevel(width=300, height=200, bg="white")
 
-    title_label = tkinter.Label(SMS_toplevel, text="Forgot Password System", font=('Verdana', 14, 'underline', 'bold'), fg='SpringGreen3', bg='white')
-    title_label.place(rely=0.125, relx=0.5, anchor='center')
+        title_label = tkinter.Label(SMS_toplevel, text="Forgot Password System", font=('Verdana', 14, 'underline', 'bold'), fg='SpringGreen3', bg='white')
+        title_label.place(rely=0.125, relx=0.5, anchor='center')
 
-    verification_label = Label(SMS_toplevel,text = 'Verification Code:', fg ='black', bg='white', font = ('Verdana',12,'bold'))
-    verification_label.place(rely=0.4,relx=0.3,anchor=CENTER)
+        verification_label = Label(SMS_toplevel,text = 'Verification Code:', fg ='black', bg='white', font = ('Verdana',12,'bold'))
+        verification_label.place(rely=0.4,relx=0.3,anchor=CENTER)
 
-    newpassword_label = Label(SMS_toplevel,text = 'New Password:', fg ='black', bg='white', font = ('Verdana',12,'bold'))
-    newpassword_label.place(rely=0.6,relx=0.3,anchor=CENTER)
+        newpassword_label = Label(SMS_toplevel,text = 'New Password:', fg ='black', bg='white', font = ('Verdana',12,'bold'))
+        newpassword_label.place(rely=0.6,relx=0.3,anchor=CENTER)
 
-    verification_entry = Entry(SMS_toplevel,width=15, borderwidth=2, textvariable=verification)
-    verification_entry.place(rely=0.403,relx=0.8,anchor=CENTER)
-    verification.set('')
+        verification_entry = Entry(SMS_toplevel,width=15, borderwidth=2, textvariable=verification)
+        verification_entry.place(rely=0.403,relx=0.8,anchor=CENTER)
+        verification.set('')
 
-    newpassword_entry = Entry(SMS_toplevel,width=15, borderwidth=2, textvariable=newpassword)
-    newpassword_entry.place(rely=0.603,relx=0.8,anchor=CENTER)
+        newpassword_entry = Entry(SMS_toplevel,width=15, borderwidth=2, textvariable=newpassword)
+        newpassword_entry.place(rely=0.603,relx=0.8,anchor=CENTER)
 
-    def completeVerification():
-        newPasswordUpdate(newpassword.get(), verificationCode, verification.get(), SMS_toplevel, verification, newpassword)
+        def completeVerification():
+            newPasswordUpdate(newpassword.get(), verificationCode, verification.get(), SMS_toplevel, verification, newpassword, finalname)
 
-    newpassword_button=Button(SMS_toplevel,text = 'Update Password', command = completeVerification, fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20)
-    newpassword_button.place(rely=0.85,relx=0.5,anchor=CENTER)
+        newpassword_button=Button(SMS_toplevel,text = 'Update Password', command = completeVerification, fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20)
+        newpassword_button.place(rely=0.85,relx=0.5,anchor=CENTER)
 
-    finalframe.destroy()
+        finalframe.destroy()
 
 
 def newPasswordUpdate(newPassword, verificationCode, verification_entry, frame, value, value2, finalname):
     if verification_entry != verificationCode:
-        messagebox.showinfo("Warning","The verification code entered was wrong compared to the one sent to the users email", icon='error')
+        messagebox.showinfo("Error","The verification code entered was wrong compared to the one sent to the users email", icon='error')
     elif newPassword == '' or newPassword.isnumeric() == True or len(newPassword) >15 and len(newPassword) <8:
-        messagebox.showinfo("Warning","The password entered did not comply with the rules", icon='error')
+        messagebox.showinfo("Error","The password entered did not comply with the rules", icon='error')
 
     else:
         c.execute(f"SELECT * FROM account WHERE username=?", (finalname,))
@@ -222,7 +230,7 @@ def newPasswordUpdate(newPassword, verificationCode, verification_entry, frame, 
             })
 
         frame.destroy()
-        messagebox.showinfo("info", "The users password is now "+newPassword)
+        messagebox.showinfo("Info", "The users password is now "+newPassword, icon='info')
         value.set('')
         value2.set('')
 
@@ -232,8 +240,8 @@ def newPasswordUpdate(newPassword, verificationCode, verification_entry, frame, 
 
 def login_submit(login_username, login_password):
     isValid = True
-    isValid = isValid and validate_username(login_username, "Username", username_label)
-    isValid = isValid and validate_password(login_password, "Password", password_label)
+    isValid = isValid and validate_username(login_username, username_label)
+    isValid = isValid and validate_password(login_password, password_label)
 
     if isValid:
         c.execute(f"SELECT * FROM account WHERE username =? and password =?", (login_username, login_password,))
@@ -241,11 +249,11 @@ def login_submit(login_username, login_password):
         if not data:
             username_label.config(fg="red")
             password_label.config(fg="red")
-            messagebox.showinfo("Warning", "The coach with username " + login_username + " and password " + login_password + " was not found in the database", icon='error')
+            messagebox.showinfo("Error", "The coach with username " + login_username + " and password " + login_password + " was not found in the database", icon='error')
 
         else:
 
-            messagebox.showinfo("info", "Login Successful")
+            messagebox.showinfo("Info", "Login Successful", icon='info')
 
             username_label.config(fg="black")
             password_label.config(fg="black")
@@ -255,17 +263,26 @@ def login_submit(login_username, login_password):
 
             login.destroy()
 
-            from MainScreens import MainScreen
-            MainScreen.mainScreen.tkraise()
+            if (data[2] == 'member'):
+                from MainScreens import MainScreen
+                MainScreen.mainScreen.tkraise()
+
+            if (data[2] == 'coach'):
+                from MainScreens import CoachMainScreen
+                CoachMainScreen.mainScreen.tkraise()
+
+            if (data[2] == 'manager'):
+                from MainScreens import MainScreen
+                MainScreen.mainScreen.tkraise()
 
     conn.commit()
     conn.close()
 
 
 def login_clear():
-    response = askyesno("Are you sure?", "Do you want to clear all details entered so far")
+    response = askyesno("Question", "Do you want to clear all details entered so far", icon='question')
     if response == False:
-        showinfo("Info", "clearance cancelled")
+        showinfo("Info", "clearance cancelled", icon='info')
 
     else:
 
