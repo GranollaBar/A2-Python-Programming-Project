@@ -12,7 +12,6 @@ from CoachingSessionFrame.CoachingSessionEmail import SessionEmail
 import time
 from datetime import date, datetime,timedelta
 import datetime
-from LoginFrame.AS_programming_loginscreen import loginUsername
 
 
 class MemberHomeScreenContent:
@@ -21,23 +20,26 @@ class MemberHomeScreenContent:
 		self.MemberHome = mainScreen
 
 
-	def generateMemberHomeScreenContnt(self):
+	def generateMemberHomeScreenContnt(self, FinalUsername):
 
-		def AllCalendarSelection(event):
+		def AllCalendarSelection(event, cal):
 			AllChangeSelection = False
 
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
-			date = cal.get_date()
-			date=str(date).split('/')
-			newdate=date[0],date[1],date[2]
-			a_date = datetime.date(int('20'+newdate[2]),int(newdate[0]), int(newdate[1]))
+			coachdate = cal.get_date()
+			coachdate=str(coachdate).split('/')
+			newcoachddate=coachdate[0],coachdate[1],coachdate[2]
+			newcoach_a_date = datetime.date(int('20'+newcoachddate[2]),int(newcoachddate[0]), int(newcoachddate[1]))
 
-			string_date = a_date.strftime("%d/%m/%Y")
+			string_date = newcoach_a_date.strftime("%d/%m/%Y")
 
 			c.execute("SELECT * From coachSessionDetails WHERE date=?", (string_date,))
 			items = c.fetchone()
+
+			print(items)
+			print('got here')
 
 			if items:
 				AllChangeSelection = True
@@ -55,23 +57,25 @@ class MemberHomeScreenContent:
 
 
 			c.execute("SELECT * FROM SinglesCompetition WHERE username=:memberusername OR username2=:memberusername", {
-				"memberusername": 'josnoble113@gmail.com'
+				"memberusername": FinalUsername
 			})
 			singles_competition_array = c.fetchall()
 
-			date = cal.get_date()
-			date=str(date).split('/')
-			newdate=date[0],date[1],date[2]
-			a_date = datetime.date(int('20'+newdate[2]),int(newdate[0]), int(newdate[1]))
-			a_date.strftime('%Y-%m-%d')
+			print(singles_competition_array)
 
-			current_day=str(a_date).split('-')
+			singlescompetitiondate = cal.get_date()
+			singlescompetitiondate=str(singlescompetitiondate).split('/')
+			newsinglescompetitiondate=singlescompetitiondate[0],singlescompetitiondate[1],singlescompetitiondate[2]
+			newsinglescompetitiondatea_date = datetime.date(int('20'+newsinglescompetitiondate[2]),int(newsinglescompetitiondate[0]), int(newsinglescompetitiondate[1]))
+			newsinglescompetitiondatea_date.strftime('%Y-%m-%d')
+
+			singles_current_day=str(newsinglescompetitiondatea_date).split('-')
 
 			for i in singles_competition_array:
-				start=str(i[2]).split('/')
-				end=str(i[3]).split('/')
+				singlesstart=str(i[2]).split('/')
+				singlesend=str(i[3]).split('/')
 
-				if current_day[1] == start[1] and current_day[2] >= start[0] and current_day[2] <= end[0]:
+				if singles_current_day[1] == singlesstart[1] and singles_current_day[2] >= singlesstart[0] and singles_current_day[2] <= singlesend[0]:
 					AllChangeSelection = True
 					messagebox.showinfo("Info", "There is a singles competition on these dates" + "\n" +
 										"The details are listed below:" + "\n\n"
@@ -86,23 +90,23 @@ class MemberHomeScreenContent:
 
 
 			c.execute("SELECT * FROM DoublesCompetition WHERE username=:memberusername OR username2=:memberusername OR username3=:memberusername OR username4=:memberusername", {
-				"memberusername": 'josnoble113@gmail.com'
+				"memberusername": FinalUsername
 			})
 			doubles_competition_array = c.fetchall()
 
-			date = cal.get_date()
-			date=str(date).split('/')
-			newdate=date[0],date[1],date[2]
-			a_date = datetime.date(int('20'+newdate[2]),int(newdate[0]), int(newdate[1]))
-			a_date.strftime('%Y-%m-%d')
+			doublescompetitiondate = cal.get_date()
+			doublescompetitiondate=str(doublescompetitiondate).split('/')
+			newdoublescompetitiondate=doublescompetitiondate[0],doublescompetitiondate[1],doublescompetitiondate[2]
+			newdoublescompetitiondatea_date = datetime.date(int('20'+newdoublescompetitiondate[2]),int(newdoublescompetitiondate[0]), int(newdoublescompetitiondate[1]))
+			newdoublescompetitiondatea_date.strftime('%Y-%m-%d')
 
-			current_day=str(a_date).split('-')
+			doubles_current_day=str(newdoublescompetitiondatea_date).split('-')
 
 			for i in doubles_competition_array:
-				start=str(i[4]).split('/')
-				end=str(i[5]).split('/')
+				doublesstart=str(i[4]).split('/')
+				doublesend=str(i[5]).split('/')
 
-				if current_day[1] == start[1] and current_day[2] >= start[0] and current_day[2] <= end[0]:
+				if doubles_current_day[1] == doublesstart[1] and doubles_current_day[2] >= doublesstart[0] and doubles_current_day[2] <= doublesend[0]:
 					AllChangeSelection = True
 					messagebox.showinfo("Info", "There is a doubles competition on these dates" + "\n" +
 										"The details are listed below:" + "\n\n"
@@ -122,7 +126,7 @@ class MemberHomeScreenContent:
 
 
 			if (AllChangeSelection == False):
-				messagebox.showinfo('Error', 'There is currently no event for you on the date selected', icon='error')
+				messagebox.showinfo('Error', "There is currently no event for " + FinalUsername + " on the date selected", icon='error')
 
 
 		def changeCalendarColour(cal):
@@ -147,7 +151,7 @@ class MemberHomeScreenContent:
 			c = conn.cursor()
 
 			c.execute("SELECT * FROM SinglesCompetition WHERE username=:memberusername OR username2=:memberusername", {
-				"memberusername": 'josnoble113@gmail.com'
+				"memberusername": FinalUsername
 			})
 			singles_competition_array = c.fetchall()
 
@@ -192,7 +196,7 @@ class MemberHomeScreenContent:
 			c = conn.cursor()
 
 			c.execute("SELECT * FROM DoublesCompetition WHERE username=:memberusername OR username2=:memberusername OR username3=:memberusername OR username4=:memberusername", {
-				"memberusername": 'josnoble113@gmail.com'
+				"memberusername": FinalUsername
 			})
 			doubles_competition_array = c.fetchall()
 
@@ -230,7 +234,6 @@ class MemberHomeScreenContent:
 				cal.tag_config("message", background="SpringGreen3", foreground="black")
 
 			conn.close()
-
 
 
 		username_label = tkinter.Label(self.MemberHome, text="Main Menu: Member", font=('Tahoma', 15, 'bold'), fg='black', bg='white')
