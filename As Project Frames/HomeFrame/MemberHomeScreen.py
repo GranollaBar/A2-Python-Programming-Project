@@ -15,13 +15,13 @@ import datetime
 from LoginFrame.AS_programming_loginscreen import loginUsername
 
 
-class MemberHomeContent:
+class MemberHomeScreenContent:
 
 	def __init__(self, mainScreen):
 		self.MemberHome = mainScreen
 
 
-	def generateMemberHomeContnt(self):
+	def generateMemberHomeScreenContnt(self):
 
 		def AllCalendarSelection(event):
 			AllChangeSelection = False
@@ -55,7 +55,7 @@ class MemberHomeContent:
 
 
 			c.execute("SELECT * FROM SinglesCompetition WHERE username=:memberusername OR username2=:memberusername", {
-				"memberusername": loginUsername.get()
+				"memberusername": 'josnoble113@gmail.com'
 			})
 			singles_competition_array = c.fetchall()
 
@@ -86,7 +86,7 @@ class MemberHomeContent:
 
 
 			c.execute("SELECT * FROM DoublesCompetition WHERE username=:memberusername OR username2=:memberusername OR username3=:memberusername OR username4=:memberusername", {
-				"memberusername": loginUsername.get()
+				"memberusername": 'josnoble113@gmail.com'
 			})
 			doubles_competition_array = c.fetchall()
 
@@ -147,7 +147,7 @@ class MemberHomeContent:
 			c = conn.cursor()
 
 			c.execute("SELECT * FROM SinglesCompetition WHERE username=:memberusername OR username2=:memberusername", {
-				"memberusername": loginUsername.get()
+				"memberusername": 'josnoble113@gmail.com'
 			})
 			singles_competition_array = c.fetchall()
 
@@ -192,7 +192,7 @@ class MemberHomeContent:
 			c = conn.cursor()
 
 			c.execute("SELECT * FROM DoublesCompetition WHERE username=:memberusername OR username2=:memberusername OR username3=:memberusername OR username4=:memberusername", {
-				"memberusername": loginUsername.get()
+				"memberusername": 'josnoble113@gmail.com'
 			})
 			doubles_competition_array = c.fetchall()
 

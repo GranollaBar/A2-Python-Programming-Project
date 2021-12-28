@@ -6,6 +6,7 @@ from CoachingSessionFrame.CoachingSessionScreen import CoachingSessionContent
 from MemberBooking.MemberBookingScreen import BookingContent
 from NewCompetition.NewCompetitionScreen import NewCompetitionContent
 from HomeFrame.MemberHomeScreen import MemberHomeScreenContent
+from LoginFrame.AS_programming_loginscreen import LoginContent
 
 
 def clearContent():
@@ -62,6 +63,16 @@ def openMemberBooking():
 
 def openStaticstics():
     clearContent()
+
+
+def passLoginScreen(loginScreen: LoginContent):
+    global logins
+    logins = loginScreen
+    # logins.finalloginname.get()
+    print(logins.finalloginname)
+    print('hello')
+
+
 
 
 mainScreen = Tk()
