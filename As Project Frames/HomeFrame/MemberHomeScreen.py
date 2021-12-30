@@ -10,9 +10,12 @@ from functools import partial
 from tkcalendar import Calendar
 from CoachingSessionFrame.CoachingSessionEmail import SessionEmail
 import time
+from time import strftime
 from datetime import date, datetime,timedelta
 import datetime
+from PIL import Image, ImageTk
 
+i = 0
 
 class MemberHomeScreenContent:
 
@@ -22,11 +25,42 @@ class MemberHomeScreenContent:
 
 	def generateMemberHomeScreenContnt(self, FinalUsername):
 
-		def AllCalendarSelection(event, cal):
+		def time():
+			string = strftime('%H:%M:%S %p')
+			clock.config(text=string)
+			clock.after(1000, time)
+
+
+		def start():
+			global i, show
+			if i >= (len(images)-1):
+				i = 0
+				slide_image.config(image=images[i])
+			else:
+				i = i + 1
+				slide_image.configure(image=images[i])
+			show = slide_image.after(2000, start)
+
+
+		def findfirstandsurname():
+			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			c = conn.cursor()
+
+			c.execute("SELECT * FROM member WHERE username=:memberusername", {
+				"memberusername": FinalUsername
+			})
+			items = c.fetchone()
+			labelusername = items[2] + ' ' + items[3]
+
+			return labelusername
+
+		def AllCalendarSelection(cal, event=None):
 			AllChangeSelection = False
 
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
+
+			print(cal.get_date)
 
 			coachdate = cal.get_date()
 			coachdate=str(coachdate).split('/')
@@ -236,17 +270,52 @@ class MemberHomeScreenContent:
 			conn.close()
 
 
-		username_label = tkinter.Label(self.MemberHome, text="Main Menu: Member", font=('Tahoma', 15, 'bold'), fg='black', bg='white')
+
+		username_label = tkinter.Label(self.MemberHome, text="Main Menu: Member", font=('Tahoma', 15, 'bold','underline'), fg='black', bg='white')
 		username_label.place(rely=0.14, relx=0.5, anchor='center')
 
-		calendar_label =Label(self.MemberHome, text = 'All Member Events', fg ='black',bg='white',font=('Tahoma',11,'bold'), bd=2, relief="ridge", padx=10, pady=3)
-		calendar_label.place(rely=0.378,relx=0.5,anchor=CENTER)
+		calendar_label =Label(self.MemberHome, text = "All of " + findfirstandsurname() + "'s Events", fg ='black',bg='white',font=('Tahoma',11,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+		calendar_label.place(rely=0.448,relx=0.68,anchor=CENTER)
 		today = date.today()
-		cal = Calendar(self.MemberHome, font="Tahoma 16", selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
-		cal.place(rely=0.6, relx=0.5, anchor='center')
+		cal = Calendar(self.MemberHome, font="Tahoma 20", selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
+		cal.place(rely=0.72, relx=0.68, anchor='center')
 		cal.bind("<<CalendarSelected>>", partial(AllCalendarSelection, cal))
 
+		clock_label = tkinter.Label(self.MemberHome, text="Current Time:", font=('Tahoma', 17, 'bold'), fg='black', bg='white')
+		clock_label.place(rely=0.229, relx=0.12, anchor='center')
+		clock = Label(self.MemberHome, font=('Tahoma', 20, 'bold'), fg='black', bg='white', bd=5, relief='sunken')
+		clock.place(rely=0.23, relx=0.31, anchor='center')
 
+		img1 = Image.open('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/MemberImageSlider4.png')
+		img1.thumbnail((300, 300))
+		img2 = Image.open('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/MemberImageSlider1.png')
+		img2.thumbnail((300, 300))
+		img3 = Image.open('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/MemberImageSlider2.png')
+		img3.thumbnail((300, 300))
+		img4 = Image.open('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/MemberImageSlider5.png')
+		img4.thumbnail((300, 300))
+		img5 = Image.open('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/MemberImageSlider3.png')
+		img5.thumbnail((300, 300))
+		img6 = Image.open('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/MemberImageSlider6.png')
+		img6.thumbnail((300, 300))
+
+		image1 = ImageTk.PhotoImage(img1)
+		image2 = ImageTk.PhotoImage(img2)
+		image3 = ImageTk.PhotoImage(img3)
+		image4 = ImageTk.PhotoImage(img4)
+		image5 = ImageTk.PhotoImage(img5)
+		image6 = ImageTk.PhotoImage(img6)
+
+		images = [image1, image2, image3, image4, image5, image6]
+
+		i = 0
+		slide_image = Label(self.MemberHome, image=images[i], bd=10, relief='ridge', bg='grey')
+		slide_image.place(rely=0.71, relx=0.19, anchor='center')
+
+
+
+		start()
+		time()
 		changeCalendarColour(cal)
 		SinglesChangeCalendarColour(cal)
 		DoublesChangeCalendarColour(cal)
