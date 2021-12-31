@@ -14,6 +14,8 @@ from time import strftime
 from datetime import date, datetime,timedelta
 import datetime
 from PIL import Image, ImageTk
+import calendar
+import webbrowser
 
 i = 0
 
@@ -21,6 +23,16 @@ class MemberHomeScreenContent:
 
 	def __init__(self, mainScreen):
 		self.MemberHome = mainScreen
+		self.conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+		self.c = self.conn.cursor()
+
+
+		# self.c.execute("""CREATE TABLE PastEvents (
+		# 			username text,
+		# 			event text,
+		# 			date text,
+		# 			status text
+		# 			)""")
 
 
 	def generateMemberHomeScreenContnt(self, FinalUsername):
@@ -31,7 +43,7 @@ class MemberHomeScreenContent:
 			clock.after(1000, time)
 
 
-		def start():
+		def ImageSlider():
 			global i, show
 			if i >= (len(images)-1):
 				i = 0
@@ -39,7 +51,7 @@ class MemberHomeScreenContent:
 			else:
 				i = i + 1
 				slide_image.configure(image=images[i])
-			show = slide_image.after(2000, start)
+			show = slide_image.after(2000, ImageSlider)
 
 
 		def findfirstandsurname():
@@ -60,8 +72,6 @@ class MemberHomeScreenContent:
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
-			print(cal.get_date)
-
 			coachdate = cal.get_date()
 			coachdate=str(coachdate).split('/')
 			newcoachddate=coachdate[0],coachdate[1],coachdate[2]
@@ -71,9 +81,6 @@ class MemberHomeScreenContent:
 
 			c.execute("SELECT * From coachSessionDetails WHERE date=?", (string_date,))
 			items = c.fetchone()
-
-			print(items)
-			print('got here')
 
 			if items:
 				AllChangeSelection = True
@@ -94,8 +101,6 @@ class MemberHomeScreenContent:
 				"memberusername": FinalUsername
 			})
 			singles_competition_array = c.fetchall()
-
-			print(singles_competition_array)
 
 			singlescompetitiondate = cal.get_date()
 			singlescompetitiondate=str(singlescompetitiondate).split('/')
@@ -270,21 +275,84 @@ class MemberHomeScreenContent:
 			conn.close()
 
 
+		# def countdown():
+		# 	monkey = datetime.datetime.today().strftime('%A')
+		# 	print(str(monkey))
+		#
+		# 	conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+		# 	c = conn.cursor()
+		#
+		# 	c.execute("SELECT " + monkey + " FROM coachTimetable WHERE username=:username", {
+		# 		"username":
+		# 	})
+		# 	tablesnamesarray = c.fetchall()
+		# 	print(tablesnamesarray)
 
-		username_label = tkinter.Label(self.MemberHome, text="Main Menu: Member", font=('Tahoma', 15, 'bold','underline'), fg='black', bg='white')
-		username_label.place(rely=0.14, relx=0.5, anchor='center')
 
-		calendar_label =Label(self.MemberHome, text = "All of " + findfirstandsurname() + "'s Events", fg ='black',bg='white',font=('Tahoma',11,'bold'), bd=2, relief="ridge", padx=10, pady=3)
-		calendar_label.place(rely=0.448,relx=0.68,anchor=CENTER)
+		def GoogleMapsLocation():
+			webbrowser.open("https://www.google.com/maps/place/Lisburn+Racquets+Club/@54.5173416,-6.0428075,15z/data=!4m5!3m4!1s0x4861044f4e4d451b:0x9a328c6b732d12eb!8m2!3d54.5173416!4d-6.0340528")
+
+
+		def treeviewresizedisable(treeview, event):
+			if treeview.identify_region(event.x, event.y) == "separator":
+				return "break"
+
+
+		def clearTv(treeview):
+			record=treeview.get_children()
+			for elements in record:
+				treeview.delete(elements)
+
+
+		def treeviewPopulate(treeview):
+			clearTv(treeview)
+
+			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			c = conn.cursor()
+
+			c.execute("SELECT * From PastEvents")
+			items = c.fetchall()
+			conn.commit()
+			conn.close()
+
+			count=0
+			for row in items:
+				if row == []:
+					pass
+				else:
+					if count%2==0:
+						treeview.insert('','end',text=row[1],values=(row[2],row[3]))
+					else:
+						treeview.insert('','end',text=row[1],values=(row[2],row[3]))
+					count+=1
+
+
+
+		title_label = tkinter.Label(self.MemberHome, text="Main Menu: Member", font=('Tahoma', 17, 'bold','underline'), fg='black', bg='white')
+		title_label.place(rely=0.13, relx=0.5, anchor='center')
+
+		calendar_label =Label(self.MemberHome, text = findfirstandsurname() + "'s Live Events", fg ='black',bg='white',font=('Tahoma',8,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+		calendar_label.place(rely=0.185,relx=0.52,anchor=CENTER)
 		today = date.today()
-		cal = Calendar(self.MemberHome, font="Tahoma 20", selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
-		cal.place(rely=0.72, relx=0.68, anchor='center')
+		cal = Calendar(self.MemberHome, font="Tahoma 8", selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
+		cal.place(rely=0.33, relx=0.52, anchor='center')
 		cal.bind("<<CalendarSelected>>", partial(AllCalendarSelection, cal))
 
-		clock_label = tkinter.Label(self.MemberHome, text="Current Time:", font=('Tahoma', 17, 'bold'), fg='black', bg='white')
-		clock_label.place(rely=0.229, relx=0.12, anchor='center')
-		clock = Label(self.MemberHome, font=('Tahoma', 20, 'bold'), fg='black', bg='white', bd=5, relief='sunken')
-		clock.place(rely=0.23, relx=0.31, anchor='center')
+		clock_label = tkinter.Label(self.MemberHome, text="Current Time:", font=('Tahoma', 16, 'bold'), fg='black', bg='white')
+		clock_label.place(rely=0.279, relx=0.12, anchor='center')
+		clock = Label(self.MemberHome, font=('Tahoma', 17, 'bold'), fg='black', bg='white', bd=5, relief='sunken')
+		clock.place(rely=0.28, relx=0.29, anchor='center')
+
+		payment_status_label = tkinter.Label(self.MemberHome, text="Payment Fee:", font=('Tahoma', 16, 'bold'), fg='black', bg='white')
+		payment_status_label.place(rely=0.38, relx=0.12, anchor='center')
+		paid_successfully_label = tkinter.Label(self.MemberHome, text="Not Paid", font=('Tahoma', 16, 'bold'), fg='red', bg='white')
+		paid_successfully_label.place(rely=0.38, relx=0.29, anchor='center')
+
+		googlemapsphoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/2021-12-31_9_2_507x315.png")
+
+		GoogleMapsButton = Button(self.MemberHome, cursor="tcross", image=googlemapsphoto, width=507, height=315, command=GoogleMapsLocation, bg="white", activebackground="grey")
+		GoogleMapsButton.place(rely=0.72,relx=0.67,anchor=CENTER)
+		GoogleMapsButton.image = googlemapsphoto
 
 		img1 = Image.open('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/MemberImageSlider4.png')
 		img1.thumbnail((300, 300))
@@ -310,12 +378,31 @@ class MemberHomeScreenContent:
 
 		i = 0
 		slide_image = Label(self.MemberHome, image=images[i], bd=10, relief='ridge', bg='grey')
-		slide_image.place(rely=0.71, relx=0.19, anchor='center')
+		slide_image.place(rely=0.72, relx=0.19, anchor='center')
+
+		treeview_label =Label(self.MemberHome, text = findfirstandsurname() + "'s Past Events", fg ='black',bg='white',font=('Tahoma',8,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+		treeview_label.place(rely=0.127,relx=0.81,anchor=CENTER)
+		past_event_Tv=ttk.Treeview(self.MemberHome,height=9,columns=('Date','Status'))
+		past_event_Tv.place(relx=0.81,rely=0.3,anchor=CENTER)
+
+		past_event_Tv.heading("#0",text='Event')
+		past_event_Tv.column("#0",minwidth=0,width=145)
+		past_event_Tv.heading("#1",text='Date')
+		past_event_Tv.column("#1",minwidth=0,width=85)
+		past_event_Tv.heading("#2",text='Status')
+		past_event_Tv.column("#2",minwidth=0,width=80)
+		past_event_Tv.bind('<Button-1>', partial(treeviewresizedisable, past_event_Tv))
+
+		past_event_scrollbar = Scrollbar(self.MemberHome, orient='vertical', command=past_event_Tv.yview, cursor="tcross")
+		past_event_scrollbar.place(relx=0.975,rely=0.3,anchor='center',height=207)
+		past_event_Tv.configure(yscrollcommand=past_event_scrollbar.set)
 
 
 
-		start()
 		time()
+		# countdown()
+		ImageSlider()
 		changeCalendarColour(cal)
+		treeviewPopulate(past_event_Tv)
 		SinglesChangeCalendarColour(cal)
 		DoublesChangeCalendarColour(cal)

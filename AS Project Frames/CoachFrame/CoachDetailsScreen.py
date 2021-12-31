@@ -34,13 +34,13 @@ class CoachContent:
 		#
 		# self.c.execute("""CREATE TABLE coachTimetable (
 		# 			username text,
-		# 			monday text,
-		# 			tuesday text,
-		# 			wednesday text,
-		# 			thursday text,
-		# 			friday text,
-		# 			saturday text,
-		# 			sunday text
+		# 			Monday text,
+		# 			Tuesday text,
+		# 			Wednesday text,
+		# 			Thursday text,
+		# 			Friday text,
+		# 			Saturday text,
+		# 			Sunday text
 		# 			)""")
 
 
