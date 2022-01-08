@@ -6,6 +6,7 @@ from CoachingSessionFrame.CoachingSessionScreen import CoachingSessionContent
 from MemberBooking.MemberBookingScreen import BookingContent
 from NewCompetition.NewCompetitionScreen import NewCompetitionContent
 from HomeFrame.MemberHomeScreen import MemberHomeScreenContent
+from HomeFrame.CoachHomeScreen import CoachHomeScreenContent
 from LoginFrame.AS_programming_loginscreen import LoginContent
 
 
@@ -93,8 +94,11 @@ def main():
     content.grid(row=1, sticky="nsew")
 
 
-    memberHomeContent = MemberHomeScreenContent(mainScreen)
-    memberHomeContent.generateMemberHomeScreenContnt(logins.finalloginname)
+    # memberHomeContent = MemberHomeScreenContent(mainScreen)
+    # memberHomeContent.generateMemberHomeScreenContnt(logins.finalloginname)
+
+    coachHomeContent = CoachHomeScreenContent(mainScreen)
+    coachHomeContent.generateCoachHomeScreenContnt(logins.finalloginname)
 
 
     add_member_button = tkinter.Button(header, text="Add Member", command=lambda : openMemberContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")

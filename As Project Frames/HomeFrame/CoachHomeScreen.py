@@ -19,23 +19,23 @@ import webbrowser
 
 i = 0
 
-class MemberHomeScreenContent:
+class CoachHomeScreenContent:
 
 	def __init__(self, mainScreen):
-		self.MemberHome = mainScreen
+		self.CoachHome = mainScreen
 		self.conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 		self.c = self.conn.cursor()
 
 
-		# self.c.execute("""CREATE TABLE PastEvents (
-		# 			username text,
-		# 			event text,
-		# 			date text,
-		# 			status text
-		# 			)""")
+	# self.c.execute("""CREATE TABLE PastEvents (
+	# 			username text,
+	# 			event text,
+	# 			date text,
+	# 			status text
+	# 			)""")
 
 
-	def generateMemberHomeScreenContnt(self, FinalUsername):
+	def generateCoachHomeScreenContnt(self, FinalUsername):
 
 		def time():
 			string = strftime('%H:%M:%S %p')
@@ -58,8 +58,8 @@ class MemberHomeScreenContent:
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
-			c.execute("SELECT * FROM member WHERE username=:memberusername", {
-				"memberusername": FinalUsername
+			c.execute("SELECT * FROM coach WHERE username=:coachusername", {
+				"coachusername": FinalUsername
 			})
 			items = c.fetchone()
 			labelusername = items[2] + ' ' + items[3]
@@ -282,18 +282,28 @@ class MemberHomeScreenContent:
 			conn.close()
 
 
-		# def countdown():
-		# 	monkey = datetime.datetime.today().strftime('%A')
-		# 	print(str(monkey))
-		#
-		# 	conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
-		# 	c = conn.cursor()
-		#
-		# 	c.execute("SELECT " + monkey + " FROM coachTimetable WHERE username=:username", {
-		# 		"username":
-		# 	})
-		# 	tablesnamesarray = c.fetchall()
-		# 	print(tablesnamesarray)
+		def countdown():
+			Weekday = datetime.datetime.today().strftime('%A')
+
+			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			c = conn.cursor()
+
+			c.execute("SELECT " + str(Weekday) + " FROM coachTimetable WHERE username=:username", {
+				"username":FinalUsername
+			})
+			WeedayTime = c.fetchone()
+			StrppiedWeedayTime = [i.strip(',') for i in WeedayTime]
+
+			if 'n/a' in StrppiedWeedayTime:
+				print('got into n/a')
+
+			else:
+				pass
+
+			time = str(StrppiedWeedayTime[0])
+			strippedTime = time.split('/')
+			print(strippedTime)
+
 
 
 		def GoogleMapsLocation():
@@ -335,29 +345,29 @@ class MemberHomeScreenContent:
 
 
 
-		title_label = tkinter.Label(self.MemberHome, text="Main Menu: Member", font=('Tahoma', 18, 'bold','underline'), fg='black', bg='white', bd=4, relief='groove', padx=10, pady=4)
+		title_label = tkinter.Label(self.CoachHome, text="Main Menu: Member", font=('Tahoma', 18, 'bold','underline'), fg='black', bg='white', bd=4, relief='groove', padx=10, pady=4)
 		title_label.place(rely=0.17, relx=0.18, anchor='center')
 
-		calendar_label =Label(self.MemberHome, text = findfirstandsurname() + "'s Live Events", fg ='black',bg='white',font=('Tahoma',8,'bold'), bd=2, relief="ridge", padx=5, pady=2)
+		calendar_label =Label(self.CoachHome, text = findfirstandsurname() + "'s Live Events", fg ='black',bg='white',font=('Tahoma',8,'bold'), bd=2, relief="ridge", padx=5, pady=2)
 		calendar_label.place(rely=0.14,relx=0.495,anchor=CENTER)
 		today = date.today()
-		cal = Calendar(self.MemberHome, font="Tahoma 10", selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
+		cal = Calendar(self.CoachHome, font="Tahoma 10", selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
 		cal.place(rely=0.305, relx=0.495, anchor='center')
 		cal.bind("<<CalendarSelected>>", partial(AllCalendarSelection, cal))
 
-		clock_label = tkinter.Label(self.MemberHome, text="Current Time:", font=('Tahoma', 16, 'bold'), fg='black', bg='white')
+		clock_label = tkinter.Label(self.CoachHome, text="Current Time:", font=('Tahoma', 16, 'bold'), fg='black', bg='white')
 		clock_label.place(rely=0.29, relx=0.1, anchor='center')
-		clock = Label(self.MemberHome, font=('Tahoma', 16, 'bold'), fg='black', bg='white', bd=3, relief='sunken')
+		clock = Label(self.CoachHome, font=('Tahoma', 16, 'bold'), fg='black', bg='white', bd=3, relief='sunken')
 		clock.place(rely=0.29, relx=0.27, anchor='center')
 
-		payment_status_label = tkinter.Label(self.MemberHome, text="Payment Fee:", font=('Tahoma', 16, 'bold'), fg='black', bg='white')
+		payment_status_label = tkinter.Label(self.CoachHome, text="Time Left:", font=('Tahoma', 16, 'bold'), fg='black', bg='white')
 		payment_status_label.place(rely=0.395, relx=0.1, anchor='center')
-		paid_successfully_label = tkinter.Label(self.MemberHome, text="Not Paid", font=('Tahoma', 16, 'bold'), fg='red', bg='white')
+		paid_successfully_label = tkinter.Label(self.CoachHome, font=('Tahoma', 16, 'bold'), fg='black', bg='white')
 		paid_successfully_label.place(rely=0.395, relx=0.27, anchor='center')
 
 		googlemapsphoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/2021-12-31_9_2_507x315.png")
 
-		GoogleMapsButton = Button(self.MemberHome, cursor="tcross", image=googlemapsphoto, width=507, height=315, command=GoogleMapsLocation, bg="white", activebackground="grey")
+		GoogleMapsButton = Button(self.CoachHome, cursor="tcross", image=googlemapsphoto, width=507, height=315, command=GoogleMapsLocation, bg="white", activebackground="grey")
 		GoogleMapsButton.place(rely=0.73,relx=0.67,anchor=CENTER)
 		GoogleMapsButton.image = googlemapsphoto
 
@@ -384,12 +394,12 @@ class MemberHomeScreenContent:
 		images = [image1, image2, image3, image4, image5, image6]
 
 		i = 0
-		slide_image = Label(self.MemberHome, image=images[i], bd=10, relief='ridge', bg='green')
+		slide_image = Label(self.CoachHome, image=images[i], bd=10, relief='ridge', bg='green')
 		slide_image.place(rely=0.732, relx=0.19, anchor='center')
 
-		treeview_label =Label(self.MemberHome, text = findfirstandsurname() + "'s Past Events", fg ='black',bg='white',font=('Tahoma',8,'bold'), bd=2, relief="ridge", padx=5, pady=2)
+		treeview_label =Label(self.CoachHome, text = findfirstandsurname() + "'s Past Events", fg ='black',bg='white',font=('Tahoma',8,'bold'), bd=2, relief="ridge", padx=5, pady=2)
 		treeview_label.place(rely=0.127,relx=0.81,anchor=CENTER)
-		past_event_Tv=ttk.Treeview(self.MemberHome,height=9,columns=('Date','Status'))
+		past_event_Tv=ttk.Treeview(self.CoachHome,height=9,columns=('Date','Status'))
 		past_event_Tv.place(relx=0.81,rely=0.3,anchor=CENTER)
 
 		past_event_Tv.heading("#0",text='Event')
@@ -400,16 +410,16 @@ class MemberHomeScreenContent:
 		past_event_Tv.column("#2",minwidth=0,width=80)
 		past_event_Tv.bind('<Button-1>', partial(treeviewresizedisable, past_event_Tv))
 
-		past_event_scrollbar = Scrollbar(self.MemberHome, orient='vertical', command=past_event_Tv.yview, cursor="tcross")
+		past_event_scrollbar = Scrollbar(self.CoachHome, orient='vertical', command=past_event_Tv.yview, cursor="tcross")
 		past_event_scrollbar.place(relx=0.975,rely=0.3,anchor='center',height=207)
 		past_event_Tv.configure(yscrollcommand=past_event_scrollbar.set)
 
 
 
 		time()
-		# countdown()
+		countdown()
 		ImageSlider()
-		changeCalendarColour(cal)
+		# changeCalendarColour(cal)
 		treeviewPopulate(past_event_Tv)
-		SinglesChangeCalendarColour(cal)
-		DoublesChangeCalendarColour(cal)
+		# SinglesChangeCalendarColour(cal)
+		# DoublesChangeCalendarColour(cal)
