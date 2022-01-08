@@ -34,7 +34,6 @@ class MemberContent:
 		# 			)""")
 
 
-
 	def generateMemberContnt(self):
 
 		def validate_username(value, label):

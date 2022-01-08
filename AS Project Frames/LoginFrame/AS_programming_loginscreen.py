@@ -277,15 +277,15 @@ class LoginContent:
                     self.login.destroy()
 
                     if (data[2] == 'member'):
-                        from MainScreens import MainScreen
-                        MainScreen.passLoginScreen(self)
-                        MainScreen.main()
+                        from MainScreens import MemberMainScreen
+                        MemberMainScreen.passLoginScreen(self)
+                        MemberMainScreen.main()
 
 
                     if (data[2] == 'coach'):
-                        from MainScreens import MainScreen
-                        MainScreen.passLoginScreen(self)
-                        MainScreen.main()
+                        from MainScreens import CoachMainScreen
+                        CoachMainScreen.passLoginScreen(self)
+                        CoachMainScreen.main()
 
 
                     if (data[2] == 'manager'):

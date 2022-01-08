@@ -292,18 +292,42 @@ class CoachHomeScreenContent:
 				"username":FinalUsername
 			})
 			WeedayTime = c.fetchone()
-			StrppiedWeedayTime = [i.strip(',') for i in WeedayTime]
+			StrippedWeedayTime = [i.strip(',') for i in WeedayTime]
 
-			if 'n/a' in StrppiedWeedayTime:
+			if 'n/a' in StrippedWeedayTime:
 				print('got into n/a')
 
 			else:
 				pass
 
-			time = str(StrppiedWeedayTime[0])
-			strippedTime = time.split('/')
-			print(strippedTime)
+			time = str(StrippedWeedayTime[0])
+			strippedTime = time.split('-')
+			splittime = float(strippedTime[1]) - float(strippedTime[0])
+			finalsplittime = format(float(splittime), '.2f')
+			newfinalsplittime = str(finalsplittime) + '.00'
 
+			string = strftime('%H:%M')
+			newstring = string.split(':')
+			finalstring = newstring[0] + '.' + newstring[1]
+
+			formattedTime1 = format(float(strippedTime[0]), '.2f')
+			formattedTime2 = format(float(strippedTime[1]), '.2f')
+			formattedTime3 = format(float(finalstring), '.2f')
+
+			if float(formattedTime3) > float(formattedTime1) and float(formattedTime3) < float(formattedTime2):
+
+				redosplit = formattedTime2.split('.')
+				finalredosplit = redosplit[0] + ':' + redosplit[1] + ':00'
+				currenttime = strftime('%H:%M:%S')
+
+				realfinal1 = datetime.datetime.strptime(finalredosplit, '%H:%M:%S').time()
+				realfinal2 = datetime.datetime.strptime(currenttime, '%H:%M:%S').time()
+
+				date = datetime.date(1, 1, 1)
+				datetime1 = datetime.datetime.combine(date, realfinal1)
+				datetime2 = datetime.datetime.combine(date, realfinal2)
+				time_elapsed = datetime1 - datetime2
+				print(time_elapsed)
 
 
 		def GoogleMapsLocation():
