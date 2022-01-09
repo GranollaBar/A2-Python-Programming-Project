@@ -856,17 +856,100 @@ class CoachContent:
 		address_label.place(rely=0.57, relx=0.09, anchor='center')
 
 
+		def username_click(event):
+			if username_entry.get() == 'e.g. sooney@gmail.com':
+				username_entry.delete(0, "end")
+				username_entry.insert(0, '')
+				username_entry.config(fg='black')
+
+
+		def username_unclick(event):
+			if username_entry.get() == '':
+				username_entry.insert(0, 'e.g. sooney@gmail.com')
+				username_entry.config(fg='grey')
+
+
+		def password_click(event):
+			if password_entry.get() == 'e.g. Ch12ch12':
+				password_entry.delete(0, "end")
+				password_entry.insert(0, '')
+				password_entry.config(fg='black')
+				password_entry.config(show="*")
+
+
+		def password_unclick(event):
+			if password_entry.get() == '':
+				password_entry.config(show="")
+				password_entry.insert(0, 'e.g. Ch12ch12')
+				password_entry.config(fg='grey')
+
+
+		def firstname_click(event):
+			if firstname_entry.get() == 'e.g. Connor':
+				firstname_entry.delete(0, "end")
+				firstname_entry.insert(0, '')
+				firstname_entry.config(fg='black')
+
+
+		def firstname_unclick(event):
+			if firstname_entry.get() == '':
+				firstname_entry.insert(0, 'e.g. Connor')
+				firstname_entry.config(fg='grey')
+
+
+		def surname_click(event):
+			if surname_entry.get() == 'e.g. Blair':
+				surname_entry.delete(0, "end")
+				surname_entry.insert(0, '')
+				surname_entry.config(fg='black')
+
+
+		def surname_unclick(event):
+			if surname_entry.get() == '':
+				surname_entry.insert(0, 'e.g. Blair')
+				surname_entry.config(fg='grey')
+
+
+		def address_click(event):
+			if address_entry.get() == 'e.g. 47 star street':
+				address_entry.delete(0, "end")
+				address_entry.insert(0, '')
+				address_entry.config(fg='black')
+
+
+		def address_unclick(event):
+			if address_entry.get() == '':
+				address_entry.insert(0, 'e.g. 47 star street')
+				address_entry.config(fg='grey')
+
+
 		username_entry = tkinter.Entry(self.coach, width=25, textvariable=username, bd=3, relief='ridge', cursor="tcross")
 		username_entry.place(rely=0.133, relx=0.25, anchor='center')
+		username_entry.insert(0, 'e.g. sooney@gmail.com')
+		username_entry.bind('<FocusIn>', username_click)
+		username_entry.bind('<FocusOut>', username_unclick)
+		username_entry.config(fg='grey')
 
-		password_entry = tkinter.Entry(self.coach, width=15, textvariable=password, show='*', bd=3, relief='ridge', cursor="tcross")
+		password_entry = tkinter.Entry(self.coach, width=15, textvariable=password, bd=3, relief='ridge', cursor="tcross")
 		password_entry.place(rely=0.203, relx=0.25, anchor='center')
+		password_entry.insert(0, 'e.g. Ch12ch12')
+		password_entry.bind('<FocusIn>', password_click)
+		password_entry.bind('<FocusOut>', password_unclick)
+		password_entry.config(fg='grey')
 
 		firstname_entry = tkinter.Entry(self.coach, width=15, textvariable=firstname, bd=3, relief='ridge', cursor="tcross")
 		firstname_entry.place(rely=0.273, relx=0.25, anchor='center')
+		firstname_entry.insert(0, 'e.g. Connor')
+		firstname_entry.bind('<FocusIn>', firstname_click)
+		firstname_entry.bind('<FocusOut>', firstname_unclick)
+		firstname_entry.config(fg='grey')
 
 		surname_entry = tkinter.Entry(self.coach, width=15, textvariable=surname, bd=3, relief='ridge', cursor="tcross")
 		surname_entry.place(rely=0.343, relx=0.25, anchor='center')
+		surname_entry.insert(0, 'e.g. Blair')
+		surname_entry.bind('<FocusIn>', surname_click)
+		surname_entry.bind('<FocusOut>', surname_unclick)
+		surname_entry.config(fg='grey')
 
 		male_radiobutton = Radiobutton(self.coach, text="Male", variable=gender, value=1, font=("Segoe UI Black",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 		male_radiobutton.place(rely=0.418, relx=0.2, anchor='center')
@@ -880,6 +963,10 @@ class CoachContent:
 
 		address_entry = tkinter.Entry(self.coach, width=25, textvariable=address, bd=3, relief='ridge', cursor="tcross")
 		address_entry.place(rely=0.573, relx=0.25, anchor='center')
+		address_entry.insert(0, 'e.g. 47 star street')
+		address_entry.bind('<FocusIn>', address_click)
+		address_entry.bind('<FocusOut>', address_unclick)
+		address_entry.config(fg='grey')
 
 
 		line = Canvas(self.coach, width=360, height=1)

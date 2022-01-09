@@ -37,12 +37,6 @@ class CoachHomeScreenContent:
 
 	def generateCoachHomeScreenContnt(self, FinalUsername):
 
-		def time():
-			string = strftime('%H:%M:%S %p')
-			clock.config(text=string)
-			clock.after(1000, time)
-
-
 		def ImageSlider():
 			global i, show
 			if i >= (len(images)-1):
@@ -282,6 +276,42 @@ class CoachHomeScreenContent:
 			conn.close()
 
 
+		def GetCurrentWeeday():
+			Weekday = datetime.datetime.today().strftime('%A')
+			weekday.config(text=Weekday)
+
+
+		def CoachShiftTime():
+			Weekday = datetime.datetime.today().strftime('%A')
+
+			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			c = conn.cursor()
+
+			c.execute("SELECT " + str(Weekday) + " FROM coachTimetable WHERE username=:username", {
+				"username":FinalUsername
+			})
+			WeedayTime = c.fetchone()
+			StrippedWeedayTime = [i.strip(',') for i in WeedayTime]
+
+			if 'n/a' in StrippedWeedayTime:
+				print('got into n/a')
+			else:
+				time = str(StrippedWeedayTime[0])
+				strippedTime = time.split('-')
+
+				if float(strippedTime[0]) < 12.00 and float(strippedTime[1]) >= 12.00:
+					from_time.config(text=strippedTime[0] + 'am')
+					to_time.config(text=strippedTime[1] + 'pm')
+
+				elif float(strippedTime[0]) < 12.00 and float(strippedTime[1]) < 12.00:
+					from_time.config(text=strippedTime[0] + 'am')
+					to_time.config(text=strippedTime[1] + 'am')
+
+				elif float(strippedTime[0]) >= 12.00 and float(strippedTime[1]) >= 12.00:
+					from_time.config(text=strippedTime[0] + 'pm')
+					to_time.config(text=strippedTime[1] + 'pm')
+
+
 		def countdown():
 			Weekday = datetime.datetime.today().strftime('%A')
 
@@ -296,38 +326,32 @@ class CoachHomeScreenContent:
 
 			if 'n/a' in StrippedWeedayTime:
 				print('got into n/a')
-
 			else:
-				pass
+				time = str(StrippedWeedayTime[0])
+				strippedTime = time.split('-')
 
-			time = str(StrippedWeedayTime[0])
-			strippedTime = time.split('-')
-			splittime = float(strippedTime[1]) - float(strippedTime[0])
-			finalsplittime = format(float(splittime), '.2f')
-			newfinalsplittime = str(finalsplittime) + '.00'
+				string = strftime('%H:%M')
+				newstring = string.split(':')
+				finalstring = newstring[0] + '.' + newstring[1]
 
-			string = strftime('%H:%M')
-			newstring = string.split(':')
-			finalstring = newstring[0] + '.' + newstring[1]
+				formattedTime1 = format(float(strippedTime[0]), '.2f')
+				formattedTime2 = format(float(strippedTime[1]), '.2f')
+				formattedTime3 = format(float(finalstring), '.2f')
 
-			formattedTime1 = format(float(strippedTime[0]), '.2f')
-			formattedTime2 = format(float(strippedTime[1]), '.2f')
-			formattedTime3 = format(float(finalstring), '.2f')
+				if float(formattedTime3) > float(formattedTime1) and float(formattedTime3) < float(formattedTime2):
+					redosplit = formattedTime2.split('.')
+					finalredosplit = redosplit[0] + ':' + redosplit[1] + ':00'
+					currenttime = strftime('%H:%M:%S')
 
-			if float(formattedTime3) > float(formattedTime1) and float(formattedTime3) < float(formattedTime2):
+					realfinal1 = datetime.datetime.strptime(finalredosplit, '%H:%M:%S').time()
+					realfinal2 = datetime.datetime.strptime(currenttime, '%H:%M:%S').time()
 
-				redosplit = formattedTime2.split('.')
-				finalredosplit = redosplit[0] + ':' + redosplit[1] + ':00'
-				currenttime = strftime('%H:%M:%S')
-
-				realfinal1 = datetime.datetime.strptime(finalredosplit, '%H:%M:%S').time()
-				realfinal2 = datetime.datetime.strptime(currenttime, '%H:%M:%S').time()
-
-				date = datetime.date(1, 1, 1)
-				datetime1 = datetime.datetime.combine(date, realfinal1)
-				datetime2 = datetime.datetime.combine(date, realfinal2)
-				time_elapsed = datetime1 - datetime2
-				print(time_elapsed)
+					date = datetime.date(1, 1, 1)
+					datetime1 = datetime.datetime.combine(date, realfinal1)
+					datetime2 = datetime.datetime.combine(date, realfinal2)
+					time_elapsed = datetime1 - datetime2
+					timer_label.config(text=time_elapsed)
+					timer_label.after(1000, countdown)
 
 
 		def GoogleMapsLocation():
@@ -369,7 +393,7 @@ class CoachHomeScreenContent:
 
 
 
-		title_label = tkinter.Label(self.CoachHome, text="Main Menu: Member", font=('Tahoma', 18, 'bold','underline'), fg='black', bg='white', bd=4, relief='groove', padx=10, pady=4)
+		title_label = tkinter.Label(self.CoachHome, text="Main Menu: Coach", font=('Tahoma', 18, 'bold','underline'), fg='black', bg='white', bd=4, relief='groove', padx=10, pady=4)
 		title_label.place(rely=0.17, relx=0.18, anchor='center')
 
 		calendar_label =Label(self.CoachHome, text = findfirstandsurname() + "'s Live Events", fg ='black',bg='white',font=('Tahoma',8,'bold'), bd=2, relief="ridge", padx=5, pady=2)
@@ -379,15 +403,24 @@ class CoachHomeScreenContent:
 		cal.place(rely=0.305, relx=0.495, anchor='center')
 		cal.bind("<<CalendarSelected>>", partial(AllCalendarSelection, cal))
 
-		clock_label = tkinter.Label(self.CoachHome, text="Current Time:", font=('Tahoma', 16, 'bold'), fg='black', bg='white')
-		clock_label.place(rely=0.29, relx=0.1, anchor='center')
-		clock = Label(self.CoachHome, font=('Tahoma', 16, 'bold'), fg='black', bg='white', bd=3, relief='sunken')
-		clock.place(rely=0.29, relx=0.27, anchor='center')
+		weekday_label = tkinter.Label(self.CoachHome, text="Current Weekday:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		weekday_label.place(rely=0.25, relx=0.11, anchor='center')
+		weekday = Label(self.CoachHome, font=('Tahoma', 14, 'bold'), fg='black', bg='white', bd=3, relief='sunken', padx=3, pady=1)
+		weekday.place(rely=0.253, relx=0.26, anchor='center')
 
-		payment_status_label = tkinter.Label(self.CoachHome, text="Time Left:", font=('Tahoma', 16, 'bold'), fg='black', bg='white')
-		payment_status_label.place(rely=0.395, relx=0.1, anchor='center')
-		paid_successfully_label = tkinter.Label(self.CoachHome, font=('Tahoma', 16, 'bold'), fg='black', bg='white')
-		paid_successfully_label.place(rely=0.395, relx=0.27, anchor='center')
+		from_label = tkinter.Label(self.CoachHome, text="From:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		from_label.place(rely=0.3425, relx=0.04, anchor='center')
+		from_time = tkinter.Label(self.CoachHome, font=('Tahoma', 14, 'bold'), fg='black', bg='white', bd=3, relief='sunken', padx=3, pady=1)
+		from_time.place(rely=0.3455, relx=0.13, anchor='center')
+		to_label = tkinter.Label(self.CoachHome, text="To:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		to_label.place(rely=0.3425, relx=0.23, anchor='center')
+		to_time = tkinter.Label(self.CoachHome, font=('Tahoma', 14, 'bold'), fg='black', bg='white', bd=3, relief='sunken', padx=3, pady=1)
+		to_time.place(rely=0.3455, relx=0.31, anchor='center')
+
+		time_left_label = tkinter.Label(self.CoachHome, text="System Time Left:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		time_left_label.place(rely=0.43, relx=0.11, anchor='center')
+		timer_label = tkinter.Label(self.CoachHome, font=('Tahoma', 14, 'bold'), fg='black', bg='white', bd=3, relief='sunken', padx=3, pady=1)
+		timer_label.place(rely=0.433, relx=0.26, anchor='center')
 
 		googlemapsphoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/2021-12-31_9_2_507x315.png")
 
@@ -440,9 +473,10 @@ class CoachHomeScreenContent:
 
 
 
-		time()
 		countdown()
 		ImageSlider()
+		CoachShiftTime()
+		GetCurrentWeeday()
 		# changeCalendarColour(cal)
 		treeviewPopulate(past_event_Tv)
 		# SinglesChangeCalendarColour(cal)

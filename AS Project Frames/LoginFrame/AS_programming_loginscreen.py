@@ -309,12 +309,42 @@ class LoginContent:
                 loginPassword.set('')
 
 
+        def username_click(event):
+            if username_entry.get() == 'e.g. greg@gmail.com':
+                username_entry.delete(0, "end")
+                username_entry.insert(0, '')
+                username_entry.config(fg='black')
+
+        def username_unclick(event):
+            if username_entry.get() == '':
+                username_entry.insert(0, 'e.g. greg@gmail.com')
+                username_entry.config(fg='grey')
+
+
+        def password_click(event):
+            if password_entry.get() == 'e.g. password123':
+                password_entry.delete(0, "end")
+                password_entry.insert(0, '')
+                password_entry.config(fg='black')
+                password_entry.config(show="*")
+
+
+        def password_unclick(event):
+            if password_entry.get() == '':
+                password_entry.config(show="")
+                password_entry.insert(0, 'e.g. password123')
+                password_entry.config(fg='grey')
+
+
         def show_password(self):
             password_entry.config(show="")
 
 
         def dont_show_password(self):
-            password_entry.config(show="*")
+            if password_entry.get() != 'e.g. password123':
+                password_entry.config(show="*")
+            else:
+                password_entry.config(show="")
 
 
         def twitterLink():
@@ -342,11 +372,19 @@ class LoginContent:
         password_label.place(rely=0.6, relx=0.3, anchor='center')
 
 
-        username_entry = tkinter.Entry(self.login, width=30, textvariable = loginUsername, bd=4, relief='ridge', cursor="tcross")
+        username_entry = tkinter.Entry(self.login, width=30, textvariable=loginUsername, bd=4, relief='ridge', cursor="tcross")
         username_entry.place(rely=0.454, relx=0.655, anchor='center')
+        username_entry.insert(0, 'e.g. greg@gmail.com')
+        username_entry.bind('<FocusIn>', username_click)
+        username_entry.bind('<FocusOut>', username_unclick)
+        username_entry.config(fg='grey')
 
-        password_entry = tkinter.Entry(self.login, width=30, show="*", textvariable = loginPassword, bd=4, relief='ridge', cursor="tcross")
+        password_entry = tkinter.Entry(self.login, width=30, textvariable=loginPassword, bd=4, relief='ridge', cursor="tcross")
         password_entry.place(rely=0.604, relx=0.655, anchor='center')
+        password_entry.insert(0, 'e.g. password123')
+        password_entry.bind('<FocusIn>', password_click)
+        password_entry.bind('<FocusOut>', password_unclick)
+        password_entry.config(fg='grey')
 
 
         twitterImage = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/twitter.png")

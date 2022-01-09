@@ -154,6 +154,99 @@ class MemberContent:
 			return math.ceil(value.get()/5)
 
 
+		def username_click(event):
+			if username_entry.get() == 'e.g. bobby564@gmail.com':
+				username_entry.delete(0, "end")
+				username_entry.insert(0, '')
+				username_entry.config(fg='black')
+
+
+		def username_unclick(event):
+			if username_entry.get() == '':
+				username_entry.insert(0, 'e.g. bobby564@gmail.com')
+				username_entry.config(fg='grey')
+
+
+		def password_click(event):
+			if password_entry.get() == 'e.g. RossBob24':
+				password_entry.delete(0, "end")
+				password_entry.insert(0, '')
+				password_entry.config(fg='black')
+				password_entry.config(show="*")
+
+
+		def password_unclick(event):
+			if password_entry.get() == '':
+				password_entry.config(show="")
+				password_entry.insert(0, 'e.g. RossBob24')
+				password_entry.config(fg='grey')
+
+
+		def firstname_click(event):
+			if firstname_entry.get() == 'e.g. Johhny':
+				firstname_entry.delete(0, "end")
+				firstname_entry.insert(0, '')
+				firstname_entry.config(fg='black')
+
+
+		def firstname_unclick(event):
+			if firstname_entry.get() == '':
+				firstname_entry.insert(0, 'e.g. Johhny')
+				firstname_entry.config(fg='grey')
+
+
+		def surname_click(event):
+			if surname_entry.get() == 'e.g. Synders':
+				surname_entry.delete(0, "end")
+				surname_entry.insert(0, '')
+				surname_entry.config(fg='black')
+
+
+		def surname_unclick(event):
+			if surname_entry.get() == '':
+				surname_entry.insert(0, 'e.g. Synders')
+				surname_entry.config(fg='grey')
+
+
+		def telephone_click(event):
+			if telephone_entry.get() == 'e.g. 03358629462':
+				telephone_entry.delete(0, "end")
+				telephone_entry.insert(0, '')
+				telephone_entry.config(fg='black')
+
+
+		def telephone_unclick(event):
+			if telephone_entry.get() == '':
+				telephone_entry.insert(0, 'e.g. 03358629462')
+				telephone_entry.config(fg='grey')
+
+
+		def postcode_click(event):
+			if postcode_entry.get() == 'e.g. BT12 4RF':
+				postcode_entry.delete(0, "end")
+				postcode_entry.insert(0, '')
+				postcode_entry.config(fg='black')
+
+
+		def postcode_unclick(event):
+			if postcode_entry.get() == '':
+				postcode_entry.insert(0, 'e.g. BT12 4RF')
+				postcode_entry.config(fg='grey')
+
+
+		def age_click(event):
+			if age_entry.get() == 'e.g. 27':
+				age_entry.delete(0, "end")
+				age_entry.insert(0, '')
+				age_entry.config(fg='black')
+
+
+		def age_unclick(event):
+			if age_entry.get() == '':
+				age_entry.insert(0, 'e.g. 27')
+				age_entry.config(fg='grey')
+
+
 		def clearTv():
 			record=member_search_Tv.get_children()
 			for elements in record:
@@ -443,7 +536,6 @@ class MemberContent:
 
 
 
-
 		username = StringVar()
 		password = StringVar()
 		firstname=StringVar()
@@ -478,25 +570,54 @@ class MemberContent:
 
 		username_entry = tkinter.Entry(self.member, width=25, textvariable=username, bd=3, relief='ridge', cursor="tcross")
 		username_entry.place(rely=0.153, relx=0.25, anchor='center')
+		username_entry.insert(0, 'e.g. bobby564@gmail.com')
+		username_entry.bind('<FocusIn>', username_click)
+		username_entry.bind('<FocusOut>', username_unclick)
+		username_entry.config(fg='grey')
 
-		password_entry = tkinter.Entry(self.member, width=15, textvariable=password, show='*', bd=3, relief='ridge', cursor="tcross")
+		password_entry = tkinter.Entry(self.member, width=15, textvariable=password, bd=3, relief='ridge', cursor="tcross")
 		password_entry.place(rely=0.233, relx=0.217, anchor='center')
+		password_entry.insert(0, 'e.g. RossBob24')
+		password_entry.bind('<FocusIn>', password_click)
+		password_entry.bind('<FocusOut>', password_unclick)
+		password_entry.config(fg='grey')
 
 		firstname_entry = tkinter.Entry(self.member, width=15, textvariable=firstname, bd=3, relief='ridge', cursor="tcross")
 		firstname_entry.place(rely=0.155, relx=0.56, anchor='center')
+		firstname_entry.insert(0, 'e.g. Johhny')
+		firstname_entry.bind('<FocusIn>', firstname_click)
+		firstname_entry.bind('<FocusOut>', firstname_unclick)
+		firstname_entry.config(fg='grey')
 
 		surname_entry = tkinter.Entry(self.member, width=15, textvariable=surname, bd=3, relief='ridge', cursor="tcross")
 		surname_entry.place(rely=0.235, relx=0.483, anchor='center')
+		surname_entry.insert(0, 'e.g. Synders')
+		surname_entry.bind('<FocusIn>', surname_click)
+		surname_entry.bind('<FocusOut>', surname_unclick)
+		surname_entry.config(fg='grey')
 
 		telephone_entry = tkinter.Entry(self.member, width=25, textvariable=number, bd=3, relief='ridge', cursor="tcross")
 		telephone_entry.place(rely=0.155, relx=0.85, anchor='center')
+		telephone_entry.insert(0, 'e.g. 03358629462')
+		telephone_entry.bind('<FocusIn>', telephone_click)
+		telephone_entry.bind('<FocusOut>', telephone_unclick)
+		telephone_entry.config(fg='grey')
 
-		postcode_entry = tkinter.Entry(self.member, width=10, textvariable=postcode, bd=3, relief='ridge', cursor="tcross")
+		postcode_entry = tkinter.Entry(self.member, width=12, textvariable=postcode, bd=3, relief='ridge', cursor="tcross")
 		postcode_entry.place(rely=0.234, relx=0.743, anchor='center')
+		postcode_entry.insert(0, 'e.g. BT12 4RF')
+		postcode_entry.bind('<FocusIn>', postcode_click)
+		postcode_entry.bind('<FocusOut>', postcode_unclick)
+		postcode_entry.config(fg='grey')
 
-		age_entry = tkinter.Entry(self.member, width=4, textvariable=age, bd=3, relief='ridge', cursor="tcross")
+		age_entry = tkinter.Entry(self.member, width=7, textvariable=age, bd=3, relief='ridge', cursor="tcross")
 		age_entry.place(rely=0.233, relx=0.905, anchor='center')
 		age.set('')
+		age_entry.insert(0, 'e.g. 27')
+		age_entry.bind('<FocusIn>', age_click)
+		age_entry.bind('<FocusOut>', age_unclick)
+		age_entry.config(fg='grey')
+
 
 		background_entry_canvas = Canvas(self.member,width=160, height=90, bg = "white")
 		background_entry_canvas.place(rely=0.37,relx=0.13,anchor=CENTER)
