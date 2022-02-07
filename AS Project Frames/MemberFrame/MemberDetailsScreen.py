@@ -670,8 +670,6 @@ class MemberContent:
 		member_search_Tv.column("#7",minwidth=0,width=80)
 		member_search_Tv.bind('<Button-1>', partial(treeviewresizedisable, member_search_Tv))
 
-
-
 		student_ysearch_scrollbar = Scrollbar(self.member, orient = 'vertical', command = member_search_Tv.yview, cursor="tcross")
 		student_ysearch_scrollbar.place(relx=0.93,rely=0.71,anchor='center',height=307)
 		member_search_Tv.configure(yscrollcommand=student_ysearch_scrollbar.set)
