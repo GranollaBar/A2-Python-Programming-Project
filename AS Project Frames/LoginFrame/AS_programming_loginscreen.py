@@ -10,6 +10,7 @@ import webbrowser
 from MainScreens.ChangingPasswordEmail import ChangePassword
 from MainScreens.SMSSystem import MemberJoingSMS
 from MainScreens.SMSSystem import ChangingPassword
+import Pmw
 
 
 
@@ -122,6 +123,7 @@ class LoginContent:
 
                     choosing_button=Button(choosing_toplevel,text = 'Select', command = lambda : completeVerification(choosing, recipient, choosing_toplevel), fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =30)
                     choosing_button.place(rely=0.8,relx=0.5,anchor=CENTER)
+                    ToolTips.bind(choosing_button, 'Choice between SMS and email')
 
 
         def completeVerification(value, name, frame):
@@ -164,6 +166,7 @@ class LoginContent:
 
                 newpassword_button=Button(email_toplevel,text = 'Update Password', command = completeVerification, fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20)
                 newpassword_button.place(rely=0.85,relx=0.5,anchor=CENTER)
+                ToolTips.bind(newpassword_button, 'Updates the password to the new one inputted')
 
                 finalframe.destroy()
 
@@ -199,6 +202,7 @@ class LoginContent:
 
                 newpassword_button=Button(SMS_toplevel,text = 'Update Password', command = completeVerification, fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20)
                 newpassword_button.place(rely=0.85,relx=0.5,anchor=CENTER)
+                ToolTips.bind(newpassword_button, 'Updates the password to the new one inputted')
 
                 finalframe.destroy()
 
@@ -360,6 +364,7 @@ class LoginContent:
         loginPassword = StringVar()
         choosing=IntVar()
 
+        ToolTips = Pmw.Balloon()
 
 
         title_label = tkinter.Label(self.login, text="Welcome To Lisburn Racquets Club", font=('Tahoma', 18, 'underline', 'bold'), fg='SpringGreen3', bg='white')
@@ -396,10 +401,12 @@ class LoginContent:
         twitterButton = Button(self.login, cursor="tcross", image=twitterImage, width=75, height=75, command=twitterLink, bg="white", highlightthickness=2, activebackground="grey")
         twitterButton.place(rely=0.25,relx=0.86,anchor=CENTER)
         twitterButton.image = twitterImage
+        ToolTips.bind(twitterButton, 'Follow link to Lisburn Racquets Club Twitter')
 
         facebookButton = Button(self.login, cursor="tcross", image=facebookImage, width=74, height=74, command=facebookLink, bg="white", highlightthickness=2, activebackground="grey")
         facebookButton.place(rely=0.25,relx=0.14,anchor=CENTER)
         facebookButton.image = facebookImage
+        ToolTips.bind(facebookButton, 'Follow link to Lisburn Racquets Club Facebook')
 
         passwordButton = Button(self.login, cursor="tcross", image=passwordImage, width=20, height=20, bg="white", highlightthickness=2, activebackground="grey")
         passwordButton.place(rely=0.604,relx=0.885,anchor=CENTER)
@@ -423,9 +430,11 @@ class LoginContent:
 
         forgot_password_button = tkinter.Button(self.login, cursor="tcross", text="Forgot Password", command=forgot_system, fg='white', bg='black', bd=6, relief='ridge', font=('Segoe UI Black', 12, 'bold'), padx=10)
         forgot_password_button.place(rely=0.7, relx=0.5, anchor='center')
+        ToolTips.bind(forgot_password_button, 'Create a new password to enter the system')
 
         clear_button = tkinter.Button(self.login, cursor="tcross", text="Clear", command=login_clear, fg='white', bg='black', bd=6, relief='groove', font=('Segoe UI Black', 16, 'bold'), padx=50)
         clear_button.place(rely=0.9, relx=0.27, anchor='center')
+        ToolTips.bind(clear_button, 'Clears data entered')
 
         def completeLogin():
             self.finalloginname = loginUsername.get()
@@ -433,3 +442,4 @@ class LoginContent:
 
         login_button = tkinter.Button(self.login, cursor="tcross",text="Login", command=completeLogin, fg='white', bg='black', bd=6, relief='groove', font=('Segoe UI Black', 16, 'bold'), padx=50)
         login_button.place(rely=0.9, relx=0.73, anchor='center')
+        ToolTips.bind(login_button, 'Login to the system')

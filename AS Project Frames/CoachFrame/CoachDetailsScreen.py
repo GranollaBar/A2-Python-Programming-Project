@@ -11,6 +11,7 @@ from tkcalendar import Calendar
 from MainScreens.StakeholderEmail import Email
 from CoachFrame.coachWordDocument import buildCoachDocument
 import datetime
+import Pmw
 
 
 class CoachContent:
@@ -310,6 +311,74 @@ class CoachContent:
 					count+=1
 
 
+
+		def username_click(event):
+			if username_entry.get() == 'e.g. sooney@gmail.com':
+				username_entry.delete(0, "end")
+				username_entry.insert(0, '')
+				username_entry.config(fg='black')
+
+
+		def username_unclick(event):
+			if username_entry.get() == '':
+				username_entry.insert(0, 'e.g. sooney@gmail.com')
+				username_entry.config(fg='grey')
+
+
+		def password_click(event):
+			if password_entry.get() == 'e.g. Ch12ch12':
+				password_entry.delete(0, "end")
+				password_entry.insert(0, '')
+				password_entry.config(fg='black')
+				password_entry.config(show="*")
+
+
+		def password_unclick(event):
+			if password_entry.get() == '':
+				password_entry.config(show="")
+				password_entry.insert(0, 'e.g. Ch12ch12')
+				password_entry.config(fg='grey')
+
+
+		def firstname_click(event):
+			if firstname_entry.get() == 'e.g. Connor':
+				firstname_entry.delete(0, "end")
+				firstname_entry.insert(0, '')
+				firstname_entry.config(fg='black')
+
+
+		def firstname_unclick(event):
+			if firstname_entry.get() == '':
+				firstname_entry.insert(0, 'e.g. Connor')
+				firstname_entry.config(fg='grey')
+
+
+		def surname_click(event):
+			if surname_entry.get() == 'e.g. Blair':
+				surname_entry.delete(0, "end")
+				surname_entry.insert(0, '')
+				surname_entry.config(fg='black')
+
+
+		def surname_unclick(event):
+			if surname_entry.get() == '':
+				surname_entry.insert(0, 'e.g. Blair')
+				surname_entry.config(fg='grey')
+
+
+		def address_click(event):
+			if address_entry.get() == 'e.g. 47 star street':
+				address_entry.delete(0, "end")
+				address_entry.insert(0, '')
+				address_entry.config(fg='black')
+
+
+		def address_unclick(event):
+			if address_entry.get() == '':
+				address_entry.insert(0, 'e.g. 47 star street')
+				address_entry.config(fg='grey')
+
+
 		def returnColour(usernameReturn, passwordReturn, firstnameReturn, surnameReturn, genderReturn, DOBReturn, addressReturn, mondayReturn, tuesdayReturn, wednesdayReturn, thursdayReturn, fridayReturn, saturdayReturn, sundayReturn):
 			usernameReturn.config(fg="black")
 			passwordReturn.config(fg="black")
@@ -418,9 +487,11 @@ class CoachContent:
 
 				update_postcode=Button(updateCoach,text = 'Update Postcode', command = lambda : update_coach_postcode(updateCoach), fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20, pady =8)
 				update_postcode.place(rely=0.43,relx=0.5,anchor=CENTER)
+				ToolTips.bind(update_postcode, "Update the coach's postcode")
 
 				update_availiability=Button(updateCoach,text = 'Update Availability', command = lambda : update_coach_availability(updateCoach), fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20, pady =8)
 				update_availiability.place(rely=0.75,relx=0.5,anchor=CENTER)
+				ToolTips.bind(update_availiability, "Update the coach's availiability")
 
 
 		def update_coach_postcode(frame):
@@ -507,6 +578,7 @@ class CoachContent:
 
 					availiable_update_button=Button(updateAvailiability,text = 'Confirm Update', command = lambda : availableUpdate(updateAvailiability, coachUsername), fg ='white', bg='black', relief= 'groove', font = ('Verdana',11,'bold'), padx =30)
 					availiable_update_button.place(rely=0.93,relx=0.5,anchor=CENTER)
+					ToolTips.bind(availiable_update_button, "Update the coach's availiability")
 
 			conn.commit()
 			conn.close()
@@ -833,6 +905,8 @@ class CoachContent:
 		sunday_to_Avaliability_times = ["9.00","10.00","11.00","12.00","13.00","14.00","15.00","16.00","17.00","18.00"]
 
 
+		ToolTips = Pmw.Balloon()
+
 
 		username_label = tkinter.Label(self.coach, text="Username:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
 		username_label.place(rely=0.13, relx=0.09, anchor='center')
@@ -854,73 +928,6 @@ class CoachContent:
 
 		address_label = tkinter.Label(self.coach, text="Address:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
 		address_label.place(rely=0.57, relx=0.09, anchor='center')
-
-
-		def username_click(event):
-			if username_entry.get() == 'e.g. sooney@gmail.com':
-				username_entry.delete(0, "end")
-				username_entry.insert(0, '')
-				username_entry.config(fg='black')
-
-
-		def username_unclick(event):
-			if username_entry.get() == '':
-				username_entry.insert(0, 'e.g. sooney@gmail.com')
-				username_entry.config(fg='grey')
-
-
-		def password_click(event):
-			if password_entry.get() == 'e.g. Ch12ch12':
-				password_entry.delete(0, "end")
-				password_entry.insert(0, '')
-				password_entry.config(fg='black')
-				password_entry.config(show="*")
-
-
-		def password_unclick(event):
-			if password_entry.get() == '':
-				password_entry.config(show="")
-				password_entry.insert(0, 'e.g. Ch12ch12')
-				password_entry.config(fg='grey')
-
-
-		def firstname_click(event):
-			if firstname_entry.get() == 'e.g. Connor':
-				firstname_entry.delete(0, "end")
-				firstname_entry.insert(0, '')
-				firstname_entry.config(fg='black')
-
-
-		def firstname_unclick(event):
-			if firstname_entry.get() == '':
-				firstname_entry.insert(0, 'e.g. Connor')
-				firstname_entry.config(fg='grey')
-
-
-		def surname_click(event):
-			if surname_entry.get() == 'e.g. Blair':
-				surname_entry.delete(0, "end")
-				surname_entry.insert(0, '')
-				surname_entry.config(fg='black')
-
-
-		def surname_unclick(event):
-			if surname_entry.get() == '':
-				surname_entry.insert(0, 'e.g. Blair')
-				surname_entry.config(fg='grey')
-
-
-		def address_click(event):
-			if address_entry.get() == 'e.g. 47 star street':
-				address_entry.delete(0, "end")
-				address_entry.insert(0, '')
-				address_entry.config(fg='black')
-
-
-		def address_unclick(event):
-			if address_entry.get() == '':
-				address_entry.insert(0, 'e.g. 47 star street')
-				address_entry.config(fg='grey')
 
 
 		username_entry = tkinter.Entry(self.coach, width=25, textvariable=username, bd=3, relief='ridge', cursor="tcross")
@@ -960,6 +967,7 @@ class CoachContent:
 
 		DOB_button = Button(self.coach, text='Select DOB',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : dateEntryCheck(dateOfBirth), padx=10, bd=4, relief="ridge")
 		DOB_button.place(rely=0.498, relx=0.25, anchor='center')
+		ToolTips.bind(DOB_button, "Select the coaches Date Of Birth")
 
 		address_entry = tkinter.Entry(self.coach, width=25, textvariable=address, bd=3, relief='ridge', cursor="tcross")
 		address_entry.place(rely=0.573, relx=0.25, anchor='center')
@@ -1139,15 +1147,19 @@ class CoachContent:
 
 		submit_button = tkinter.Button(self.coach, cursor="tcross",text="Submit", command=saveCoachDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=30)
 		submit_button.place(rely=0.95, relx=0.49, anchor='center')
+		ToolTips.bind(submit_button, 'Submit coach details entered into database')
 
 		search_button = tkinter.Button(self.coach, cursor="tcross",text="Search", command=searchCoachDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=32.4)
 		search_button.place(rely=0.95, relx=0.63, anchor='center')
+		ToolTips.bind(search_button, 'Search a coach from database')
 
 		update_button = tkinter.Button(self.coach, cursor="tcross",text="Update", command=lambda : updateCoachDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=30)
 		update_button.place(rely=0.95, relx=0.77, anchor='center')
+		ToolTips.bind(update_button, 'Update details of a coach in the database')
 
 		delete_button = tkinter.Button(self.coach, cursor="tcross",text="Delete", command=lambda : deleteCoachDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=33.2)
 		delete_button.place(rely=0.95, relx=0.91, anchor='center')
+		ToolTips.bind(delete_button, 'Delete a coach from the database')
 
 
 		coach_search_Tv=ttk.Treeview(self.coach,height=15,columns=('Password','Firstname','Surname','Gender','DOB','Address','Availability'))

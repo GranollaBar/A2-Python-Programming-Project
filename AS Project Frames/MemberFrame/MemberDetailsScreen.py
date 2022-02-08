@@ -11,6 +11,8 @@ from functools import partial
 from MainScreens.StakeholderEmail import Email
 from MemberFrame.memberWordDocument import buildMemberDocument
 from MainScreens.SMSSystem import MemberJoingSMS
+import Pmw
+
 
 
 class MemberContent:
@@ -306,9 +308,12 @@ class MemberContent:
 
 				update_telephone=Button(update_member,text = 'Update Telephone', command = lambda : update_member_telephone(update_member), fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20, pady =10)
 				update_telephone.place(rely=0.43,relx=0.5,anchor=CENTER)
+				ToolTips.bind(update_telephone, "Update the member's telephone")
 
 				update_postcode=Button(update_member,text = 'Update Postcode', command = lambda : update_member_postcode(update_member), fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20, pady =10)
 				update_postcode.place(rely=0.75,relx=0.5,anchor=CENTER)
+				ToolTips.bind(update_postcode, "Update the member's postcode")
+
 
 
 		def update_member_telephone(frame):
@@ -544,7 +549,7 @@ class MemberContent:
 		postcode=StringVar()
 		age=IntVar()
 
-
+		ToolTips = Pmw.Balloon()
 
 		username_label = tkinter.Label(self.member, text="Username:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
 		username_label.place(rely=0.15, relx=0.09, anchor='center')
@@ -638,15 +643,19 @@ class MemberContent:
 
 		delete_button = tkinter.Button(self.member, cursor="tcross",text="Delete Member", command=lambda : deleteAccountDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
 		delete_button.place(rely=0.41, relx=0.37, anchor='center')
+		ToolTips.bind(delete_button, 'Delete a member from database')
 
 		update_button = tkinter.Button(self.member, cursor="tcross",text="Update Member", command=lambda : updateAccountDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
 		update_button.place(rely=0.33, relx=0.37, anchor='center')
+		ToolTips.bind(update_button, 'Update a member in database')
 
 		search_button = tkinter.Button(self.member, cursor="tcross",text="Search Details", command=searchAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
 		search_button.place(rely=0.41, relx=0.63, anchor='center')
+		ToolTips.bind(search_button, 'Search for a user in the database')
 
 		create_button = tkinter.Button(self.member, cursor="tcross",text="Save Member", command=saveAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
 		create_button.place(rely=0.33, relx=0.63, anchor='center')
+		ToolTips.bind(create_button, 'Create new member with data inputted')
 
 
 		member_search_Tv=ttk.Treeview(self.member,height=14,columns=('Password','Firstname','Surname','Telephone','Postcode','Age','Group'))

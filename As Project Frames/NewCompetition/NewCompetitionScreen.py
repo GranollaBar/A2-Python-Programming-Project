@@ -12,6 +12,8 @@ from CoachingSessionFrame.CoachingSessionEmail import SessionEmail
 import time
 from datetime import date, datetime,timedelta
 import datetime
+import Pmw
+
 
 CourtsTrue = False
 
@@ -923,6 +925,7 @@ class NewCompetitionContent:
 
 			SelectCourtsButton=Button(courts, cursor="tcross",text = 'Select Courts', command = lambda : ChangeCourtsColour(courts,Court1Button, Court2Button, Court3Button, Court4Button, Court5Button, Court6Button, Court7Button, Court8Button, Court9Button, Court10Button, Court11Button, Court12Button), fg ='white', bg='black', relief= 'groove', font = ('Verdana',8,'bold'), padx =15)
 			SelectCourtsButton.place(rely=0.095,relx=0.5,anchor=CENTER)
+			ToolTips.bind(SelectCourtsButton, 'Confirm courts selected')
 
 
 		def ChangeCourtsColour(frame, courtvalue, courtvalue2, courtvalue3, courtvalue4, courtvalue5, courtvalue6, courtvalue7, courtvalue8, courtvalue9, courtvalue10, courtvalue11, courtvalue12):
@@ -1885,6 +1888,7 @@ class NewCompetitionContent:
 
 				singles_update_button = tkinter.Button(self.competition, cursor="tcross",text="Update Group", command= lambda : SinglesUpdateCompetition(select_singles_group_label, username_label, username2_label, member_update_dropdown, member_selection_dropdown, member_selection_dropdown2, singles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 10, 'bold'), padx=5, pady=2)
 				singles_update_button.place(rely=0.92, relx=0.9, anchor='center')
+				ToolTips.bind(singles_update_button, 'Update details of singles competition')
 
 			if (UpdateSelectionSingles.get() == 2):
 				singles_competition_treeview=ttk.Treeview(self.competition,height=15,columns=('Member 2','Start Date','End Date','Court','singlescompetitionID'))
@@ -1943,12 +1947,15 @@ class NewCompetitionContent:
 
 				new_start_date_entry = Button(self.competition, text='Select New Start Date',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : startDateCheck(startDate), padx=10, bd=4, relief="ridge")
 				new_start_date_entry.place(rely=0.883, relx=0.66, anchor='center')
+				ToolTips.bind(new_start_date_entry, 'Update start date of singles competition')
 
 				new_end_date_entry = Button(self.competition, text='Select New End Date',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : endDateCheck(endDate), padx=10, bd=4, relief="ridge")
 				new_end_date_entry.place(rely=0.953, relx=0.66, anchor='center')
+				ToolTips.bind(new_end_date_entry, 'Update end date of singles competition')
 
 				singles_update_button = tkinter.Button(self.competition, cursor="tcross",text="Update Group", command= lambda : SinglesUpdateCompetition(select_singles_group_label, new_start_date_label, new_end_date_label, member_update_dropdown, new_start_date_entry, new_end_date_entry, singles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 10, 'bold'), padx=5, pady=2)
 				singles_update_button.place(rely=0.92, relx=0.9, anchor='center')
+				ToolTips.bind(singles_update_button, 'Update details of singles competition')
 
 
 			if (UpdateSelectionSingles.get() == 3):
@@ -2006,9 +2013,11 @@ class NewCompetitionContent:
 
 				new_court_button = Button(self.competition, text='Select New Court',font=("Tahoma",10, 'bold'), cursor="tcross",command=courtRequired, padx=10, bd=4, relief="ridge")
 				new_court_button.place(rely=0.921, relx=0.66, anchor='center')
+				ToolTips.bind(new_court_button, 'Update court of singles competition')
 
 				singles_update_button = tkinter.Button(self.competition, cursor="tcross",text="Update Group", command= lambda : SinglesUpdateCompetition(select_singles_group_label, new_court_label, None, member_update_dropdown, None, None, singles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 10, 'bold'), padx=5, pady=2)
 				singles_update_button.place(rely=0.92, relx=0.9, anchor='center')
+				ToolTips.bind(singles_update_button, 'Update details of singles competition')
 
 
 		def UpdateDoublesSelectionConfirmation(value1, value2, value3, value4, value5):
@@ -2125,6 +2134,7 @@ class NewCompetitionContent:
 
 				doubles_update_button = tkinter.Button(self.competition, cursor="tcross",text="Update Group", command= lambda : DoublesUpdateCompetition(select_doubles_group_label, username_label, username2_label, username3_label, username4_label, member_update_dropdown, member_selection_dropdown, member_selection_dropdown2, member_selection_dropdown3, member_selection_dropdown4, doubles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 10, 'bold'), padx=5, pady=2)
 				doubles_update_button.place(rely=0.884, relx=0.9, anchor='center')
+				ToolTips.bind(doubles_update_button, 'Update details of doubles competition')
 
 			if (UpdateSelectionDoubles.get() == 2):
 				doubles_competition_treeview=ttk.Treeview(self.competition,height=15,columns=('Member 2','Member 3','Member 4','Start Date','End Date','court','Team 1','Team 2','Group ID'))
@@ -2192,12 +2202,15 @@ class NewCompetitionContent:
 
 				new_start_date_entry = Button(self.competition, text='Select New Start Date',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : startDateCheck(startDate), padx=10, bd=4, relief="ridge")
 				new_start_date_entry.place(rely=0.883, relx=0.66, anchor='center')
+				ToolTips.bind(new_start_date_entry, 'Update the start date of the doubles competition')
 
 				new_end_date_entry = Button(self.competition, text='Select New End Date',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : endDateCheck(endDate), padx=10, bd=4, relief="ridge")
 				new_end_date_entry.place(rely=0.953, relx=0.66, anchor='center')
+				ToolTips.bind(new_end_date_entry, 'Update the end date of the doubles competition')
 
 				doubles_update_button = tkinter.Button(self.competition, cursor="tcross",text="Update Group", command= lambda : DoublesUpdateCompetition(select_doubles_group_label, new_start_date_label, new_end_date_label, None, None, member_update_dropdown, None, None, None, None, doubles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 10, 'bold'), padx=5, pady=2)
 				doubles_update_button.place(rely=0.92, relx=0.9, anchor='center')
+				ToolTips.bind(doubles_update_button, 'Update details of doubles competition')
 
 			if (UpdateSelectionDoubles.get() == 3):
 				doubles_competition_treeview=ttk.Treeview(self.competition,height=15,columns=('Member 2','Member 3','Member 4','Start Date','End Date','court','Team 1','Team 2','Group ID'))
@@ -2262,9 +2275,11 @@ class NewCompetitionContent:
 
 				new_court_button = Button(self.competition, text='Select New Court',font=("Tahoma",10, 'bold'), cursor="tcross",command=courtRequired, padx=10, bd=4, relief="ridge")
 				new_court_button.place(rely=0.921, relx=0.66, anchor='center')
+				ToolTips.bind(new_court_button, 'Update the doubles court of the competition')
 
 				doubles_update_button = tkinter.Button(self.competition, cursor="tcross",text="Update Group", command= lambda : DoublesUpdateCompetition(select_doubles_group_label, new_court_label, None, None, None, member_update_dropdown, None, None, None, None, doubles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 10, 'bold'), padx=5, pady=2)
 				doubles_update_button.place(rely=0.92, relx=0.9, anchor='center')
+				ToolTips.bind(doubles_update_button, 'Update doubles group of the competition')
 
 
 
@@ -2290,6 +2305,7 @@ class NewCompetitionContent:
 
 			competition_status_button = tkinter.Button(self.competition, cursor="tcross",text="Select Status", command= lambda : CompetitionStatusConfirmation(competition_status_label, competition_status_new, competition_status_update, competition_status_delete, competition_status_button), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 9, 'bold'), padx=2)
 			competition_status_button.place(rely=0.1995, relx=0.79, anchor='center')
+			ToolTips.bind(competition_status_button, 'Confirm the status of the competition')
 
 			competition_status_line = Canvas(self.competition, width=1000, height=2)
 			competition_status_line.config(bg='black')
@@ -2346,15 +2362,18 @@ class NewCompetitionContent:
 
 				start_date_entry = Button(self.competition, text='Select Start Date',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : startDateCheck(startDate), padx=10, bd=4, relief="ridge")
 				start_date_entry.place(rely=0.453, relx=0.277, anchor='center')
+				ToolTips.bind(start_date_entry, 'Select the start date for the competition')
 
 				end_date_entry = Button(self.competition, text='Select End Date',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : endDateCheck(endDate), padx=10, bd=4, relief="ridge")
 				end_date_entry.place(rely=0.533, relx=0.277, anchor='center')
+				ToolTips.bind(end_date_entry, 'Select the end date for the competition')
 
 				court_label = tkinter.Label(self.competition, text="Court:", font=('Tahoma', 15, 'bold'), fg='black', bg='white')
 				court_label.place(rely=0.61, relx=0.09, anchor='center')
 
 				court_button = Button(self.competition, text='Select Court',font=("Tahoma",10, 'bold'), cursor="tcross",command=courtRequired, padx=10, bd=4, relief="ridge")
 				court_button.place(rely=0.613, relx=0.277, anchor='center')
+				ToolTips.bind(court_button, 'Select the court required for the competition')
 
 
 				calendar_label =Label(self.competition, text = 'Singles Competition Dates', fg ='black',bg='white',font=('Tahoma',11,'bold'), bd=2, relief="ridge", padx=10, pady=3)
@@ -2389,6 +2408,8 @@ class NewCompetitionContent:
 
 				submit_new_singles_button = tkinter.Button(self.competition, cursor="tcross",text="Submit", command=lambda : SubmitNewSingles(username_label, username2_label, start_date_label, end_date_label, court_label, cal, singles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 11, 'bold'), padx=30, pady=2)
 				submit_new_singles_button.place(rely=0.695, relx=0.28, anchor='center')
+				ToolTips.bind(submit_new_singles_button, 'Submit new singles competition')
+
 
 
 			if (MatchType.get() == 2 and CompetitionStatus.get() == 1):
@@ -2441,15 +2462,18 @@ class NewCompetitionContent:
 
 				start_date_entry = Button(self.competition, text='Select Start Date',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : startDateCheck(startDate), padx=10, bd=4, relief="ridge")
 				start_date_entry.place(rely=0.453, relx=0.277, anchor='center')
+				ToolTips.bind(start_date_entry, 'Select the start date for the competition')
 
 				end_date_entry = Button(self.competition, text='Select End Date',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : endDateCheck(endDate), padx=10, bd=4, relief="ridge")
 				end_date_entry.place(rely=0.533, relx=0.277, anchor='center')
+				ToolTips.bind(end_date_entry, 'Select the end date for the competition')
 
 				court_label = tkinter.Label(self.competition, text="Court:", font=('Tahoma', 15, 'bold'), fg='black', bg='white')
 				court_label.place(rely=0.61, relx=0.09, anchor='center')
 
 				court_button = Button(self.competition, text='Select Court',font=("Tahoma",10, 'bold'), cursor="tcross",command=courtRequired, padx=10, bd=4, relief="ridge")
 				court_button.place(rely=0.613, relx=0.277, anchor='center')
+				ToolTips.bind(court_button, 'Select the court required for the competition')
 
 
 				calendar_label =Label(self.competition, text = 'Doubles Competition Dates', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
@@ -2491,8 +2515,9 @@ class NewCompetitionContent:
 				doublestreeviewPopulate(doubles_competition_treeview)
 				DoublesChangeCalendarColour(cal)
 
-				submit_new_singles_button = tkinter.Button(self.competition, cursor="tcross",text="Submit", command=lambda : SubmitNewDoubles(team_label, team2_label, start_date_label, end_date_label, court_label, cal, doubles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 11, 'bold'), padx=30, pady=2)
-				submit_new_singles_button.place(rely=0.695, relx=0.28, anchor='center')
+				submit_new_doubles_button = tkinter.Button(self.competition, cursor="tcross",text="Submit", command=lambda : SubmitNewDoubles(team_label, team2_label, start_date_label, end_date_label, court_label, cal, doubles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 11, 'bold'), padx=30, pady=2)
+				submit_new_doubles_button.place(rely=0.695, relx=0.28, anchor='center')
+				ToolTips.bind(submit_new_doubles_button, 'Submit new doubles competition')
 
 
 
@@ -2512,6 +2537,7 @@ class NewCompetitionContent:
 
 				singles_update_button = tkinter.Button(self.competition, cursor="tcross",text="Select Section", command= lambda : UpdateSinglesSelectionConfirmation(singles_update_label, update_usernames_radiobutton, update_dates_radiobutton, update_court_radiobutton, singles_update_button), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 9, 'bold'), padx=2)
 				singles_update_button.place(rely=0.2765, relx=0.703, anchor='center')
+				ToolTips.bind(singles_update_button, 'Confirm match to update')
 
 				update_selection_line = Canvas(self.competition, width=1000, height=2)
 				update_selection_line.config(bg='black')
@@ -2538,6 +2564,7 @@ class NewCompetitionContent:
 
 				doubles_update_button = tkinter.Button(self.competition, cursor="tcross",text="Select Section", command= lambda : UpdateDoublesSelectionConfirmation(doubles_update_label, update_usernames_radiobutton, update_dates_radiobutton, update_court_radiobutton, doubles_update_button), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 9, 'bold'), padx=2)
 				doubles_update_button.place(rely=0.2765, relx=0.703, anchor='center')
+				ToolTips.bind(doubles_update_button, 'Confirm match to update')
 
 				update_selection_line = Canvas(self.competition, width=1000, height=2)
 				update_selection_line.config(bg='black')
@@ -2573,6 +2600,7 @@ class NewCompetitionContent:
 
 				singles_delete_button = tkinter.Button(self.competition, cursor="tcross",text="Delete Group", command= lambda : SinglesDeleteCompetition(select_group_delete_label, member_delete_dropdown, singles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 9, 'bold'), padx=2)
 				singles_delete_button.place(rely=0.2895, relx=0.642, anchor='center')
+				ToolTips.bind(singles_delete_button, 'Confirm singles match to delete')
 
 				singles_competition_treeview=ttk.Treeview(self.competition,height=19,columns=('Member 2','Start Date','End Date','Court','singlescompetitionID'))
 				singles_competition_treeview.place(relx=0.5,rely=0.66,anchor=CENTER)
@@ -2625,6 +2653,7 @@ class NewCompetitionContent:
 
 				doubles_delete_button = tkinter.Button(self.competition, cursor="tcross",text="Delete Group", command= lambda : DoublesDeleteCompetition(select_group_delete_label, member_delete_dropdown, doubles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 9, 'bold'), padx=2)
 				doubles_delete_button.place(rely=0.2895, relx=0.642, anchor='center')
+				ToolTips.bind(doubles_delete_button, 'Confirm doubles match to delete')
 
 				doubles_competition_treeview=ttk.Treeview(self.competition,height=19,columns=('Member 2','Member 3','Member 4','Start Date','End Date','court','Team 1','Team 2','Group ID'))
 				doubles_competition_treeview.place(relx=0.5,rely=0.66,anchor=CENTER)
@@ -2674,6 +2703,9 @@ class NewCompetitionContent:
 		endDate=StringVar()
 
 
+		ToolTips = Pmw.Balloon()
+
+
 		match_type_label = tkinter.Label(self.competition, text="Type of Match:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
 		match_type_label.place(rely=0.128, relx=0.33, anchor='center')
 
@@ -2686,6 +2718,7 @@ class NewCompetitionContent:
 
 		match_type_button = tkinter.Button(self.competition, cursor="tcross",text="Select Match Type", command=lambda : MatchTypeConfirmation(match_type_label, match_type_singles, match_type_doubles, match_type_button), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 9, 'bold'), padx=2)
 		match_type_button.place(rely=0.1295, relx=0.685, anchor='center')
+		ToolTips.bind(match_type_button, 'Confirm match type selection')
 
 		match_type_line = Canvas(self.competition, width=1000, height=2)
 		match_type_line.config(bg='black')

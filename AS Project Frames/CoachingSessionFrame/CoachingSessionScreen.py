@@ -11,6 +11,7 @@ import datetime
 from tkcalendar import Calendar
 from CoachingSessionFrame.CoachingSessionEmail import SessionEmail
 from PIL import ImageTk,Image
+import Pmw
 
 
 GroupFinder=0
@@ -345,6 +346,8 @@ class CoachingSessionContent:
 
 			SelectCourtsButton=Button(courts, cursor="tcross",text = 'Select Courts', command = lambda : ChangeCourtsColour(courts,Court1Button, Court2Button, Court3Button, Court4Button, Court5Button, Court6Button, Court7Button, Court8Button, Court9Button, Court10Button, Court11Button, Court12Button), fg ='white', bg='black', relief= 'groove', font = ('Verdana',8,'bold'), padx =15)
 			SelectCourtsButton.place(rely=0.095,relx=0.5,anchor=CENTER)
+			ToolTips.bind(SelectCourtsButton, 'Pick the courts required for the coaching session')
+
 
 
 		def ChangeCourtsColour(frame, courtvalue, courtvalue2, courtvalue3, courtvalue4, courtvalue5, courtvalue6, courtvalue7, courtvalue8, courtvalue9, courtvalue10, courtvalue11, courtvalue12):
@@ -517,18 +520,22 @@ class CoachingSessionContent:
 
 				update_time=Button(updateCoachSession, cursor="tcross",text = 'Update Time', command = lambda : updateCoachSessionTime(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('Verdana',9,'bold'), padx =20)
 				update_time.place(rely=0.25,relx=0.5,anchor=CENTER)
+				ToolTips.bind(update_time, 'Update the coaching session time')
 
 				update_date=Button(updateCoachSession, cursor="tcross", text = 'Update Date', command = lambda : updateCoachSessionDate(newEventDate, updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('Verdana',9,'bold'), padx =20)
 				update_date.place(rely=0.4,relx=0.5,anchor=CENTER)
+				ToolTips.bind(update_date, 'Update the date of the coaching session')
 
 				update_courts=Button(updateCoachSession, cursor="tcross",text = 'Update Courts', command = lambda : updateCoachSessionCourts(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('Verdana',9,'bold'), padx =20)
 				update_courts.place(rely=0.55,relx=0.5,anchor=CENTER)
+				ToolTips.bind(update_courts, 'Update the court of the competition')
 
 				# update_groups=Button(updateCoachSession, cursor="tcross",text = 'Update Groups', command = lambda : updateCoachSessionGroups(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('Verdana',9,'bold'), padx =20)
 				# update_groups.place(rely=0.7,relx=0.5,anchor=CENTER)
 
 				update_technique=Button(updateCoachSession, cursor="tcross",text = 'Update Technique', command = lambda : updateCoachSessionTechnique(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('Verdana',9,'bold'), padx =20)
 				update_technique.place(rely=0.85,relx=0.5,anchor=CENTER)
+				ToolTips.bind(update_technique, 'Update the technique used for the coaching session')
 
 
 
@@ -567,6 +574,7 @@ class CoachingSessionContent:
 
 					update_time_button = Button(updateTimes, text='Confirm Update',font=("Tahoma",10, 'bold'), fg='white', bg='black',cursor="tcross",command=lambda : confirmNewTimes(updateTimes, coachUsername), padx=10, bd=4, relief="ridge")
 					update_time_button.place(rely=0.85, relx=0.5, anchor='center')
+					ToolTips.bind(update_time_button, 'Confirm new time')
 
 			conn.commit()
 			conn.close()
@@ -869,6 +877,7 @@ class CoachingSessionContent:
 
 					technique_update_button=Button(updateTechnique,text = 'Confirm Update', command = lambda : techniqueUpdate(updateTechnique, coachUsername), fg ='white', bg='black', relief= 'groove', font = ('Verdana',11,'bold'), padx =30)
 					technique_update_button.place(rely=0.93,relx=0.5,anchor=CENTER)
+					ToolTips.bind(technique_update_button, 'Confirm new technique')
 
 			conn.commit()
 			conn.close()
@@ -1122,6 +1131,9 @@ class CoachingSessionContent:
 		newtechnique=IntVar()
 
 
+		ToolTips = Pmw.Balloon()
+
+
 
 		username_label = tkinter.Label(self.coachSession, text="Username:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
 		username_label.place(rely=0.36, relx=0.12, anchor='center')
@@ -1155,12 +1167,15 @@ class CoachingSessionContent:
 
 		date_entry = Button(self.coachSession, text='Select Date',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : dateEntryCheck(eventDate), padx=10, bd=4, relief="ridge")
 		date_entry.place(rely=0.603, relx=0.3, anchor='center')
+		ToolTips.bind(date_entry, 'Select the date of the coaching session')
 
 		courts_needed_button = Button(self.coachSession, text='Select Courts',font=("Tahoma",10, 'bold'), cursor="tcross",command=courtsRequired, padx=10, bd=4, relief="ridge")
 		courts_needed_button.place(rely=0.683, relx=0.3, anchor='center')
+		ToolTips.bind(courts_needed_button, 'Select the courts needed for the coaching session')
 
 		group_needed_button = Button(self.coachSession, text='Select Group',font=("Tahoma",10, 'bold'), cursor="tcross",command=groupRequired, padx=10, bd=4, relief="ridge")
 		group_needed_button.place(rely=0.763, relx=0.3, anchor='center')
+		ToolTips.bind(group_needed_button, 'Select the group needed for the coaching session')
 
 		technique1_radiobutton = Radiobutton(self.coachSession, text="Net Play", variable=technique, value=1, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 		technique1_radiobutton.place(rely=0.82, relx=0.25, anchor='center')
@@ -1178,15 +1193,19 @@ class CoachingSessionContent:
 
 		delete_button = tkinter.Button(self.coachSession, cursor="tcross",text="Delete", command=lambda : deleteCoachSessionDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, pady=5)
 		delete_button.place(rely=0.95, relx=0.058, anchor='center')
+		ToolTips.bind(delete_button, 'Delete coaching session from database')
 
 		update_button = tkinter.Button(self.coachSession, cursor="tcross",text="Update", command=lambda : updateCoachSessionDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, pady=5)
 		update_button.place(rely=0.95, relx=0.168, anchor='center')
+		ToolTips.bind(update_button, 'Update data inside coaching session database')
 
 		search_button = tkinter.Button(self.coachSession, cursor="tcross",text="Search", command=searchCoachSessionDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, pady=5)
 		search_button.place(rely=0.95, relx=0.276, anchor='center')
+		ToolTips.bind(update_button, 'Search data inside coaching session database')
 
 		create_button = tkinter.Button(self.coachSession, cursor="tcross",text="Submit", command=submitCoachSession, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, pady=5)
 		create_button.place(rely=0.95, relx=0.384, anchor='center')
+		ToolTips.bind(update_button, 'Creates a new coaching session')
 
 
 		coachsession_search_Tv=ttk.Treeview(self.coachSession,height=4,columns=('Start Time','End Time','Date','Courts','Group','No. People','Technique'))
