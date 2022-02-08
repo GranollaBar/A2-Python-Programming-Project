@@ -11,6 +11,8 @@ from LoginFrame.AS_programming_loginscreen import LoginContent
 from AttendCompetitionsFrame.AttendingCompetitionFrame import AttendingSinglesContent
 
 
+#testing 123
+
 
 def clearContent(mainScreen, finalContent):
     finalContent.destroy()
