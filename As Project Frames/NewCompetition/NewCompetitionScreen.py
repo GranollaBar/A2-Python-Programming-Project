@@ -91,7 +91,7 @@ class NewCompetitionContent:
 
 			if d2>d1:
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The start date before the current date", icon='error')
+				messagebox.showinfo("Validation Error", "The start date cannot be before the current date", icon='error')
 				return False
 
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
@@ -108,15 +108,18 @@ class NewCompetitionContent:
 				ColourDates.append(i[2])
 				ColourDates.append(i[3])
 
-				while stringdate != i[3]:
-					stringdateadd = stringdate + datetime.timedelta(days=1)
-					finaldate=str(stringdateadd).split('-')
-					finalnewdate=finaldate[0],finaldate[1],finaldate[2]
-					a_date = datetime.date(int(finalnewdate[0]),int(finalnewdate[1]), int(finalnewdate[2]))
+				if i[2] != i[3]:
+					while stringdate != i[3]:
+						stringdateadd = stringdate + datetime.timedelta(days=1)
+						finaldate=str(stringdateadd).split('-')
+						finalnewdate=finaldate[0],finaldate[1],finaldate[2]
+						a_date = datetime.date(int(finalnewdate[0]),int(finalnewdate[1]), int(finalnewdate[2]))
 
-					date_2 = a_date.strftime("%d/%m/%Y")
-					ColourDates.append(date_2)
-					break
+						date_2 = a_date.strftime("%d/%m/%Y")
+						ColourDates.append(date_2)
+						break
+
+			print(ColourDates)
 
 			for row in ColourDates:
 				if value == row:
@@ -147,7 +150,7 @@ class NewCompetitionContent:
 
 			if d2>d1:
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The start date before the current date", icon='error')
+				messagebox.showinfo("Validation Error", "The start date cannot be before the current date", icon='error')
 				return False
 
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
@@ -1076,34 +1079,41 @@ class NewCompetitionContent:
 				start_date = dates[2]
 				end_date = dates[3]
 
-				d1=start_date.split('/')
-				d2=end_date.split('/')
+				if start_date != end_date:
+					d1=start_date.split('/')
+					d2=end_date.split('/')
 
-				d1= datetime.datetime(int(d1[2]),int(d1[1]),int(d1[0]))
-				d2= datetime.datetime(int(d2[2]),int(d2[1]),int(d2[0]))
+					d1= datetime.datetime(int(d1[2]),int(d1[1]),int(d1[0]))
+					d2= datetime.datetime(int(d2[2]),int(d2[1]),int(d2[0]))
 
-				length_inbetween=str(d2-d1).strip(' days, 0:00:00')
+					length_inbetween=str(d2-d1).strip(' days, 0:00:00')
 
-				d1=start_date.split('/')
-				d1= datetime.datetime(int(d1[2]),int(d1[1]),int(d1[0]))
+					d1=start_date.split('/')
+					d1= datetime.datetime(int(d1[2]),int(d1[1]),int(d1[0]))
 
-				all_days_inbetween=[]
+					all_days_inbetween=[]
 
-				for i in range(0,int(length_inbetween)+1):
-					add=str(d1+timedelta(days=i)).strip('datetime.date(')
-					add=str(d1+timedelta(days=i)).strip(') 00:00:00')
-					add=add.split('-')
-					add=add[2].strip(',')+'/'+add[1].strip(',')+'/'+add[0].strip(',')
-					all_days_inbetween.append(add)
+					for i in range(0,int(length_inbetween)+1):
+						add=str(d1+timedelta(days=i)).strip('datetime.date(')
+						print(add)
+						add=str(d1+timedelta(days=i)).strip('00:00:00')
+						print(add)
+						add=add.split('-')
+						add=add[2].strip(',')+'/'+add[1].strip(',')+'/'+add[0].strip(',')
+						all_days_inbetween.append(add)
 
-				if end_date not in all_days_inbetween:
-					all_days_inbetween.append(end_date)
+					if end_date not in all_days_inbetween:
+						all_days_inbetween.append(end_date)
 
-				for finaldates in all_days_inbetween:
-					finalfinaldate=str(finaldates).split('/')
-					cal.calevent_create(datetime.date(int(finalfinaldate[2]), int(finalfinaldate[1]), int(finalfinaldate[0])),"View Coaching Session Details","message")
+					for finaldates in all_days_inbetween:
+						finalfinaldate=str(finaldates).split('/')
+						cal.calevent_create(datetime.date(int(finalfinaldate[2]), int(finalfinaldate[1]), int(finalfinaldate[0])),"View Coaching Session Details","message")
 
-				cal.tag_config("message", background="SpringGreen3", foreground="black")
+					cal.tag_config("message", background="SpringGreen3", foreground="black")
+
+				else:
+					cal.calevent_create(datetime.date(int(dates[3][6:10]), int(dates[3][3:5]), int(dates[3][0:2])),"View Coaching Session Details","message")
+					cal.tag_config("message", background="SpringGreen3", foreground="black")
 
 			conn.close()
 
@@ -1115,38 +1125,44 @@ class NewCompetitionContent:
 			c.execute("SELECT * FROM DoublesCompetition")
 			doubles_competition_array = c.fetchall()
 
+
 			for dates in doubles_competition_array:
 				start_date = dates[4]
 				end_date = dates[5]
 
-				d1=start_date.split('/')
-				d2=end_date.split('/')
+				if start_date != end_date:
+					d1=start_date.split('/')
+					d2=end_date.split('/')
 
-				d1= datetime.datetime(int(d1[2]),int(d1[1]),int(d1[0]))
-				d2= datetime.datetime(int(d2[2]),int(d2[1]),int(d2[0]))
+					d1= datetime.datetime(int(d1[2]),int(d1[1]),int(d1[0]))
+					d2= datetime.datetime(int(d2[2]),int(d2[1]),int(d2[0]))
 
-				length_inbetween=str(d2-d1).strip(' days, 0:00:00')
+					length_inbetween=str(d2-d1).strip(' days, 0:00:00')
 
-				d1=start_date.split('/')
-				d1= datetime.datetime(int(d1[2]),int(d1[1]),int(d1[0]))
+					d1=start_date.split('/')
+					d1= datetime.datetime(int(d1[2]),int(d1[1]),int(d1[0]))
 
-				all_days_inbetween=[]
+					all_days_inbetween=[]
 
-				for i in range(0,int(length_inbetween)+1):
-					add=str(d1+timedelta(days=i)).strip('datetime.date(')
-					add=str(d1+timedelta(days=i)).strip(') 00:00:00')
-					add=add.split('-')
-					add=add[2].strip(',')+'/'+add[1].strip(',')+'/'+add[0].strip(',')
-					all_days_inbetween.append(add)
+					for i in range(0,int(length_inbetween)+1):
+						add=str(d1+timedelta(days=i)).strip('datetime.date(')
+						add=str(d1+timedelta(days=i)).strip('00:00:00')
+						add=add.split('-')
+						add=add[2].strip(',')+'/'+add[1].strip(',')+'/'+add[0].strip(',')
+						all_days_inbetween.append(add)
 
-				if end_date not in all_days_inbetween:
-					all_days_inbetween.append(end_date)
+					if end_date not in all_days_inbetween:
+						all_days_inbetween.append(end_date)
 
-				for finaldates in all_days_inbetween:
-					finalfinaldate=str(finaldates).split('/')
-					cal.calevent_create(datetime.date(int(finalfinaldate[2]), int(finalfinaldate[1]), int(finalfinaldate[0])),"View Coaching Session Details","message")
+					for finaldates in all_days_inbetween:
+						finalfinaldate=str(finaldates).split('/')
+						cal.calevent_create(datetime.date(int(finalfinaldate[2]), int(finalfinaldate[1]), int(finalfinaldate[0])),"View Coaching Session Details","message")
 
-				cal.tag_config("message", background="SpringGreen3", foreground="black")
+					cal.tag_config("message", background="SpringGreen3", foreground="black")
+
+				else:
+					cal.calevent_create(datetime.date(int(dates[3][6:10]), int(dates[3][3:5]), int(dates[3][0:2])),"View Coaching Session Details","message")
+					cal.tag_config("message", background="SpringGreen3", foreground="black")
 
 			conn.close()
 
@@ -2704,6 +2720,7 @@ class NewCompetitionContent:
 
 
 		ToolTips = Pmw.Balloon()
+
 
 
 		match_type_label = tkinter.Label(self.competition, text="Type of Match:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')

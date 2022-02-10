@@ -67,6 +67,7 @@ class AttendingSinglesContent:
             l = 1
             datesarray = []
             datesarray.append(currentday)
+            GotARow = False
 
             while l < 8:
                 Begindatestring = date.today()
@@ -80,39 +81,46 @@ class AttendingSinglesContent:
 
             m = 0
 
+            possibledate = len(datesarray)
+            finalpossibledate = datesarray[possibledate - 1]
+
             for values in datesarray:
-                c.execute("SELECT * FROM SinglesCompetition WHERE start_date=:realstartdate", {
-                    "realstartdate": datesarray[m]
+                c.execute("SELECT * FROM SinglesCompetition WHERE start_date=:realstartdate AND end_date<:realenddate", {
+                    "realstartdate": datesarray[m],
+                    "realenddate": finalpossibledate
                 })
                 singlerow = c.fetchone()
-                if singlerow == NONE:
+                if (singlerow is None):
                     pass
                 else:
+                    GotARow = True
                     break
                 m += 1
 
-            lastday = singlerow[3]
+            if GotARow == True:
+                lastday = singlerow[3]
 
-            c.execute("SELECT * FROM SinglesCompetition WHERE start_date>=:startdate AND end_date<=:enddate", {
-                "startdate":currentday,
-                "enddate":lastday
-            })
+                c.execute("SELECT * FROM SinglesCompetition WHERE start_date>=:startdate AND end_date<=:enddate", {
+                    "startdate":currentday,
+                    "enddate":lastday,
+                })
 
-            items = c.fetchall()
+                items = c.fetchall()
 
-            conn.commit()
-            conn.close()
-
-            count=0
-            for row in items:
-                if row == []:
-                    pass
-                else:
-                    if count%2==0:
-                        unplayed_singles_competitions_Tv.insert('','end',text='Singles',values=(findfirstandsurnamemember(row[0]),findfirstandsurnamemember(row[1]),row[5]))
+                count=0
+                for row in items:
+                    if row == []:
+                        pass
                     else:
-                        unplayed_singles_competitions_Tv.insert('','end',text='Singles',values=(findfirstandsurnamemember(row[0]),findfirstandsurnamemember(row[1]),row[5]))
-                    count+=1
+                        if count%2==0:
+                            unplayed_singles_competitions_Tv.insert('','end',text='Singles',values=(findfirstandsurnamemember(row[0]),findfirstandsurnamemember(row[1]),row[5]))
+                        else:
+                            unplayed_singles_competitions_Tv.insert('','end',text='Singles',values=(findfirstandsurnamemember(row[0]),findfirstandsurnamemember(row[1]),row[5]))
+                        count+=1
+                    break
+
+            else:
+                unplayed_singles_competitions_Tv.insert('','end',text='',values=('','',''))
 
 
         def UnplayedDoublesPopulate():
@@ -126,6 +134,7 @@ class AttendingSinglesContent:
             l = 1
             datesarray = []
             datesarray.append(currentday)
+            GotARow = False
 
             while l < 8:
                 Begindatestring = date.today()
@@ -139,39 +148,49 @@ class AttendingSinglesContent:
 
             m = 0
 
+            possibledate = len(datesarray)
+            finalpossibledate = datesarray[possibledate - 1]
+
             for values in datesarray:
-                c.execute("SELECT * FROM DoublesCompetition WHERE start_date=:realstartdate", {
-                    "realstartdate": datesarray[m]
+                c.execute("SELECT * FROM DoublesCompetition WHERE start_date=:realstartdate AND end_date<:realenddate", {
+                    "realstartdate": datesarray[m],
+                    "realenddate": finalpossibledate
                 })
-                singlerow = c.fetchone()
-                if singlerow == 'NONE':
+                doublerow = c.fetchone()
+                print(doublerow)
+                if (doublerow is None):
                     pass
                 else:
+                    GotARow = True
                     break
                 m += 1
 
-            lastday = singlerow[5]
+            if GotARow == True:
+                lastday = doublerow[5]
 
-            c.execute("SELECT * FROM DoublesCompetition WHERE start_date>=:startdate AND end_date<=:enddate", {
-                "startdate":currentday,
-                "enddate":lastday
-            })
+                c.execute("SELECT * FROM DoublesCompetition WHERE start_date>=:startdate AND end_date<=:enddate", {
+                    "startdate":currentday,
+                    "enddate":lastday
+                })
 
-            items = c.fetchall()
+                items = c.fetchall()
 
-            conn.commit()
-            conn.close()
+                conn.commit()
+                conn.close()
 
-            count=0
-            for row in items:
-                if row == []:
-                    pass
-                else:
-                    if count%2==0:
-                        unplayed_doubles_competitions_Tv.insert('','end',text='Doubles',values=(row[7],row[8],row[9]))
+                count=0
+                for row in items:
+                    if row == []:
+                        pass
                     else:
-                        unplayed_doubles_competitions_Tv.insert('','end',text='Doubles',values=(row[7],row[8],row[9]))
-                    count+=1
+                        if count%2==0:
+                            unplayed_doubles_competitions_Tv.insert('','end',text='Doubles',values=(row[7],row[8],row[9]))
+                        else:
+                            unplayed_doubles_competitions_Tv.insert('','end',text='Doubles',values=(row[7],row[8],row[9]))
+                        count+=1
+
+            else:
+                unplayed_doubles_competitions_Tv.insert('','end',text='',values=('','',''))
 
 
         def findfirstandsurnamemember(username):
@@ -227,6 +246,7 @@ class AttendingSinglesContent:
                     l = 1
                     datesarray = []
                     datesarray.append(currentday)
+                    GotARow = False
 
                     while l < 8:
                         Begindatestring = date.today()
@@ -240,62 +260,70 @@ class AttendingSinglesContent:
 
                     m = 0
 
+                    possibledate = len(datesarray)
+                    finalpossibledate = datesarray[possibledate - 1]
+
                     for values in datesarray:
-                        c.execute("SELECT * FROM SinglesCompetition WHERE start_date=:realstartdate", {
-                            "realstartdate": datesarray[m]
+                        c.execute("SELECT * FROM SinglesCompetition WHERE start_date=:realstartdate AND end_date<:realenddate", {
+                            "realstartdate": datesarray[m],
+                            "realenddate": finalpossibledate
                         })
                         singlerow = c.fetchone()
-                        if singlerow == 'NONE':
+                        if (singlerow is None):
                             pass
                         else:
+                            GotARow = True
                             break
                         m += 1
 
-                    lastday = singlerow[3]
+                    if GotARow == True:
+                        lastday = singlerow[3]
 
-                    c.execute("SELECT * FROM SinglesCompetition WHERE start_date>=:startdate AND end_date<=:enddate", {
-                        "startdate":currentday,
-                        "enddate":lastday
-                    })
+                        c.execute("SELECT * FROM SinglesCompetition WHERE start_date>=:startdate AND end_date<=:enddate", {
+                            "startdate":currentday,
+                            "enddate":lastday
+                        })
 
-                    singlesrow = c.fetchall()
-                    singlesarray = []
-                    i = 0
+                        singlesrow = c.fetchall()
+                        singlesarray = []
+                        i = 0
 
-                    for row in singlesrow:
-                        singlesarray.append(singlesrow[i][5])
-                        i += 1
+                        for row in singlesrow:
+                            singlesarray.append(singlesrow[i][5])
+                            i += 1
 
-                    j = 0
+                        j = 0
 
-                    for rows in singlesarray:
-                        if IDSelected == singlesarray[0 + j]:
-                            GotAnID = True
-                            c.execute("INSERT INTO CurrentCompetitionScores VALUES (:CompetitionType, :Member_Team_1_Score, :Member_Team_2_Score, :Time, :CurrentID)",
-                                      {
-                                          'CompetitionType': 'Singles',
-                                          'Member_Team_1_Score': member_team1_score,
-                                          'Member_Team_2_Score': member_team2_score,
-                                          'Time': currentTime,
-                                          'CurrentID': CompetitionID.get(),
-                                      })
-                            conn.commit()
-                            conn.close()
+                        for rows in singlesarray:
+                            if IDSelected == singlesarray[0 + j]:
+                                GotAnID = True
+                                c.execute("INSERT INTO CurrentCompetitionScores VALUES (:CompetitionType, :Member_Team_1_Score, :Member_Team_2_Score, :Time, :CurrentID)",
+                                          {
+                                              'CompetitionType': 'Singles',
+                                              'Member_Team_1_Score': member_team1_score,
+                                              'Member_Team_2_Score': member_team2_score,
+                                              'Time': currentTime,
+                                              'CurrentID': CompetitionID.get(),
+                                          })
+                                conn.commit()
+                                conn.close()
 
-                            CompetitionType_combobox.config(state="disable")
-                            ID_entry.config(state="disable")
-                            select_competition_button.config(state="disable")
-                            score1_entry.config(state="normal")
-                            score2_entry.config(state="normal")
-                            submit_competition_button.config(state="normal")
+                                CompetitionType_combobox.config(state="disable")
+                                ID_entry.config(state="disable")
+                                select_competition_button.config(state="disable")
+                                score1_entry.config(state="normal")
+                                score2_entry.config(state="normal")
+                                submit_competition_button.config(state="normal")
 
-                            DrawLineGraphSingles()
+                                DrawLineGraphSingles()
 
-                        else:
-                            j += 1
+                            else:
+                                j += 1
 
-                    if GotAnID == False:
-                        messagebox.showinfo('Error', 'The ID entered does not have a singles competition on ' + currentday, icon='error')
+                        if GotAnID == False:
+                            messagebox.showinfo('Error', 'The ID entered does not have a singles competition on ' + currentday, icon='error')
+                    else:
+                        messagebox.showinfo('Error', 'There are no singles competitions currently listed for the date: ' + currentday, icon='error')
 
 
                 if competitiontext == 'Doubles':
@@ -305,6 +333,7 @@ class AttendingSinglesContent:
                     l = 1
                     datesarray = []
                     datesarray.append(currentday)
+                    GotARow = False
 
                     while l < 8:
                         Begindatestring = date.today()
@@ -318,62 +347,70 @@ class AttendingSinglesContent:
 
                     m = 0
 
+                    possibledate = len(datesarray)
+                    finalpossibledate = datesarray[possibledate - 1]
+
                     for values in datesarray:
-                        c.execute("SELECT * FROM DoublesCompetition WHERE start_date=:realstartdate", {
-                            "realstartdate": datesarray[m]
+                        c.execute("SELECT * FROM DoublesCompetition WHERE start_date=:realstartdate AND end_date<:realenddate", {
+                            "realstartdate": datesarray[m],
+                            "realenddate": finalpossibledate
                         })
                         singlerow = c.fetchone()
-                        if singlerow == 'NONE':
+                        if (singlerow is None):
                             pass
                         else:
+                            GotARow = True
                             break
                         m += 1
 
-                    lastday = singlerow[5]
+                    if GotARow == True:
+                        lastday = singlerow[5]
 
-                    c.execute("SELECT * FROM DoublesCompetition WHERE start_date>=:startdate AND end_date<=:enddate", {
-                        "startdate":currentday,
-                        "enddate":lastday
-                    })
+                        c.execute("SELECT * FROM DoublesCompetition WHERE start_date>=:startdate AND end_date<=:enddate", {
+                            "startdate":currentday,
+                            "enddate":lastday
+                        })
 
-                    doublesrow = c.fetchall()
-                    doublesarray = []
-                    i = 0
+                        doublesrow = c.fetchall()
+                        doublesarray = []
+                        i = 0
 
-                    for row in doublesrow:
-                        doublesarray.append(doublesrow[i][9])
-                        i += 1
+                        for row in doublesrow:
+                            doublesarray.append(doublesrow[i][9])
+                            i += 1
 
-                    j = 0
+                        j = 0
 
-                    for rows in doublesarray:
-                        if IDSelected == doublesarray[0 + j]:
-                            GotAnID = True
-                            c.execute("INSERT INTO CurrentCompetitionScores VALUES (:CompetitionType, :Member_Team_1_Score, :Member_Team_2_Score, :Time, :CurrentID)",
-                                      {
-                                          'CompetitionType': 'Doubles',
-                                          'Member_Team_1_Score': member_team1_score,
-                                          'Member_Team_2_Score': member_team2_score,
-                                          'Time': currentTime,
-                                          'CurrentID': CompetitionID.get(),
-                                      })
-                            conn.commit()
-                            conn.close()
+                        for rows in doublesarray:
+                            if IDSelected == doublesarray[0 + j]:
+                                GotAnID = True
+                                c.execute("INSERT INTO CurrentCompetitionScores VALUES (:CompetitionType, :Member_Team_1_Score, :Member_Team_2_Score, :Time, :CurrentID)",
+                                          {
+                                              'CompetitionType': 'Doubles',
+                                              'Member_Team_1_Score': member_team1_score,
+                                              'Member_Team_2_Score': member_team2_score,
+                                              'Time': currentTime,
+                                              'CurrentID': CompetitionID.get(),
+                                          })
+                                conn.commit()
+                                conn.close()
 
-                            CompetitionType_combobox.config(state="disable")
-                            ID_entry.config(state="disable")
-                            select_competition_button.config(state="disable")
-                            score1_entry.config(state="normal")
-                            score2_entry.config(state="normal")
-                            submit_competition_button.config(state="normal")
+                                CompetitionType_combobox.config(state="disable")
+                                ID_entry.config(state="disable")
+                                select_competition_button.config(state="disable")
+                                score1_entry.config(state="normal")
+                                score2_entry.config(state="normal")
+                                submit_competition_button.config(state="normal")
 
-                            DrawLineGraphDoubles()
+                                DrawLineGraphDoubles()
 
-                        else:
-                            j += 1
+                            else:
+                                j += 1
 
-                    if GotAnID == False:
-                        messagebox.showinfo('Error', 'The ID entered does not have a doubles competition on ' + currentday, icon='error')
+                        if GotAnID == False:
+                            messagebox.showinfo('Error', 'The ID entered does not have a doubles competition on ' + currentday, icon='error')
+                    else:
+                        messagebox.showinfo('Error', 'There are no Doubles competitions currently listed for the date: ' + currentday, icon='error')
 
 
         def DrawLineGraphSingles():
@@ -594,9 +631,6 @@ class AttendingSinglesContent:
 
         conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
         c = conn.cursor()
-
-        c.execute("SELECT * FROM CurrentCompetitionScores")
-        InformationRow = c.fetchall()
 
         c.execute("DELETE FROM CurrentCompetitionScores")
 
