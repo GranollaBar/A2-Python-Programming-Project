@@ -65,8 +65,11 @@ class AttendingSinglesContent:
             currentday = datetime.datetime.today().strftime('%d/%m/%Y')
 
             l = 1
-            datesarray = []
-            datesarray.append(currentday)
+            o = 7
+            w = 1
+            startdatesarray = []
+            enddatesarray = []
+            enddatesarray.append(currentday)
             GotARow = False
 
             while l < 8:
@@ -76,18 +79,30 @@ class AttendingSinglesContent:
                 finalnewdate=splitnewdate[0],splitnewdate[1],splitnewdate[2]
                 combineddate = datetime.date(int(finalnewdate[0]),int(finalnewdate[1]), int(finalnewdate[2]))
                 CompleteDate = combineddate.strftime("%d/%m/%Y")
-                datesarray.append(CompleteDate)
+                enddatesarray.append(CompleteDate)
                 l += 1
 
-            m = 0
+            while w < 8:
+                Begindatestring = date.today()
+                newdate = Begindatestring - timedelta(days=o)
+                splitnewdate=str(newdate).split('-')
+                finalnewdate=splitnewdate[0],splitnewdate[1],splitnewdate[2]
+                combineddate = datetime.date(int(finalnewdate[0]),int(finalnewdate[1]), int(finalnewdate[2]))
+                CompleteDate = combineddate.strftime("%d/%m/%Y")
+                startdatesarray.append(CompleteDate)
+                w += 1
+                o -= 1
 
-            possibledate = len(datesarray)
-            finalpossibledate = datesarray[possibledate - 1]
+            m = 7
+            n = 7
+            y = 0
 
-            for values in datesarray:
-                c.execute("SELECT * FROM SinglesCompetition WHERE start_date=:realstartdate AND end_date<:realenddate", {
-                    "realstartdate": datesarray[m],
-                    "realenddate": finalpossibledate
+            finaldatesarray = startdatesarray + enddatesarray
+
+            for endvalues in finaldatesarray:
+                c.execute("SELECT * FROM SinglesCompetition WHERE start_date>:realstartdate AND end_date<:realenddate", {
+                    "realstartdate": finaldatesarray[n],
+                    "realenddate": finaldatesarray[m]
                 })
                 singlerow = c.fetchone()
                 if (singlerow is None):
@@ -95,29 +110,35 @@ class AttendingSinglesContent:
                 else:
                     GotARow = True
                     break
-                m += 1
+                y += 1
+                if m != 14:
+                    m += 1
+                if y >= 3 and n != 0:
+                    n -= 1
 
             if GotARow == True:
+                firstday = singlerow[2]
                 lastday = singlerow[3]
 
-                c.execute("SELECT * FROM SinglesCompetition WHERE start_date>=:startdate AND end_date<=:enddate", {
-                    "startdate":currentday,
+                c.execute("SELECT * FROM SinglesCompetition WHERE end_date=:enddate AND start_date=:startdate", {
                     "enddate":lastday,
+                    "startdate": firstday
                 })
 
-                items = c.fetchall()
+                items = c.fetchone()
+
+                conn.commit()
+                conn.close()
 
                 count=0
-                for row in items:
-                    if row == []:
-                        pass
+                if items == []:
+                    pass
+                else:
+                    if count%2==0:
+                        unplayed_singles_competitions_Tv.insert('','end',text='Singles',values=(findfirstandsurnamemember(items[0]),findfirstandsurnamemember(items[1]),items[5]))
                     else:
-                        if count%2==0:
-                            unplayed_singles_competitions_Tv.insert('','end',text='Singles',values=(findfirstandsurnamemember(row[0]),findfirstandsurnamemember(row[1]),row[5]))
-                        else:
-                            unplayed_singles_competitions_Tv.insert('','end',text='Singles',values=(findfirstandsurnamemember(row[0]),findfirstandsurnamemember(row[1]),row[5]))
-                        count+=1
-                    break
+                        unplayed_singles_competitions_Tv.insert('','end',text='Singles',values=(findfirstandsurnamemember(items[0]),findfirstandsurnamemember(items[1]),items[5]))
+                    count+=1
 
             else:
                 unplayed_singles_competitions_Tv.insert('','end',text='',values=('','',''))
@@ -132,8 +153,11 @@ class AttendingSinglesContent:
             currentday = datetime.datetime.today().strftime('%d/%m/%Y')
 
             l = 1
-            datesarray = []
-            datesarray.append(currentday)
+            o = 7
+            w = 1
+            startdatesarray = []
+            enddatesarray = []
+            enddatesarray.append(currentday)
             GotARow = False
 
             while l < 8:
@@ -143,51 +167,66 @@ class AttendingSinglesContent:
                 finalnewdate=splitnewdate[0],splitnewdate[1],splitnewdate[2]
                 combineddate = datetime.date(int(finalnewdate[0]),int(finalnewdate[1]), int(finalnewdate[2]))
                 CompleteDate = combineddate.strftime("%d/%m/%Y")
-                datesarray.append(CompleteDate)
+                enddatesarray.append(CompleteDate)
                 l += 1
 
-            m = 0
+            while w < 8:
+                Begindatestring = date.today()
+                newdate = Begindatestring - timedelta(days=o)
+                splitnewdate=str(newdate).split('-')
+                finalnewdate=splitnewdate[0],splitnewdate[1],splitnewdate[2]
+                combineddate = datetime.date(int(finalnewdate[0]),int(finalnewdate[1]), int(finalnewdate[2]))
+                CompleteDate = combineddate.strftime("%d/%m/%Y")
+                startdatesarray.append(CompleteDate)
+                w += 1
+                o -= 1
 
-            possibledate = len(datesarray)
-            finalpossibledate = datesarray[possibledate - 1]
+            m = 7
+            n = 7
+            y = 0
 
-            for values in datesarray:
-                c.execute("SELECT * FROM DoublesCompetition WHERE start_date=:realstartdate AND end_date<:realenddate", {
-                    "realstartdate": datesarray[m],
-                    "realenddate": finalpossibledate
+            finaldatesarray = startdatesarray + enddatesarray
+
+            for endvalues in finaldatesarray:
+                c.execute("SELECT * FROM DoublesCompetition WHERE start_date>:realstartdate AND end_date<:realenddate", {
+                    "realstartdate": finaldatesarray[n],
+                    "realenddate": finaldatesarray[m]
                 })
                 doublerow = c.fetchone()
-                print(doublerow)
                 if (doublerow is None):
                     pass
                 else:
                     GotARow = True
                     break
-                m += 1
+                y += 1
+                if m != 14:
+                    m += 1
+                if y >= 3 and n != 0:
+                    n -= 1
 
             if GotARow == True:
+                firstday = doublerow[4]
                 lastday = doublerow[5]
 
-                c.execute("SELECT * FROM DoublesCompetition WHERE start_date>=:startdate AND end_date<=:enddate", {
-                    "startdate":currentday,
-                    "enddate":lastday
+                c.execute("SELECT * FROM DoublesCompetition WHERE end_date=:enddate AND start_date=:startdate", {
+                    "enddate":lastday,
+                    "startdate": firstday
                 })
 
-                items = c.fetchall()
+                items = c.fetchone()
 
                 conn.commit()
                 conn.close()
 
                 count=0
-                for row in items:
-                    if row == []:
-                        pass
+                if items == []:
+                    pass
+                else:
+                    if count%2==0:
+                        unplayed_doubles_competitions_Tv.insert('','end',text='Doubles',values=(items[7],items[8],items[9]))
                     else:
-                        if count%2==0:
-                            unplayed_doubles_competitions_Tv.insert('','end',text='Doubles',values=(row[7],row[8],row[9]))
-                        else:
-                            unplayed_doubles_competitions_Tv.insert('','end',text='Doubles',values=(row[7],row[8],row[9]))
-                        count+=1
+                        unplayed_doubles_competitions_Tv.insert('','end',text='Doubles',values=(items[7],items[8],items[9]))
+                    count+=1
 
             else:
                 unplayed_doubles_competitions_Tv.insert('','end',text='',values=('','',''))
@@ -240,12 +279,14 @@ class AttendingSinglesContent:
                 currentTime = int(time.time())
 
                 if competitiontext == 'Singles':
-                    GotAnID = False
                     currentday = datetime.datetime.today().strftime('%d/%m/%Y')
 
                     l = 1
-                    datesarray = []
-                    datesarray.append(currentday)
+                    o = 7
+                    w = 1
+                    startdatesarray = []
+                    enddatesarray = []
+                    enddatesarray.append(currentday)
                     GotARow = False
 
                     while l < 8:
@@ -255,18 +296,30 @@ class AttendingSinglesContent:
                         finalnewdate=splitnewdate[0],splitnewdate[1],splitnewdate[2]
                         combineddate = datetime.date(int(finalnewdate[0]),int(finalnewdate[1]), int(finalnewdate[2]))
                         CompleteDate = combineddate.strftime("%d/%m/%Y")
-                        datesarray.append(CompleteDate)
+                        enddatesarray.append(CompleteDate)
                         l += 1
 
-                    m = 0
+                    while w < 8:
+                        Begindatestring = date.today()
+                        newdate = Begindatestring - timedelta(days=o)
+                        splitnewdate=str(newdate).split('-')
+                        finalnewdate=splitnewdate[0],splitnewdate[1],splitnewdate[2]
+                        combineddate = datetime.date(int(finalnewdate[0]),int(finalnewdate[1]), int(finalnewdate[2]))
+                        CompleteDate = combineddate.strftime("%d/%m/%Y")
+                        startdatesarray.append(CompleteDate)
+                        w += 1
+                        o -= 1
 
-                    possibledate = len(datesarray)
-                    finalpossibledate = datesarray[possibledate - 1]
+                    m = 7
+                    n = 7
+                    y = 0
 
-                    for values in datesarray:
-                        c.execute("SELECT * FROM SinglesCompetition WHERE start_date=:realstartdate AND end_date<:realenddate", {
-                            "realstartdate": datesarray[m],
-                            "realenddate": finalpossibledate
+                    finaldatesarray = startdatesarray + enddatesarray
+
+                    for endvalues in finaldatesarray:
+                        c.execute("SELECT * FROM SinglesCompetition WHERE start_date>:realstartdate AND end_date<:realenddate", {
+                            "realstartdate": finaldatesarray[n],
+                            "realenddate": finaldatesarray[m]
                         })
                         singlerow = c.fetchone()
                         if (singlerow is None):
@@ -274,65 +327,63 @@ class AttendingSinglesContent:
                         else:
                             GotARow = True
                             break
-                        m += 1
+                        y += 1
+                        if m != 14:
+                            m += 1
+                        if y >= 3 and n != 0:
+                            n -= 1
 
                     if GotARow == True:
+                        firstday = singlerow[2]
                         lastday = singlerow[3]
 
-                        c.execute("SELECT * FROM SinglesCompetition WHERE start_date>=:startdate AND end_date<=:enddate", {
-                            "startdate":currentday,
-                            "enddate":lastday
+                        c.execute("SELECT * FROM SinglesCompetition WHERE end_date=:enddate AND start_date=:startdate", {
+                            "enddate":lastday,
+                            "startdate": firstday
                         })
 
-                        singlesrow = c.fetchall()
-                        singlesarray = []
-                        i = 0
+                        singlesrow2 = c.fetchone()
 
-                        for row in singlesrow:
-                            singlesarray.append(singlesrow[i][5])
-                            i += 1
+                        if IDSelected == singlesrow2[5]:
+                            c.execute("INSERT INTO CurrentCompetitionScores VALUES (:CompetitionType, :Member_Team_1_Score, :Member_Team_2_Score, :Time, :CurrentID)",
+                                      {
+                                          'CompetitionType': 'Singles',
+                                          'Member_Team_1_Score': member_team1_score,
+                                          'Member_Team_2_Score': member_team2_score,
+                                          'Time': currentTime,
+                                          'CurrentID': CompetitionID.get(),
+                                      })
+                            conn.commit()
+                            conn.close()
 
-                        j = 0
+                            CompetitionType_combobox.config(state="disable")
+                            ID_entry.config(state="disable")
+                            select_competition_button.config(state="disable")
+                            score1_entry.config(state="normal")
+                            score2_entry.config(state="normal")
+                            submit_competition_button.place_forget()
 
-                        for rows in singlesarray:
-                            if IDSelected == singlesarray[0 + j]:
-                                GotAnID = True
-                                c.execute("INSERT INTO CurrentCompetitionScores VALUES (:CompetitionType, :Member_Team_1_Score, :Member_Team_2_Score, :Time, :CurrentID)",
-                                          {
-                                              'CompetitionType': 'Singles',
-                                              'Member_Team_1_Score': member_team1_score,
-                                              'Member_Team_2_Score': member_team2_score,
-                                              'Time': currentTime,
-                                              'CurrentID': CompetitionID.get(),
-                                          })
-                                conn.commit()
-                                conn.close()
+                            singles_submit_competition_button = tkinter.Button(self.attend, cursor="tcross",text="Submit", command=SubmitSinglesResults, fg='white', bg='black', bd=3, relief='ridge', font=('Tahoma', 12, 'bold'))
+                            singles_submit_competition_button.place(rely=0.925, relx=0.4, anchor='center')
+                            ToolTips.bind(singles_submit_competition_button, 'Enter and submit values for the singles competition')
 
-                                CompetitionType_combobox.config(state="disable")
-                                ID_entry.config(state="disable")
-                                select_competition_button.config(state="disable")
-                                score1_entry.config(state="normal")
-                                score2_entry.config(state="normal")
-                                submit_competition_button.config(state="normal")
+                            DrawLineGraphSingles()
 
-                                DrawLineGraphSingles()
-
-                            else:
-                                j += 1
-
-                        if GotAnID == False:
+                        else:
                             messagebox.showinfo('Error', 'The ID entered does not have a singles competition on ' + currentday, icon='error')
                     else:
                         messagebox.showinfo('Error', 'There are no singles competitions currently listed for the date: ' + currentday, icon='error')
 
 
                 if competitiontext == 'Doubles':
-                    GotAnID = False
                     currentday = datetime.datetime.today().strftime('%d/%m/%Y')
 
                     l = 1
-                    datesarray = []
-                    datesarray.append(currentday)
+                    o = 7
+                    w = 1
+                    startdatesarray = []
+                    enddatesarray = []
+                    enddatesarray.append(currentday)
                     GotARow = False
 
                     while l < 8:
@@ -342,75 +393,83 @@ class AttendingSinglesContent:
                         finalnewdate=splitnewdate[0],splitnewdate[1],splitnewdate[2]
                         combineddate = datetime.date(int(finalnewdate[0]),int(finalnewdate[1]), int(finalnewdate[2]))
                         CompleteDate = combineddate.strftime("%d/%m/%Y")
-                        datesarray.append(CompleteDate)
+                        enddatesarray.append(CompleteDate)
                         l += 1
 
-                    m = 0
+                    while w < 8:
+                        Begindatestring = date.today()
+                        newdate = Begindatestring - timedelta(days=o)
+                        splitnewdate=str(newdate).split('-')
+                        finalnewdate=splitnewdate[0],splitnewdate[1],splitnewdate[2]
+                        combineddate = datetime.date(int(finalnewdate[0]),int(finalnewdate[1]), int(finalnewdate[2]))
+                        CompleteDate = combineddate.strftime("%d/%m/%Y")
+                        startdatesarray.append(CompleteDate)
+                        w += 1
+                        o -= 1
 
-                    possibledate = len(datesarray)
-                    finalpossibledate = datesarray[possibledate - 1]
+                    m = 7
+                    n = 7
+                    y = 0
 
-                    for values in datesarray:
-                        c.execute("SELECT * FROM DoublesCompetition WHERE start_date=:realstartdate AND end_date<:realenddate", {
-                            "realstartdate": datesarray[m],
-                            "realenddate": finalpossibledate
+                    finaldatesarray = startdatesarray + enddatesarray
+
+                    for endvalues in finaldatesarray:
+                        c.execute("SELECT * FROM DoublesCompetition WHERE start_date>:realstartdate AND end_date<:realenddate", {
+                            "realstartdate": finaldatesarray[n],
+                            "realenddate": finaldatesarray[m]
                         })
-                        singlerow = c.fetchone()
-                        if (singlerow is None):
+                        doublerow = c.fetchone()
+                        if (doublerow is None):
                             pass
                         else:
                             GotARow = True
                             break
-                        m += 1
+                        y += 1
+                        if m != 14:
+                            m += 1
+                        if y >= 3 and n != 0:
+                            n -= 1
 
                     if GotARow == True:
-                        lastday = singlerow[5]
+                        firstday = doublerow[4]
+                        lastday = doublerow[5]
 
-                        c.execute("SELECT * FROM DoublesCompetition WHERE start_date>=:startdate AND end_date<=:enddate", {
-                            "startdate":currentday,
-                            "enddate":lastday
+                        c.execute("SELECT * FROM DoublesCompetition WHERE end_date=:enddate AND start_date=:startdate", {
+                            "enddate":lastday,
+                            "startdate": firstday
                         })
 
-                        doublesrow = c.fetchall()
-                        doublesarray = []
-                        i = 0
+                        doublesrow2 = c.fetchone()
 
-                        for row in doublesrow:
-                            doublesarray.append(doublesrow[i][9])
-                            i += 1
+                        if IDSelected == doublesrow2[9]:
+                            c.execute("INSERT INTO CurrentCompetitionScores VALUES (:CompetitionType, :Member_Team_1_Score, :Member_Team_2_Score, :Time, :CurrentID)",
+                                      {
+                                          'CompetitionType': 'Doubles',
+                                          'Member_Team_1_Score': member_team1_score,
+                                          'Member_Team_2_Score': member_team2_score,
+                                          'Time': currentTime,
+                                          'CurrentID': CompetitionID.get(),
+                                      })
+                            conn.commit()
+                            conn.close()
 
-                        j = 0
+                            DrawLineGraphDoubles()
 
-                        for rows in doublesarray:
-                            if IDSelected == doublesarray[0 + j]:
-                                GotAnID = True
-                                c.execute("INSERT INTO CurrentCompetitionScores VALUES (:CompetitionType, :Member_Team_1_Score, :Member_Team_2_Score, :Time, :CurrentID)",
-                                          {
-                                              'CompetitionType': 'Doubles',
-                                              'Member_Team_1_Score': member_team1_score,
-                                              'Member_Team_2_Score': member_team2_score,
-                                              'Time': currentTime,
-                                              'CurrentID': CompetitionID.get(),
-                                          })
-                                conn.commit()
-                                conn.close()
+                            CompetitionType_combobox.config(state="disable")
+                            ID_entry.config(state="disable")
+                            select_competition_button.config(state="disable")
+                            score1_entry.config(state="normal")
+                            score2_entry.config(state="normal")
+                            submit_competition_button.place_forget()
 
-                                CompetitionType_combobox.config(state="disable")
-                                ID_entry.config(state="disable")
-                                select_competition_button.config(state="disable")
-                                score1_entry.config(state="normal")
-                                score2_entry.config(state="normal")
-                                submit_competition_button.config(state="normal")
+                            doubles_submit_competition_button = tkinter.Button(self.attend, cursor="tcross",text="Submit", command=SubmitDoublesResults, fg='white', bg='black', bd=3, relief='ridge', font=('Tahoma', 12, 'bold'))
+                            doubles_submit_competition_button.place(rely=0.925, relx=0.4, anchor='center')
+                            ToolTips.bind(doubles_submit_competition_button, 'Enter and submit values for the doubles competition')
 
-                                DrawLineGraphDoubles()
-
-                            else:
-                                j += 1
-
-                        if GotAnID == False:
+                        else:
                             messagebox.showinfo('Error', 'The ID entered does not have a doubles competition on ' + currentday, icon='error')
                     else:
-                        messagebox.showinfo('Error', 'There are no Doubles competitions currently listed for the date: ' + currentday, icon='error')
+                        messagebox.showinfo('Error', 'There are no doubles competitions currently listed for the date: ' + currentday, icon='error')
 
 
         def DrawLineGraphSingles():
@@ -450,7 +509,7 @@ class AttendingSinglesContent:
                 ax1.plot(secondsIntoGame, player1Scores, color="limegreen", label="Score1")
                 ax1.plot(secondsIntoGame, player2Scores, color="blue", label="Score2")
                 ax1.set_title(text, fontdict=font)
-                ax1.set_xlabel('Time', fontdict=font)
+                ax1.set_xlabel('Time (Seconds)', fontdict=font)
                 ax1.set_ylabel('Score', fontdict=font)
 
                 canvas = FigureCanvasTkAgg(fig, self.attend)
@@ -463,7 +522,7 @@ class AttendingSinglesContent:
                 ax1.plot([0], [0], color="limegreen", label="Score1")
                 ax1.plot([0], [0], color="blue", label="Score2")
                 ax1.set_title(text, fontdict=font)
-                ax1.set_xlabel('Time', fontdict=font)
+                ax1.set_xlabel('Time (Seconds)', fontdict=font)
                 ax1.set_ylabel('Score', fontdict=font)
 
                 canvas = FigureCanvasTkAgg(fig, self.attend)
@@ -508,7 +567,7 @@ class AttendingSinglesContent:
                 ax1.plot(secondsIntoGame, player1Scores, color="limegreen")
                 ax1.plot(secondsIntoGame, player2Scores, color="blue")
                 ax1.set_title(text, fontdict=font)
-                ax1.set_xlabel('Time', fontdict=font)
+                ax1.set_xlabel('Time (Seconds)', fontdict=font)
                 ax1.set_ylabel('Score', fontdict=font)
 
                 canvas = FigureCanvasTkAgg(fig, self.attend)
@@ -521,7 +580,7 @@ class AttendingSinglesContent:
                 ax1.plot([0], [0], color="limegreen")
                 ax1.plot([0], [0], color="blue")
                 ax1.set_title(text, fontdict=font)
-                ax1.set_xlabel('Time', fontdict=font)
+                ax1.set_xlabel('Time (Seconds)', fontdict=font)
                 ax1.set_ylabel('Score', fontdict=font)
 
                 canvas = FigureCanvasTkAgg(fig, self.attend)
@@ -540,31 +599,17 @@ class AttendingSinglesContent:
             c.execute("SELECT * FROM CurrentCompetitionScores")
             Row = c.fetchall()
 
-            if len(Row) == 1 and len(Row[0][0]) > 0:
-                c.execute("INSERT INTO CurrentCompetitionScores VALUES (:CompetitionType, :Member_Team_1_Score, :Member_Team_2_Score, :Time, :CurrentID)",
-                          {
-                              'CompetitionType': 'Singles',
-                              'Member_Team_1_Score': member_team1_score,
-                              'Member_Team_2_Score': member_team2_score,
-                              'Time': currentTime,
-                              'CurrentID': Row[0][4],
-                          })
+            c.execute("INSERT INTO CurrentCompetitionScores VALUES (:CompetitionType, :Member_Team_1_Score, :Member_Team_2_Score, :Time, :CurrentID)",
+                      {
+                          'CompetitionType': 'Singles',
+                          'Member_Team_1_Score': member_team1_score,
+                          'Member_Team_2_Score': member_team2_score,
+                          'Time': currentTime,
+                          'CurrentID': Row[0][4],
+                      })
 
-                conn.commit()
-                conn.close()
-
-            elif len(Row) > 1:
-                c.execute("INSERT INTO CurrentCompetitionScores VALUES (:CompetitionType, :Member_Team_1_Score, :Member_Team_2_Score, :Time, :CurrentID)",
-                          {
-                              'CompetitionType': 'Singles',
-                              'Member_Team_1_Score': member_team1_score,
-                              'Member_Team_2_Score': member_team2_score,
-                              'Time': currentTime,
-                              'CurrentID': Row[0][4],
-                          })
-
-                conn.commit()
-                conn.close()
+            conn.commit()
+            conn.close()
 
             DrawLineGraphSingles()
 
@@ -580,43 +625,19 @@ class AttendingSinglesContent:
             c.execute("SELECT * FROM CurrentCompetitionScores")
             Row = c.fetchall()
 
-            if len(Row) == 1:
-                c.execute("UPDATE CurrentCompetitionScores SET CompetitionType = :competitiontype AND Member_Team_1_Score = :score1 AND Member_Team_2_Score = :score2 AND Time = :time",
-                          {
-                              'competitiontype': 'Doubles',
-                              'score1': member_team1_score,
-                              'score2': member_team2_score,
-                              'time': currentTime,
-                          })
-
-            elif len(Row) == 1 and len(Row[0][0]) > 0:
-                c.execute("INSERT INTO CurrentCompetitionScores VALUES (:CompetitionType, :Member_Team_1_Score, :Member_Team_2_Score, :Time, :CurrentID)",
-                          {
-                              'CompetitionType': 'Doubles',
-                              'Member_Team_1_Score': member_team1_score,
-                              'Member_Team_2_Score': member_team2_score,
-                              'Time': currentTime,
-                              'CurrentID': Row[0][4],
-                          })
-
-            elif len(Row) > 1:
-                c.execute("INSERT INTO CurrentCompetitionScores VALUES (:CompetitionType, :Member_Team_1_Score, :Member_Team_2_Score, :Time, :CurrentID)",
-                          {
-                              'CompetitionType': 'Doubles',
-                              'Member_Team_1_Score': member_team1_score,
-                              'Member_Team_2_Score': member_team2_score,
-                              'Time': currentTime,
-                              'CurrentID': Row[0][4],
-                          })
+            c.execute("INSERT INTO CurrentCompetitionScores VALUES (:CompetitionType, :Member_Team_1_Score, :Member_Team_2_Score, :Time, :CurrentID)",
+                      {
+                          'CompetitionType': 'Doubles',
+                          'Member_Team_1_Score': member_team1_score,
+                          'Member_Team_2_Score': member_team2_score,
+                          'Time': currentTime,
+                          'CurrentID': Row[0][4],
+                      })
 
             conn.commit()
             conn.close()
 
             DrawLineGraphDoubles()
-
-
-        def temporary():
-            pass
 
 
 
@@ -641,7 +662,7 @@ class AttendingSinglesContent:
         competitiontype_label = tkinter.Label(self.attend, text="Type:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
         competitiontype_label.place(rely=0.41, relx=0.06, anchor='center')
 
-        CompetitionType_combobox = ttk.Combobox(self.attend, value=CompetitionType,font=('Tahoma', 11, 'bold'), width=7)
+        CompetitionType_combobox = ttk.Combobox(self.attend, value=CompetitionType, font=('Tahoma', 11, 'bold'), width=7)
         CompetitionType_combobox.place(rely=0.413, relx=0.15, anchor='center')
         CompetitionType_combobox.current(0)
         CompetitionType_combobox.config(state="readonly")
@@ -682,21 +703,9 @@ class AttendingSinglesContent:
         c.execute("SELECT * FROM CurrentCompetitionScores")
         RawRow = c.fetchall()
 
-        if len(RawRow) <= 0:
-                submit_competition_button = tkinter.Button(self.attend, cursor="tcross",text="Submit", command=SubmitSinglesResults, fg='white', bg='black', bd=3, relief='ridge', font=('Tahoma', 12, 'bold'))
-                submit_competition_button.place(rely=0.925, relx=0.4, anchor='center')
-                ToolTips.bind(submit_competition_button, 'Enter and submit values for the competition')
-
-        if len(RawRow) > 0:
-            print(RawRow[0][0])
-            if RawRow[0][0] == 'Singles':
-                submit_competition_button = tkinter.Button(self.attend, cursor="tcross",text="Submit", command=SubmitSinglesResults, fg='white', bg='black', bd=3, relief='ridge', font=('Tahoma', 12, 'bold'))
-                submit_competition_button.place(rely=0.925, relx=0.4, anchor='center')
-                ToolTips.bind(submit_competition_button, 'Enter and submit values for the competition')
-            else:
-                submit_competition_button = tkinter.Button(self.attend, cursor="tcross",text="Submit", command=SubmitDoublesResults, fg='white', bg='black', bd=3, relief='ridge', font=('Tahoma', 12, 'bold'))
-                submit_competition_button.place(rely=0.925, relx=0.4, anchor='center')
-                ToolTips.bind(submit_competition_button, 'Enter and submit values for the competition')
+        submit_competition_button = tkinter.Button(self.attend, cursor="tcross",text="Submit", command=SubmitSinglesResults, fg='white', bg='black', bd=3, relief='ridge', font=('Tahoma', 12, 'bold'))
+        submit_competition_button.place(rely=0.925, relx=0.4, anchor='center')
+        ToolTips.bind(submit_competition_button, 'Enter and submit values for the competition')
 
 
         unplayed_singles_competitions_Tv=ttk.Treeview(self.attend,height=7,columns=('Member 1','Member 2','ID'))
