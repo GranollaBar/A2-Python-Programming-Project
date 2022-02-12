@@ -108,18 +108,47 @@ class AttendingSinglesContent:
                 if (singlerow is None):
                     pass
                 else:
-                    GotARow = True
-                    break
+                    rowsplit = singlerow[2].split('/')
+                    currentdaysplit = currentday.split('/')
+                    if rowsplit[1] == currentdaysplit[1]:
+                        break
+                    else:
+                        pass
                 y += 1
                 if m != 14:
                     m += 1
                 if y >= 3 and n != 0:
                     n -= 1
 
-            if GotARow == True:
-                firstday = singlerow[2]
-                lastday = singlerow[3]
+            firstday = singlerow[2]
+            lastday = singlerow[3]
+            q = 0
 
+            for datevalues in finaldatesarray:
+                if finaldatesarray[q] >= firstday and finaldatesarray[q] <= lastday:
+                    q += 1
+                    pass
+                    if finaldatesarray[q] == lastday:
+                        break
+                else:
+                    finaldatesarray.remove(finaldatesarray[q])
+
+            finallistlength = len(finaldatesarray)
+            finallength = finallistlength - q
+
+            q += 1
+
+            for x in range(0, finallength - 1):
+                del finaldatesarray[q]
+
+            for allvalues in finaldatesarray:
+                if allvalues == currentday:
+                    GotARow = True
+                    break
+                else:
+                    pass
+
+            if GotARow == True:
                 c.execute("SELECT * FROM SinglesCompetition WHERE end_date=:enddate AND start_date=:startdate", {
                     "enddate":lastday,
                     "startdate": firstday
@@ -183,7 +212,6 @@ class AttendingSinglesContent:
 
             m = 7
             n = 7
-            y = 0
 
             finaldatesarray = startdatesarray + enddatesarray
 
@@ -196,18 +224,46 @@ class AttendingSinglesContent:
                 if (doublerow is None):
                     pass
                 else:
-                    GotARow = True
-                    break
-                y += 1
+                    rowsplit = doublerow[4].split('/')
+                    currentdaysplit = currentday.split('/')
+                    if rowsplit[1] == currentdaysplit[1]:
+                        break
+                    else:
+                        pass
                 if m != 14:
                     m += 1
-                if y >= 3 and n != 0:
+                if n != 0:
                     n -= 1
 
-            if GotARow == True:
-                firstday = doublerow[4]
-                lastday = doublerow[5]
+            firstday = doublerow[4]
+            lastday = doublerow[5]
+            q = 0
 
+            for datevalues in finaldatesarray:
+                if finaldatesarray[q] >= firstday and finaldatesarray[q] <= lastday:
+                    q += 1
+                    pass
+                    if finaldatesarray[q] == lastday:
+                        break
+                else:
+                    finaldatesarray.remove(finaldatesarray[q])
+
+            finallistlength = len(finaldatesarray)
+            finallength = finallistlength - q
+
+            q += 1
+
+            for x in range(0, finallength - 1):
+                del finaldatesarray[q]
+
+            for allvalues in finaldatesarray:
+                if allvalues == currentday:
+                    GotARow = True
+                    break
+                else:
+                    pass
+
+            if GotARow == True:
                 c.execute("SELECT * FROM DoublesCompetition WHERE end_date=:enddate AND start_date=:startdate", {
                     "enddate":lastday,
                     "startdate": firstday
@@ -325,18 +381,47 @@ class AttendingSinglesContent:
                         if (singlerow is None):
                             pass
                         else:
-                            GotARow = True
-                            break
+                            rowsplit = singlerow[2].split('/')
+                            currentdaysplit = currentday.split('/')
+                            if rowsplit[1] == currentdaysplit[1]:
+                                break
+                            else:
+                                pass
                         y += 1
                         if m != 14:
                             m += 1
                         if y >= 3 and n != 0:
                             n -= 1
 
-                    if GotARow == True:
-                        firstday = singlerow[2]
-                        lastday = singlerow[3]
+                    firstday = singlerow[2]
+                    lastday = singlerow[3]
+                    q = 0
 
+                    for datevalues in finaldatesarray:
+                        if finaldatesarray[q] >= firstday and finaldatesarray[q] <= lastday:
+                            q += 1
+                            pass
+                            if finaldatesarray[q] == lastday:
+                                break
+                        else:
+                            finaldatesarray.remove(finaldatesarray[q])
+
+                    finallistlength = len(finaldatesarray)
+                    finallength = finallistlength - q
+
+                    q += 1
+
+                    for x in range(0, finallength - 1):
+                        del finaldatesarray[q]
+
+                    for allvalues in finaldatesarray:
+                        if allvalues == currentday:
+                            GotARow = True
+                            break
+                        else:
+                            pass
+
+                    if GotARow == True:
                         c.execute("SELECT * FROM SinglesCompetition WHERE end_date=:enddate AND start_date=:startdate", {
                             "enddate":lastday,
                             "startdate": firstday
@@ -409,7 +494,6 @@ class AttendingSinglesContent:
 
                     m = 7
                     n = 7
-                    y = 0
 
                     finaldatesarray = startdatesarray + enddatesarray
 
@@ -422,18 +506,46 @@ class AttendingSinglesContent:
                         if (doublerow is None):
                             pass
                         else:
-                            GotARow = True
-                            break
-                        y += 1
+                            rowsplit = doublerow[4].split('/')
+                            currentdaysplit = currentday.split('/')
+                            if rowsplit[1] == currentdaysplit[1]:
+                                break
+                            else:
+                                pass
                         if m != 14:
                             m += 1
-                        if y >= 3 and n != 0:
+                        if n != 0:
                             n -= 1
 
-                    if GotARow == True:
-                        firstday = doublerow[4]
-                        lastday = doublerow[5]
+                    firstday = doublerow[4]
+                    lastday = doublerow[5]
+                    q = 0
 
+                    for datevalues in finaldatesarray:
+                        if finaldatesarray[q] >= firstday and finaldatesarray[q] <= lastday:
+                            q += 1
+                            pass
+                            if finaldatesarray[q] == lastday:
+                                break
+                        else:
+                            finaldatesarray.remove(finaldatesarray[q])
+
+                    finallistlength = len(finaldatesarray)
+                    finallength = finallistlength - q
+
+                    q += 1
+
+                    for x in range(0, finallength - 1):
+                        del finaldatesarray[q]
+
+                    for allvalues in finaldatesarray:
+                        if allvalues == currentday:
+                            GotARow = True
+                            break
+                        else:
+                            pass
+
+                    if GotARow == True:
                         c.execute("SELECT * FROM DoublesCompetition WHERE end_date=:enddate AND start_date=:startdate", {
                             "enddate":lastday,
                             "startdate": firstday
