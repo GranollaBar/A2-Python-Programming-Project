@@ -93,16 +93,19 @@ class AttendingSinglesContent:
                 w += 1
                 o -= 1
 
-            m = 7
-            n = 7
-            y = 0
-
             finaldatesarray = startdatesarray + enddatesarray
 
-            for endvalues in finaldatesarray:
-                c.execute("SELECT * FROM SinglesCompetition WHERE start_date>:realstartdate AND end_date<:realenddate", {
-                    "realstartdate": finaldatesarray[n],
-                    "realenddate": finaldatesarray[m]
+            c.execute('SELECT * FROM SinglesCompetition')
+            Allrows = c.fetchall()
+
+            datesarray = []
+            p = 1
+
+            for y in range(0, len(Allrows)):
+                c.execute("SELECT * FROM SinglesCompetition WHERE start_date>:realstartdate AND end_date<:realenddate AND singlescompetitionID=:ID", {
+                    "realstartdate": finaldatesarray[0],
+                    "realenddate": finaldatesarray[14],
+                    "ID": p
                 })
                 singlerow = c.fetchone()
                 if (singlerow is None):
@@ -111,63 +114,118 @@ class AttendingSinglesContent:
                     rowsplit = singlerow[2].split('/')
                     currentdaysplit = currentday.split('/')
                     if rowsplit[1] == currentdaysplit[1]:
-                        break
+                        datesarray.append(singlerow)
                     else:
                         pass
-                y += 1
-                if m != 14:
-                    m += 1
-                if y >= 3 and n != 0:
-                    n -= 1
+                p += 1
 
-            firstday = singlerow[2]
-            lastday = singlerow[3]
-            q = 0
+            r = 0
+            s = 0
 
-            for datevalues in finaldatesarray:
-                if finaldatesarray[q] >= firstday and finaldatesarray[q] <= lastday:
+            if len(datesarray) != 0:
+                if len(datesarray) == 1:
+                    firstday = datesarray[0][2]
+                    lastday = datesarray[0][3]
+                    q = 0
+
+                    for datevalues in finaldatesarray:
+                        if finaldatesarray[q] >= firstday and finaldatesarray[q] <= lastday:
+                            q += 1
+                            pass
+                            if finaldatesarray[q] == lastday:
+                                break
+                        else:
+                            finaldatesarray.remove(finaldatesarray[q])
+
+                    finallistlength = len(finaldatesarray)
+                    finallength = finallistlength - q
+
                     q += 1
-                    pass
-                    if finaldatesarray[q] == lastday:
+
+                    for x in range(0, finallength - 1):
+                        del finaldatesarray[q]
+
+                        for allvalues in finaldatesarray:
+                            if allvalues == currentday:
+                                GotARow = True
+
                         break
+
                 else:
-                    finaldatesarray.remove(finaldatesarray[q])
+                    for z in range(0, len(datesarray)):
+                        firstday = datesarray[r][2]
+                        lastday = datesarray[r][3]
+                        r = 0
+                        s = 0
+                        q = 0
 
-            finallistlength = len(finaldatesarray)
-            finallength = finallistlength - q
+                        if z != 0:
+                            finaldatesarray.clear()
+                            finaldatesarray = startdatesarray + enddatesarray
 
-            q += 1
+                        for datevalues in finaldatesarray:
+                            if finaldatesarray[q] >= firstday and finaldatesarray[q] <= lastday:
+                                q += 1
+                                pass
+                                if finaldatesarray[q] == lastday:
+                                    break
+                            else:
+                                finaldatesarray.remove(finaldatesarray[q])
 
-            for x in range(0, finallength - 1):
-                del finaldatesarray[q]
+                        finallistlength = len(finaldatesarray)
+                        finallength = finallistlength - q
 
-            for allvalues in finaldatesarray:
-                if allvalues == currentday:
-                    GotARow = True
-                    break
-                else:
-                    pass
+                        q += 1
 
-            if GotARow == True:
-                c.execute("SELECT * FROM SinglesCompetition WHERE end_date=:enddate AND start_date=:startdate", {
-                    "enddate":lastday,
-                    "startdate": firstday
-                })
+                        for x in range(0, finallength - 1):
+                            del finaldatesarray[q]
 
-                items = c.fetchone()
+                        for allvalues in finaldatesarray:
+                            if allvalues == currentday:
+                                GotARow = True
+                                break
+                            else:
+                                if allvalues == finaldatesarray[len(finaldatesarray) - 1]:
+                                    break
+                                else:
+                                    pass
 
-                conn.commit()
-                conn.close()
+                        if GotARow == True:
+                            while s != z:
+                                datesarray.remove(datesarray[s])
+                                s += 1
+                            break
+                        else:
+                            pass
 
-                count=0
-                if items == []:
-                    pass
-                else:
-                    if count%2==0:
-                        unplayed_singles_competitions_Tv.insert('','end',text='Singles',values=(findfirstandsurnamemember(items[0]),findfirstandsurnamemember(items[1]),items[5]))
+                        r += 1
+
+                if GotARow == True:
+                    finalfirstday = datesarray[0][2]
+                    finallastday = datesarray[0][3]
+
+                    c.execute("SELECT * FROM SinglesCompetition WHERE end_date=:enddate AND start_date=:startdate", {
+                        "enddate":finallastday,
+                        "startdate": finalfirstday
+                    })
+
+                    items = c.fetchone()
+
+                    conn.commit()
+                    conn.close()
+
+                    count=0
+                    if items == []:
+                        pass
                     else:
-                        unplayed_singles_competitions_Tv.insert('','end',text='Singles',values=(findfirstandsurnamemember(items[0]),findfirstandsurnamemember(items[1]),items[5]))
-                    count+=1
+                        if count%2==0:
+                            unplayed_singles_competitions_Tv.insert('','end',text='Singles',values=(findfirstandsurnamemember(items[0]),findfirstandsurnamemember(items[1]),items[5]))
+                        else:
+                            unplayed_singles_competitions_Tv.insert('','end',text='Singles',values=(findfirstandsurnamemember(items[0]),findfirstandsurnamemember(items[1]),items[5]))
+                        count+=1
+
+                else:
+                    unplayed_singles_competitions_Tv.insert('','end',text='',values=('','',''))
 
             else:
                 unplayed_singles_competitions_Tv.insert('','end',text='',values=('','',''))
@@ -210,15 +268,19 @@ class AttendingSinglesContent:
                 w += 1
                 o -= 1
 
-            m = 7
-            n = 7
-
             finaldatesarray = startdatesarray + enddatesarray
 
-            for endvalues in finaldatesarray:
-                c.execute("SELECT * FROM DoublesCompetition WHERE start_date>:realstartdate AND end_date<:realenddate", {
-                    "realstartdate": finaldatesarray[n],
-                    "realenddate": finaldatesarray[m]
+            c.execute('SELECT * FROM DoublesCompetition')
+            Allrows = c.fetchall()
+
+            Datesarray = []
+            p = 1
+
+            for y in range(0, len(Allrows)):
+                c.execute("SELECT * FROM DoublesCompetition WHERE start_date>:realstartdate AND end_date<:realenddate AND doublescompetitionID=:ID", {
+                    "realstartdate": finaldatesarray[0],
+                    "realenddate": finaldatesarray[14],
+                    "ID": p
                 })
                 doublerow = c.fetchone()
                 if (doublerow is None):
@@ -227,62 +289,118 @@ class AttendingSinglesContent:
                     rowsplit = doublerow[4].split('/')
                     currentdaysplit = currentday.split('/')
                     if rowsplit[1] == currentdaysplit[1]:
-                        break
+                        Datesarray.append(doublerow)
                     else:
                         pass
-                if m != 14:
-                    m += 1
-                if n != 0:
-                    n -= 1
+                p += 1
 
-            firstday = doublerow[4]
-            lastday = doublerow[5]
-            q = 0
+            r = 0
+            s = 0
 
-            for datevalues in finaldatesarray:
-                if finaldatesarray[q] >= firstday and finaldatesarray[q] <= lastday:
+            if len(Datesarray) != 0:
+                if len(Datesarray) == 1:
+                    firstday = Datesarray[0][4]
+                    lastday = Datesarray[0][5]
+                    q = 0
+
+                    for datevalues in finaldatesarray:
+                        if finaldatesarray[q] >= firstday and finaldatesarray[q] <= lastday:
+                            q += 1
+                            pass
+                            if finaldatesarray[q] == lastday:
+                                break
+                        else:
+                            finaldatesarray.remove(finaldatesarray[q])
+
+                    finallistlength = len(finaldatesarray)
+                    finallength = finallistlength - q
+
                     q += 1
-                    pass
-                    if finaldatesarray[q] == lastday:
+
+                    for x in range(0, finallength - 1):
+                        del finaldatesarray[q]
+
+                        for allvalues in finaldatesarray:
+                            if allvalues == currentday:
+                                GotARow = True
+
                         break
+
                 else:
-                    finaldatesarray.remove(finaldatesarray[q])
+                    for z in range(0, len(Datesarray)):
+                        firstday = Datesarray[r][4]
+                        lastday = Datesarray[r][5]
+                        r = 0
+                        s = 0
+                        q = 0
 
-            finallistlength = len(finaldatesarray)
-            finallength = finallistlength - q
+                        if z != 0:
+                            finaldatesarray.clear()
+                            finaldatesarray = startdatesarray + enddatesarray
 
-            q += 1
+                        for datevalues in finaldatesarray:
+                            if finaldatesarray[q] >= firstday and finaldatesarray[q] <= lastday:
+                                q += 1
+                                pass
+                                if finaldatesarray[q] == lastday:
+                                    break
+                            else:
+                                finaldatesarray.remove(finaldatesarray[q])
 
-            for x in range(0, finallength - 1):
-                del finaldatesarray[q]
+                        finallistlength = len(finaldatesarray)
+                        finallength = finallistlength - q
 
-            for allvalues in finaldatesarray:
-                if allvalues == currentday:
-                    GotARow = True
-                    break
-                else:
-                    pass
+                        q += 1
 
-            if GotARow == True:
-                c.execute("SELECT * FROM DoublesCompetition WHERE end_date=:enddate AND start_date=:startdate", {
-                    "enddate":lastday,
-                    "startdate": firstday
-                })
+                        for x in range(0, finallength - 1):
+                            del finaldatesarray[q]
 
-                items = c.fetchone()
+                        for allvalues in finaldatesarray:
+                            if allvalues == currentday:
+                                GotARow = True
+                                break
+                            else:
+                                if allvalues == finaldatesarray[len(finaldatesarray) - 1]:
+                                    break
+                                else:
+                                    pass
 
-                conn.commit()
-                conn.close()
+                        if GotARow == True:
+                            while s != z:
+                                Datesarray.remove(Datesarray[s])
+                                s += 1
+                            break
+                        else:
+                            pass
 
-                count=0
-                if items == []:
-                    pass
-                else:
-                    if count%2==0:
-                        unplayed_doubles_competitions_Tv.insert('','end',text='Doubles',values=(items[7],items[8],items[9]))
+                        r += 1
+
+                if GotARow == True:
+                    finalfirstday = Datesarray[0][4]
+                    finallastday = Datesarray[0][5]
+
+                    c.execute("SELECT * FROM DoublesCompetition WHERE end_date=:enddate AND start_date=:startdate", {
+                        "enddate":finallastday,
+                        "startdate": finalfirstday
+                    })
+
+                    items = c.fetchone()
+
+                    conn.commit()
+                    conn.close()
+
+                    count=0
+                    if items == []:
+                        pass
                     else:
-                        unplayed_doubles_competitions_Tv.insert('','end',text='Doubles',values=(items[7],items[8],items[9]))
-                    count+=1
+                        if count%2==0:
+                            unplayed_doubles_competitions_Tv.insert('','end',text='Doubles',values=(items[7],items[8],items[9]))
+                        else:
+                            unplayed_doubles_competitions_Tv.insert('','end',text='Doubles',values=(items[7],items[8],items[9]))
+                        count+=1
+
+                else:
+                    unplayed_doubles_competitions_Tv.insert('','end',text='',values=('','',''))
 
             else:
                 unplayed_doubles_competitions_Tv.insert('','end',text='',values=('','',''))
@@ -366,16 +484,19 @@ class AttendingSinglesContent:
                         w += 1
                         o -= 1
 
-                    m = 7
-                    n = 7
-                    y = 0
-
                     finaldatesarray = startdatesarray + enddatesarray
 
-                    for endvalues in finaldatesarray:
-                        c.execute("SELECT * FROM SinglesCompetition WHERE start_date>:realstartdate AND end_date<:realenddate", {
-                            "realstartdate": finaldatesarray[n],
-                            "realenddate": finaldatesarray[m]
+                    c.execute('SELECT * FROM SinglesCompetition')
+                    Allrows = c.fetchall()
+
+                    Datesarray = []
+                    p = 1
+
+                    for y in range(0, len(Allrows)):
+                        c.execute("SELECT * FROM SinglesCompetition WHERE start_date>:realstartdate AND end_date<:realenddate AND singlescompetitionID=:ID", {
+                            "realstartdate": finaldatesarray[0],
+                            "realenddate": finaldatesarray[14],
+                            "ID": p
                         })
                         singlerow = c.fetchone()
                         if (singlerow is None):
@@ -384,78 +505,132 @@ class AttendingSinglesContent:
                             rowsplit = singlerow[2].split('/')
                             currentdaysplit = currentday.split('/')
                             if rowsplit[1] == currentdaysplit[1]:
-                                break
+                                Datesarray.append(singlerow)
                             else:
                                 pass
-                        y += 1
-                        if m != 14:
-                            m += 1
-                        if y >= 3 and n != 0:
-                            n -= 1
+                        p += 1
 
-                    firstday = singlerow[2]
-                    lastday = singlerow[3]
-                    q = 0
+                    r = 0
+                    s = 0
 
-                    for datevalues in finaldatesarray:
-                        if finaldatesarray[q] >= firstday and finaldatesarray[q] <= lastday:
+                    if len(Datesarray) != 0:
+                        if len(Datesarray) == 1:
+                            firstday = Datesarray[0][2]
+                            lastday = Datesarray[0][3]
+                            q = 0
+
+                            for datevalues in finaldatesarray:
+                                if finaldatesarray[q] >= firstday and finaldatesarray[q] <= lastday:
+                                    q += 1
+                                    pass
+                                    if finaldatesarray[q] == lastday:
+                                        break
+                                else:
+                                    finaldatesarray.remove(finaldatesarray[q])
+
+                            finallistlength = len(finaldatesarray)
+                            finallength = finallistlength - q
+
                             q += 1
-                            pass
-                            if finaldatesarray[q] == lastday:
+
+                            for x in range(0, finallength - 1):
+                                del finaldatesarray[q]
+
+                                for allvalues in finaldatesarray:
+                                    if allvalues == currentday:
+                                        GotARow = True
+
                                 break
-                        else:
-                            finaldatesarray.remove(finaldatesarray[q])
-
-                    finallistlength = len(finaldatesarray)
-                    finallength = finallistlength - q
-
-                    q += 1
-
-                    for x in range(0, finallength - 1):
-                        del finaldatesarray[q]
-
-                    for allvalues in finaldatesarray:
-                        if allvalues == currentday:
-                            GotARow = True
-                            break
-                        else:
-                            pass
-
-                    if GotARow == True:
-                        c.execute("SELECT * FROM SinglesCompetition WHERE end_date=:enddate AND start_date=:startdate", {
-                            "enddate":lastday,
-                            "startdate": firstday
-                        })
-
-                        singlesrow2 = c.fetchone()
-
-                        if IDSelected == singlesrow2[5]:
-                            c.execute("INSERT INTO CurrentCompetitionScores VALUES (:CompetitionType, :Member_Team_1_Score, :Member_Team_2_Score, :Time, :CurrentID)",
-                                      {
-                                          'CompetitionType': 'Singles',
-                                          'Member_Team_1_Score': member_team1_score,
-                                          'Member_Team_2_Score': member_team2_score,
-                                          'Time': currentTime,
-                                          'CurrentID': CompetitionID.get(),
-                                      })
-                            conn.commit()
-                            conn.close()
-
-                            CompetitionType_combobox.config(state="disable")
-                            ID_entry.config(state="disable")
-                            select_competition_button.config(state="disable")
-                            score1_entry.config(state="normal")
-                            score2_entry.config(state="normal")
-                            submit_competition_button.place_forget()
-
-                            singles_submit_competition_button = tkinter.Button(self.attend, cursor="tcross",text="Submit", command=SubmitSinglesResults, fg='white', bg='black', bd=3, relief='ridge', font=('serif', 12, 'bold'))
-                            singles_submit_competition_button.place(rely=0.925, relx=0.4, anchor='center')
-                            ToolTips.bind(singles_submit_competition_button, 'Enter and submit values for the singles competition')
-
-                            DrawLineGraphSingles()
 
                         else:
-                            messagebox.showinfo('Error', 'The ID entered does not have a singles competition on ' + currentday, icon='error')
+                            for z in range(0, len(Datesarray)):
+                                firstday = Datesarray[r][2]
+                                lastday = Datesarray[r][3]
+                                r = 0
+                                s = 0
+                                q = 0
+
+                                if z != 0:
+                                    finaldatesarray.clear()
+                                    finaldatesarray = startdatesarray + enddatesarray
+
+                                for datevalues in finaldatesarray:
+                                    if finaldatesarray[q] >= firstday and finaldatesarray[q] <= lastday:
+                                        q += 1
+                                        pass
+                                        if finaldatesarray[q] == lastday:
+                                            break
+                                    else:
+                                        finaldatesarray.remove(finaldatesarray[q])
+
+                                finallistlength = len(finaldatesarray)
+                                finallength = finallistlength - q
+
+                                q += 1
+
+                                for x in range(0, finallength - 1):
+                                    del finaldatesarray[q]
+
+                                for allvalues in finaldatesarray:
+                                    if allvalues == currentday:
+                                        GotARow = True
+                                        break
+                                    else:
+                                        if allvalues == finaldatesarray[len(finaldatesarray) - 1]:
+                                            break
+                                        else:
+                                            pass
+
+                                if GotARow == True:
+                                    while s != z:
+                                        Datesarray.remove(Datesarray[s])
+                                        s += 1
+                                    break
+                                else:
+                                    pass
+
+                                r += 1
+
+                        if GotARow == True:
+                            finalfirstday = Datesarray[0][2]
+                            finallastday = Datesarray[0][3]
+
+                            c.execute("SELECT * FROM SinglesCompetition WHERE end_date=:enddate AND start_date=:startdate", {
+                                "enddate":finallastday,
+                                "startdate": finalfirstday
+                            })
+
+                            singlesrow2 = c.fetchone()
+
+                            if IDSelected == singlesrow2[5]:
+                                c.execute("INSERT INTO CurrentCompetitionScores VALUES (:CompetitionType, :Member_Team_1_Score, :Member_Team_2_Score, :Time, :CurrentID)",
+                                          {
+                                              'CompetitionType': 'Singles',
+                                              'Member_Team_1_Score': member_team1_score,
+                                              'Member_Team_2_Score': member_team2_score,
+                                              'Time': currentTime,
+                                              'CurrentID': CompetitionID.get(),
+                                          })
+                                conn.commit()
+                                conn.close()
+
+                                CompetitionType_combobox.config(state="disable")
+                                ID_entry.config(state="disable")
+                                select_competition_button.config(state="disable")
+                                score1_entry.config(state="normal")
+                                score2_entry.config(state="normal")
+                                submit_competition_button.place_forget()
+
+                                singles_submit_competition_button = tkinter.Button(self.attend, cursor="tcross",text="Submit", command=SubmitSinglesResults, fg='white', bg='black', bd=3, relief='ridge', font=('serif', 12, 'bold'))
+                                singles_submit_competition_button.place(rely=0.925, relx=0.4, anchor='center')
+                                ToolTips.bind(singles_submit_competition_button, 'Enter and submit values for the singles competition')
+
+                                DrawLineGraphSingles()
+
+                            else:
+                                messagebox.showinfo('Error', 'The ID entered does not have a singles competition on: ' + currentday, icon='error')
+                        else:
+                            messagebox.showinfo('Error', 'The ID entered does not have a singles competition on: ' + currentday, icon='error')
                     else:
                         messagebox.showinfo('Error', 'There are no singles competitions currently listed for the date: ' + currentday, icon='error')
 
@@ -492,15 +667,19 @@ class AttendingSinglesContent:
                         w += 1
                         o -= 1
 
-                    m = 7
-                    n = 7
-
                     finaldatesarray = startdatesarray + enddatesarray
 
-                    for endvalues in finaldatesarray:
-                        c.execute("SELECT * FROM DoublesCompetition WHERE start_date>:realstartdate AND end_date<:realenddate", {
-                            "realstartdate": finaldatesarray[n],
-                            "realenddate": finaldatesarray[m]
+                    c.execute('SELECT * FROM DoublesCompetition')
+                    Allrows = c.fetchall()
+
+                    Datesarray = []
+                    p = 1
+
+                    for y in range(0, len(Allrows)):
+                        c.execute("SELECT * FROM DoublesCompetition WHERE start_date>:realstartdate AND end_date<:realenddate AND doublescompetitionID=:ID", {
+                            "realstartdate": finaldatesarray[0],
+                            "realenddate": finaldatesarray[14],
+                            "ID": p
                         })
                         doublerow = c.fetchone()
                         if (doublerow is None):
@@ -509,77 +688,132 @@ class AttendingSinglesContent:
                             rowsplit = doublerow[4].split('/')
                             currentdaysplit = currentday.split('/')
                             if rowsplit[1] == currentdaysplit[1]:
-                                break
+                                Datesarray.append(doublerow)
                             else:
                                 pass
-                        if m != 14:
-                            m += 1
-                        if n != 0:
-                            n -= 1
+                        p += 1
 
-                    firstday = doublerow[4]
-                    lastday = doublerow[5]
-                    q = 0
+                    r = 0
+                    s = 0
 
-                    for datevalues in finaldatesarray:
-                        if finaldatesarray[q] >= firstday and finaldatesarray[q] <= lastday:
+                    if len(Datesarray) != 0:
+                        if len(Datesarray) == 1:
+                            firstday = Datesarray[0][4]
+                            lastday = Datesarray[0][5]
+                            q = 0
+
+                            for datevalues in finaldatesarray:
+                                if finaldatesarray[q] >= firstday and finaldatesarray[q] <= lastday:
+                                    q += 1
+                                    pass
+                                    if finaldatesarray[q] == lastday:
+                                        break
+                                else:
+                                    finaldatesarray.remove(finaldatesarray[q])
+
+                            finallistlength = len(finaldatesarray)
+                            finallength = finallistlength - q
+
                             q += 1
-                            pass
-                            if finaldatesarray[q] == lastday:
+
+                            for x in range(0, finallength - 1):
+                                del finaldatesarray[q]
+
+                                for allvalues in finaldatesarray:
+                                    if allvalues == currentday:
+                                        GotARow = True
+
                                 break
-                        else:
-                            finaldatesarray.remove(finaldatesarray[q])
-
-                    finallistlength = len(finaldatesarray)
-                    finallength = finallistlength - q
-
-                    q += 1
-
-                    for x in range(0, finallength - 1):
-                        del finaldatesarray[q]
-
-                    for allvalues in finaldatesarray:
-                        if allvalues == currentday:
-                            GotARow = True
-                            break
-                        else:
-                            pass
-
-                    if GotARow == True:
-                        c.execute("SELECT * FROM DoublesCompetition WHERE end_date=:enddate AND start_date=:startdate", {
-                            "enddate":lastday,
-                            "startdate": firstday
-                        })
-
-                        doublesrow2 = c.fetchone()
-
-                        if IDSelected == doublesrow2[9]:
-                            c.execute("INSERT INTO CurrentCompetitionScores VALUES (:CompetitionType, :Member_Team_1_Score, :Member_Team_2_Score, :Time, :CurrentID)",
-                                      {
-                                          'CompetitionType': 'Doubles',
-                                          'Member_Team_1_Score': member_team1_score,
-                                          'Member_Team_2_Score': member_team2_score,
-                                          'Time': currentTime,
-                                          'CurrentID': CompetitionID.get(),
-                                      })
-                            conn.commit()
-                            conn.close()
-
-                            DrawLineGraphDoubles()
-
-                            CompetitionType_combobox.config(state="disable")
-                            ID_entry.config(state="disable")
-                            select_competition_button.config(state="disable")
-                            score1_entry.config(state="normal")
-                            score2_entry.config(state="normal")
-                            submit_competition_button.place_forget()
-
-                            doubles_submit_competition_button = tkinter.Button(self.attend, cursor="tcross",text="Submit", command=SubmitDoublesResults, fg='white', bg='black', bd=3, relief='ridge', font=('serif', 12, 'bold'))
-                            doubles_submit_competition_button.place(rely=0.925, relx=0.4, anchor='center')
-                            ToolTips.bind(doubles_submit_competition_button, 'Enter and submit values for the doubles competition')
 
                         else:
-                            messagebox.showinfo('Error', 'The ID entered does not have a doubles competition on ' + currentday, icon='error')
+                            for z in range(0, len(Datesarray)):
+                                firstday = Datesarray[r][4]
+                                lastday = Datesarray[r][5]
+                                r = 0
+                                s = 0
+                                q = 0
+
+                                if z != 0:
+                                    finaldatesarray.clear()
+                                    finaldatesarray = startdatesarray + enddatesarray
+
+                                for datevalues in finaldatesarray:
+                                    if finaldatesarray[q] >= firstday and finaldatesarray[q] <= lastday:
+                                        q += 1
+                                        pass
+                                        if finaldatesarray[q] == lastday:
+                                            break
+                                    else:
+                                        finaldatesarray.remove(finaldatesarray[q])
+
+                                finallistlength = len(finaldatesarray)
+                                finallength = finallistlength - q
+
+                                q += 1
+
+                                for x in range(0, finallength - 1):
+                                    del finaldatesarray[q]
+
+                                for allvalues in finaldatesarray:
+                                    if allvalues == currentday:
+                                        GotARow = True
+                                        break
+                                    else:
+                                        if allvalues == finaldatesarray[len(finaldatesarray) - 1]:
+                                            break
+                                        else:
+                                            pass
+
+                                if GotARow == True:
+                                    while s != z:
+                                        Datesarray.remove(Datesarray[s])
+                                        s += 1
+                                    break
+                                else:
+                                    pass
+
+                                r += 1
+
+                        if GotARow == True:
+                            finalfirstday = Datesarray[0][4]
+                            finallastday = Datesarray[0][5]
+
+                            c.execute("SELECT * FROM DoublesCompetition WHERE end_date=:enddate AND start_date=:startdate", {
+                                "enddate":finallastday,
+                                "startdate": finalfirstday
+                            })
+
+                            doublesrow2 = c.fetchone()
+
+                            if IDSelected == doublesrow2[9]:
+                                c.execute("INSERT INTO CurrentCompetitionScores VALUES (:CompetitionType, :Member_Team_1_Score, :Member_Team_2_Score, :Time, :CurrentID)",
+                                          {
+                                              'CompetitionType': 'Doubles',
+                                              'Member_Team_1_Score': member_team1_score,
+                                              'Member_Team_2_Score': member_team2_score,
+                                              'Time': currentTime,
+                                              'CurrentID': CompetitionID.get(),
+                                          })
+                                conn.commit()
+                                conn.close()
+
+                                DrawLineGraphDoubles()
+
+                                CompetitionType_combobox.config(state="disable")
+                                ID_entry.config(state="disable")
+                                select_competition_button.config(state="disable")
+                                score1_entry.config(state="normal")
+                                score2_entry.config(state="normal")
+                                submit_competition_button.place_forget()
+
+                                doubles_submit_competition_button = tkinter.Button(self.attend, cursor="tcross",text="Submit", command=SubmitDoublesResults, fg='white', bg='black', bd=3, relief='ridge', font=('serif', 12, 'bold'))
+                                doubles_submit_competition_button.place(rely=0.925, relx=0.4, anchor='center')
+                                ToolTips.bind(doubles_submit_competition_button, 'Enter and submit values for the doubles competition')
+
+                            else:
+                                messagebox.showinfo('Error', 'The ID entered does not have a doubles competition on: ' + currentday, icon='error')
+                        else:
+                            messagebox.showinfo('Error', 'The ID entered does not have a doubles competition on: ' + currentday, icon='error')
                     else:
                         messagebox.showinfo('Error', 'There are no doubles competitions currently listed for the date: ' + currentday, icon='error')
 

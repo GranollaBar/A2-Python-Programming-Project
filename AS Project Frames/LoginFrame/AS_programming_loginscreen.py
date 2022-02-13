@@ -257,8 +257,8 @@ class LoginContent:
             c = conn.cursor()
 
             isValid = True
-            # isValid = isValid and validate_username(login_username, username_label)
-            # isValid = isValid and validate_password(login_password, password_label)
+            isValid = isValid and validate_username(login_username, username_label)
+            isValid = isValid and validate_password(login_password, password_label)
 
             if isValid:
                 c.execute(f"SELECT * FROM account WHERE username =? and password =?", (login_username, login_password,))
