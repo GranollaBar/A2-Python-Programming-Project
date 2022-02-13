@@ -448,7 +448,7 @@ class AttendingSinglesContent:
                             score2_entry.config(state="normal")
                             submit_competition_button.place_forget()
 
-                            singles_submit_competition_button = tkinter.Button(self.attend, cursor="tcross",text="Submit", command=SubmitSinglesResults, fg='white', bg='black', bd=3, relief='ridge', font=('Tahoma', 12, 'bold'))
+                            singles_submit_competition_button = tkinter.Button(self.attend, cursor="tcross",text="Submit", command=SubmitSinglesResults, fg='white', bg='black', bd=3, relief='ridge', font=('serif', 12, 'bold'))
                             singles_submit_competition_button.place(rely=0.925, relx=0.4, anchor='center')
                             ToolTips.bind(singles_submit_competition_button, 'Enter and submit values for the singles competition')
 
@@ -574,7 +574,7 @@ class AttendingSinglesContent:
                             score2_entry.config(state="normal")
                             submit_competition_button.place_forget()
 
-                            doubles_submit_competition_button = tkinter.Button(self.attend, cursor="tcross",text="Submit", command=SubmitDoublesResults, fg='white', bg='black', bd=3, relief='ridge', font=('Tahoma', 12, 'bold'))
+                            doubles_submit_competition_button = tkinter.Button(self.attend, cursor="tcross",text="Submit", command=SubmitDoublesResults, fg='white', bg='black', bd=3, relief='ridge', font=('serif', 12, 'bold'))
                             doubles_submit_competition_button.place(rely=0.925, relx=0.4, anchor='center')
                             ToolTips.bind(doubles_submit_competition_button, 'Enter and submit values for the doubles competition')
 
@@ -771,18 +771,18 @@ class AttendingSinglesContent:
         conn.close()
 
 
-        competitiontype_label = tkinter.Label(self.attend, text="Type:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-        competitiontype_label.place(rely=0.41, relx=0.06, anchor='center')
+        competitiontype_label = tkinter.Label(self.attend, text="Type:", font=('serif', 14, 'bold'), fg='black', bg='white')
+        competitiontype_label.place(rely=0.41, relx=0.07, anchor='center')
 
-        CompetitionType_combobox = ttk.Combobox(self.attend, value=CompetitionType, font=('Tahoma', 11, 'bold'), width=7)
+        CompetitionType_combobox = ttk.Combobox(self.attend, value=CompetitionType, font=('serif', 11, 'bold'), width=7)
         CompetitionType_combobox.place(rely=0.413, relx=0.15, anchor='center')
         CompetitionType_combobox.current(0)
         CompetitionType_combobox.config(state="readonly")
 
-        id_label = tkinter.Label(self.attend, text="ID:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
-        id_label.place(rely=0.41, relx=0.24, anchor='center')
+        id_label = tkinter.Label(self.attend, text="ID:", font=('serif', 14, 'bold'), fg='black', bg='white')
+        id_label.place(rely=0.41, relx=0.245, anchor='center')
 
-        ID_entry = tkinter.Entry(self.attend, width=6, textvariable=CompetitionID, bd=3, relief='ridge', cursor="tcross", font=('Tahoma', 12, 'bold'))
+        ID_entry = tkinter.Entry(self.attend, width=6, textvariable=CompetitionID, bd=3, relief='ridge', cursor="tcross", font=('serif', 12, 'bold'))
         ID_entry.place(rely=0.412, relx=0.3, anchor='center')
         CompetitionID.set('')
         ID_entry.insert(0, 'e.g. 3')
@@ -790,7 +790,7 @@ class AttendingSinglesContent:
         ID_entry.bind('<FocusOut>', ID_unclick)
         ID_entry.config(fg='grey')
 
-        select_competition_button = tkinter.Button(self.attend, cursor="tcross",text="Select", command=SelectTypeandID, fg='white', bg='black', bd=3, relief='ridge', font=('Tahoma', 11, 'bold'))
+        select_competition_button = tkinter.Button(self.attend, cursor="tcross",text="Select", command=SelectTypeandID, fg='white', bg='black', bd=3, relief='ridge', font=('serif', 11, 'bold'))
         select_competition_button.place(rely=0.415, relx=0.4, anchor='center')
         ToolTips.bind(select_competition_button, 'Confirm ID and competition type')
 
@@ -798,26 +798,35 @@ class AttendingSinglesContent:
         score1_label = tkinter.Label(self.attend, text="Member/Team Score 1:", font=('serif', 14, 'bold'), fg='black', bg='white')
         score1_label.place(rely=0.9, relx=0.135, anchor='center')
 
-        score1_entry = tkinter.Entry(self.attend, width=6, textvariable=score1, bd=3, relief='ridge', cursor="tcross", font=('Tahoma', 12, 'bold'))
+        score1_entry = tkinter.Entry(self.attend, width=6, textvariable=score1, bd=3, relief='ridge', cursor="tcross", font=('serif', 12, 'bold'))
         score1_entry.place(rely=0.9, relx=0.3, anchor='center')
 
 
-        score2_label = tkinter.Label(self.attend, text="Member/Team Score 2:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+        score2_label = tkinter.Label(self.attend, text="Member/Team Score 2:", font=('serif', 14, 'bold'), fg='black', bg='white')
         score2_label.place(rely=0.96, relx=0.135, anchor='center')
 
-        score2_entry = tkinter.Entry(self.attend, width=6, textvariable=score2, bd=3, relief='ridge', cursor="tcross", font=('Tahoma', 12, 'bold'))
+        score2_entry = tkinter.Entry(self.attend, width=6, textvariable=score2, bd=3, relief='ridge', cursor="tcross", font=('serif', 12, 'bold'))
         score2_entry.place(rely=0.96, relx=0.3, anchor='center')
 
-
-        conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
-        c = conn.cursor()
-
-        c.execute("SELECT * FROM CurrentCompetitionScores")
-        RawRow = c.fetchall()
-
-        submit_competition_button = tkinter.Button(self.attend, cursor="tcross",text="Submit", command=SubmitSinglesResults, fg='white', bg='black', bd=3, relief='ridge', font=('Tahoma', 12, 'bold'))
+        submit_competition_button = tkinter.Button(self.attend, cursor="tcross",text="Submit", command=SubmitSinglesResults, fg='white', bg='black', bd=3, relief='ridge', font=('serif', 12, 'bold'))
         submit_competition_button.place(rely=0.925, relx=0.4, anchor='center')
         ToolTips.bind(submit_competition_button, 'Enter and submit values for the competition')
+
+
+        box =Label(self.attend, text = "blank", fg ='white',bg='white',font=('serif',8,'bold'), bd=2, relief="sunken", padx=230, pady=160)
+        box.place(rely=0.685,relx=0.72,anchor=CENTER)
+
+        boxsplitvertical =Label(self.attend, text = "b", fg ='white',bg='white',font=('serif',8,'bold'), bd=2, relief="ridge", padx=1, pady=160)
+        boxsplitvertical.place(rely=0.685,relx=0.72,anchor=CENTER)
+
+        box_singles_title = tkinter.Label(self.attend, text="Most Recent Singles Match", font=('serif', 11, 'bold'), fg='black', bg='white')
+        box_singles_title.place(rely=0.452, relx=0.595, anchor='center')
+
+        box_doubles_title = tkinter.Label(self.attend, text="Most Recent Doubles Match", font=('serif', 11, 'bold'), fg='black', bg='white')
+        box_doubles_title.place(rely=0.452, relx=0.847, anchor='center')
+
+        boxsplithorizontal =Label(self.attend, text = "b", fg ='white',bg='white',font=('serif',1), bd=2, relief="ridge", padx=244, pady=0.5)
+        boxsplithorizontal.place(rely=0.48,relx=0.72,anchor=CENTER)
 
 
         unplayed_singles_competitions_Tv=ttk.Treeview(self.attend,height=7,columns=('Member 1','Member 2','ID'))
@@ -859,26 +868,6 @@ class AttendingSinglesContent:
         score1_entry.config(state="disable")
         score2_entry.config(state="disable")
         submit_competition_button.config(state="disable")
-
-
-        conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
-        c = conn.cursor()
-
-        c.execute("SELECT * FROM CurrentCompetitionScores")
-        row = c.fetchall()
-
-        if len(row) > 0:
-            CompetitionType_combobox.config(state="disable")
-            ID_entry.config(state="disable")
-            select_competition_button.config(state="disable")
-            score1_entry.config(state="normal")
-            score2_entry.config(state="normal")
-            submit_competition_button.config(state="normal")
-
-            if row[0][0] == 'Singles':
-                DrawLineGraphSingles()
-            else:
-                DrawLineGraphDoubles()
 
 
         UnplayedSinglesPopulate()

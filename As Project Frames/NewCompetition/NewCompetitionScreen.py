@@ -59,7 +59,7 @@ class NewCompetitionContent:
 			today = datetime.date.today()
 			startDateTop = Toplevel(self.competition)
 
-			start_cal = Calendar(startDateTop, font="Tahoma 16", date_pattern='dd/mm/yyyy',selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
+			start_cal = Calendar(startDateTop, font="serif 16", date_pattern='dd/mm/yyyy',selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
 			start_cal.pack(fill="both", expand=True)
 			ttk.Button(startDateTop, text="ok", command=assign_start_date).pack()
 
@@ -72,7 +72,7 @@ class NewCompetitionContent:
 			today = datetime.date.today()
 			endDateTop = Toplevel(self.competition)
 
-			end_cal = Calendar(endDateTop, font="Tahoma 16", date_pattern='dd/mm/yyyy',selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
+			end_cal = Calendar(endDateTop, font="serif 16", date_pattern='dd/mm/yyyy',selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
 			end_cal.pack(fill="both", expand=True)
 			ttk.Button(endDateTop, text="ok", command=assign_end_date).pack()
 
@@ -835,98 +835,98 @@ class NewCompetitionContent:
 			courts.geometry('500x500')
 			courts.attributes('-topmost', 1)
 
-			title_label =Label(courts, cursor="tcross",text = 'Select the Number of Courts Required', fg ='black',bg='white',font=('Tahoma',11,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			title_label =Label(courts, cursor="tcross",text = 'Select the Number of Courts Required', fg ='black',bg='white',font=('serif',11,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			title_label.place(rely=0.027,relx=0.5,anchor=CENTER)
 
 
 			CourtsImage = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/courts.png")
 
 
-			Court1label =Label(courts, text = 'Court 1', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			Court1label =Label(courts, text = 'Court 1', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			Court1label.place(rely=0.155,relx=0.15,anchor=CENTER)
 			Court1Button = Button(courts, text='1', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court1Button), bg="black", highlightthickness=5, activebackground="grey")
 			Court1Button.place(rely=0.24,relx=0.15,anchor=CENTER)
 			Court1Button.image = CourtsImage
 
 
-			Court2label =Label(courts, text = 'Court 2', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			Court2label =Label(courts, text = 'Court 2', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			Court2label.place(rely=0.375,relx=0.15,anchor=CENTER)
 			Court2Button = Button(courts, text='2', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court2Button), bg="black", highlightthickness=5, activebackground="grey")
 			Court2Button.place(rely=0.46,relx=0.15,anchor=CENTER)
 			Court2Button.image = CourtsImage
 
 
-			Court3label =Label(courts, text = 'Court 3', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			Court3label =Label(courts, text = 'Court 3', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			Court3label.place(rely=0.595,relx=0.15,anchor=CENTER)
 			Court3Button = Button(courts, text='3', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court3Button), bg="black", highlightthickness=5, activebackground="grey")
 			Court3Button.place(rely=0.68,relx=0.15,anchor=CENTER)
 			Court3Button.image = CourtsImage
 
 
-			Court4label =Label(courts, text = 'Court 4', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			Court4label =Label(courts, text = 'Court 4', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			Court4label.place(rely=0.815,relx=0.15,anchor=CENTER)
 			Court4Button = Button(courts, text='4', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court4Button), bg="black", highlightthickness=5, activebackground="grey")
 			Court4Button.place(rely=0.9,relx=0.15,anchor=CENTER)
 			Court4Button.image = CourtsImage
 
 
-			Court5label =Label(courts, text = 'Court 5', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			Court5label =Label(courts, text = 'Court 5', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			Court5label.place(rely=0.155,relx=0.5,anchor=CENTER)
 			Court5Button = Button(courts, text='5', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court5Button), bg="black", highlightthickness=5, activebackground="grey")
 			Court5Button.place(rely=0.24,relx=0.5,anchor=CENTER)
 			Court5Button.image = CourtsImage
 
 
-			Court6label =Label(courts, text = 'Court 6', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			Court6label =Label(courts, text = 'Court 6', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			Court6label.place(rely=0.375,relx=0.5,anchor=CENTER)
 			Court6Button = Button(courts, text='6', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court6Button), bg="black", highlightthickness=5, activebackground="grey")
 			Court6Button.place(rely=0.46,relx=0.5,anchor=CENTER)
 			Court6Button.image = CourtsImage
 
 
-			Court7label =Label(courts, text = 'Court 7', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			Court7label =Label(courts, text = 'Court 7', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			Court7label.place(rely=0.595,relx=0.5,anchor=CENTER)
 			Court7Button = Button(courts, text='7', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court7Button), bg="black", highlightthickness=5, activebackground="grey")
 			Court7Button.place(rely=0.68,relx=0.5,anchor=CENTER)
 			Court7Button.image = CourtsImage
 
 
-			Court8label =Label(courts, text = 'Court 8', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			Court8label =Label(courts, text = 'Court 8', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			Court8label.place(rely=0.815,relx=0.5,anchor=CENTER)
 			Court8Button = Button(courts, text='8', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court8Button), bg="black", highlightthickness=5, activebackground="grey")
 			Court8Button.place(rely=0.9,relx=0.5,anchor=CENTER)
 			Court8Button.image = CourtsImage
 
 
-			Court9label =Label(courts, text = 'Court 9', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			Court9label =Label(courts, text = 'Court 9', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			Court9label.place(rely=0.155,relx=0.85,anchor=CENTER)
 			Court9Button = Button(courts, text='9', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court9Button), bg="black", highlightthickness=5, activebackground="grey")
 			Court9Button.place(rely=0.24,relx=0.85,anchor=CENTER)
 			Court9Button.image = CourtsImage
 
 
-			Court10label =Label(courts, text = 'Court 10', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			Court10label =Label(courts, text = 'Court 10', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			Court10label.place(rely=0.375,relx=0.85,anchor=CENTER)
 			Court10Button = Button(courts, text='10', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court10Button), bg="black", highlightthickness=5, activebackground="grey")
 			Court10Button.place(rely=0.46,relx=0.85,anchor=CENTER)
 			Court10Button.image = CourtsImage
 
 
-			Court11label =Label(courts, text = 'Court 11', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			Court11label =Label(courts, text = 'Court 11', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			Court11label.place(rely=0.595,relx=0.85,anchor=CENTER)
 			Court11Button = Button(courts, text='11', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court11Button), bg="black", highlightthickness=5, activebackground="grey")
 			Court11Button.place(rely=0.68,relx=0.85,anchor=CENTER)
 			Court11Button.image = CourtsImage
 
 
-			Court12label =Label(courts, text = 'Court 12', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			Court12label =Label(courts, text = 'Court 12', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			Court12label.place(rely=0.815,relx=0.85,anchor=CENTER)
 			Court12Button = Button(courts, text='12', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court12Button), bg="black", highlightthickness=5, activebackground="grey")
 			Court12Button.place(rely=0.9,relx=0.85,anchor=CENTER)
 			Court12Button.image = CourtsImage
 
 
-			SelectCourtsButton=Button(courts, cursor="tcross",text = 'Select Courts', command = lambda : ChangeCourtsColour(courts,Court1Button, Court2Button, Court3Button, Court4Button, Court5Button, Court6Button, Court7Button, Court8Button, Court9Button, Court10Button, Court11Button, Court12Button), fg ='white', bg='black', relief= 'groove', font = ('Verdana',8,'bold'), padx =15)
+			SelectCourtsButton=Button(courts, cursor="tcross",text = 'Select Courts', command = lambda : ChangeCourtsColour(courts,Court1Button, Court2Button, Court3Button, Court4Button, Court5Button, Court6Button, Court7Button, Court8Button, Court9Button, Court10Button, Court11Button, Court12Button), fg ='white', bg='black', relief= 'groove', font = ('serif',8,'bold'), padx =15)
 			SelectCourtsButton.place(rely=0.095,relx=0.5,anchor=CENTER)
 			ToolTips.bind(SelectCourtsButton, 'Confirm courts selected')
 
@@ -1230,7 +1230,7 @@ class NewCompetitionContent:
 
 						final_singlesID_choices = singles_competitionID_list
 
-						final_member_delete_dropdown = ttk.Combobox(self.competition, value=final_singlesID_choices, textvariable=SinglesIDChoice ,font=('Tahoma', 10, 'bold'), width=5)
+						final_member_delete_dropdown = ttk.Combobox(self.competition, value=final_singlesID_choices, textvariable=SinglesIDChoice ,font=('serif', 10, 'bold'), width=5)
 						final_member_delete_dropdown.place(rely=0.29, relx=0.53, anchor='center')
 						final_member_delete_dropdown.config(state='readonly')
 						final_member_delete_dropdown.set('')
@@ -1309,7 +1309,7 @@ class NewCompetitionContent:
 
 						final_doublesID_choices = doubles_competitionID_list
 
-						final_member_delete_dropdown = ttk.Combobox(self.competition, value=final_doublesID_choices, textvariable=DoublesIDChoice ,font=('Tahoma', 10, 'bold'), width=5)
+						final_member_delete_dropdown = ttk.Combobox(self.competition, value=final_doublesID_choices, textvariable=DoublesIDChoice ,font=('serif', 10, 'bold'), width=5)
 						final_member_delete_dropdown.place(rely=0.29, relx=0.53, anchor='center')
 						final_member_delete_dropdown.config(state='readonly')
 						final_member_delete_dropdown.set('')
@@ -1849,7 +1849,7 @@ class NewCompetitionContent:
 				singlestreeviewPopulate(singles_competition_treeview)
 
 
-				select_singles_group_label = tkinter.Label(self.competition, text="Select group:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
+				select_singles_group_label = tkinter.Label(self.competition, text="Select group:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				select_singles_group_label.place(rely=0.92, relx=0.1, anchor='center')
 
 				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
@@ -1869,15 +1869,15 @@ class NewCompetitionContent:
 
 				final_singlesID_choices = singles_competitionID_list
 
-				member_update_dropdown = ttk.Combobox(self.competition, value=final_singlesID_choices, textvariable=SinglesIDChoice ,font=('Tahoma', 10, 'bold'), width=5)
+				member_update_dropdown = ttk.Combobox(self.competition, value=final_singlesID_choices, textvariable=SinglesIDChoice ,font=('serif', 10, 'bold'), width=5)
 				member_update_dropdown.place(rely=0.924, relx=0.205, anchor='center')
 				member_update_dropdown.config(state='readonly')
 
 
-				username_label = tkinter.Label(self.competition, text="New Member 1:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
+				username_label = tkinter.Label(self.competition, text="New Member 1:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				username_label.place(rely=0.883, relx=0.47, anchor='center')
 
-				username2_label = tkinter.Label(self.competition, text="New Member 2:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
+				username2_label = tkinter.Label(self.competition, text="New Member 2:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				username2_label.place(rely=0.943, relx=0.47, anchor='center')
 
 				member_name_list = []
@@ -1894,15 +1894,15 @@ class NewCompetitionContent:
 
 				member_name_choices = member_name_list
 
-				member_selection_dropdown = ttk.Combobox(self.competition, value=member_name_choices, textvariable=memberNamesAndPasswords ,font=('Tahoma', 8, 'bold'), width=25)
+				member_selection_dropdown = ttk.Combobox(self.competition, value=member_name_choices, textvariable=memberNamesAndPasswords ,font=('serif', 8, 'bold'), width=25)
 				member_selection_dropdown.place(rely=0.883, relx=0.66, anchor='center')
 				member_selection_dropdown.config(state='readonly')
 
-				member_selection_dropdown2 = ttk.Combobox(self.competition, value=member_name_choices, textvariable=memberNamesAndPasswords2 ,font=('Tahoma', 8, 'bold'), width=25)
+				member_selection_dropdown2 = ttk.Combobox(self.competition, value=member_name_choices, textvariable=memberNamesAndPasswords2 ,font=('serif', 8, 'bold'), width=25)
 				member_selection_dropdown2.place(rely=0.943, relx=0.66, anchor='center')
 				member_selection_dropdown2.config(state='readonly')
 
-				singles_update_button = tkinter.Button(self.competition, cursor="tcross",text="Update Group", command= lambda : SinglesUpdateCompetition(select_singles_group_label, username_label, username2_label, member_update_dropdown, member_selection_dropdown, member_selection_dropdown2, singles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 10, 'bold'), padx=5, pady=2)
+				singles_update_button = tkinter.Button(self.competition, cursor="tcross",text="Update Group", command= lambda : SinglesUpdateCompetition(select_singles_group_label, username_label, username2_label, member_update_dropdown, member_selection_dropdown, member_selection_dropdown2, singles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 10, 'bold'), padx=5, pady=2)
 				singles_update_button.place(rely=0.92, relx=0.9, anchor='center')
 				ToolTips.bind(singles_update_button, 'Update details of singles competition')
 
@@ -1931,7 +1931,7 @@ class NewCompetitionContent:
 				singlestreeviewPopulate(singles_competition_treeview)
 
 
-				select_singles_group_label = tkinter.Label(self.competition, text="Select group:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
+				select_singles_group_label = tkinter.Label(self.competition, text="Select group:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				select_singles_group_label.place(rely=0.92, relx=0.1, anchor='center')
 
 				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
@@ -1951,25 +1951,25 @@ class NewCompetitionContent:
 
 				final_singlesID_choices = singles_competitionID_list
 
-				member_update_dropdown = ttk.Combobox(self.competition, value=final_singlesID_choices, textvariable=SinglesIDChoice ,font=('Tahoma', 10, 'bold'), width=5)
+				member_update_dropdown = ttk.Combobox(self.competition, value=final_singlesID_choices, textvariable=SinglesIDChoice ,font=('serif', 10, 'bold'), width=5)
 				member_update_dropdown.place(rely=0.924, relx=0.205, anchor='center')
 				member_update_dropdown.config(state='readonly')
 
-				new_start_date_label = tkinter.Label(self.competition, text="New Start Date:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
+				new_start_date_label = tkinter.Label(self.competition, text="New Start Date:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				new_start_date_label.place(rely=0.883, relx=0.48, anchor='center')
 
-				new_end_date_label = tkinter.Label(self.competition, text="New End Date:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
+				new_end_date_label = tkinter.Label(self.competition, text="New End Date:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				new_end_date_label.place(rely=0.953, relx=0.48, anchor='center')
 
-				new_start_date_entry = Button(self.competition, text='Select New Start Date',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : startDateCheck(startDate), padx=10, bd=4, relief="ridge")
+				new_start_date_entry = Button(self.competition, text='Select New Start Date',font=("serif",10, 'bold'), cursor="tcross",command=lambda : startDateCheck(startDate), padx=10, bd=4, relief="ridge")
 				new_start_date_entry.place(rely=0.883, relx=0.66, anchor='center')
 				ToolTips.bind(new_start_date_entry, 'Update start date of singles competition')
 
-				new_end_date_entry = Button(self.competition, text='Select New End Date',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : endDateCheck(endDate), padx=10, bd=4, relief="ridge")
+				new_end_date_entry = Button(self.competition, text='Select New End Date',font=("serif",10, 'bold'), cursor="tcross",command=lambda : endDateCheck(endDate), padx=10, bd=4, relief="ridge")
 				new_end_date_entry.place(rely=0.953, relx=0.66, anchor='center')
 				ToolTips.bind(new_end_date_entry, 'Update end date of singles competition')
 
-				singles_update_button = tkinter.Button(self.competition, cursor="tcross",text="Update Group", command= lambda : SinglesUpdateCompetition(select_singles_group_label, new_start_date_label, new_end_date_label, member_update_dropdown, new_start_date_entry, new_end_date_entry, singles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 10, 'bold'), padx=5, pady=2)
+				singles_update_button = tkinter.Button(self.competition, cursor="tcross",text="Update Group", command= lambda : SinglesUpdateCompetition(select_singles_group_label, new_start_date_label, new_end_date_label, member_update_dropdown, new_start_date_entry, new_end_date_entry, singles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 10, 'bold'), padx=5, pady=2)
 				singles_update_button.place(rely=0.92, relx=0.9, anchor='center')
 				ToolTips.bind(singles_update_button, 'Update details of singles competition')
 
@@ -1999,7 +1999,7 @@ class NewCompetitionContent:
 				singlestreeviewPopulate(singles_competition_treeview)
 
 
-				select_singles_group_label = tkinter.Label(self.competition, text="Select group:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
+				select_singles_group_label = tkinter.Label(self.competition, text="Select group:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				select_singles_group_label.place(rely=0.92, relx=0.1, anchor='center')
 
 				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
@@ -2019,19 +2019,19 @@ class NewCompetitionContent:
 
 				final_singlesID_choices = singles_competitionID_list
 
-				member_update_dropdown = ttk.Combobox(self.competition, value=final_singlesID_choices, textvariable=SinglesIDChoice ,font=('Tahoma', 10, 'bold'), width=5)
+				member_update_dropdown = ttk.Combobox(self.competition, value=final_singlesID_choices, textvariable=SinglesIDChoice ,font=('serif', 10, 'bold'), width=5)
 				member_update_dropdown.place(rely=0.924, relx=0.205, anchor='center')
 				member_update_dropdown.config(state='readonly')
 
 
-				new_court_label = tkinter.Label(self.competition, text="New Court:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
+				new_court_label = tkinter.Label(self.competition, text="New Court:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				new_court_label.place(rely=0.92, relx=0.52, anchor='center')
 
-				new_court_button = Button(self.competition, text='Select New Court',font=("Tahoma",10, 'bold'), cursor="tcross",command=courtRequired, padx=10, bd=4, relief="ridge")
+				new_court_button = Button(self.competition, text='Select New Court',font=("serif",10, 'bold'), cursor="tcross",command=courtRequired, padx=10, bd=4, relief="ridge")
 				new_court_button.place(rely=0.921, relx=0.66, anchor='center')
 				ToolTips.bind(new_court_button, 'Update court of singles competition')
 
-				singles_update_button = tkinter.Button(self.competition, cursor="tcross",text="Update Group", command= lambda : SinglesUpdateCompetition(select_singles_group_label, new_court_label, None, member_update_dropdown, None, None, singles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 10, 'bold'), padx=5, pady=2)
+				singles_update_button = tkinter.Button(self.competition, cursor="tcross",text="Update Group", command= lambda : SinglesUpdateCompetition(select_singles_group_label, new_court_label, None, member_update_dropdown, None, None, singles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 10, 'bold'), padx=5, pady=2)
 				singles_update_button.place(rely=0.92, relx=0.9, anchor='center')
 				ToolTips.bind(singles_update_button, 'Update details of singles competition')
 
@@ -2081,7 +2081,7 @@ class NewCompetitionContent:
 				doublestreeviewPopulate(doubles_competition_treeview)
 
 
-				select_doubles_group_label = tkinter.Label(self.competition, text="Select group:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
+				select_doubles_group_label = tkinter.Label(self.competition, text="Select group:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				select_doubles_group_label.place(rely=0.884, relx=0.1, anchor='center')
 
 				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
@@ -2101,21 +2101,21 @@ class NewCompetitionContent:
 
 				final_doublesID_choices = doubles_competitionID_list
 
-				member_update_dropdown = ttk.Combobox(self.competition, value=final_doublesID_choices, textvariable=DoublesIDChoice ,font=('Tahoma', 10, 'bold'), width=5)
+				member_update_dropdown = ttk.Combobox(self.competition, value=final_doublesID_choices, textvariable=DoublesIDChoice ,font=('serif', 10, 'bold'), width=5)
 				member_update_dropdown.place(rely=0.888, relx=0.205, anchor='center')
 				member_update_dropdown.config(state='readonly')
 
 
-				username_label = tkinter.Label(self.competition, text="New Member 1:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
+				username_label = tkinter.Label(self.competition, text="New Member 1:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				username_label.place(rely=0.809, relx=0.47, anchor='center')
 
-				username2_label = tkinter.Label(self.competition, text="New Member 2:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
+				username2_label = tkinter.Label(self.competition, text="New Member 2:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				username2_label.place(rely=0.859, relx=0.47, anchor='center')
 
-				username3_label = tkinter.Label(self.competition, text="New Member 3:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
+				username3_label = tkinter.Label(self.competition, text="New Member 3:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				username3_label.place(rely=0.909, relx=0.47, anchor='center')
 
-				username4_label = tkinter.Label(self.competition, text="New Member 4:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
+				username4_label = tkinter.Label(self.competition, text="New Member 4:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				username4_label.place(rely=0.959, relx=0.47, anchor='center')
 
 				member_name_list = []
@@ -2132,23 +2132,23 @@ class NewCompetitionContent:
 
 				member_name_choices = member_name_list
 
-				member_selection_dropdown = ttk.Combobox(self.competition, value=member_name_choices, textvariable=memberNamesAndPasswords ,font=('Tahoma', 8, 'bold'), width=25)
+				member_selection_dropdown = ttk.Combobox(self.competition, value=member_name_choices, textvariable=memberNamesAndPasswords ,font=('serif', 8, 'bold'), width=25)
 				member_selection_dropdown.place(rely=0.812, relx=0.66, anchor='center')
 				member_selection_dropdown.config(state='readonly')
 
-				member_selection_dropdown2 = ttk.Combobox(self.competition, value=member_name_choices, textvariable=memberNamesAndPasswords2 ,font=('Tahoma', 8, 'bold'), width=25)
+				member_selection_dropdown2 = ttk.Combobox(self.competition, value=member_name_choices, textvariable=memberNamesAndPasswords2 ,font=('serif', 8, 'bold'), width=25)
 				member_selection_dropdown2.place(rely=0.862, relx=0.66, anchor='center')
 				member_selection_dropdown2.config(state='readonly')
 
-				member_selection_dropdown3 = ttk.Combobox(self.competition, value=member_name_choices, textvariable=memberNamesAndPasswords3 ,font=('Tahoma', 8, 'bold'), width=25)
+				member_selection_dropdown3 = ttk.Combobox(self.competition, value=member_name_choices, textvariable=memberNamesAndPasswords3 ,font=('serif', 8, 'bold'), width=25)
 				member_selection_dropdown3.place(rely=0.912, relx=0.66, anchor='center')
 				member_selection_dropdown3.config(state='readonly')
 
-				member_selection_dropdown4 = ttk.Combobox(self.competition, value=member_name_choices, textvariable=memberNamesAndPasswords4 ,font=('Tahoma', 8, 'bold'), width=25)
+				member_selection_dropdown4 = ttk.Combobox(self.competition, value=member_name_choices, textvariable=memberNamesAndPasswords4 ,font=('serif', 8, 'bold'), width=25)
 				member_selection_dropdown4.place(rely=0.962, relx=0.66, anchor='center')
 				member_selection_dropdown4.config(state='readonly')
 
-				doubles_update_button = tkinter.Button(self.competition, cursor="tcross",text="Update Group", command= lambda : DoublesUpdateCompetition(select_doubles_group_label, username_label, username2_label, username3_label, username4_label, member_update_dropdown, member_selection_dropdown, member_selection_dropdown2, member_selection_dropdown3, member_selection_dropdown4, doubles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 10, 'bold'), padx=5, pady=2)
+				doubles_update_button = tkinter.Button(self.competition, cursor="tcross",text="Update Group", command= lambda : DoublesUpdateCompetition(select_doubles_group_label, username_label, username2_label, username3_label, username4_label, member_update_dropdown, member_selection_dropdown, member_selection_dropdown2, member_selection_dropdown3, member_selection_dropdown4, doubles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 10, 'bold'), padx=5, pady=2)
 				doubles_update_button.place(rely=0.884, relx=0.9, anchor='center')
 				ToolTips.bind(doubles_update_button, 'Update details of doubles competition')
 
@@ -2185,7 +2185,7 @@ class NewCompetitionContent:
 				doublestreeviewPopulate(doubles_competition_treeview)
 
 
-				select_doubles_group_label = tkinter.Label(self.competition, text="Select group:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
+				select_doubles_group_label = tkinter.Label(self.competition, text="Select group:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				select_doubles_group_label.place(rely=0.92, relx=0.1, anchor='center')
 
 				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
@@ -2205,26 +2205,26 @@ class NewCompetitionContent:
 
 				final_doublesID_choices = doubles_competitionID_list
 
-				member_update_dropdown = ttk.Combobox(self.competition, value=final_doublesID_choices, textvariable=DoublesIDChoice ,font=('Tahoma', 10, 'bold'), width=5)
+				member_update_dropdown = ttk.Combobox(self.competition, value=final_doublesID_choices, textvariable=DoublesIDChoice, font=('serif', 10, 'bold'), width=5)
 				member_update_dropdown.place(rely=0.924, relx=0.205, anchor='center')
 				member_update_dropdown.config(state='readonly')
 
 
-				new_start_date_label = tkinter.Label(self.competition, text="New Start Date:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
+				new_start_date_label = tkinter.Label(self.competition, text="New Start Date:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				new_start_date_label.place(rely=0.883, relx=0.48, anchor='center')
 
-				new_end_date_label = tkinter.Label(self.competition, text="New End Date:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
+				new_end_date_label = tkinter.Label(self.competition, text="New End Date:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				new_end_date_label.place(rely=0.953, relx=0.48, anchor='center')
 
-				new_start_date_entry = Button(self.competition, text='Select New Start Date',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : startDateCheck(startDate), padx=10, bd=4, relief="ridge")
+				new_start_date_entry = Button(self.competition, text='Select New Start Date',font=("serif",10, 'bold'), cursor="tcross",command=lambda : startDateCheck(startDate), padx=10, bd=4, relief="ridge")
 				new_start_date_entry.place(rely=0.883, relx=0.66, anchor='center')
 				ToolTips.bind(new_start_date_entry, 'Update the start date of the doubles competition')
 
-				new_end_date_entry = Button(self.competition, text='Select New End Date',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : endDateCheck(endDate), padx=10, bd=4, relief="ridge")
+				new_end_date_entry = Button(self.competition, text='Select New End Date',font=("serif",10, 'bold'), cursor="tcross",command=lambda : endDateCheck(endDate), padx=10, bd=4, relief="ridge")
 				new_end_date_entry.place(rely=0.953, relx=0.66, anchor='center')
 				ToolTips.bind(new_end_date_entry, 'Update the end date of the doubles competition')
 
-				doubles_update_button = tkinter.Button(self.competition, cursor="tcross",text="Update Group", command= lambda : DoublesUpdateCompetition(select_doubles_group_label, new_start_date_label, new_end_date_label, None, None, member_update_dropdown, None, None, None, None, doubles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 10, 'bold'), padx=5, pady=2)
+				doubles_update_button = tkinter.Button(self.competition, cursor="tcross",text="Update Group", command= lambda : DoublesUpdateCompetition(select_doubles_group_label, new_start_date_label, new_end_date_label, None, None, member_update_dropdown, None, None, None, None, doubles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 10, 'bold'), padx=5, pady=2)
 				doubles_update_button.place(rely=0.92, relx=0.9, anchor='center')
 				ToolTips.bind(doubles_update_button, 'Update details of doubles competition')
 
@@ -2261,7 +2261,7 @@ class NewCompetitionContent:
 				doublestreeviewPopulate(doubles_competition_treeview)
 
 
-				select_doubles_group_label = tkinter.Label(self.competition, text="Select group:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
+				select_doubles_group_label = tkinter.Label(self.competition, text="Select group:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				select_doubles_group_label.place(rely=0.92, relx=0.1, anchor='center')
 
 				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
@@ -2281,19 +2281,19 @@ class NewCompetitionContent:
 
 				final_doublesID_choices = doubles_competitionID_list
 
-				member_update_dropdown = ttk.Combobox(self.competition, value=final_doublesID_choices, textvariable=DoublesIDChoice ,font=('Tahoma', 10, 'bold'), width=5)
+				member_update_dropdown = ttk.Combobox(self.competition, value=final_doublesID_choices, textvariable=DoublesIDChoice ,font=('serif', 10, 'bold'), width=5)
 				member_update_dropdown.place(rely=0.924, relx=0.205, anchor='center')
 				member_update_dropdown.config(state='readonly')
 
 
-				new_court_label = tkinter.Label(self.competition, text="New Court:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
+				new_court_label = tkinter.Label(self.competition, text="New Court:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				new_court_label.place(rely=0.92, relx=0.52, anchor='center')
 
-				new_court_button = Button(self.competition, text='Select New Court',font=("Tahoma",10, 'bold'), cursor="tcross",command=courtRequired, padx=10, bd=4, relief="ridge")
+				new_court_button = Button(self.competition, text='Select New Court',font=("serif",10, 'bold'), cursor="tcross",command=courtRequired, padx=10, bd=4, relief="ridge")
 				new_court_button.place(rely=0.921, relx=0.66, anchor='center')
 				ToolTips.bind(new_court_button, 'Update the doubles court of the competition')
 
-				doubles_update_button = tkinter.Button(self.competition, cursor="tcross",text="Update Group", command= lambda : DoublesUpdateCompetition(select_doubles_group_label, new_court_label, None, None, None, member_update_dropdown, None, None, None, None, doubles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 10, 'bold'), padx=5, pady=2)
+				doubles_update_button = tkinter.Button(self.competition, cursor="tcross",text="Update Group", command= lambda : DoublesUpdateCompetition(select_doubles_group_label, new_court_label, None, None, None, member_update_dropdown, None, None, None, None, doubles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 10, 'bold'), padx=5, pady=2)
 				doubles_update_button.place(rely=0.92, relx=0.9, anchor='center')
 				ToolTips.bind(doubles_update_button, 'Update doubles group of the competition')
 
@@ -2306,20 +2306,20 @@ class NewCompetitionContent:
 			value3.config(state='disabled')
 			value4.config(state='disabled')
 
-			competition_status_label = tkinter.Label(self.competition, text="Competition Status:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
+			competition_status_label = tkinter.Label(self.competition, text="Competition Status:", font=('serif', 12, 'bold'), fg='black', bg='white')
 			competition_status_label.place(rely=0.198, relx=0.205, anchor='center')
 
-			competition_status_new = Radiobutton(self.competition, text="Create New", variable=CompetitionStatus, value=1, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
+			competition_status_new = Radiobutton(self.competition, text="Create New", variable=CompetitionStatus, value=1, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 			competition_status_new.place(rely=0.2, relx=0.36, anchor='center')
 
-			competition_status_update = Radiobutton(self.competition, text="Update Existing", variable=CompetitionStatus, value=2, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
+			competition_status_update = Radiobutton(self.competition, text="Update Existing", variable=CompetitionStatus, value=2, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 			competition_status_update.place(rely=0.2, relx=0.5, anchor='center')
 
-			competition_status_delete = Radiobutton(self.competition, text="Delete Existing", variable=CompetitionStatus, value=3, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
+			competition_status_delete = Radiobutton(self.competition, text="Delete Existing", variable=CompetitionStatus, value=3, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 			competition_status_delete.place(rely=0.2, relx=0.65, anchor='center')
 			CompetitionStatus.set("1")
 
-			competition_status_button = tkinter.Button(self.competition, cursor="tcross",text="Select Status", command= lambda : CompetitionStatusConfirmation(competition_status_label, competition_status_new, competition_status_update, competition_status_delete, competition_status_button), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 9, 'bold'), padx=2)
+			competition_status_button = tkinter.Button(self.competition, cursor="tcross",text="Select Status", command= lambda : CompetitionStatusConfirmation(competition_status_label, competition_status_new, competition_status_update, competition_status_delete, competition_status_button), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 9, 'bold'), padx=2)
 			competition_status_button.place(rely=0.1995, relx=0.79, anchor='center')
 			ToolTips.bind(competition_status_button, 'Confirm the status of the competition')
 
@@ -2337,10 +2337,10 @@ class NewCompetitionContent:
 			value9.config(state='disabled')
 
 			if (MatchType.get() == 1 and CompetitionStatus.get() == 1):
-				username_label = tkinter.Label(self.competition, text="Member 1:", font=('Tahoma', 15, 'bold'), fg='black', bg='white')
+				username_label = tkinter.Label(self.competition, text="Member 1:", font=('serif', 15, 'bold'), fg='black', bg='white')
 				username_label.place(rely=0.29, relx=0.09, anchor='center')
 
-				username2_label = tkinter.Label(self.competition, text="Member 2:", font=('Tahoma', 15, 'bold'), fg='black', bg='white')
+				username2_label = tkinter.Label(self.competition, text="Member 2:", font=('serif', 15, 'bold'), fg='black', bg='white')
 				username2_label.place(rely=0.37, relx=0.09, anchor='center')
 
 
@@ -2361,41 +2361,41 @@ class NewCompetitionContent:
 
 				member_name_choices = member_name_list
 
-				member_selection_dropdown = ttk.Combobox(self.competition, value=member_name_choices, textvariable=memberNamesAndPasswords ,font=('Tahoma', 9, 'bold'), width=25)
+				member_selection_dropdown = ttk.Combobox(self.competition, value=member_name_choices, textvariable=memberNamesAndPasswords ,font=('serif', 9, 'bold'), width=25)
 				member_selection_dropdown.place(rely=0.293, relx=0.277, anchor='center')
 				member_selection_dropdown.config(state='readonly')
 
-				member_selection_dropdown2 = ttk.Combobox(self.competition, value=member_name_choices, textvariable=memberNamesAndPasswords2 ,font=('Tahoma', 9, 'bold'), width=25)
+				member_selection_dropdown2 = ttk.Combobox(self.competition, value=member_name_choices, textvariable=memberNamesAndPasswords2 ,font=('serif', 9, 'bold'), width=25)
 				member_selection_dropdown2.place(rely=0.373, relx=0.277, anchor='center')
 				member_selection_dropdown2.config(state='readonly')
 
 
-				start_date_label = tkinter.Label(self.competition, text="Start Date:", font=('Tahoma', 15, 'bold'), fg='black', bg='white')
+				start_date_label = tkinter.Label(self.competition, text="Start Date:", font=('serif', 15, 'bold'), fg='black', bg='white')
 				start_date_label.place(rely=0.45, relx=0.09, anchor='center')
 
-				end_date_label = tkinter.Label(self.competition, text="End Date:", font=('Tahoma', 15, 'bold'), fg='black', bg='white')
+				end_date_label = tkinter.Label(self.competition, text="End Date:", font=('serif', 15, 'bold'), fg='black', bg='white')
 				end_date_label.place(rely=0.53, relx=0.09, anchor='center')
 
-				start_date_entry = Button(self.competition, text='Select Start Date',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : startDateCheck(startDate), padx=10, bd=4, relief="ridge")
+				start_date_entry = Button(self.competition, text='Select Start Date',font=("serif",10, 'bold'), cursor="tcross",command=lambda : startDateCheck(startDate), padx=10, bd=4, relief="ridge")
 				start_date_entry.place(rely=0.453, relx=0.277, anchor='center')
 				ToolTips.bind(start_date_entry, 'Select the start date for the competition')
 
-				end_date_entry = Button(self.competition, text='Select End Date',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : endDateCheck(endDate), padx=10, bd=4, relief="ridge")
+				end_date_entry = Button(self.competition, text='Select End Date',font=("serif",10, 'bold'), cursor="tcross",command=lambda : endDateCheck(endDate), padx=10, bd=4, relief="ridge")
 				end_date_entry.place(rely=0.533, relx=0.277, anchor='center')
 				ToolTips.bind(end_date_entry, 'Select the end date for the competition')
 
-				court_label = tkinter.Label(self.competition, text="Court:", font=('Tahoma', 15, 'bold'), fg='black', bg='white')
+				court_label = tkinter.Label(self.competition, text="Court:", font=('serif', 15, 'bold'), fg='black', bg='white')
 				court_label.place(rely=0.61, relx=0.09, anchor='center')
 
-				court_button = Button(self.competition, text='Select Court',font=("Tahoma",10, 'bold'), cursor="tcross",command=courtRequired, padx=10, bd=4, relief="ridge")
+				court_button = Button(self.competition, text='Select Court',font=("serif",10, 'bold'), cursor="tcross",command=courtRequired, padx=10, bd=4, relief="ridge")
 				court_button.place(rely=0.613, relx=0.277, anchor='center')
 				ToolTips.bind(court_button, 'Select the court required for the competition')
 
 
-				calendar_label =Label(self.competition, text = 'Singles Competition Dates', fg ='black',bg='white',font=('Tahoma',11,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+				calendar_label =Label(self.competition, text = 'Singles Competition Dates', fg ='black',bg='white',font=('serif',11,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 				calendar_label.place(rely=0.286,relx=0.67,anchor=CENTER)
 				today = date.today()
-				cal = Calendar(self.competition, font="Tahoma 16", selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
+				cal = Calendar(self.competition, font="serif 16", selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
 				cal.place(rely=0.51, relx=0.67, anchor='center')
 				cal.bind("<<CalendarSelected>>", partial(SinglesCalendarSelection, cal))
 
@@ -2422,17 +2422,17 @@ class NewCompetitionContent:
 				singlestreeviewPopulate(singles_competition_treeview)
 				SinglesChangeCalendarColour(cal)
 
-				submit_new_singles_button = tkinter.Button(self.competition, cursor="tcross",text="Submit", command=lambda : SubmitNewSingles(username_label, username2_label, start_date_label, end_date_label, court_label, cal, singles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 11, 'bold'), padx=30, pady=2)
+				submit_new_singles_button = tkinter.Button(self.competition, cursor="tcross",text="Submit", command=lambda : SubmitNewSingles(username_label, username2_label, start_date_label, end_date_label, court_label, cal, singles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 11, 'bold'), padx=30, pady=2)
 				submit_new_singles_button.place(rely=0.695, relx=0.28, anchor='center')
 				ToolTips.bind(submit_new_singles_button, 'Submit new singles competition')
 
 
 
 			if (MatchType.get() == 2 and CompetitionStatus.get() == 1):
-				team_label = tkinter.Label(self.competition, text="Team 1:", font=('Tahoma', 15, 'bold'), fg='black', bg='white')
+				team_label = tkinter.Label(self.competition, text="Team 1:", font=('serif', 15, 'bold'), fg='black', bg='white')
 				team_label.place(rely=0.29, relx=0.09, anchor='center')
 
-				team2_label = tkinter.Label(self.competition, text="Team 2:", font=('Tahoma', 15, 'bold'), fg='black', bg='white')
+				team2_label = tkinter.Label(self.competition, text="Team 2:", font=('serif', 15, 'bold'), fg='black', bg='white')
 				team2_label.place(rely=0.37, relx=0.09, anchor='center')
 
 
@@ -2453,49 +2453,49 @@ class NewCompetitionContent:
 
 				member_name_choices = member_name_list
 
-				member_team_selection_dropdown = ttk.Combobox(self.competition, value=member_name_choices, textvariable=memberNamesAndPasswords ,font=('Tahoma', 9, 'bold'), width=35)
+				member_team_selection_dropdown = ttk.Combobox(self.competition, value=member_name_choices, textvariable=memberNamesAndPasswords ,font=('serif', 9, 'bold'), width=35)
 				member_team_selection_dropdown.place(rely=0.293, relx=0.32, anchor='center')
 				member_team_selection_dropdown.config(state='readonly')
 
-				member2_team_selection_dropdown = ttk.Combobox(self.competition, value=member_name_choices, textvariable=memberNamesAndPasswords2 ,font=('Tahoma', 9, 'bold'), width=35)
+				member2_team_selection_dropdown = ttk.Combobox(self.competition, value=member_name_choices, textvariable=memberNamesAndPasswords2 ,font=('serif', 9, 'bold'), width=35)
 				member2_team_selection_dropdown.place(rely=0.293, relx=0.68, anchor='center')
 				member2_team_selection_dropdown.config(state='readonly')
 
-				member_team_selection_dropdown2 = ttk.Combobox(self.competition, value=member_name_choices, textvariable=memberNamesAndPasswords3 ,font=('Tahoma', 9, 'bold'), width=35)
+				member_team_selection_dropdown2 = ttk.Combobox(self.competition, value=member_name_choices, textvariable=memberNamesAndPasswords3 ,font=('serif', 9, 'bold'), width=35)
 				member_team_selection_dropdown2.place(rely=0.373, relx=0.32, anchor='center')
 				member_team_selection_dropdown2.config(state='readonly')
 
-				member2_team_selection_dropdown2 = ttk.Combobox(self.competition, value=member_name_choices, textvariable=memberNamesAndPasswords4 ,font=('Tahoma', 9, 'bold'), width=35)
+				member2_team_selection_dropdown2 = ttk.Combobox(self.competition, value=member_name_choices, textvariable=memberNamesAndPasswords4 ,font=('serif', 9, 'bold'), width=35)
 				member2_team_selection_dropdown2.place(rely=0.373, relx=0.68, anchor='center')
 				member2_team_selection_dropdown2.config(state='readonly')
 
 
-				start_date_label = tkinter.Label(self.competition, text="Start Date:", font=('Tahoma', 15, 'bold'), fg='black', bg='white')
+				start_date_label = tkinter.Label(self.competition, text="Start Date:", font=('serif', 15, 'bold'), fg='black', bg='white')
 				start_date_label.place(rely=0.45, relx=0.09, anchor='center')
 
-				end_date_label = tkinter.Label(self.competition, text="End Date:", font=('Tahoma', 15, 'bold'), fg='black', bg='white')
+				end_date_label = tkinter.Label(self.competition, text="End Date:", font=('serif', 15, 'bold'), fg='black', bg='white')
 				end_date_label.place(rely=0.53, relx=0.09, anchor='center')
 
-				start_date_entry = Button(self.competition, text='Select Start Date',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : startDateCheck(startDate), padx=10, bd=4, relief="ridge")
+				start_date_entry = Button(self.competition, text='Select Start Date',font=("serif",10, 'bold'), cursor="tcross",command=lambda : startDateCheck(startDate), padx=10, bd=4, relief="ridge")
 				start_date_entry.place(rely=0.453, relx=0.277, anchor='center')
 				ToolTips.bind(start_date_entry, 'Select the start date for the competition')
 
-				end_date_entry = Button(self.competition, text='Select End Date',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : endDateCheck(endDate), padx=10, bd=4, relief="ridge")
+				end_date_entry = Button(self.competition, text='Select End Date',font=("serif",10, 'bold'), cursor="tcross",command=lambda : endDateCheck(endDate), padx=10, bd=4, relief="ridge")
 				end_date_entry.place(rely=0.533, relx=0.277, anchor='center')
 				ToolTips.bind(end_date_entry, 'Select the end date for the competition')
 
-				court_label = tkinter.Label(self.competition, text="Court:", font=('Tahoma', 15, 'bold'), fg='black', bg='white')
+				court_label = tkinter.Label(self.competition, text="Court:", font=('serif', 15, 'bold'), fg='black', bg='white')
 				court_label.place(rely=0.61, relx=0.09, anchor='center')
 
-				court_button = Button(self.competition, text='Select Court',font=("Tahoma",10, 'bold'), cursor="tcross",command=courtRequired, padx=10, bd=4, relief="ridge")
+				court_button = Button(self.competition, text='Select Court',font=("serif",10, 'bold'), cursor="tcross",command=courtRequired, padx=10, bd=4, relief="ridge")
 				court_button.place(rely=0.613, relx=0.277, anchor='center')
 				ToolTips.bind(court_button, 'Select the court required for the competition')
 
 
-				calendar_label =Label(self.competition, text = 'Doubles Competition Dates', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+				calendar_label =Label(self.competition, text = 'Doubles Competition Dates', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 				calendar_label.place(rely=0.426,relx=0.67,anchor=CENTER)
 				today = datetime.date.today()
-				cal = Calendar(self.competition, font="Tahoma 10", selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
+				cal = Calendar(self.competition, font="serif 10", selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
 				cal.place(rely=0.588, relx=0.67, anchor='center')
 				cal.bind("<<CalendarSelected>>", partial(DoublesCalendarSelection, cal))
 
@@ -2531,27 +2531,27 @@ class NewCompetitionContent:
 				doublestreeviewPopulate(doubles_competition_treeview)
 				DoublesChangeCalendarColour(cal)
 
-				submit_new_doubles_button = tkinter.Button(self.competition, cursor="tcross",text="Submit", command=lambda : SubmitNewDoubles(team_label, team2_label, start_date_label, end_date_label, court_label, cal, doubles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 11, 'bold'), padx=30, pady=2)
+				submit_new_doubles_button = tkinter.Button(self.competition, cursor="tcross",text="Submit", command=lambda : SubmitNewDoubles(team_label, team2_label, start_date_label, end_date_label, court_label, cal, doubles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 11, 'bold'), padx=30, pady=2)
 				submit_new_doubles_button.place(rely=0.695, relx=0.28, anchor='center')
 				ToolTips.bind(submit_new_doubles_button, 'Submit new doubles competition')
 
 
 
 			if (MatchType.get() == 1 and CompetitionStatus.get() == 2):
-				singles_update_label = tkinter.Label(self.competition, text="Which section do you want to update:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
+				singles_update_label = tkinter.Label(self.competition, text="Which section do you want to update:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				singles_update_label.place(rely=0.274, relx=0.175, anchor='center')
 
-				update_usernames_radiobutton = Radiobutton(self.competition, text="Usernames", variable=UpdateSelectionSingles, value=1, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
+				update_usernames_radiobutton = Radiobutton(self.competition, text="Usernames", variable=UpdateSelectionSingles, value=1, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 				update_usernames_radiobutton.place(rely=0.277, relx=0.4, anchor='center')
 
-				update_dates_radiobutton = Radiobutton(self.competition, text="Dates", variable=UpdateSelectionSingles, value=2, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
+				update_dates_radiobutton = Radiobutton(self.competition, text="Dates", variable=UpdateSelectionSingles, value=2, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 				update_dates_radiobutton.place(rely=0.277, relx=0.5025, anchor='center')
 
-				update_court_radiobutton = Radiobutton(self.competition, text="Court", variable=UpdateSelectionSingles, value=3, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
+				update_court_radiobutton = Radiobutton(self.competition, text="Court", variable=UpdateSelectionSingles, value=3, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 				update_court_radiobutton.place(rely=0.277, relx=0.59, anchor='center')
 				UpdateSelectionSingles.set("1")
 
-				singles_update_button = tkinter.Button(self.competition, cursor="tcross",text="Select Section", command= lambda : UpdateSinglesSelectionConfirmation(singles_update_label, update_usernames_radiobutton, update_dates_radiobutton, update_court_radiobutton, singles_update_button), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 9, 'bold'), padx=2)
+				singles_update_button = tkinter.Button(self.competition, cursor="tcross",text="Select Section", command= lambda : UpdateSinglesSelectionConfirmation(singles_update_label, update_usernames_radiobutton, update_dates_radiobutton, update_court_radiobutton, singles_update_button), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 9, 'bold'), padx=2)
 				singles_update_button.place(rely=0.2765, relx=0.703, anchor='center')
 				ToolTips.bind(singles_update_button, 'Confirm match to update')
 
@@ -2565,20 +2565,20 @@ class NewCompetitionContent:
 
 
 			if (MatchType.get() == 2 and CompetitionStatus.get() == 2):
-				doubles_update_label = tkinter.Label(self.competition, text="Which section do you want to update:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
+				doubles_update_label = tkinter.Label(self.competition, text="Which section do you want to update:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				doubles_update_label.place(rely=0.274, relx=0.175, anchor='center')
 
-				update_usernames_radiobutton = Radiobutton(self.competition, text="Usernames", variable=UpdateSelectionDoubles, value=1, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
+				update_usernames_radiobutton = Radiobutton(self.competition, text="Usernames", variable=UpdateSelectionDoubles, value=1, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 				update_usernames_radiobutton.place(rely=0.277, relx=0.4, anchor='center')
 
-				update_dates_radiobutton = Radiobutton(self.competition, text="Dates", variable=UpdateSelectionDoubles, value=2, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
+				update_dates_radiobutton = Radiobutton(self.competition, text="Dates", variable=UpdateSelectionDoubles, value=2, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 				update_dates_radiobutton.place(rely=0.277, relx=0.5025, anchor='center')
 
-				update_court_radiobutton = Radiobutton(self.competition, text="Court", variable=UpdateSelectionDoubles, value=3, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
+				update_court_radiobutton = Radiobutton(self.competition, text="Court", variable=UpdateSelectionDoubles, value=3, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 				update_court_radiobutton.place(rely=0.277, relx=0.59, anchor='center')
 				UpdateSelectionDoubles.set("1")
 
-				doubles_update_button = tkinter.Button(self.competition, cursor="tcross",text="Select Section", command= lambda : UpdateDoublesSelectionConfirmation(doubles_update_label, update_usernames_radiobutton, update_dates_radiobutton, update_court_radiobutton, doubles_update_button), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 9, 'bold'), padx=2)
+				doubles_update_button = tkinter.Button(self.competition, cursor="tcross",text="Select Section", command= lambda : UpdateDoublesSelectionConfirmation(doubles_update_label, update_usernames_radiobutton, update_dates_radiobutton, update_court_radiobutton, doubles_update_button), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 9, 'bold'), padx=2)
 				doubles_update_button.place(rely=0.2765, relx=0.703, anchor='center')
 				ToolTips.bind(doubles_update_button, 'Confirm match to update')
 
@@ -2590,7 +2590,7 @@ class NewCompetitionContent:
 
 
 			if (MatchType.get() == 1 and CompetitionStatus.get() == 3):
-				select_group_delete_label = tkinter.Label(self.competition, text="Select which group to delete:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
+				select_group_delete_label = tkinter.Label(self.competition, text="Select which group to delete:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				select_group_delete_label.place(rely=0.288, relx=0.355, anchor='center')
 
 				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
@@ -2610,11 +2610,11 @@ class NewCompetitionContent:
 
 				final_singlesID_choices = singles_competitionID_list
 
-				member_delete_dropdown = ttk.Combobox(self.competition, value=final_singlesID_choices, textvariable=SinglesIDChoice ,font=('Tahoma', 10, 'bold'), width=5)
+				member_delete_dropdown = ttk.Combobox(self.competition, value=final_singlesID_choices, textvariable=SinglesIDChoice ,font=('serif', 10, 'bold'), width=5)
 				member_delete_dropdown.place(rely=0.29, relx=0.53, anchor='center')
 				member_delete_dropdown.config(state='readonly')
 
-				singles_delete_button = tkinter.Button(self.competition, cursor="tcross",text="Delete Group", command= lambda : SinglesDeleteCompetition(select_group_delete_label, member_delete_dropdown, singles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 9, 'bold'), padx=2)
+				singles_delete_button = tkinter.Button(self.competition, cursor="tcross",text="Delete Group", command= lambda : SinglesDeleteCompetition(select_group_delete_label, member_delete_dropdown, singles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 9, 'bold'), padx=2)
 				singles_delete_button.place(rely=0.2895, relx=0.642, anchor='center')
 				ToolTips.bind(singles_delete_button, 'Confirm singles match to delete')
 
@@ -2643,7 +2643,7 @@ class NewCompetitionContent:
 
 
 			if (MatchType.get() == 2 and CompetitionStatus.get() == 3):
-				select_group_delete_label = tkinter.Label(self.competition, text="Select which group to delete:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
+				select_group_delete_label = tkinter.Label(self.competition, text="Select which group to delete:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				select_group_delete_label.place(rely=0.288, relx=0.355, anchor='center')
 
 				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
@@ -2663,11 +2663,11 @@ class NewCompetitionContent:
 
 				final_doublesID_choices = doubles_competitionID_list
 
-				member_delete_dropdown = ttk.Combobox(self.competition, value=final_doublesID_choices, textvariable=DoublesIDChoice ,font=('Tahoma', 10, 'bold'), width=5)
+				member_delete_dropdown = ttk.Combobox(self.competition, value=final_doublesID_choices, textvariable=DoublesIDChoice ,font=('serif', 10, 'bold'), width=5)
 				member_delete_dropdown.place(rely=0.29, relx=0.53, anchor='center')
 				member_delete_dropdown.config(state='readonly')
 
-				doubles_delete_button = tkinter.Button(self.competition, cursor="tcross",text="Delete Group", command= lambda : DoublesDeleteCompetition(select_group_delete_label, member_delete_dropdown, doubles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 9, 'bold'), padx=2)
+				doubles_delete_button = tkinter.Button(self.competition, cursor="tcross",text="Delete Group", command= lambda : DoublesDeleteCompetition(select_group_delete_label, member_delete_dropdown, doubles_competition_treeview), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 9, 'bold'), padx=2)
 				doubles_delete_button.place(rely=0.2895, relx=0.642, anchor='center')
 				ToolTips.bind(doubles_delete_button, 'Confirm doubles match to delete')
 
@@ -2723,17 +2723,17 @@ class NewCompetitionContent:
 
 
 
-		match_type_label = tkinter.Label(self.competition, text="Type of Match:", font=('Tahoma', 12, 'bold'), fg='black', bg='white')
+		match_type_label = tkinter.Label(self.competition, text="Type of Match:", font=('serif', 12, 'bold'), fg='black', bg='white')
 		match_type_label.place(rely=0.128, relx=0.33, anchor='center')
 
-		match_type_singles = Radiobutton(self.competition, text="Singles", variable=MatchType, value=1, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
+		match_type_singles = Radiobutton(self.competition, text="Singles", variable=MatchType, value=1, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 		match_type_singles.place(rely=0.13, relx=0.45, anchor='center')
 
-		match_type_doubles = Radiobutton(self.competition, text="Doubles", variable=MatchType, value=2, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
+		match_type_doubles = Radiobutton(self.competition, text="Doubles", variable=MatchType, value=2, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 		match_type_doubles.place(rely=0.13, relx=0.55, anchor='center')
 		MatchType.set("1")
 
-		match_type_button = tkinter.Button(self.competition, cursor="tcross",text="Select Match Type", command=lambda : MatchTypeConfirmation(match_type_label, match_type_singles, match_type_doubles, match_type_button), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 9, 'bold'), padx=2)
+		match_type_button = tkinter.Button(self.competition, cursor="tcross",text="Select Match Type", command=lambda : MatchTypeConfirmation(match_type_label, match_type_singles, match_type_doubles, match_type_button), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 9, 'bold'), padx=2)
 		match_type_button.place(rely=0.1295, relx=0.685, anchor='center')
 		ToolTips.bind(match_type_button, 'Confirm match type selection')
 

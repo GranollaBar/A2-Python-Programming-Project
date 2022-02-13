@@ -303,14 +303,14 @@ class MemberContent:
 
 				update_member=Toplevel(bg="white")
 
-				title_label =Label(update_member,text = 'Update Member' , fg ='SpringGreen3',bg='white',font=('Verdana',15,'bold'))
+				title_label =Label(update_member,text = 'Update Member' , fg ='SpringGreen3',bg='white',font=('serif',15,'bold'))
 				title_label.place(rely=0.13,relx=0.5,anchor=CENTER)
 
-				update_telephone=Button(update_member,text = 'Update Telephone', command = lambda : update_member_telephone(update_member), fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20, pady =10)
+				update_telephone=Button(update_member,text = 'Update Telephone', command = lambda : update_member_telephone(update_member), fg ='white', bg='black', relief= 'groove', font = ('serif',10,'bold'), padx =20, pady =10)
 				update_telephone.place(rely=0.43,relx=0.5,anchor=CENTER)
 				ToolTips.bind(update_telephone, "Update the member's telephone")
 
-				update_postcode=Button(update_member,text = 'Update Postcode', command = lambda : update_member_postcode(update_member), fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20, pady =10)
+				update_postcode=Button(update_member,text = 'Update Postcode', command = lambda : update_member_postcode(update_member), fg ='white', bg='black', relief= 'groove', font = ('serif',10,'bold'), padx =20, pady =10)
 				update_postcode.place(rely=0.75,relx=0.5,anchor=CENTER)
 				ToolTips.bind(update_postcode, "Update the member's postcode")
 
@@ -551,25 +551,25 @@ class MemberContent:
 
 		ToolTips = Pmw.Balloon()
 
-		username_label = tkinter.Label(self.member, text="Username:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		username_label = tkinter.Label(self.member, text="Username:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		username_label.place(rely=0.15, relx=0.09, anchor='center')
 
-		password_label = tkinter.Label(self.member, text="Password:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		password_label = tkinter.Label(self.member, text="Password:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		password_label.place(rely=0.23, relx=0.09, anchor='center')
 
-		firstname_label = tkinter.Label(self.member, text="Firstname:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		firstname_label = tkinter.Label(self.member, text="Firstname:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		firstname_label.place(rely=0.152, relx=0.43, anchor='center')
 
-		surname_label = tkinter.Label(self.member, text="Surname:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		surname_label = tkinter.Label(self.member, text="Surname:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		surname_label.place(rely=0.231, relx=0.36, anchor='center')
 
-		telephone_label = tkinter.Label(self.member, text="Telephone:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		telephone_label = tkinter.Label(self.member, text="Telephone:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		telephone_label.place(rely=0.152, relx=0.7, anchor='center')
 
-		postcode_label = tkinter.Label(self.member, text="Postcode:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		postcode_label = tkinter.Label(self.member, text="Postcode:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		postcode_label.place(rely=0.231, relx=0.64, anchor='center')
 
-		age_label = tkinter.Label(self.member, text="Age:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		age_label = tkinter.Label(self.member, text="Age:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		age_label.place(rely=0.231, relx=0.85, anchor='center')
 
 
@@ -641,19 +641,19 @@ class MemberContent:
 		background_entry2_canvas.background_entry2_image = background_entry2_image
 
 
-		delete_button = tkinter.Button(self.member, cursor="tcross",text="Delete Member", command=lambda : deleteAccountDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
+		delete_button = tkinter.Button(self.member, cursor="tcross",text="Delete Member", command=lambda : deleteAccountDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 10, 'bold'), padx=50)
 		delete_button.place(rely=0.41, relx=0.37, anchor='center')
 		ToolTips.bind(delete_button, 'Delete a member from database')
 
-		update_button = tkinter.Button(self.member, cursor="tcross",text="Update Member", command=lambda : updateAccountDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
+		update_button = tkinter.Button(self.member, cursor="tcross",text="Update Member", command=lambda : updateAccountDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 10, 'bold'), padx=50)
 		update_button.place(rely=0.33, relx=0.37, anchor='center')
 		ToolTips.bind(update_button, 'Update a member in database')
 
-		search_button = tkinter.Button(self.member, cursor="tcross",text="Search Details", command=searchAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
+		search_button = tkinter.Button(self.member, cursor="tcross",text="Search Details", command=searchAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('serif', 10, 'bold'), padx=50)
 		search_button.place(rely=0.41, relx=0.63, anchor='center')
 		ToolTips.bind(search_button, 'Search for a user in the database')
 
-		create_button = tkinter.Button(self.member, cursor="tcross",text="Save Member", command=saveAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=50)
+		create_button = tkinter.Button(self.member, cursor="tcross",text="Save Member", command=saveAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('serif', 10, 'bold'), padx=50)
 		create_button.place(rely=0.33, relx=0.63, anchor='center')
 		ToolTips.bind(create_button, 'Create new member with data inputted')
 

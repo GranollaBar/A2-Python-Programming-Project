@@ -66,6 +66,7 @@ class MemberHomeScreenContent:
 
 			return labelusername
 
+
 		def AllCalendarSelection(cal, event=None):
 			AllChangeSelection = False
 
@@ -282,20 +283,6 @@ class MemberHomeScreenContent:
 			conn.close()
 
 
-		# def countdown():
-		# 	monkey = datetime.datetime.today().strftime('%A')
-		# 	print(str(monkey))
-		#
-		# 	conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
-		# 	c = conn.cursor()
-		#
-		# 	c.execute("SELECT " + monkey + " FROM coachTimetable WHERE username=:username", {
-		# 		"username":
-		# 	})
-		# 	tablesnamesarray = c.fetchall()
-		# 	print(tablesnamesarray)
-
-
 		def GoogleMapsLocation():
 			webbrowser.open("https://www.google.com/maps/place/Lisburn+Racquets+Club/@54.5173416,-6.0428075,15z/data=!4m5!3m4!1s0x4861044f4e4d451b:0x9a328c6b732d12eb!8m2!3d54.5173416!4d-6.0340528")
 
@@ -335,24 +322,24 @@ class MemberHomeScreenContent:
 
 
 
-		title_label = tkinter.Label(self.MemberHome, text="Main Menu: Member", font=('Tahoma', 18, 'bold','underline'), fg='black', bg='white', bd=4, relief='groove', padx=10, pady=4)
+		title_label = tkinter.Label(self.MemberHome, text="Main Menu: Member", font=('serif', 18, 'bold','underline'), fg='black', bg='white', bd=4, relief='groove', padx=10, pady=4)
 		title_label.place(rely=0.17, relx=0.18, anchor='center')
 
-		calendar_label =Label(self.MemberHome, text = findfirstandsurname() + "'s Live Events", fg ='black',bg='white',font=('Tahoma',8,'bold'), bd=2, relief="ridge", padx=5, pady=2)
+		calendar_label =Label(self.MemberHome, text = findfirstandsurname() + "'s Live Events", fg ='black',bg='white',font=('serif',8,'bold'), bd=2, relief="ridge", padx=5, pady=2)
 		calendar_label.place(rely=0.14,relx=0.495,anchor=CENTER)
 		today = date.today()
-		cal = Calendar(self.MemberHome, font="Tahoma 10", selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
+		cal = Calendar(self.MemberHome, font="serif 10", selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
 		cal.place(rely=0.305, relx=0.495, anchor='center')
 		cal.bind("<<CalendarSelected>>", partial(AllCalendarSelection, cal))
 
-		clock_label = tkinter.Label(self.MemberHome, text="Current Time:", font=('Tahoma', 16, 'bold'), fg='black', bg='white')
+		clock_label = tkinter.Label(self.MemberHome, text="Current Time:", font=('serif', 16, 'bold'), fg='black', bg='white')
 		clock_label.place(rely=0.29, relx=0.1, anchor='center')
-		clock = Label(self.MemberHome, font=('Tahoma', 16, 'bold'), fg='black', bg='white', bd=3, relief='sunken')
+		clock = Label(self.MemberHome, font=('serif', 16, 'bold'), fg='black', bg='white', bd=3, relief='sunken')
 		clock.place(rely=0.29, relx=0.27, anchor='center')
 
-		payment_status_label = tkinter.Label(self.MemberHome, text="Payment Fee:", font=('Tahoma', 16, 'bold'), fg='black', bg='white')
+		payment_status_label = tkinter.Label(self.MemberHome, text="Payment Fee:", font=('serif', 16, 'bold'), fg='black', bg='white')
 		payment_status_label.place(rely=0.395, relx=0.1, anchor='center')
-		paid_successfully_label = tkinter.Label(self.MemberHome, text="Not Paid", font=('Tahoma', 16, 'bold'), fg='red', bg='white')
+		paid_successfully_label = tkinter.Label(self.MemberHome, text="Not Paid", font=('serif', 16, 'bold'), fg='red', bg='white')
 		paid_successfully_label.place(rely=0.395, relx=0.27, anchor='center')
 
 		googlemapsphoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/2021-12-31_9_2_507x315.png")
@@ -387,7 +374,7 @@ class MemberHomeScreenContent:
 		slide_image = Label(self.MemberHome, image=images[i], bd=10, relief='ridge', bg='green')
 		slide_image.place(rely=0.732, relx=0.19, anchor='center')
 
-		treeview_label =Label(self.MemberHome, text = findfirstandsurname() + "'s Past Events", fg ='black',bg='white',font=('Tahoma',8,'bold'), bd=2, relief="ridge", padx=5, pady=2)
+		treeview_label =Label(self.MemberHome, text = findfirstandsurname() + "'s Past Events", fg ='black',bg='white',font=('serif',8,'bold'), bd=2, relief="ridge", padx=5, pady=2)
 		treeview_label.place(rely=0.127,relx=0.81,anchor=CENTER)
 		past_event_Tv=ttk.Treeview(self.MemberHome,height=9,columns=('Date','Status'))
 		past_event_Tv.place(relx=0.81,rely=0.3,anchor=CENTER)
@@ -407,7 +394,6 @@ class MemberHomeScreenContent:
 
 
 		time()
-		# countdown()
 		ImageSlider()
 		changeCalendarColour(cal)
 		treeviewPopulate(past_event_Tv)

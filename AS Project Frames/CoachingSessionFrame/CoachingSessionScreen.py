@@ -237,7 +237,7 @@ class CoachingSessionContent:
 			today = datetime.date.today()
 			top = Toplevel(self.coachSession)
 
-			cal = Calendar(top, font="Tahoma 16", date_pattern='dd/mm/yyyy',selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
+			cal = Calendar(top, font="serif 16", date_pattern='dd/mm/yyyy',selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
 			cal.pack(fill="both", expand=True)
 			ttk.Button(top, text="ok", command=assign_dob).pack()
 
@@ -253,98 +253,98 @@ class CoachingSessionContent:
 			courts = Toplevel(self.coachSession, bg="white")
 			courts.geometry('500x500')
 
-			title_label =Label(courts, cursor="tcross",text = 'Select the Number of Courts Required', fg ='black',bg='white',font=('Tahoma',11,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			title_label =Label(courts, cursor="tcross",text = 'Select the Number of Courts Required', fg ='black',bg='white',font=('serif',11,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			title_label.place(rely=0.027,relx=0.5,anchor=CENTER)
 
 
 			CourtsImage = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/courts.png")
 
 
-			Court1label =Label(courts, text = 'Court 1', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			Court1label =Label(courts, text = 'Court 1', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			Court1label.place(rely=0.155,relx=0.15,anchor=CENTER)
 			Court1Button = Button(courts, text='1', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court1Button), bg="black", highlightthickness=5, activebackground="grey")
 			Court1Button.place(rely=0.24,relx=0.15,anchor=CENTER)
 			Court1Button.image = CourtsImage
 
 
-			Court2label =Label(courts, text = 'Court 2', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			Court2label =Label(courts, text = 'Court 2', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			Court2label.place(rely=0.375,relx=0.15,anchor=CENTER)
 			Court2Button = Button(courts, text='2', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court2Button), bg="black", highlightthickness=5, activebackground="grey")
 			Court2Button.place(rely=0.46,relx=0.15,anchor=CENTER)
 			Court2Button.image = CourtsImage
 
 
-			Court3label =Label(courts, text = 'Court 3', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			Court3label =Label(courts, text = 'Court 3', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			Court3label.place(rely=0.595,relx=0.15,anchor=CENTER)
 			Court3Button = Button(courts, text='3', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court3Button), bg="black", highlightthickness=5, activebackground="grey")
 			Court3Button.place(rely=0.68,relx=0.15,anchor=CENTER)
 			Court3Button.image = CourtsImage
 
 
-			Court4label =Label(courts, text = 'Court 4', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			Court4label =Label(courts, text = 'Court 4', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			Court4label.place(rely=0.815,relx=0.15,anchor=CENTER)
 			Court4Button = Button(courts, text='4', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court4Button), bg="black", highlightthickness=5, activebackground="grey")
 			Court4Button.place(rely=0.9,relx=0.15,anchor=CENTER)
 			Court4Button.image = CourtsImage
 
 
-			Court5label =Label(courts, text = 'Court 5', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			Court5label =Label(courts, text = 'Court 5', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			Court5label.place(rely=0.155,relx=0.5,anchor=CENTER)
 			Court5Button = Button(courts, text='5', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court5Button), bg="black", highlightthickness=5, activebackground="grey")
 			Court5Button.place(rely=0.24,relx=0.5,anchor=CENTER)
 			Court5Button.image = CourtsImage
 
 
-			Court6label =Label(courts, text = 'Court 6', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			Court6label =Label(courts, text = 'Court 6', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			Court6label.place(rely=0.375,relx=0.5,anchor=CENTER)
 			Court6Button = Button(courts, text='6', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court6Button), bg="black", highlightthickness=5, activebackground="grey")
 			Court6Button.place(rely=0.46,relx=0.5,anchor=CENTER)
 			Court6Button.image = CourtsImage
 
 
-			Court7label =Label(courts, text = 'Court 7', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			Court7label =Label(courts, text = 'Court 7', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			Court7label.place(rely=0.595,relx=0.5,anchor=CENTER)
 			Court7Button = Button(courts, text='7', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court7Button), bg="black", highlightthickness=5, activebackground="grey")
 			Court7Button.place(rely=0.68,relx=0.5,anchor=CENTER)
 			Court7Button.image = CourtsImage
 
 
-			Court8label =Label(courts, text = 'Court 8', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			Court8label =Label(courts, text = 'Court 8', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			Court8label.place(rely=0.815,relx=0.5,anchor=CENTER)
 			Court8Button = Button(courts, text='8', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court8Button), bg="black", highlightthickness=5, activebackground="grey")
 			Court8Button.place(rely=0.9,relx=0.5,anchor=CENTER)
 			Court8Button.image = CourtsImage
 
 
-			Court9label =Label(courts, text = 'Court 9', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			Court9label =Label(courts, text = 'Court 9', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			Court9label.place(rely=0.155,relx=0.85,anchor=CENTER)
 			Court9Button = Button(courts, text='9', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court9Button), bg="black", highlightthickness=5, activebackground="grey")
 			Court9Button.place(rely=0.24,relx=0.85,anchor=CENTER)
 			Court9Button.image = CourtsImage
 
 
-			Court10label =Label(courts, text = 'Court 10', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			Court10label =Label(courts, text = 'Court 10', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			Court10label.place(rely=0.375,relx=0.85,anchor=CENTER)
 			Court10Button = Button(courts, text='10', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court10Button), bg="black", highlightthickness=5, activebackground="grey")
 			Court10Button.place(rely=0.46,relx=0.85,anchor=CENTER)
 			Court10Button.image = CourtsImage
 
 
-			Court11label =Label(courts, text = 'Court 11', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			Court11label =Label(courts, text = 'Court 11', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			Court11label.place(rely=0.595,relx=0.85,anchor=CENTER)
 			Court11Button = Button(courts, text='11', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court11Button), bg="black", highlightthickness=5, activebackground="grey")
 			Court11Button.place(rely=0.68,relx=0.85,anchor=CENTER)
 			Court11Button.image = CourtsImage
 
 
-			Court12label =Label(courts, text = 'Court 12', fg ='black',bg='white',font=('Tahoma',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+			Court12label =Label(courts, text = 'Court 12', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 			Court12label.place(rely=0.815,relx=0.85,anchor=CENTER)
 			Court12Button = Button(courts, text='12', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court12Button), bg="black", highlightthickness=5, activebackground="grey")
 			Court12Button.place(rely=0.9,relx=0.85,anchor=CENTER)
 			Court12Button.image = CourtsImage
 
 
-			SelectCourtsButton=Button(courts, cursor="tcross",text = 'Select Courts', command = lambda : ChangeCourtsColour(courts,Court1Button, Court2Button, Court3Button, Court4Button, Court5Button, Court6Button, Court7Button, Court8Button, Court9Button, Court10Button, Court11Button, Court12Button), fg ='white', bg='black', relief= 'groove', font = ('Verdana',8,'bold'), padx =15)
+			SelectCourtsButton=Button(courts, cursor="tcross",text = 'Select Courts', command = lambda : ChangeCourtsColour(courts,Court1Button, Court2Button, Court3Button, Court4Button, Court5Button, Court6Button, Court7Button, Court8Button, Court9Button, Court10Button, Court11Button, Court12Button), fg ='white', bg='black', relief= 'groove', font = ('serif',8,'bold'), padx =15)
 			SelectCourtsButton.place(rely=0.095,relx=0.5,anchor=CENTER)
 			ToolTips.bind(SelectCourtsButton, 'Pick the courts required for the coaching session')
 
@@ -457,7 +457,7 @@ class CoachingSessionContent:
 
 					top = Toplevel(self.coachSession)
 
-					newcal = Calendar(top, font="Tahoma 16", selectmode='day', cursor="tcross", year=2021, month=5, day=29)
+					newcal = Calendar(top, font="serif 16", selectmode='day', cursor="tcross", year=2021, month=5, day=29)
 					newcal.pack(fill="both", expand=True)
 					ttk.Button(top, text="Update", command= lambda : new_assign_dob(coachUsername)).pack()
 
@@ -515,25 +515,25 @@ class CoachingSessionContent:
 
 				updateCoachSession=Toplevel(bg="white")
 
-				title_label =Label(updateCoachSession, cursor="tcross",text = 'Update Session' , fg ='SpringGreen3',bg='white',font=('Verdana',15,'bold'))
+				title_label =Label(updateCoachSession, cursor="tcross",text = 'Update Session' , fg ='SpringGreen3',bg='white',font=('serif',15,'bold'))
 				title_label.place(rely=0.1,relx=0.5,anchor=CENTER)
 
-				update_time=Button(updateCoachSession, cursor="tcross",text = 'Update Time', command = lambda : updateCoachSessionTime(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('Verdana',9,'bold'), padx =20)
+				update_time=Button(updateCoachSession, cursor="tcross",text = 'Update Time', command = lambda : updateCoachSessionTime(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('serif',9,'bold'), padx =20)
 				update_time.place(rely=0.25,relx=0.5,anchor=CENTER)
 				ToolTips.bind(update_time, 'Update the coaching session time')
 
-				update_date=Button(updateCoachSession, cursor="tcross", text = 'Update Date', command = lambda : updateCoachSessionDate(newEventDate, updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('Verdana',9,'bold'), padx =20)
+				update_date=Button(updateCoachSession, cursor="tcross", text = 'Update Date', command = lambda : updateCoachSessionDate(newEventDate, updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('serif',9,'bold'), padx =20)
 				update_date.place(rely=0.4,relx=0.5,anchor=CENTER)
 				ToolTips.bind(update_date, 'Update the date of the coaching session')
 
-				update_courts=Button(updateCoachSession, cursor="tcross",text = 'Update Courts', command = lambda : updateCoachSessionCourts(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('Verdana',9,'bold'), padx =20)
+				update_courts=Button(updateCoachSession, cursor="tcross",text = 'Update Courts', command = lambda : updateCoachSessionCourts(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('serif',9,'bold'), padx =20)
 				update_courts.place(rely=0.55,relx=0.5,anchor=CENTER)
 				ToolTips.bind(update_courts, 'Update the court of the competition')
 
-				# update_groups=Button(updateCoachSession, cursor="tcross",text = 'Update Groups', command = lambda : updateCoachSessionGroups(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('Verdana',9,'bold'), padx =20)
+				# update_groups=Button(updateCoachSession, cursor="tcross",text = 'Update Groups', command = lambda : updateCoachSessionGroups(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('serif',9,'bold'), padx =20)
 				# update_groups.place(rely=0.7,relx=0.5,anchor=CENTER)
 
-				update_technique=Button(updateCoachSession, cursor="tcross",text = 'Update Technique', command = lambda : updateCoachSessionTechnique(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('Verdana',9,'bold'), padx =20)
+				update_technique=Button(updateCoachSession, cursor="tcross",text = 'Update Technique', command = lambda : updateCoachSessionTechnique(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('serif',9,'bold'), padx =20)
 				update_technique.place(rely=0.85,relx=0.5,anchor=CENTER)
 				ToolTips.bind(update_technique, 'Update the technique used for the coaching session')
 
@@ -557,22 +557,22 @@ class CoachingSessionContent:
 					updateTimes=Toplevel(bg="white")
 					updateTimes.geometry('200x200')
 
-					title_label =Label(updateTimes,text ="Select New Times", fg ='SpringGreen3',bg='white',font=('Verdana',13,'bold','underline'))
+					title_label =Label(updateTimes,text ="Select New Times", fg ='SpringGreen3',bg='white',font=('serif',13,'bold','underline'))
 					title_label.place(rely=0.1,relx=0.5,anchor=CENTER)
 
-					update_starttime_label =Label(updateTimes,text ="New Start Time:", fg ='black',bg='white',font=('Verdana',9,'bold'))
+					update_starttime_label =Label(updateTimes,text ="New Start Time:", fg ='black',bg='white',font=('serif',9,'bold'))
 					update_starttime_label.place(rely=0.35,relx=0.3,anchor=CENTER)
 
-					update_endtime_label =Label(updateTimes,text ="New End Time:", fg ='black',bg='white',font=('Verdana',9,'bold'))
+					update_endtime_label =Label(updateTimes,text ="New End Time:", fg ='black',bg='white',font=('serif',9,'bold'))
 					update_endtime_label.place(rely=0.55,relx=0.3,anchor=CENTER)
 
-					update_starttime_spinbox = Spinbox(updateTimes, width=7,font=("Tahoma",8, 'bold'), bd=3, relief='ridge', cursor="tcross",textvariable=new_start_time, values=('8.00', '8.15', '8.30', '8.45', '9.00', '9.15', '9.30', '9.45', '10.00', '10.15', '10.30', '10.45', '11.00', '11.15', '11.30', '11.45', '12.00', '12.15','12.30','12.45','13.00','13.15','13.30','13.45','14.00','14.15','14.30','14.45','15.00','15.15','15.30','15.45','16.00','16.15','16.30','16.45','17.00','17.15','17.30','17.45','18.00','18.15','18.30','18.45','19.00','19.15','19.30','19.45','20.00','20.15','20.30','20.45','21.00','21.15','21.30','21.45','22.00'))
+					update_starttime_spinbox = Spinbox(updateTimes, width=7,font=("serif",8, 'bold'), bd=3, relief='ridge', cursor="tcross",textvariable=new_start_time, values=('8.00', '8.15', '8.30', '8.45', '9.00', '9.15', '9.30', '9.45', '10.00', '10.15', '10.30', '10.45', '11.00', '11.15', '11.30', '11.45', '12.00', '12.15','12.30','12.45','13.00','13.15','13.30','13.45','14.00','14.15','14.30','14.45','15.00','15.15','15.30','15.45','16.00','16.15','16.30','16.45','17.00','17.15','17.30','17.45','18.00','18.15','18.30','18.45','19.00','19.15','19.30','19.45','20.00','20.15','20.30','20.45','21.00','21.15','21.30','21.45','22.00'))
 					update_starttime_spinbox.place(rely=0.353, relx=0.79, anchor='center')
 
-					update_endtime_spinbox = Spinbox(updateTimes, width=7,font=("Tahoma",8, 'bold'), bd=3, relief='ridge', cursor="tcross", textvariable=new_end_time, values=('9.00', '9.15', '9.30', '9.45', '10.00', '10.15', '10.30', '10.45', '11.00', '11.15', '11.30', '11.45', '12.00', '12.15','12.30','12.45','13.00','13.15','13.30','13.45','14.00','14.15','14.30','14.45','15.00','15.15','15.30','15.45','16.00','16.15','16.30','16.45','17.00','17.15','17.30','17.45','18.00','18.15','18.30','18.45','19.00','19.15','19.30','19.45','20.00','20.15','20.30','20.45','21.00','21.15','21.30','21.45','22.00','22.15','22.30','22.45','23.00'))
+					update_endtime_spinbox = Spinbox(updateTimes, width=7,font=("serif",8, 'bold'), bd=3, relief='ridge', cursor="tcross", textvariable=new_end_time, values=('9.00', '9.15', '9.30', '9.45', '10.00', '10.15', '10.30', '10.45', '11.00', '11.15', '11.30', '11.45', '12.00', '12.15','12.30','12.45','13.00','13.15','13.30','13.45','14.00','14.15','14.30','14.45','15.00','15.15','15.30','15.45','16.00','16.15','16.30','16.45','17.00','17.15','17.30','17.45','18.00','18.15','18.30','18.45','19.00','19.15','19.30','19.45','20.00','20.15','20.30','20.45','21.00','21.15','21.30','21.45','22.00','22.15','22.30','22.45','23.00'))
 					update_endtime_spinbox.place(rely=0.553, relx=0.79, anchor='center')
 
-					update_time_button = Button(updateTimes, text='Confirm Update',font=("Tahoma",10, 'bold'), fg='white', bg='black',cursor="tcross",command=lambda : confirmNewTimes(updateTimes, coachUsername), padx=10, bd=4, relief="ridge")
+					update_time_button = Button(updateTimes, text='Confirm Update',font=("serif",10, 'bold'), fg='white', bg='black',cursor="tcross",command=lambda : confirmNewTimes(updateTimes, coachUsername), padx=10, bd=4, relief="ridge")
 					update_time_button.place(rely=0.85, relx=0.5, anchor='center')
 					ToolTips.bind(update_time_button, 'Confirm new time')
 
@@ -632,53 +632,53 @@ class CoachingSessionContent:
 					newcourts = Toplevel(self.coachSession, bg="white")
 					newcourts.geometry('500x500')
 
-					title_label = tkinter.Label(newcourts, text="Update the No. Courts Needed For The Session", font=('Tahoma', 15, 'underline', 'bold'), fg='SpringGreen3', bg='white')
+					title_label = tkinter.Label(newcourts, text="Update the No. Courts Needed For The Session", font=('serif', 15, 'underline', 'bold'), fg='SpringGreen3', bg='white')
 					title_label.place(rely=0.03, relx=0.5, anchor='center')
 
-					confirm_button = tkinter.Button(newcourts, text="Confirm Selection", command=lambda : updateCourts(newcourts, coachUsername), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 10, 'bold'), padx=35, cursor="tcross")
+					confirm_button = tkinter.Button(newcourts, text="Confirm Selection", command=lambda : updateCourts(newcourts, coachUsername), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 10, 'bold'), padx=35, cursor="tcross")
 					confirm_button.place(rely=0.112, relx=0.5, anchor='center')
 
-					all_button = tkinter.Button(newcourts, text="Select All", command=lambda : addAllCourts(newcourt1, newcourt2, newcourt3, newcourt4, newcourt5, newcourt6, newcourt7, newcourt8, newcourt9, newcourt10, newcourt11, newcourt12), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 8, 'bold'), padx=10, cursor="tcross")
+					all_button = tkinter.Button(newcourts, text="Select All", command=lambda : addAllCourts(newcourt1, newcourt2, newcourt3, newcourt4, newcourt5, newcourt6, newcourt7, newcourt8, newcourt9, newcourt10, newcourt11, newcourt12), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 8, 'bold'), padx=10, cursor="tcross")
 					all_button.place(rely=0.112, relx=0.15, anchor='center')
 
-					clear_button = tkinter.Button(newcourts, text="Clear All", command=lambda : clearAllCourts(newcourt1, newcourt2, newcourt3, newcourt4, newcourt5, newcourt6, newcourt7, newcourt8, newcourt9, newcourt10, newcourt11, newcourt12), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 8, 'bold'), padx=10, cursor="tcross")
+					clear_button = tkinter.Button(newcourts, text="Clear All", command=lambda : clearAllCourts(newcourt1, newcourt2, newcourt3, newcourt4, newcourt5, newcourt6, newcourt7, newcourt8, newcourt9, newcourt10, newcourt11, newcourt12), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 8, 'bold'), padx=10, cursor="tcross")
 					clear_button.place(rely=0.112, relx=0.85, anchor='center')
 
 
-					confirm_court1 = Checkbutton(newcourts, cursor="tcross",text="Court 1  V", variable=newcourt1,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'),onvalue=1, offvalue=0)
+					confirm_court1 = Checkbutton(newcourts, cursor="tcross",text="Court 1  V", variable=newcourt1,bg="white",bd=2, relief="sunken", font=('serif', 10,'bold'),onvalue=1, offvalue=0)
 					confirm_court1.place(rely=0.2, relx=0.15, anchor='center')
 
-					confirm_court2 = Checkbutton(newcourts, cursor="tcross",text="Court 2  V", variable=newcourt2,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'),onvalue=1, offvalue=0)
+					confirm_court2 = Checkbutton(newcourts, cursor="tcross",text="Court 2  V", variable=newcourt2,bg="white",bd=2, relief="sunken", font=('serif', 10,'bold'),onvalue=1, offvalue=0)
 					confirm_court2.place(rely=0.4, relx=0.15, anchor='center')
 
-					confirm_court3 = Checkbutton(newcourts, cursor="tcross",text="Court 3  V", variable=newcourt3,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'),onvalue=1, offvalue=0)
+					confirm_court3 = Checkbutton(newcourts, cursor="tcross",text="Court 3  V", variable=newcourt3,bg="white",bd=2, relief="sunken", font=('serif', 10,'bold'),onvalue=1, offvalue=0)
 					confirm_court3.place(rely=0.6, relx=0.15, anchor='center')
 
-					confirm_court4 = Checkbutton(newcourts, cursor="tcross",text="Court 4  V", variable=newcourt4,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'),onvalue=1, offvalue=0)
+					confirm_court4 = Checkbutton(newcourts, cursor="tcross",text="Court 4  V", variable=newcourt4,bg="white",bd=2, relief="sunken", font=('serif', 10,'bold'),onvalue=1, offvalue=0)
 					confirm_court4.place(rely=0.8, relx=0.15, anchor='center')
 
-					confirm_court5 = Checkbutton(newcourts, cursor="tcross",text="Court 5  V", variable=newcourt5,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'),onvalue=1, offvalue=0)
+					confirm_court5 = Checkbutton(newcourts, cursor="tcross",text="Court 5  V", variable=newcourt5,bg="white",bd=2, relief="sunken", font=('serif', 10,'bold'),onvalue=1, offvalue=0)
 					confirm_court5.place(rely=0.2, relx=0.5, anchor='center')
 
-					confirm_court6 = Checkbutton(newcourts, cursor="tcross",text="Court 6  V", variable=newcourt6,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'),onvalue=1, offvalue=0)
+					confirm_court6 = Checkbutton(newcourts, cursor="tcross",text="Court 6  V", variable=newcourt6,bg="white",bd=2, relief="sunken", font=('serif', 10,'bold'),onvalue=1, offvalue=0)
 					confirm_court6.place(rely=0.4, relx=0.5, anchor='center')
 
-					confirm_court7 = Checkbutton(newcourts, cursor="tcross",text="Court 7  V", variable=newcourt7,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'),onvalue=1, offvalue=0)
+					confirm_court7 = Checkbutton(newcourts, cursor="tcross",text="Court 7  V", variable=newcourt7,bg="white",bd=2, relief="sunken", font=('serif', 10,'bold'),onvalue=1, offvalue=0)
 					confirm_court7.place(rely=0.6, relx=0.5, anchor='center')
 
-					confirm_court8 = Checkbutton(newcourts, cursor="tcross",text="Court 8  V", variable=newcourt8,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'),onvalue=1, offvalue=0)
+					confirm_court8 = Checkbutton(newcourts, cursor="tcross",text="Court 8  V", variable=newcourt8,bg="white",bd=2, relief="sunken", font=('serif', 10,'bold'),onvalue=1, offvalue=0)
 					confirm_court8.place(rely=0.8, relx=0.5, anchor='center')
 
-					confirm_court9 = Checkbutton(newcourts, cursor="tcross",text="Court 9  V", variable=newcourt9,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'),onvalue=1, offvalue=0)
+					confirm_court9 = Checkbutton(newcourts, cursor="tcross",text="Court 9  V", variable=newcourt9,bg="white",bd=2, relief="sunken", font=('serif', 10,'bold'),onvalue=1, offvalue=0)
 					confirm_court9.place(rely=0.2, relx=0.85, anchor='center')
 
-					confirm_court10 = Checkbutton(newcourts, cursor="tcross",text="Court 10  V", variable=newcourt10,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'),onvalue=1, offvalue=0)
+					confirm_court10 = Checkbutton(newcourts, cursor="tcross",text="Court 10  V", variable=newcourt10,bg="white",bd=2, relief="sunken", font=('serif', 10,'bold'),onvalue=1, offvalue=0)
 					confirm_court10.place(rely=0.4, relx=0.85, anchor='center')
 
-					confirm_court11 = Checkbutton(newcourts, cursor="tcross",text="Court 11 V", variable=newcourt11,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'),onvalue=1, offvalue=0)
+					confirm_court11 = Checkbutton(newcourts, cursor="tcross",text="Court 11 V", variable=newcourt11,bg="white",bd=2, relief="sunken", font=('serif', 10,'bold'),onvalue=1, offvalue=0)
 					confirm_court11.place(rely=0.6, relx=0.85, anchor='center')
 
-					confirm_court12 = Checkbutton(newcourts, cursor="tcross",text="Court 12 V", variable=newcourt12,bg="white",bd=2, relief="sunken", font=('Tahoma', 10,'bold'),onvalue=1, offvalue=0)
+					confirm_court12 = Checkbutton(newcourts, cursor="tcross",text="Court 12 V", variable=newcourt12,bg="white",bd=2, relief="sunken", font=('serif', 10,'bold'),onvalue=1, offvalue=0)
 					confirm_court12.place(rely=0.8, relx=0.85, anchor='center')
 
 
@@ -860,22 +860,22 @@ class CoachingSessionContent:
 					updateTechnique=Toplevel(bg="white")
 					updateTechnique.geometry('200x200')
 
-					title_label =Label(updateTechnique,text ="Select New Technique" , fg ='SpringGreen3',bg='white',font=('Verdana',11,'bold','underline'))
+					title_label =Label(updateTechnique,text ="Select New Technique" , fg ='SpringGreen3',bg='white',font=('serif',11,'bold','underline'))
 					title_label.place(rely=0.06,relx=0.5,anchor=CENTER)
 
-					technique1_radiobutton = Radiobutton(updateTechnique, text="Net Play", variable=newtechnique, value=1, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
+					technique1_radiobutton = Radiobutton(updateTechnique, text="Net Play", variable=newtechnique, value=1, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 					technique1_radiobutton.place(rely=0.22, relx=0.5, anchor='center')
 
-					technique2_radiobutton = Radiobutton(updateTechnique, text="Smash", variable=newtechnique, value=2, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
+					technique2_radiobutton = Radiobutton(updateTechnique, text="Smash", variable=newtechnique, value=2, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 					technique2_radiobutton.place(rely=0.4, relx=0.5, anchor='center')
 
-					technique3_radiobutton = Radiobutton(updateTechnique, text="Rally", variable=newtechnique, value=3, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
+					technique3_radiobutton = Radiobutton(updateTechnique, text="Rally", variable=newtechnique, value=3, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 					technique3_radiobutton.place(rely=0.58, relx=0.5, anchor='center')
 
-					technique4_radiobutton = Radiobutton(updateTechnique, text="Back Court", variable=newtechnique, value=4, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
+					technique4_radiobutton = Radiobutton(updateTechnique, text="Back Court", variable=newtechnique, value=4, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 					technique4_radiobutton.place(rely=0.76, relx=0.5, anchor='center')
 
-					technique_update_button=Button(updateTechnique,text = 'Confirm Update', command = lambda : techniqueUpdate(updateTechnique, coachUsername), fg ='white', bg='black', relief= 'groove', font = ('Verdana',11,'bold'), padx =30)
+					technique_update_button=Button(updateTechnique,text = 'Confirm Update', command = lambda : techniqueUpdate(updateTechnique, coachUsername), fg ='white', bg='black', relief= 'groove', font = ('serif',11,'bold'), padx =30)
 					technique_update_button.place(rely=0.93,relx=0.5,anchor=CENTER)
 					ToolTips.bind(technique_update_button, 'Confirm new technique')
 
@@ -1135,75 +1135,75 @@ class CoachingSessionContent:
 
 
 
-		username_label = tkinter.Label(self.coachSession, text="Username:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		username_label = tkinter.Label(self.coachSession, text="Username:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		username_label.place(rely=0.36, relx=0.12, anchor='center')
 
-		starttime_label = tkinter.Label(self.coachSession, text="Start Time:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		starttime_label = tkinter.Label(self.coachSession, text="Start Time:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		starttime_label.place(rely=0.44, relx=0.12, anchor='center')
 
-		endtime_label = tkinter.Label(self.coachSession, text="End Time:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		endtime_label = tkinter.Label(self.coachSession, text="End Time:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		endtime_label.place(rely=0.52, relx=0.12, anchor='center')
 
-		date_label = tkinter.Label(self.coachSession, text="Session Date:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		date_label = tkinter.Label(self.coachSession, text="Session Date:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		date_label.place(rely=0.6, relx=0.12, anchor='center')
 
-		courts_needed_label = tkinter.Label(self.coachSession, text="Courts Required:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		courts_needed_label = tkinter.Label(self.coachSession, text="Courts Required:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		courts_needed_label.place(rely=0.68, relx=0.12, anchor='center')
 
-		group_label = tkinter.Label(self.coachSession, text="Group Level:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		group_label = tkinter.Label(self.coachSession, text="Group Level:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		group_label.place(rely=0.76, relx=0.12, anchor='center')
 
-		techniques_label = tkinter.Label(self.coachSession, text="Technique:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		techniques_label = tkinter.Label(self.coachSession, text="Technique:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		techniques_label.place(rely=0.84, relx=0.12, anchor='center')
 
 
-		starttime_spinbox = Spinbox(self.coachSession, width=7,font=("Tahoma",12, 'bold'), bd=3, relief='ridge', cursor="tcross",textvariable=timeStart, values=('8.00', '8.15', '8.30', '8.45', '9.00', '9.15', '9.30', '9.45', '10.00', '10.15', '10.30', '10.45', '11.00', '11.15', '11.30', '11.45', '12.00', '12.15','12.30','12.45','13.00','13.15','13.30','13.45','14.00','14.15','14.30','14.45','15.00','15.15','15.30','15.45','16.00','16.15','16.30','16.45','17.00','17.15','17.30','17.45','18.00','18.15','18.30','18.45','19.00','19.15','19.30','19.45','20.00','20.15','20.30','20.45','21.00','21.15','21.30','21.45','22.00'))
+		starttime_spinbox = Spinbox(self.coachSession, width=7,font=("serif",12, 'bold'), bd=3, relief='ridge', cursor="tcross",textvariable=timeStart, values=('8.00', '8.15', '8.30', '8.45', '9.00', '9.15', '9.30', '9.45', '10.00', '10.15', '10.30', '10.45', '11.00', '11.15', '11.30', '11.45', '12.00', '12.15','12.30','12.45','13.00','13.15','13.30','13.45','14.00','14.15','14.30','14.45','15.00','15.15','15.30','15.45','16.00','16.15','16.30','16.45','17.00','17.15','17.30','17.45','18.00','18.15','18.30','18.45','19.00','19.15','19.30','19.45','20.00','20.15','20.30','20.45','21.00','21.15','21.30','21.45','22.00'))
 		starttime_spinbox.place(rely=0.4425, relx=0.3, anchor='center')
 		starttime_spinbox.config(state='readonly')
 
-		endtime_spinbox = Spinbox(self.coachSession, width=7,font=("Tahoma",12, 'bold'), bd=3, relief='ridge', cursor="tcross", textvariable=timeEnd, values=('9.00', '9.15', '9.30', '9.45', '10.00', '10.15', '10.30', '10.45', '11.00', '11.15', '11.30', '11.45', '12.00', '12.15','12.30','12.45','13.00','13.15','13.30','13.45','14.00','14.15','14.30','14.45','15.00','15.15','15.30','15.45','16.00','16.15','16.30','16.45','17.00','17.15','17.30','17.45','18.00','18.15','18.30','18.45','19.00','19.15','19.30','19.45','20.00','20.15','20.30','20.45','21.00','21.15','21.30','21.45','22.00','22.15','22.30','22.45','23.00'))
+		endtime_spinbox = Spinbox(self.coachSession, width=7,font=("serif",12, 'bold'), bd=3, relief='ridge', cursor="tcross", textvariable=timeEnd, values=('9.00', '9.15', '9.30', '9.45', '10.00', '10.15', '10.30', '10.45', '11.00', '11.15', '11.30', '11.45', '12.00', '12.15','12.30','12.45','13.00','13.15','13.30','13.45','14.00','14.15','14.30','14.45','15.00','15.15','15.30','15.45','16.00','16.15','16.30','16.45','17.00','17.15','17.30','17.45','18.00','18.15','18.30','18.45','19.00','19.15','19.30','19.45','20.00','20.15','20.30','20.45','21.00','21.15','21.30','21.45','22.00','22.15','22.30','22.45','23.00'))
 		endtime_spinbox.place(rely=0.5225, relx=0.3, anchor='center')
 		endtime_spinbox.config(state='readonly')
 
-		date_entry = Button(self.coachSession, text='Select Date',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : dateEntryCheck(eventDate), padx=10, bd=4, relief="ridge")
+		date_entry = Button(self.coachSession, text='Select Date',font=("serif",10, 'bold'), cursor="tcross",command=lambda : dateEntryCheck(eventDate), padx=10, bd=4, relief="ridge")
 		date_entry.place(rely=0.603, relx=0.3, anchor='center')
 		ToolTips.bind(date_entry, 'Select the date of the coaching session')
 
-		courts_needed_button = Button(self.coachSession, text='Select Courts',font=("Tahoma",10, 'bold'), cursor="tcross",command=courtsRequired, padx=10, bd=4, relief="ridge")
+		courts_needed_button = Button(self.coachSession, text='Select Courts',font=("serif",10, 'bold'), cursor="tcross",command=courtsRequired, padx=10, bd=4, relief="ridge")
 		courts_needed_button.place(rely=0.683, relx=0.3, anchor='center')
 		ToolTips.bind(courts_needed_button, 'Select the courts needed for the coaching session')
 
-		group_needed_button = Button(self.coachSession, text='Select Group',font=("Tahoma",10, 'bold'), cursor="tcross",command=groupRequired, padx=10, bd=4, relief="ridge")
+		group_needed_button = Button(self.coachSession, text='Select Group',font=("serif",10, 'bold'), cursor="tcross",command=groupRequired, padx=10, bd=4, relief="ridge")
 		group_needed_button.place(rely=0.763, relx=0.3, anchor='center')
 		ToolTips.bind(group_needed_button, 'Select the group needed for the coaching session')
 
-		technique1_radiobutton = Radiobutton(self.coachSession, text="Net Play", variable=technique, value=1, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
+		technique1_radiobutton = Radiobutton(self.coachSession, text="Net Play", variable=technique, value=1, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 		technique1_radiobutton.place(rely=0.82, relx=0.25, anchor='center')
 
-		technique2_radiobutton = Radiobutton(self.coachSession, text="Smash", variable=technique, value=2, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
+		technique2_radiobutton = Radiobutton(self.coachSession, text="Smash", variable=technique, value=2, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 		technique2_radiobutton.place(rely=0.87, relx=0.25, anchor='center')
 
-		technique3_radiobutton = Radiobutton(self.coachSession, text="Rally", variable=technique, value=3, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
+		technique3_radiobutton = Radiobutton(self.coachSession, text="Rally", variable=technique, value=3, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 		technique3_radiobutton.place(rely=0.82, relx=0.35, anchor='center')
 
-		technique4_radiobutton = Radiobutton(self.coachSession, text="Clears", variable=technique, value=4, font=("Tahoma",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
+		technique4_radiobutton = Radiobutton(self.coachSession, text="Clears", variable=technique, value=4, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 		technique4_radiobutton.place(rely=0.87, relx=0.355, anchor='center')
 		technique.set("1")
 
 
-		delete_button = tkinter.Button(self.coachSession, cursor="tcross",text="Delete", command=lambda : deleteCoachSessionDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, pady=5)
+		delete_button = tkinter.Button(self.coachSession, cursor="tcross",text="Delete", command=lambda : deleteCoachSessionDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 12, 'bold'), padx=10, pady=5)
 		delete_button.place(rely=0.95, relx=0.058, anchor='center')
 		ToolTips.bind(delete_button, 'Delete coaching session from database')
 
-		update_button = tkinter.Button(self.coachSession, cursor="tcross",text="Update", command=lambda : updateCoachSessionDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, pady=5)
+		update_button = tkinter.Button(self.coachSession, cursor="tcross",text="Update", command=lambda : updateCoachSessionDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 12, 'bold'), padx=10, pady=5)
 		update_button.place(rely=0.95, relx=0.168, anchor='center')
 		ToolTips.bind(update_button, 'Update data inside coaching session database')
 
-		search_button = tkinter.Button(self.coachSession, cursor="tcross",text="Search", command=searchCoachSessionDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, pady=5)
+		search_button = tkinter.Button(self.coachSession, cursor="tcross",text="Search", command=searchCoachSessionDetails, fg='white', bg='black', bd=4, relief='ridge', font=('serif', 12, 'bold'), padx=10, pady=5)
 		search_button.place(rely=0.95, relx=0.276, anchor='center')
 		ToolTips.bind(update_button, 'Search data inside coaching session database')
 
-		create_button = tkinter.Button(self.coachSession, cursor="tcross",text="Submit", command=submitCoachSession, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, pady=5)
+		create_button = tkinter.Button(self.coachSession, cursor="tcross",text="Submit", command=submitCoachSession, fg='white', bg='black', bd=4, relief='ridge', font=('serif', 12, 'bold'), padx=10, pady=5)
 		create_button.place(rely=0.95, relx=0.384, anchor='center')
 		ToolTips.bind(update_button, 'Creates a new coaching session')
 
@@ -1233,10 +1233,10 @@ class CoachingSessionContent:
 		coachsession_ysearch_scrollbar.place(relx=0.95,rely=0.22,anchor='center',height=109)
 		coachsession_search_Tv.configure(yscrollcommand=coachsession_ysearch_scrollbar.set)
 
-		calendar_label =Label(self.coachSession, text = 'Coaching Session Dates', fg ='black',bg='white',font=('Tahoma',13,'bold'), bd=2, relief="ridge", padx=10, pady=3)
-		calendar_label.place(rely=0.39,relx=0.715,anchor=CENTER)
+		calendar_label =Label(self.coachSession, text = 'Coaching Session Dates', fg ='black',bg='white',font=('serif',13,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+		calendar_label.place(rely=0.405,relx=0.715,anchor=CENTER)
 		today = datetime.date.today()
-		cal = Calendar(self.coachSession, font="Tahoma 21", selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
+		cal = Calendar(self.coachSession, font="serif 21", selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
 		cal.place(rely=0.67, relx=0.715, anchor='center')
 
 		cal.bind("<<CalendarSelected>>", CalendarSelection)
@@ -1271,7 +1271,7 @@ class CoachingSessionContent:
 
 		coach_name_choices = self.get_coach_details()
 		if (len(coach_name_choices) > 0) :
-			coach_selection_dropdown = ttk.Combobox(self.coachSession, value=coach_name_choices, textvariable=self.coachNamesAndPasswords ,font=('Tahoma', 8, 'bold'), width=25)
+			coach_selection_dropdown = ttk.Combobox(self.coachSession, value=coach_name_choices, textvariable=self.coachNamesAndPasswords ,font=('serif', 8, 'bold'), width=25)
 			coach_selection_dropdown.place(rely=0.362, relx=0.305, anchor='center')
 			coach_selection_dropdown.config(state='readonly')
 

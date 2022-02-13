@@ -115,7 +115,7 @@ class LoginContent:
                     title_label = tkinter.Label(choosing_toplevel, text="Where do you want the code sent to", font=('Verdana', 9, 'underline', 'bold'), fg='SpringGreen3', bg='white')
                     title_label.place(rely=0.125, relx=0.5, anchor='center')
 
-                    choosing1_radiobutton = Radiobutton(choosing_toplevel, text="Email", variable=choosing, value=1, font=("Segoe UI Black",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
+                    choosing1_radiobutton = Radiobutton(choosing_toplevel, text="Email", variable=choosing, value=1, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
                     choosing1_radiobutton.place(rely=0.4, relx=0.3, anchor='center')
 
                     choosing2_radiobutton = Radiobutton(choosing_toplevel, text="SMS", variable=choosing, value=2, font=("Segoe UI Black",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
@@ -367,13 +367,13 @@ class LoginContent:
         ToolTips = Pmw.Balloon()
 
 
-        title_label = tkinter.Label(self.login, text="Welcome To Lisburn Racquets Club", font=('Tahoma', 18, 'underline', 'bold'), fg='SpringGreen3', bg='white')
+        title_label = tkinter.Label(self.login, text="Welcome To Lisburn Racquets Club", font=('serif', 18, 'underline', 'bold'), fg='SpringGreen3', bg='white')
         title_label.place(rely=0.06, relx=0.5, anchor='center')
 
-        username_label = tkinter.Label(self.login, text="Username:", font=('Tahoma', 20, 'bold'),fg='black', bg='white')
+        username_label = tkinter.Label(self.login, text="Username:", font=('serif', 18, 'bold'),fg='black', bg='white')
         username_label.place(rely=0.45, relx=0.295, anchor='center')
 
-        password_label = tkinter.Label(self.login, text="Password:", font=('Tahoma', 20, 'bold'), fg='black', bg='white')
+        password_label = tkinter.Label(self.login, text="Password:", font=('serif', 18, 'bold'), fg='black', bg='white')
         password_label.place(rely=0.6, relx=0.3, anchor='center')
 
 
@@ -428,11 +428,11 @@ class LoginContent:
         background_entry_canvas.background_entry_image = background_entry_image
 
 
-        forgot_password_button = tkinter.Button(self.login, cursor="tcross", text="Forgot Password", command=forgot_system, fg='white', bg='black', bd=6, relief='ridge', font=('Segoe UI Black', 12, 'bold'), padx=10)
+        forgot_password_button = tkinter.Button(self.login, cursor="tcross", text="Forgot Password", command=forgot_system, fg='white', bg='black', bd=6, relief='ridge', font=('serif', 12, 'bold'), padx=10)
         forgot_password_button.place(rely=0.7, relx=0.5, anchor='center')
         ToolTips.bind(forgot_password_button, 'Create a new password to enter the system')
 
-        clear_button = tkinter.Button(self.login, cursor="tcross", text="Clear", command=login_clear, fg='white', bg='black', bd=6, relief='groove', font=('Segoe UI Black', 16, 'bold'), padx=50)
+        clear_button = tkinter.Button(self.login, cursor="tcross", text="Clear", command=login_clear, fg='white', bg='black', bd=6, relief='groove', font=('serif', 16, 'bold'), padx=50)
         clear_button.place(rely=0.9, relx=0.27, anchor='center')
         ToolTips.bind(clear_button, 'Clears data entered')
 
@@ -440,6 +440,6 @@ class LoginContent:
             self.finalloginname = loginUsername.get()
             login_submit(loginUsername.get(), loginPassword.get())
 
-        login_button = tkinter.Button(self.login, cursor="tcross",text="Login", command=completeLogin, fg='white', bg='black', bd=6, relief='groove', font=('Segoe UI Black', 16, 'bold'), padx=50)
+        login_button = tkinter.Button(self.login, cursor="tcross",text="Login", command=completeLogin, fg='white', bg='black', bd=6, relief='groove', font=('serif', 16, 'bold'), padx=50)
         login_button.place(rely=0.9, relx=0.73, anchor='center')
         ToolTips.bind(login_button, 'Login to the system')

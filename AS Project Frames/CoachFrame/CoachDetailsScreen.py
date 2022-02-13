@@ -55,7 +55,7 @@ class CoachContent:
 			today = datetime.date.today()
 			top = Toplevel(self.coach)
 
-			cal = Calendar(top, date_pattern='dd/mm/yyyy', font="Tahoma 16", selectmode='day', cursor="tcross", day=today.day, month=today.month, year=today.year)
+			cal = Calendar(top, date_pattern='dd/mm/yyyy', font="serif 16", selectmode='day', cursor="tcross", day=today.day, month=today.month, year=today.year)
 			cal.pack(fill="both", expand=True)
 			ttk.Button(top, text="Select", command=assign_dob).pack()
 
@@ -482,14 +482,14 @@ class CoachContent:
 
 				updateCoach=Toplevel(bg="white")
 
-				title_label =Label(updateCoach,text = 'Update Coach' , fg ='SpringGreen3',bg='white',font=('Verdana',15,'bold'))
+				title_label =Label(updateCoach,text = 'Update Coach' , fg ='SpringGreen3',bg='white',font=('serif',15,'bold'))
 				title_label.place(rely=0.13,relx=0.5,anchor=CENTER)
 
-				update_postcode=Button(updateCoach,text = 'Update Postcode', command = lambda : update_coach_postcode(updateCoach), fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20, pady =8)
+				update_postcode=Button(updateCoach,text = 'Update Postcode', command = lambda : update_coach_postcode(updateCoach), fg ='white', bg='black', relief= 'groove', font = ('serif',10,'bold'), padx =20, pady =8)
 				update_postcode.place(rely=0.43,relx=0.5,anchor=CENTER)
 				ToolTips.bind(update_postcode, "Update the coach's postcode")
 
-				update_availiability=Button(updateCoach,text = 'Update Availability', command = lambda : update_coach_availability(updateCoach), fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20, pady =8)
+				update_availiability=Button(updateCoach,text = 'Update Availability', command = lambda : update_coach_availability(updateCoach), fg ='white', bg='black', relief= 'groove', font = ('serif',10,'bold'), padx =20, pady =8)
 				update_availiability.place(rely=0.75,relx=0.5,anchor=CENTER)
 				ToolTips.bind(update_availiability, "Update the coach's availiability")
 
@@ -552,31 +552,31 @@ class CoachContent:
 					updateAvailiability=Toplevel(bg="white")
 					updateAvailiability.geometry('200x200')
 
-					title_label =Label(updateAvailiability,text ="Select Available Days" , fg ='SpringGreen3',bg='white',font=('Verdana',11,'bold','underline'))
+					title_label =Label(updateAvailiability,text ="Select Available Days" , fg ='SpringGreen3',bg='white',font=('serif',11,'bold','underline'))
 					title_label.place(rely=0.07,relx=0.5,anchor=CENTER)
 
-					avaliability_monday = Checkbutton(updateAvailiability, cursor="tcross",text="Monday", variable=mondayNewAvaliability,bg="white",bd=2, relief="sunken", font=('Segoe UI Black', 8,'bold'),onvalue=1, offvalue=0)
+					avaliability_monday = Checkbutton(updateAvailiability, cursor="tcross",text="Monday", variable=mondayNewAvaliability,bg="white",bd=2, relief="sunken", font=('serif', 8,'bold'),onvalue=1, offvalue=0)
 					avaliability_monday.place(rely=0.3, relx=0.28, anchor='center')
 
-					avaliability_tuesday = Checkbutton(updateAvailiability, cursor="tcross",text="Tuesday", variable=tuesdayNewAvaliability,bg="white",bd=2, relief="sunken", font=('Segoe UI Black', 8,'bold'),onvalue=1, offvalue=0)
+					avaliability_tuesday = Checkbutton(updateAvailiability, cursor="tcross",text="Tuesday", variable=tuesdayNewAvaliability,bg="white",bd=2, relief="sunken", font=('serif', 8,'bold'),onvalue=1, offvalue=0)
 					avaliability_tuesday.place(rely=0.3, relx=0.72, anchor='center')
 
-					avaliability_wednesday = Checkbutton(updateAvailiability, cursor="tcross",text="Wednesday", variable=wednesdayNewAvaliability,bg="white",bd=2, relief="sunken", font=('Segoe UI Black', 8,'bold'),onvalue=1, offvalue=0)
+					avaliability_wednesday = Checkbutton(updateAvailiability, cursor="tcross",text="Wednesday", variable=wednesdayNewAvaliability,bg="white",bd=2, relief="sunken", font=('serif', 8,'bold'),onvalue=1, offvalue=0)
 					avaliability_wednesday.place(rely=0.45, relx=0.25, anchor='center')
 
-					avaliability_thursday = Checkbutton(updateAvailiability, cursor="tcross",text="Thursday", variable=thursdayNewAvaliability,bg="white",bd=2, relief="sunken", font=('Segoe UI Black', 8,'bold'),onvalue=1, offvalue=0)
+					avaliability_thursday = Checkbutton(updateAvailiability, cursor="tcross",text="Thursday", variable=thursdayNewAvaliability,bg="white",bd=2, relief="sunken", font=('serif', 8,'bold'),onvalue=1, offvalue=0)
 					avaliability_thursday.place(rely=0.45, relx=0.75, anchor='center')
 
-					avaliability_friday = Checkbutton(updateAvailiability, cursor="tcross",text="Friday", variable=fridayNewAvaliability,bg="white",bd=2, relief="sunken", font=('Segoe UI Black', 8,'bold'),onvalue=1, offvalue=0)
+					avaliability_friday = Checkbutton(updateAvailiability, cursor="tcross",text="Friday", variable=fridayNewAvaliability,bg="white",bd=2, relief="sunken", font=('serif', 8,'bold'),onvalue=1, offvalue=0)
 					avaliability_friday.place(rely=0.6, relx=0.28, anchor='center')
 
-					avaliability_saturday = Checkbutton(updateAvailiability, cursor="tcross",text="Saturday", variable=saturdayNewAvaliability,bg="white",bd=2, relief="sunken", font=('Segoe UI Black', 8,'bold'),onvalue=1, offvalue=0)
+					avaliability_saturday = Checkbutton(updateAvailiability, cursor="tcross",text="Saturday", variable=saturdayNewAvaliability,bg="white",bd=2, relief="sunken", font=('serif', 8,'bold'),onvalue=1, offvalue=0)
 					avaliability_saturday.place(rely=0.6, relx=0.72, anchor='center')
 
-					avaliability_sunday = Checkbutton(updateAvailiability, cursor="tcross",text="Sunday", variable=sundayNewAvaliability,bg="white",bd=2, relief="sunken", font=('Segoe UI Black', 8,'bold'),onvalue=1, offvalue=0)
+					avaliability_sunday = Checkbutton(updateAvailiability, cursor="tcross",text="Sunday", variable=sundayNewAvaliability,bg="white",bd=2, relief="sunken", font=('serif', 8,'bold'),onvalue=1, offvalue=0)
 					avaliability_sunday.place(rely=0.75, relx=0.5, anchor='center')
 
-					availiable_update_button=Button(updateAvailiability,text = 'Confirm Update', command = lambda : availableUpdate(updateAvailiability, coachUsername), fg ='white', bg='black', relief= 'groove', font = ('Verdana',11,'bold'), padx =30)
+					availiable_update_button=Button(updateAvailiability,text = 'Confirm Update', command = lambda : availableUpdate(updateAvailiability, coachUsername), fg ='white', bg='black', relief= 'groove', font = ('serif',11,'bold'), padx =30)
 					availiable_update_button.place(rely=0.93,relx=0.5,anchor=CENTER)
 					ToolTips.bind(availiable_update_button, "Update the coach's availiability")
 
@@ -908,25 +908,25 @@ class CoachContent:
 		ToolTips = Pmw.Balloon()
 
 
-		username_label = tkinter.Label(self.coach, text="Username:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		username_label = tkinter.Label(self.coach, text="Username:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		username_label.place(rely=0.13, relx=0.09, anchor='center')
 
-		password_label = tkinter.Label(self.coach, text="Password:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		password_label = tkinter.Label(self.coach, text="Password:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		password_label.place(rely=0.2, relx=0.09, anchor='center')
 
-		firstname_label = tkinter.Label(self.coach, text="Firstname:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		firstname_label = tkinter.Label(self.coach, text="Firstname:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		firstname_label.place(rely=0.27, relx=0.09, anchor='center')
 
-		surname_label = tkinter.Label(self.coach, text="Surname:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		surname_label = tkinter.Label(self.coach, text="Surname:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		surname_label.place(rely=0.34, relx=0.09, anchor='center')
 
-		gender_label = tkinter.Label(self.coach, text="Gender:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		gender_label = tkinter.Label(self.coach, text="Gender:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		gender_label.place(rely=0.415, relx=0.09, anchor='center')
 
-		DOB_label = tkinter.Label(self.coach, text="DOB:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		DOB_label = tkinter.Label(self.coach, text="DOB:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		DOB_label.place(rely=0.495, relx=0.09, anchor='center')
 
-		address_label = tkinter.Label(self.coach, text="Address:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		address_label = tkinter.Label(self.coach, text="Address:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		address_label.place(rely=0.57, relx=0.09, anchor='center')
 
 
@@ -958,14 +958,14 @@ class CoachContent:
 		surname_entry.bind('<FocusOut>', surname_unclick)
 		surname_entry.config(fg='grey')
 
-		male_radiobutton = Radiobutton(self.coach, text="Male", variable=gender, value=1, font=("Segoe UI Black",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
+		male_radiobutton = Radiobutton(self.coach, text="Male", variable=gender, value=1, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 		male_radiobutton.place(rely=0.418, relx=0.2, anchor='center')
 
-		female_radiobutton = Radiobutton(self.coach, text="Female", variable=gender, value=2, font=("Segoe UI Black",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
+		female_radiobutton = Radiobutton(self.coach, text="Female", variable=gender, value=2, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 		female_radiobutton.place(rely=0.418, relx=0.3, anchor='center')
 		gender.set("1")
 
-		DOB_button = Button(self.coach, text='Select DOB',font=("Tahoma",10, 'bold'), cursor="tcross",command=lambda : dateEntryCheck(dateOfBirth), padx=10, bd=4, relief="ridge")
+		DOB_button = Button(self.coach, text='Select DOB',font=("serif",10, 'bold'), cursor="tcross",command=lambda : dateEntryCheck(dateOfBirth), padx=10, bd=4, relief="ridge")
 		DOB_button.place(rely=0.498, relx=0.25, anchor='center')
 		ToolTips.bind(DOB_button, "Select the coaches Date Of Birth")
 
@@ -983,181 +983,181 @@ class CoachContent:
 		line.place(rely=0.61462, relx=0.18, anchor='center')
 
 
-		monday_label = tkinter.Label(self.coach, text="Monday:", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
+		monday_label = tkinter.Label(self.coach, text="Monday:", font=('serif', 10, 'bold'), fg='black', bg='white')
 		monday_label.place(rely=0.66, relx=0.05, anchor='center')
 
-		monday_checkbox = Checkbutton(self.coach, cursor="tcross", command=lambda : check_monday_checkbox(mondayAvaliability), variable=mondayAvaliability,bg="white",bd=2, relief="groove", font=('Segoe UI Black', 6,'bold'),onvalue=1, offvalue=0)
+		monday_checkbox = Checkbutton(self.coach, cursor="tcross", command=lambda : check_monday_checkbox(mondayAvaliability), variable=mondayAvaliability,bg="white",bd=2, relief="groove", font=('serif', 6,'bold'),onvalue=1, offvalue=0)
 		monday_checkbox.place(rely=0.662, relx=0.11, anchor='center')
 
-		monday_from_label = tkinter.Label(self.coach, text="From:", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
+		monday_from_label = tkinter.Label(self.coach, text="From:", font=('serif', 10, 'bold'), fg='black', bg='white')
 		monday_from_label.place(rely=0.66, relx=0.18, anchor='center')
 
-		monday_from_combobox = ttk.Combobox(self.coach, value=monday_from_Avaliability_times,font=('Tahoma', 8, 'bold'), width=5)
+		monday_from_combobox = ttk.Combobox(self.coach, value=monday_from_Avaliability_times,font=('serif', 8, 'bold'), width=5)
 		monday_from_combobox.place(rely=0.661, relx=0.24, anchor='center')
 		monday_from_combobox.current(0)
 		monday_from_combobox.config(state="disable")
 
-		monday_to_label = tkinter.Label(self.coach, text="To:", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
+		monday_to_label = tkinter.Label(self.coach, text="To:", font=('serif', 10, 'bold'), fg='black', bg='white')
 		monday_to_label.place(rely=0.66, relx=0.32, anchor='center')
 
-		monday_to_combobox = ttk.Combobox(self.coach, value=monday_to_Avaliability_times, font=('Tahoma', 8, 'bold'), width=5)
+		monday_to_combobox = ttk.Combobox(self.coach, value=monday_to_Avaliability_times, font=('serif', 8, 'bold'), width=5)
 		monday_to_combobox.place(rely=0.661, relx=0.37, anchor='center')
 		monday_to_combobox.current(0)
 		monday_to_combobox.config(state="disable")
 
 
-		tuesday_label = tkinter.Label(self.coach, text="Tuesday:", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
+		tuesday_label = tkinter.Label(self.coach, text="Tuesday:", font=('serif', 10, 'bold'), fg='black', bg='white')
 		tuesday_label.place(rely=0.73, relx=0.05, anchor='center')
 
-		tuesday_checkbox = Checkbutton(self.coach, cursor="tcross", command=lambda : check_tuesday_checkbox(tuesdayAvaliability), variable=tuesdayAvaliability,bg="white",bd=2, relief="groove", font=('Segoe UI Black', 6,'bold'),onvalue=1, offvalue=0)
+		tuesday_checkbox = Checkbutton(self.coach, cursor="tcross", command=lambda : check_tuesday_checkbox(tuesdayAvaliability), variable=tuesdayAvaliability,bg="white",bd=2, relief="groove", font=('serif', 6,'bold'),onvalue=1, offvalue=0)
 		tuesday_checkbox.place(rely=0.732, relx=0.11, anchor='center')
 
-		tuesday_from_label = tkinter.Label(self.coach, text="From:", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
+		tuesday_from_label = tkinter.Label(self.coach, text="From:", font=('serif', 10, 'bold'), fg='black', bg='white')
 		tuesday_from_label.place(rely=0.73, relx=0.18, anchor='center')
 
-		tuesday_from_combobox = ttk.Combobox(self.coach, value=tuesday_from_Avaliability_times, font=('Tahoma', 8, 'bold'), width=5)
+		tuesday_from_combobox = ttk.Combobox(self.coach, value=tuesday_from_Avaliability_times, font=('serif', 8, 'bold'), width=5)
 		tuesday_from_combobox.place(rely=0.731, relx=0.24, anchor='center')
 		tuesday_from_combobox.current(0)
 		tuesday_from_combobox.config(state="disable")
 
-		tuesday_to_label = tkinter.Label(self.coach, text="To:", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
+		tuesday_to_label = tkinter.Label(self.coach, text="To:", font=('serif', 10, 'bold'), fg='black', bg='white')
 		tuesday_to_label.place(rely=0.73, relx=0.32, anchor='center')
 
-		tuesday_to_combobox = ttk.Combobox(self.coach, value=tuesday_to_Avaliability_times, font=('Tahoma', 8, 'bold'), width=5)
+		tuesday_to_combobox = ttk.Combobox(self.coach, value=tuesday_to_Avaliability_times, font=('serif', 8, 'bold'), width=5)
 		tuesday_to_combobox.place(rely=0.731, relx=0.37, anchor='center')
 		tuesday_to_combobox.current(0)
 		tuesday_to_combobox.config(state="disable")
 
 
-		wednesday_label = tkinter.Label(self.coach, text="Wednesday:", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
+		wednesday_label = tkinter.Label(self.coach, text="Wednesday:", font=('serif', 10, 'bold'), fg='black', bg='white')
 		wednesday_label.place(rely=0.8, relx=0.05, anchor='center')
 
-		wednesday_checkbox = Checkbutton(self.coach, cursor="tcross", command=lambda : check_wednesday_checkbox(wednesdayAvaliability), variable=wednesdayAvaliability,bg="white",bd=2, relief="groove", font=('Segoe UI Black', 6,'bold'),onvalue=1, offvalue=0)
+		wednesday_checkbox = Checkbutton(self.coach, cursor="tcross", command=lambda : check_wednesday_checkbox(wednesdayAvaliability), variable=wednesdayAvaliability,bg="white",bd=2, relief="groove", font=('serif', 6,'bold'),onvalue=1, offvalue=0)
 		wednesday_checkbox.place(rely=0.802, relx=0.11, anchor='center')
 
-		wednesday_from_label = tkinter.Label(self.coach, text="From:", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
+		wednesday_from_label = tkinter.Label(self.coach, text="From:", font=('serif', 10, 'bold'), fg='black', bg='white')
 		wednesday_from_label.place(rely=0.8, relx=0.18, anchor='center')
 
-		wednesday_from_combobox = ttk.Combobox(self.coach, value=wednesday_from_Avaliability_times, font=('Tahoma', 8, 'bold'), width=5)
+		wednesday_from_combobox = ttk.Combobox(self.coach, value=wednesday_from_Avaliability_times, font=('serif', 8, 'bold'), width=5)
 		wednesday_from_combobox.place(rely=0.801, relx=0.24, anchor='center')
 		wednesday_from_combobox.current(0)
 		wednesday_from_combobox.config(state="disable")
 
-		wednesday_to_label = tkinter.Label(self.coach, text="To:", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
+		wednesday_to_label = tkinter.Label(self.coach, text="To:", font=('serif', 10, 'bold'), fg='black', bg='white')
 		wednesday_to_label.place(rely=0.8, relx=0.32, anchor='center')
 
-		wednesday_to_combobox = ttk.Combobox(self.coach, value=wednesday_to_Avaliability_times, font=('Tahoma', 8, 'bold'), width=5)
+		wednesday_to_combobox = ttk.Combobox(self.coach, value=wednesday_to_Avaliability_times, font=('serif', 8, 'bold'), width=5)
 		wednesday_to_combobox.place(rely=0.801, relx=0.37, anchor='center')
 		wednesday_to_combobox.current(0)
 		wednesday_to_combobox.config(state="disable")
 
 
-		thursday_label = tkinter.Label(self.coach, text="Thursday:", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
+		thursday_label = tkinter.Label(self.coach, text="Thursday:", font=('serif', 10, 'bold'), fg='black', bg='white')
 		thursday_label.place(rely=0.87, relx=0.05, anchor='center')
 
-		thursday_checkbox = Checkbutton(self.coach, cursor="tcross", command=lambda : check_thursday_checkbox(thursdayAvaliability), variable=thursdayAvaliability,bg="white",bd=2, relief="groove", font=('Segoe UI Black', 6,'bold'),onvalue=1, offvalue=0)
+		thursday_checkbox = Checkbutton(self.coach, cursor="tcross", command=lambda : check_thursday_checkbox(thursdayAvaliability), variable=thursdayAvaliability,bg="white",bd=2, relief="groove", font=('serif', 6,'bold'),onvalue=1, offvalue=0)
 		thursday_checkbox.place(rely=0.872, relx=0.11, anchor='center')
 
-		thursday_from_label = tkinter.Label(self.coach, text="From:", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
+		thursday_from_label = tkinter.Label(self.coach, text="From:", font=('serif', 10, 'bold'), fg='black', bg='white')
 		thursday_from_label.place(rely=0.87, relx=0.18, anchor='center')
 
-		thursday_from_combobox = ttk.Combobox(self.coach, value=thursday_from_Avaliability_times, font=('Tahoma', 8, 'bold'), width=5)
+		thursday_from_combobox = ttk.Combobox(self.coach, value=thursday_from_Avaliability_times, font=('serif', 8, 'bold'), width=5)
 		thursday_from_combobox.place(rely=0.871, relx=0.24, anchor='center')
 		thursday_from_combobox.current(0)
 		thursday_from_combobox.config(state="disable")
 
-		thursday_to_label = tkinter.Label(self.coach, text="To:", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
+		thursday_to_label = tkinter.Label(self.coach, text="To:", font=('serif', 10, 'bold'), fg='black', bg='white')
 		thursday_to_label.place(rely=0.87, relx=0.32, anchor='center')
 
-		thursday_to_combobox = ttk.Combobox(self.coach, value=thursday_to_Avaliability_times, font=('Tahoma', 8, 'bold'), width=5)
+		thursday_to_combobox = ttk.Combobox(self.coach, value=thursday_to_Avaliability_times, font=('serif', 8, 'bold'), width=5)
 		thursday_to_combobox.place(rely=0.871, relx=0.37, anchor='center')
 		thursday_to_combobox.current(0)
 		thursday_to_combobox.config(state="disable")
 
 
-		friday_label = tkinter.Label(self.coach, text="Friday:", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
+		friday_label = tkinter.Label(self.coach, text="Friday:", font=('serif', 10, 'bold'), fg='black', bg='white')
 		friday_label.place(rely=0.94, relx=0.05, anchor='center')
 
-		friday_checkbox = Checkbutton(self.coach, cursor="tcross", command=lambda : check_friday_checkbox(fridayAvaliability), variable=fridayAvaliability,bg="white",bd=2, relief="groove", font=('Segoe UI Black', 6,'bold'),onvalue=1, offvalue=0)
+		friday_checkbox = Checkbutton(self.coach, cursor="tcross", command=lambda : check_friday_checkbox(fridayAvaliability), variable=fridayAvaliability,bg="white",bd=2, relief="groove", font=('serif', 6,'bold'),onvalue=1, offvalue=0)
 		friday_checkbox.place(rely=0.942, relx=0.11, anchor='center')
 
-		friday_from_label = tkinter.Label(self.coach, text="From:", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
+		friday_from_label = tkinter.Label(self.coach, text="From:", font=('serif', 10, 'bold'), fg='black', bg='white')
 		friday_from_label.place(rely=0.94, relx=0.18, anchor='center')
 
-		friday_from_combobox = ttk.Combobox(self.coach, value=friday_from_Avaliability_times, font=('Tahoma', 8, 'bold'), width=5)
+		friday_from_combobox = ttk.Combobox(self.coach, value=friday_from_Avaliability_times, font=('serif', 8, 'bold'), width=5)
 		friday_from_combobox.place(rely=0.941, relx=0.24, anchor='center')
 		friday_from_combobox.current(0)
 		friday_from_combobox.config(state="disable")
 
-		friday_to_label = tkinter.Label(self.coach, text="To:", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
+		friday_to_label = tkinter.Label(self.coach, text="To:", font=('serif', 10, 'bold'), fg='black', bg='white')
 		friday_to_label.place(rely=0.94, relx=0.32, anchor='center')
 
-		friday_to_combobox = ttk.Combobox(self.coach, value=friday_to_Avaliability_times, font=('Tahoma', 8, 'bold'), width=5)
+		friday_to_combobox = ttk.Combobox(self.coach, value=friday_to_Avaliability_times, font=('serif', 8, 'bold'), width=5)
 		friday_to_combobox.place(rely=0.941, relx=0.37, anchor='center')
 		friday_to_combobox.current(0)
 		friday_to_combobox.config(state="disable")
 
 
-		saturday_label = tkinter.Label(self.coach, text="Saturday:", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
+		saturday_label = tkinter.Label(self.coach, text="Saturday:", font=('serif', 10, 'bold'), fg='black', bg='white')
 		saturday_label.place(rely=0.825, relx=0.52, anchor='center')
 
-		saturday_checkbox = Checkbutton(self.coach, cursor="tcross", command=lambda : check_saturday_checkbox(saturdayAvaliability), variable=saturdayAvaliability,bg="white",bd=2, relief="groove", font=('Segoe UI Black', 6,'bold'),onvalue=1, offvalue=0)
+		saturday_checkbox = Checkbutton(self.coach, cursor="tcross", command=lambda : check_saturday_checkbox(saturdayAvaliability), variable=saturdayAvaliability,bg="white",bd=2, relief="groove", font=('serif', 6,'bold'),onvalue=1, offvalue=0)
 		saturday_checkbox.place(rely=0.827, relx=0.58, anchor='center')
 
-		saturday_from_label = tkinter.Label(self.coach, text="From:", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
+		saturday_from_label = tkinter.Label(self.coach, text="From:", font=('serif', 10, 'bold'), fg='black', bg='white')
 		saturday_from_label.place(rely=0.825, relx=0.65, anchor='center')
 
-		saturday_from_combobox = ttk.Combobox(self.coach, value=saturday_from_Avaliability_times,font=('Tahoma', 8, 'bold'), width=5)
+		saturday_from_combobox = ttk.Combobox(self.coach, value=saturday_from_Avaliability_times,font=('serif', 8, 'bold'), width=5)
 		saturday_from_combobox.place(rely=0.826, relx=0.71, anchor='center')
 		saturday_from_combobox.current(0)
 		saturday_from_combobox.config(state="disable")
 
 
-		saturday_to_label = tkinter.Label(self.coach, text="To:", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
+		saturday_to_label = tkinter.Label(self.coach, text="To:", font=('serif', 10, 'bold'), fg='black', bg='white')
 		saturday_to_label.place(rely=0.825, relx=0.79, anchor='center')
 
-		saturday_to_combobox = ttk.Combobox(self.coach, value=saturday_to_Avaliability_times, font=('Tahoma', 8, 'bold'), width=5)
+		saturday_to_combobox = ttk.Combobox(self.coach, value=saturday_to_Avaliability_times, font=('serif', 8, 'bold'), width=5)
 		saturday_to_combobox.place(rely=0.826, relx=0.84, anchor='center')
 		saturday_to_combobox.current(0)
 		saturday_to_combobox.config(state="disable")
 
 
-		sunday_label = tkinter.Label(self.coach, text="Sunday:", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
+		sunday_label = tkinter.Label(self.coach, text="Sunday:", font=('serif', 10, 'bold'), fg='black', bg='white')
 		sunday_label.place(rely=0.885, relx=0.52, anchor='center')
 
-		sunday_checkbox = Checkbutton(self.coach, cursor="tcross", command=lambda : check_sunday_checkbox(sundayAvaliability), variable=sundayAvaliability,bg="white",bd=2, relief="groove", font=('Segoe UI Black', 6,'bold'),onvalue=1, offvalue=0)
+		sunday_checkbox = Checkbutton(self.coach, cursor="tcross", command=lambda : check_sunday_checkbox(sundayAvaliability), variable=sundayAvaliability,bg="white",bd=2, relief="groove", font=('serif', 6,'bold'),onvalue=1, offvalue=0)
 		sunday_checkbox.place(rely=0.887, relx=0.58, anchor='center')
 
-		sunday_from_label = tkinter.Label(self.coach, text="From:", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
+		sunday_from_label = tkinter.Label(self.coach, text="From:", font=('serif', 10, 'bold'), fg='black', bg='white')
 		sunday_from_label.place(rely=0.885, relx=0.65, anchor='center')
 
-		sunday_from_combobox = ttk.Combobox(self.coach, value=sunday_from_Avaliability_times, font=('Tahoma', 8, 'bold'), width=5)
+		sunday_from_combobox = ttk.Combobox(self.coach, value=sunday_from_Avaliability_times, font=('serif', 8, 'bold'), width=5)
 		sunday_from_combobox.place(rely=0.886, relx=0.71, anchor='center')
 		sunday_from_combobox.current(0)
 		sunday_from_combobox.config(state="disable")
 
-		sunday_to_label = tkinter.Label(self.coach, text="To:", font=('Tahoma', 10, 'bold'), fg='black', bg='white')
+		sunday_to_label = tkinter.Label(self.coach, text="To:", font=('serif', 10, 'bold'), fg='black', bg='white')
 		sunday_to_label.place(rely=0.885, relx=0.79, anchor='center')
 
-		sunday_to_combobox = ttk.Combobox(self.coach, value=sunday_to_Avaliability_times, font=('Tahoma', 8, 'bold'), width=5)
+		sunday_to_combobox = ttk.Combobox(self.coach, value=sunday_to_Avaliability_times, font=('serif', 8, 'bold'), width=5)
 		sunday_to_combobox.place(rely=0.886, relx=0.84, anchor='center')
 		sunday_to_combobox.current(0)
 		sunday_to_combobox.config(state="disable")
 
 
-		submit_button = tkinter.Button(self.coach, cursor="tcross",text="Submit", command=saveCoachDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=30)
+		submit_button = tkinter.Button(self.coach, cursor="tcross",text="Submit", command=saveCoachDetails, fg='white', bg='black', bd=4, relief='ridge', font=('serif', 10, 'bold'), padx=30)
 		submit_button.place(rely=0.95, relx=0.49, anchor='center')
 		ToolTips.bind(submit_button, 'Submit coach details entered into database')
 
-		search_button = tkinter.Button(self.coach, cursor="tcross",text="Search", command=searchCoachDetails, fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=32.4)
+		search_button = tkinter.Button(self.coach, cursor="tcross",text="Search", command=searchCoachDetails, fg='white', bg='black', bd=4, relief='ridge', font=('serif', 10, 'bold'), padx=32.4)
 		search_button.place(rely=0.95, relx=0.63, anchor='center')
 		ToolTips.bind(search_button, 'Search a coach from database')
 
-		update_button = tkinter.Button(self.coach, cursor="tcross",text="Update", command=lambda : updateCoachDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=30)
+		update_button = tkinter.Button(self.coach, cursor="tcross",text="Update", command=lambda : updateCoachDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 10, 'bold'), padx=30)
 		update_button.place(rely=0.95, relx=0.77, anchor='center')
 		ToolTips.bind(update_button, 'Update details of a coach in the database')
 
-		delete_button = tkinter.Button(self.coach, cursor="tcross",text="Delete", command=lambda : deleteCoachDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('Segoe UI Black', 10, 'bold'), padx=33.2)
+		delete_button = tkinter.Button(self.coach, cursor="tcross",text="Delete", command=lambda : deleteCoachDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 10, 'bold'), padx=33.2)
 		delete_button.place(rely=0.95, relx=0.91, anchor='center')
 		ToolTips.bind(delete_button, 'Delete a coach from the database')
 

@@ -393,33 +393,33 @@ class CoachHomeScreenContent:
 
 
 
-		title_label = tkinter.Label(self.CoachHome, text="Main Menu: Coach", font=('Tahoma', 18, 'bold','underline'), fg='black', bg='white', bd=4, relief='groove', padx=10, pady=4)
-		title_label.place(rely=0.17, relx=0.18, anchor='center')
+		title_label = tkinter.Label(self.CoachHome, text="Main Menu: Coach", font=('serif', 18, 'bold','underline'), fg='black', bg='white', bd=4, relief='groove', padx=10, pady=4)
+		title_label.place(rely=0.16, relx=0.17, anchor='center')
 
-		calendar_label =Label(self.CoachHome, text = findfirstandsurname() + "'s Live Events", fg ='black',bg='white',font=('Tahoma',8,'bold'), bd=2, relief="ridge", padx=5, pady=2)
+		calendar_label =Label(self.CoachHome, text = findfirstandsurname() + "'s Live Events", fg ='black',bg='white',font=('serif',8,'bold'), bd=2, relief="ridge", padx=5, pady=2)
 		calendar_label.place(rely=0.14,relx=0.495,anchor=CENTER)
 		today = date.today()
-		cal = Calendar(self.CoachHome, font="Tahoma 10", selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
+		cal = Calendar(self.CoachHome, font="serif 10", selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
 		cal.place(rely=0.305, relx=0.495, anchor='center')
 		cal.bind("<<CalendarSelected>>", partial(AllCalendarSelection, cal))
 
-		weekday_label = tkinter.Label(self.CoachHome, text="Current Weekday:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		weekday_label = tkinter.Label(self.CoachHome, text="Current Weekday:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		weekday_label.place(rely=0.25, relx=0.11, anchor='center')
-		weekday = Label(self.CoachHome, font=('Tahoma', 14, 'bold'), fg='black', bg='white', bd=3, relief='sunken', padx=3, pady=1)
+		weekday = Label(self.CoachHome, font=('serif', 14, 'bold'), fg='black', bg='white', bd=3, relief='sunken', padx=3, pady=1)
 		weekday.place(rely=0.253, relx=0.26, anchor='center')
 
-		from_label = tkinter.Label(self.CoachHome, text="From:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		from_label = tkinter.Label(self.CoachHome, text="From:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		from_label.place(rely=0.3425, relx=0.04, anchor='center')
-		from_time = tkinter.Label(self.CoachHome, font=('Tahoma', 14, 'bold'), fg='black', bg='white', bd=3, relief='sunken', padx=3, pady=1)
+		from_time = tkinter.Label(self.CoachHome, font=('serif', 14, 'bold'), fg='black', bg='white', bd=3, relief='sunken', padx=3, pady=1)
 		from_time.place(rely=0.3455, relx=0.13, anchor='center')
-		to_label = tkinter.Label(self.CoachHome, text="To:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		to_label = tkinter.Label(self.CoachHome, text="To:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		to_label.place(rely=0.3425, relx=0.23, anchor='center')
-		to_time = tkinter.Label(self.CoachHome, font=('Tahoma', 14, 'bold'), fg='black', bg='white', bd=3, relief='sunken', padx=3, pady=1)
+		to_time = tkinter.Label(self.CoachHome, font=('serif', 14, 'bold'), fg='black', bg='white', bd=3, relief='sunken', padx=3, pady=1)
 		to_time.place(rely=0.3455, relx=0.31, anchor='center')
 
-		time_left_label = tkinter.Label(self.CoachHome, text="System Time Left:", font=('Tahoma', 14, 'bold'), fg='black', bg='white')
+		time_left_label = tkinter.Label(self.CoachHome, text="System Time Left:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		time_left_label.place(rely=0.43, relx=0.11, anchor='center')
-		timer_label = tkinter.Label(self.CoachHome, font=('Tahoma', 14, 'bold'), fg='black', bg='white', bd=3, relief='sunken', padx=3, pady=1)
+		timer_label = tkinter.Label(self.CoachHome, font=('serif', 14, 'bold'), fg='black', bg='white', bd=3, relief='sunken', padx=3, pady=1)
 		timer_label.place(rely=0.433, relx=0.26, anchor='center')
 
 		googlemapsphoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/2021-12-31_9_2_507x315.png")
@@ -454,7 +454,7 @@ class CoachHomeScreenContent:
 		slide_image = Label(self.CoachHome, image=images[i], bd=10, relief='ridge', bg='green')
 		slide_image.place(rely=0.732, relx=0.19, anchor='center')
 
-		treeview_label =Label(self.CoachHome, text = findfirstandsurname() + "'s Past Events", fg ='black',bg='white',font=('Tahoma',8,'bold'), bd=2, relief="ridge", padx=5, pady=2)
+		treeview_label =Label(self.CoachHome, text = findfirstandsurname() + "'s Past Events", fg ='black',bg='white',font=('serif',8,'bold'), bd=2, relief="ridge", padx=5, pady=2)
 		treeview_label.place(rely=0.127,relx=0.81,anchor=CENTER)
 		past_event_Tv=ttk.Treeview(self.CoachHome,height=9,columns=('Date','Status'))
 		past_event_Tv.place(relx=0.81,rely=0.3,anchor=CENTER)
