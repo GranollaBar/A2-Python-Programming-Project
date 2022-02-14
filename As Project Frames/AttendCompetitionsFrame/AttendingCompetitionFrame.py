@@ -23,7 +23,9 @@ from matplotlib import style
 import matplotlib.pyplot as plt
 import Pmw
 
-
+previous1 = 0
+previous2 = 0
+counter = 0
 
 class AttendingSinglesContent:
 
@@ -40,9 +42,57 @@ class AttendingSinglesContent:
         #             Time text,
         #             CurrentID text
         #             )""")
+        #
+        # self.c.execute("""CREATE TABLE FinshedCompetitions (
+        #             CompetitionType text,
+        #             Member_Team_1 text,
+        #             Member_Team_1_Score text,
+        #             Member_Team_2 text,
+        #             Member_Team_2_Score text,
+        #             Final_time_seconds text,
+        #             CurrentID text
+        #             )""")
 
 
     def generateAttendingSinglesContnt(self):
+
+        def validate_member_team_score(value1, value2):
+            global previous1
+            global previous2
+
+            if value1 <= (previous1 - 1):
+                messagebox.showinfo("Validation Error", "Score 1 must not be less than the previous score entered", icon='error')
+                return False
+
+            if value2 <= (previous2 - 1):
+                messagebox.showinfo("Validation Error", "Score 2 must not be less than the previous score entered", icon='error')
+                return False
+
+            if value1 > (previous1 + 1):
+                messagebox.showinfo("Validation Error", "Score 1 can only be increased by 1 each cycle", icon='error')
+                return False
+
+            if value2 > (previous2 + 1):
+                messagebox.showinfo("Validation Error", "Score 2 can only be increased by 1 each cycle", icon='error')
+                return False
+
+            if value1 == previous1 and value2 == previous2:
+                messagebox.showinfo("Validation Error", "One score must be increased by 1 each cycle", icon='error')
+                return False
+
+            if value1 == previous1+1 and value2 == previous2+1:
+                messagebox.showinfo("Validation Error", "Only one score can be increased each cycle", icon='error')
+                return False
+
+            previous1 = value1
+            previous2 = value2
+            return True
+
+
+        def clearcanvas(singlescanvas):
+            for item in singlescanvas.get_tk_widget().find_all():
+                singlescanvas.get_tk_widget().delete(item)
+
 
         def ClearSinglesTV():
             record=unplayed_singles_competitions_Tv.get_children()
@@ -101,7 +151,7 @@ class AttendingSinglesContent:
             datesarray = []
             p = 1
 
-            for y in range(0, len(Allrows)):
+            for starting in Allrows:
                 c.execute("SELECT * FROM SinglesCompetition WHERE start_date>:realstartdate AND end_date<:realenddate AND singlescompetitionID=:ID", {
                     "realstartdate": finaldatesarray[0],
                     "realenddate": finaldatesarray[14],
@@ -276,7 +326,7 @@ class AttendingSinglesContent:
             Datesarray = []
             p = 1
 
-            for y in range(0, len(Allrows)):
+            for starting in Allrows:
                 c.execute("SELECT * FROM DoublesCompetition WHERE start_date>:realstartdate AND end_date<:realenddate AND doublescompetitionID=:ID", {
                     "realstartdate": finaldatesarray[0],
                     "realenddate": finaldatesarray[14],
@@ -492,7 +542,7 @@ class AttendingSinglesContent:
                     Datesarray = []
                     p = 1
 
-                    for y in range(0, len(Allrows)):
+                    for starting in Allrows:
                         c.execute("SELECT * FROM SinglesCompetition WHERE start_date>:realstartdate AND end_date<:realenddate AND singlescompetitionID=:ID", {
                             "realstartdate": finaldatesarray[0],
                             "realenddate": finaldatesarray[14],
@@ -617,15 +667,15 @@ class AttendingSinglesContent:
                                 CompetitionType_combobox.config(state="disable")
                                 ID_entry.config(state="disable")
                                 select_competition_button.config(state="disable")
-                                score1_entry.config(state="normal")
-                                score2_entry.config(state="normal")
+                                score1_spinbox.config(state="readonly")
+                                score2_spinbox.config(state="readonly")
                                 submit_competition_button.place_forget()
 
-                                singles_submit_competition_button = tkinter.Button(self.attend, cursor="tcross",text="Submit", command=SubmitSinglesResults, fg='white', bg='black', bd=3, relief='ridge', font=('serif', 12, 'bold'))
+                                singles_submit_competition_button = tkinter.Button(self.attend, cursor="tcross",text="Submit", command=lambda : SubmitSinglesResults(singles_submit_competition_button), fg='white', bg='black', bd=3, relief='ridge', font=('serif', 12, 'bold'))
                                 singles_submit_competition_button.place(rely=0.925, relx=0.4, anchor='center')
                                 ToolTips.bind(singles_submit_competition_button, 'Enter and submit values for the singles competition')
 
-                                DrawLineGraphSingles()
+                                DrawLineGraphSingles(singles_submit_competition_button)
 
                             else:
                                 messagebox.showinfo('Error', 'The ID entered does not have a singles competition on: ' + currentday, icon='error')
@@ -675,7 +725,7 @@ class AttendingSinglesContent:
                     Datesarray = []
                     p = 1
 
-                    for y in range(0, len(Allrows)):
+                    for starting in Allrows:
                         c.execute("SELECT * FROM DoublesCompetition WHERE start_date>:realstartdate AND end_date<:realenddate AND doublescompetitionID=:ID", {
                             "realstartdate": finaldatesarray[0],
                             "realenddate": finaldatesarray[14],
@@ -797,18 +847,18 @@ class AttendingSinglesContent:
                                 conn.commit()
                                 conn.close()
 
-                                DrawLineGraphDoubles()
-
                                 CompetitionType_combobox.config(state="disable")
                                 ID_entry.config(state="disable")
                                 select_competition_button.config(state="disable")
-                                score1_entry.config(state="normal")
-                                score2_entry.config(state="normal")
+                                score1_spinbox.config(state="readonly")
+                                score2_spinbox.config(state="readonly")
                                 submit_competition_button.place_forget()
 
-                                doubles_submit_competition_button = tkinter.Button(self.attend, cursor="tcross",text="Submit", command=SubmitDoublesResults, fg='white', bg='black', bd=3, relief='ridge', font=('serif', 12, 'bold'))
+                                doubles_submit_competition_button = tkinter.Button(self.attend, cursor="tcross",text="Submit", command=lambda : SubmitDoublesResults(doubles_submit_competition_button), fg='white', bg='black', bd=3, relief='ridge', font=('serif', 12, 'bold'))
                                 doubles_submit_competition_button.place(rely=0.925, relx=0.4, anchor='center')
                                 ToolTips.bind(doubles_submit_competition_button, 'Enter and submit values for the doubles competition')
+
+                                DrawLineGraphDoubles(doubles_submit_competition_button)
 
                             else:
                                 messagebox.showinfo('Error', 'The ID entered does not have a doubles competition on: ' + currentday, icon='error')
@@ -818,7 +868,7 @@ class AttendingSinglesContent:
                         messagebox.showinfo('Error', 'There are no doubles competitions currently listed for the date: ' + currentday, icon='error')
 
 
-        def DrawLineGraphSingles():
+        def DrawLineGraphSingles(singlessubmitbutton):
             conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
             c = conn.cursor()
 
@@ -875,8 +925,11 @@ class AttendingSinglesContent:
                 canvas.get_tk_widget().place(relx=0.2,rely=0.662,anchor=CENTER)
                 canvas.draw()
 
+            if score1.get() == 21 or score2.get() == 21:
+                FinishedSinglesGraph(singlessubmitbutton, canvas)
 
-        def DrawLineGraphDoubles():
+
+        def DrawLineGraphDoubles(doublessubmitbutton):
             conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
             c = conn.cursor()
 
@@ -933,63 +986,389 @@ class AttendingSinglesContent:
                 canvas.get_tk_widget().place(relx=0.2,rely=0.662,anchor=CENTER)
                 canvas.draw()
 
+            if score1.get() == 21 or score2.get() == 21:
+                FinishedDoublesGraph(doublessubmitbutton, canvas)
 
-        def SubmitSinglesResults():
-            member_team1_score = score1.get()
-            member_team2_score = score2.get()
-            currentTime = int(time.time())
 
+        def FinishedSinglesGraph(singlessubmitbutton, singlescanvas):
             conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
             c = conn.cursor()
 
             c.execute("SELECT * FROM CurrentCompetitionScores")
-            Row = c.fetchall()
+            row = c.fetchall()
 
-            c.execute("INSERT INTO CurrentCompetitionScores VALUES (:CompetitionType, :Member_Team_1_Score, :Member_Team_2_Score, :Time, :CurrentID)",
+            u = len(row)-1
+            GotARow = False
+
+            messagebox.showinfo('Info', 'Single competition with ID: ' + row[0][4] + ' has now been completed')
+
+            finaltime = int(row[len(row)-1][3]) - int(row[0][3])
+
+            c.execute("SELECT * FROM SinglesCompetition WHERE singlescompetitionID=:ID", {
+                "ID":row[u][4]
+            })
+            namesrow = c.fetchone()
+
+            c.execute("INSERT INTO FinshedCompetitions VALUES (:CompetitionType, :Member_Team_1, :Member_Team_1_Score, :Member_Team_2, :Member_Team_2_Score, :Final_time_seconds, :CurrentID)",
                       {
                           'CompetitionType': 'Singles',
-                          'Member_Team_1_Score': member_team1_score,
-                          'Member_Team_2_Score': member_team2_score,
-                          'Time': currentTime,
-                          'CurrentID': Row[0][4],
+                          'Member_Team_1': findfirstandsurnamemember(namesrow[0]),
+                          'Member_Team_1_Score': row[len(row)-1][1],
+                          'Member_Team_2': findfirstandsurnamemember(namesrow[1]),
+                          'Member_Team_2_Score': row[len(row)-1][2],
+                          'Final_time_seconds': finaltime,
+                          'CurrentID': row[0][4],
                       })
-
             conn.commit()
-            conn.close()
 
-            DrawLineGraphSingles()
+            CompetitionType_combobox.config(state="normal")
+            ID_entry.config(state="normal")
+            select_competition_button.config(state="normal")
+            score1_spinbox.config(state="disable")
+            score2_spinbox.config(state="disable")
+            CompetitionType_combobox.set('Singles')
+            CompetitionID.set('')
+            score1.set('0')
+            score2.set('0')
+            singlessubmitbutton.place_forget()
+            submit_competition_button.place(rely=0.925, relx=0.4, anchor='center')
+            submit_competition_button.config(state="disable")
+
+            clearcanvas(singlescanvas)
+
+            c.execute("SELECT * FROM FinshedCompetitions")
+            row2 = c.fetchall()
+
+            v = len(row2) - 1
+
+            for z in (0, v):
+                c.execute("SELECT * FROM FinshedCompetitions WHERE CurrentID=:ID AND CompetitionType=:Type", {
+                    "ID":row2[v][6],
+                    "Type": 'Singles'
+                })
+                singlerow = c.fetchone()
+                if (singlerow is None):
+                    pass
+                else:
+                    GotARow = True
+                    break
+                v -= 1
+
+            if GotARow == True:
+                StartUpFinishedSinglesGraph()
+
+            else:
+                pass
 
 
-        def SubmitDoublesResults():
-            member_team1_score = score1.get()
-            member_team2_score = score2.get()
-            currentTime = int(time.time())
+        def StartUpFinishedSinglesGraph():
+            global counter
 
             conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
             c = conn.cursor()
 
-            c.execute("SELECT * FROM CurrentCompetitionScores")
-            Row = c.fetchall()
+            c.execute("SELECT * FROM FinshedCompetitions")
+            row2 = c.fetchall()
 
-            c.execute("INSERT INTO CurrentCompetitionScores VALUES (:CompetitionType, :Member_Team_1_Score, :Member_Team_2_Score, :Time, :CurrentID)",
+            if len(row2) != 0:
+                GotARow = False
+
+                if row2[len(row2)-1][0] == 'Singles':
+                    c.execute("SELECT * FROM FinshedCompetitions WHERE CompetitionType=:Type AND CurrentID=:ID", {
+                        "Type": 'Singles',
+                        "ID": row2[len(row2)-1][6]
+                    })
+                    singlerow = c.fetchone()
+                    GotARow = True
+
+                if GotARow == False:
+                    for x in reversed(row2):
+                        c.execute("SELECT * FROM FinshedCompetitions WHERE CompetitionType=:Type", {
+                            "Type": 'Singles'
+                        })
+                        singlerow = c.fetchone()
+                        if (singlerow is None):
+                            pass
+                        else:
+                            GotARow = True
+                            break
+
+                if GotARow == True:
+                    final_result_label = tkinter.Label(self.attend, text='Final Results', font=('serif', 10, 'bold', 'underline'), fg='black', bg='white')
+                    final_result_label.place(rely=0.865, relx=0.592, anchor='center')
+
+                    member1_score_label = tkinter.Label(self.attend, text='   #' + singlerow[1] + ' - ' + singlerow[2] +'#   ', font=('serif', 9, 'bold'), fg='SpringGreen3', bg='white')
+                    member1_score_label.place(rely=0.905, relx=0.592, anchor='center')
+
+                    member2_score_label = tkinter.Label(self.attend, text='   #' + singlerow[3] + ' - ' + singlerow[4] + '#   ', font=('serif', 9, 'bold'), fg='blue', bg='white')
+                    member2_score_label.place(rely=0.945, relx=0.592, anchor='center')
+
+                    text = 'ID: ' + str(singlerow[6])
+
+                    style.use('seaborn-darkgrid')
+
+                    font = {'family': 'serif',
+                            'color':  'black',
+                            'weight': 'normal',
+                            'size': 16,
+                            }
+
+                    score1list = []
+                    score2list = []
+                    timelist = []
+
+                    score1list.append(0)
+                    score2list.append(0)
+                    timelist.append(0)
+                    score1list.append(singlerow[2])
+                    score2list.append(singlerow[4])
+                    timelist.append(singlerow[5])
+
+                    fig = plt.figure(figsize=(3.9,3.5), dpi=60)
+                    fig.tight_layout()
+                    ax1 = fig.add_subplot(111)
+                    if score1list[1] == '21':
+                        ax1.plot(timelist, score2list, color="blue")
+                        ax1.plot(timelist, score1list, color="limegreen")
+                    else:
+                        ax1.plot(timelist, score1list, color="limegreen")
+                        ax1.plot(timelist, score2list, color="blue")
+                    ax1.set_title(text, fontdict=font)
+                    ax1.set_xlabel('Time (Seconds)', fontdict=font)
+                    ax1.set_ylabel('Score', fontdict=font)
+
+                    finishedcanvas = FigureCanvasTkAgg(fig, self.attend)
+                    finishedcanvas.get_tk_widget().place(relx=0.592,rely=0.673,anchor=CENTER)
+                    finishedcanvas.draw()
+
+                else:
+                    pass
+
+            else:
+                pass
+
+
+
+        def FinishedDoublesGraph(doublessubmitbutton, doublescanvas):
+            conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+            c = conn.cursor()
+
+            c.execute("SELECT * FROM CurrentCompetitionScores")
+            row = c.fetchall()
+
+            u = len(row)-1
+            GotARow = False
+
+            messagebox.showinfo('Info', 'Double competition with ID: ' + row[0][4] + ' has now been completed')
+
+            finaltime = int(row[len(row)-1][3]) - int(row[0][3])
+
+            c.execute("SELECT * FROM DoublesCompetition WHERE doublescompetitionID=:ID", {
+                "ID":row[u][4]
+            })
+            namesrow = c.fetchone()
+
+            c.execute("INSERT INTO FinshedCompetitions VALUES (:CompetitionType, :Member_Team_1, :Member_Team_1_Score, :Member_Team_2, :Member_Team_2_Score, :Final_time_seconds, :CurrentID)",
                       {
                           'CompetitionType': 'Doubles',
-                          'Member_Team_1_Score': member_team1_score,
-                          'Member_Team_2_Score': member_team2_score,
-                          'Time': currentTime,
-                          'CurrentID': Row[0][4],
+                          'Member_Team_1': namesrow[7],
+                          'Member_Team_1_Score': row[len(row)-1][1],
+                          'Member_Team_2': namesrow[8],
+                          'Member_Team_2_Score': row[len(row)-1][2],
+                          'Final_time_seconds': finaltime,
+                          'CurrentID': row[0][4],
                       })
-
             conn.commit()
-            conn.close()
 
-            DrawLineGraphDoubles()
+            CompetitionType_combobox.config(state="normal")
+            ID_entry.config(state="normal")
+            select_competition_button.config(state="normal")
+            score1_spinbox.config(state="disable")
+            score2_spinbox.config(state="disable")
+            CompetitionType_combobox.set('Singles')
+            CompetitionID.set('')
+            score1.set('0')
+            score2.set('0')
+            doublessubmitbutton.place_forget()
+            submit_competition_button.place(rely=0.925, relx=0.4, anchor='center')
+            submit_competition_button.config(state="disable")
 
+            clearcanvas(doublescanvas)
+
+            c.execute("SELECT * FROM FinshedCompetitions")
+            row2 = c.fetchall()
+
+            v = len(row2) - 1
+
+            for z in (0, v):
+                c.execute("SELECT * FROM FinshedCompetitions WHERE CurrentID=:ID AND CompetitionType=:Type", {
+                    "ID":row2[v][6],
+                    "Type": 'Doubles'
+                })
+                doublerow = c.fetchone()
+                if (doublerow is None):
+                    pass
+                else:
+                    GotARow = True
+                    break
+                v -= 1
+
+            if GotARow == True:
+                StartUpFinishedDoublesGraph()
+
+            else:
+                pass
+
+
+        def StartUpFinishedDoublesGraph():
+            conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+            c = conn.cursor()
+
+            c.execute("SELECT * FROM FinshedCompetitions")
+            row2 = c.fetchall()
+
+            if len(row2) != 0:
+                GotARow = False
+
+                if row2[len(row2)-1][0] == 'Doubles':
+                    c.execute("SELECT * FROM FinshedCompetitions WHERE CompetitionType=:Type AND CurrentID=:ID", {
+                        "Type": 'Doubles',
+                        "ID": row2[len(row2)-1][6]
+                    })
+                    doublerow = c.fetchone()
+                    GotARow = True
+
+                if GotARow == False:
+                    for x in reversed(row2):
+                        c.execute("SELECT * FROM FinshedCompetitions WHERE CompetitionType=:Type", {
+                            "Type": 'Doubles'
+                        })
+                        doublerow = c.fetchone()
+                        if (doublerow is None):
+                            pass
+                        else:
+                            GotARow = True
+                            break
+
+                if GotARow == True:
+                    final_result_label = tkinter.Label(self.attend, text='Final Results', font=('serif', 10, 'bold', 'underline'), fg='black', bg='white')
+                    final_result_label.place(rely=0.865, relx=0.848, anchor='center')
+
+                    member1_score_label = tkinter.Label(self.attend, text='   #' + doublerow[1] + ' - ' + doublerow[2] + '#   ', font=('serif', 9, 'bold'), fg='SpringGreen3', bg='white')
+                    member1_score_label.place(rely=0.905, relx=0.848, anchor='center')
+
+                    member2_score_label = tkinter.Label(self.attend, text='   #' + doublerow[3] + ' - ' + doublerow[4] + '#   ', font=('serif', 9, 'bold'), fg='blue', bg='white')
+                    member2_score_label.place(rely=0.945, relx=0.848, anchor='center')
+
+                    text = 'ID: ' + str(doublerow[6])
+
+                    style.use('seaborn-darkgrid')
+
+                    font = {'family': 'serif',
+                            'color':  'black',
+                            'weight': 'normal',
+                            'size': 16,
+                            }
+
+                    score1list = []
+                    score2list = []
+                    timelist = []
+
+                    score1list.append(0)
+                    score2list.append(0)
+                    timelist.append(0)
+                    score1list.append(doublerow[2])
+                    score2list.append(doublerow[4])
+                    timelist.append(doublerow[5])
+
+                    fig = plt.figure(figsize=(3.9,3.5), dpi=60)
+                    fig.tight_layout()
+                    ax1 = fig.add_subplot(111)
+                    if score1list[1] == '21':
+                        ax1.plot(timelist, score2list, color="blue")
+                        ax1.plot(timelist, score1list, color="limegreen")
+                    else:
+                        ax1.plot(timelist, score1list, color="limegreen")
+                        ax1.plot(timelist, score2list, color="blue")
+                    ax1.set_title(text, fontdict=font)
+                    ax1.set_xlabel('Time (Seconds)', fontdict=font)
+                    ax1.set_ylabel('Score', fontdict=font)
+
+                    finishedcanvas = FigureCanvasTkAgg(fig, self.attend)
+                    finishedcanvas.get_tk_widget().place(relx=0.848,rely=0.673,anchor=CENTER)
+                    finishedcanvas.draw()
+
+                else:
+                    pass
+
+            else:
+                pass
+
+
+        def SubmitSinglesResults(singlessubmitbutton):
+            member_team1_score = score1.get()
+            member_team2_score = score2.get()
+            currentTime = int(time.time())
+
+            isValid = True
+            isValid = isValid and validate_member_team_score(member_team1_score, member_team2_score)
+
+            if isValid:
+                conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+                c = conn.cursor()
+
+                c.execute("SELECT * FROM CurrentCompetitionScores")
+                Row = c.fetchall()
+
+                c.execute("INSERT INTO CurrentCompetitionScores VALUES (:CompetitionType, :Member_Team_1_Score, :Member_Team_2_Score, :Time, :CurrentID)",
+                          {
+                              'CompetitionType': 'Singles',
+                              'Member_Team_1_Score': member_team1_score,
+                              'Member_Team_2_Score': member_team2_score,
+                              'Time': currentTime,
+                              'CurrentID': Row[0][4],
+                          })
+
+                conn.commit()
+                conn.close()
+
+                DrawLineGraphSingles(singlessubmitbutton)
+
+
+        def SubmitDoublesResults(doublessubmitbutton):
+            member_team1_score = score1.get()
+            member_team2_score = score2.get()
+            currentTime = int(time.time())
+
+            isValid = True
+            isValid = isValid and validate_member_team_score(member_team1_score, member_team2_score)
+
+            if isValid:
+                conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+                c = conn.cursor()
+
+                c.execute("SELECT * FROM CurrentCompetitionScores")
+                Row = c.fetchall()
+
+                c.execute("INSERT INTO CurrentCompetitionScores VALUES (:CompetitionType, :Member_Team_1_Score, :Member_Team_2_Score, :Time, :CurrentID)",
+                          {
+                              'CompetitionType': 'Doubles',
+                              'Member_Team_1_Score': member_team1_score,
+                              'Member_Team_2_Score': member_team2_score,
+                              'Time': currentTime,
+                              'CurrentID': Row[0][4],
+                          })
+
+                conn.commit()
+                conn.close()
+
+                DrawLineGraphDoubles(doublessubmitbutton)
 
 
         CompetitionID = IntVar()
-        score1 = IntVar()
-        score2 = IntVar()
+        score1=IntVar()
+        score2=IntVar()
+
 
         CompetitionType = ['Singles','Doubles']
 
@@ -1032,35 +1411,40 @@ class AttendingSinglesContent:
         score1_label = tkinter.Label(self.attend, text="Member/Team Score 1:", font=('serif', 14, 'bold'), fg='black', bg='white')
         score1_label.place(rely=0.9, relx=0.135, anchor='center')
 
-        score1_entry = tkinter.Entry(self.attend, width=6, textvariable=score1, bd=3, relief='ridge', cursor="tcross", font=('serif', 12, 'bold'))
-        score1_entry.place(rely=0.9, relx=0.3, anchor='center')
+        score1_spinbox = Spinbox(self.attend, width=6,font=("serif",12, 'bold'), bd=3, relief='ridge', cursor="tcross",textvariable=score1, values=('0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21'))
+        score1_spinbox.place(rely=0.9, relx=0.3, anchor='center')
+        score1_spinbox.config(state='readonly')
 
 
         score2_label = tkinter.Label(self.attend, text="Member/Team Score 2:", font=('serif', 14, 'bold'), fg='black', bg='white')
         score2_label.place(rely=0.96, relx=0.135, anchor='center')
 
-        score2_entry = tkinter.Entry(self.attend, width=6, textvariable=score2, bd=3, relief='ridge', cursor="tcross", font=('serif', 12, 'bold'))
-        score2_entry.place(rely=0.96, relx=0.3, anchor='center')
+        score2_spinbox = Spinbox(self.attend, width=6,font=("serif",12, 'bold'), bd=3, relief='ridge', cursor="tcross",textvariable=score2, values=('0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21'))
+        score2_spinbox.place(rely=0.96, relx=0.3, anchor='center')
+        score2_spinbox.config(state='readonly')
 
         submit_competition_button = tkinter.Button(self.attend, cursor="tcross",text="Submit", command=SubmitSinglesResults, fg='white', bg='black', bd=3, relief='ridge', font=('serif', 12, 'bold'))
         submit_competition_button.place(rely=0.925, relx=0.4, anchor='center')
         ToolTips.bind(submit_competition_button, 'Enter and submit values for the competition')
 
 
+        title_label =Label(self.attend, text = "Most Recent Matches (Sketch)", fg ='black',bg='white',font=('serif',11,'bold'), bd=2, relief="ridge", padx=5, pady=2)
+        title_label.place(rely=0.435,relx=0.72,anchor=CENTER)
+
         box =Label(self.attend, text = "blank", fg ='white',bg='white',font=('serif',8,'bold'), bd=2, relief="sunken", padx=230, pady=160)
-        box.place(rely=0.685,relx=0.72,anchor=CENTER)
+        box.place(rely=0.71,relx=0.72,anchor=CENTER)
 
-        boxsplitvertical =Label(self.attend, text = "b", fg ='white',bg='white',font=('serif',8,'bold'), bd=2, relief="ridge", padx=1, pady=160)
-        boxsplitvertical.place(rely=0.685,relx=0.72,anchor=CENTER)
+        boxsplitvertical =Label(self.attend, text = "b", fg ='white',bg='white',font=('serif',8,'bold'), bd=2, relief="ridge", padx=1, pady=158.5)
+        boxsplitvertical.place(rely=0.711,relx=0.72,anchor=CENTER)
 
-        box_singles_title = tkinter.Label(self.attend, text="Most Recent Singles Match", font=('serif', 11, 'bold'), fg='black', bg='white')
-        box_singles_title.place(rely=0.452, relx=0.595, anchor='center')
+        box_singles_title = tkinter.Label(self.attend, text="Most Recent Singles Match", font=('serif', 10, 'bold'), fg='black', bg='white')
+        box_singles_title.place(rely=0.479, relx=0.595, anchor='center')
 
-        box_doubles_title = tkinter.Label(self.attend, text="Most Recent Doubles Match", font=('serif', 11, 'bold'), fg='black', bg='white')
-        box_doubles_title.place(rely=0.452, relx=0.847, anchor='center')
+        box_doubles_title = tkinter.Label(self.attend, text="Most Recent Doubles Match", font=('serif', 10, 'bold'), fg='black', bg='white')
+        box_doubles_title.place(rely=0.479, relx=0.847, anchor='center')
 
         boxsplithorizontal =Label(self.attend, text = "b", fg ='white',bg='white',font=('serif',1), bd=2, relief="ridge", padx=244, pady=0.5)
-        boxsplithorizontal.place(rely=0.48,relx=0.72,anchor=CENTER)
+        boxsplithorizontal.place(rely=0.505,relx=0.72,anchor=CENTER)
 
 
         unplayed_singles_competitions_Tv=ttk.Treeview(self.attend,height=7,columns=('Member 1','Member 2','ID'))
@@ -1099,11 +1483,13 @@ class AttendingSinglesContent:
         unplayed_doubles_competitions_Tv.configure(yscrollcommand=unplayed_doubles_competitions_scrollbar.set)
 
 
-        score1_entry.config(state="disable")
-        score2_entry.config(state="disable")
+        score1_spinbox.config(state="disable")
+        score2_spinbox.config(state="disable")
         submit_competition_button.config(state="disable")
 
 
         UnplayedSinglesPopulate()
         UnplayedDoublesPopulate()
+        StartUpFinishedSinglesGraph()
+        StartUpFinishedDoublesGraph()
 
