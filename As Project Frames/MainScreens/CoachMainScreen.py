@@ -47,13 +47,6 @@ def openCoachSessionContent(mainScreen, content):
     myCoaching.generateCoachSessionContnt()
 
 
-def openCompetitionContent(mainScreen, content):
-    clearContent(mainScreen, content)
-    resultscontent = CompetitionContent(mainScreen)
-    resultscontent.memberSelection()
-    resultscontent.generateResultsContnt()
-
-
 def openNewCompetitionContent(mainScreen, content):
     clearContent(mainScreen, content)
     competitioncontent = NewCompetitionContent(mainScreen)
@@ -96,38 +89,40 @@ def main():
     content.grid(row=1, sticky="nsew")
 
 
-    # memberHomeContent = MemberHomeScreenContent(mainScreen)
-    # memberHomeContent.generateMemberHomeScreenContnt(logins.finalloginname)
-
     coachHomeContent = CoachHomeScreenContent(mainScreen)
     coachHomeContent.generateCoachHomeScreenContnt(logins.finalloginname)
 
 
-    add_member_button = tkinter.Button(header, text="Add Member", command=lambda : openMemberContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
-    add_member_button.place(rely=0.5, relx=0.08, anchor='center')
+    coachhomephoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/Home.png")
+    CoachHomeButton = Button(header, cursor="tcross", image=coachhomephoto, width=30, height=30, command=lambda : openMemberHomeContent(mainScreen, content), bg="black",bd=4,relief='ridge')
+    CoachHomeButton.place(rely=0.5,relx=0.05,anchor=CENTER)
+    CoachHomeButton.image = coachhomephoto
 
-    add_coach_button = tkinter.Button(header, text="Add Coach", command=lambda : openCoachContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
-    add_coach_button.place(rely=0.5, relx=0.22, anchor='center')
+    coachlogoffphoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/Logoff.png")
+    CoachLogoffButton = Button(header, cursor="tcross", image=coachlogoffphoto, width=30, height=30, command=lambda : openMemberHomeContent(mainScreen, content), bg="black",bd=4,relief='ridge')
+    CoachLogoffButton.place(rely=0.5,relx=0.95,anchor=CENTER)
+    CoachLogoffButton.image = coachlogoffphoto
+
+    add_member_button = tkinter.Button(header, text="Member", command=lambda : openMemberContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
+    add_member_button.place(rely=0.5, relx=0.155, anchor='center')
+
+    # add_coach_button = tkinter.Button(header, text="Add Coach", command=lambda : openCoachContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
+    # add_coach_button.place(rely=0.5, relx=0.22, anchor='center')
 
     coaching_session_button = tkinter.Button(header, text="Coaching Session", command=lambda : openCoachSessionContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
-    coaching_session_button.place(rely=0.5, relx=0.38, anchor='center')
+    coaching_session_button.place(rely=0.5, relx=0.315, anchor='center')
 
     new_competition_button = tkinter.Button(header, text="Competition", command=lambda : openNewCompetitionContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
-    new_competition_button.place(rely=0.5, relx=0.546, anchor='center')
+    new_competition_button.place(rely=0.5, relx=0.491, anchor='center')
 
-    attend_competition_button = tkinter.Button(header, text="Attend Competitions", command=lambda : openAttendSinglesCompetitionContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
-    attend_competition_button.place(rely=0.5, relx=0.676, anchor='center')
+    attend_competition_button = tkinter.Button(header, text="Attend Competition", command=lambda : openAttendSinglesCompetitionContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
+    attend_competition_button.place(rely=0.5, relx=0.678, anchor='center')
 
-    memberhomephoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/Home.png")
-    MemberHomeButton = Button(header, cursor="tcross", image=memberhomephoto, width=30, height=30, command=lambda : openMemberHomeContent(mainScreen, content), bg="black",bd=4,relief='ridge')
-    MemberHomeButton.place(rely=0.5,relx=0.8,anchor=CENTER)
-    MemberHomeButton.image = memberhomephoto
+    reports_button = tkinter.Button(header, text="Reports", command=lambda : openNewCompetitionContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
+    reports_button.place(rely=0.5, relx=0.845, anchor='center')
 
     # member_booking_button = tkinter.Button(header, text="Booking", command=openMemberBooking, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
     # member_booking_button.place(rely=0.5, relx=0.676, anchor='center')
-
-    # statistics_button = tkinter.Button(header, text="Stats", command=openStaticstics, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
-    # statistics_button.place(rely=0.5, relx=0.71, anchor='center')
 
 
     mainScreen.mainloop()

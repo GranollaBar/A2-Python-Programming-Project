@@ -1055,6 +1055,26 @@ class AttendingSinglesContent:
                 v -= 1
 
             if GotARow == True:
+                c.execute(f"DELETE FROM SinglesCompetition WHERE singlescompetitionID =?", (str(row2[len(row2)-1][6]),))
+                conn.commit()
+
+                c.execute("SELECT * From SinglesCompetition")
+                items = c.fetchall()
+
+                newID = len(items) - len(items) + 1
+                oldID = len(items) - len(items) + 2
+
+                for row in items:
+                    if row != '':
+                        c.execute("UPDATE SinglesCompetition SET singlescompetitionID = :newsinglescompetitionID WHERE singlescompetitionID=:oldsinglescompetitionID", {
+                            "newsinglescompetitionID": newID,
+                            "oldsinglescompetitionID": oldID
+                        })
+                        newID += 1
+                        oldID += 1
+                    else:
+                        break
+
                 StartUpFinishedSinglesGraph()
 
             else:
@@ -1214,6 +1234,26 @@ class AttendingSinglesContent:
                 v -= 1
 
             if GotARow == True:
+                c.execute(f"DELETE FROM DoublesCompetition WHERE singlescompetitionID =?", (str(row2[len(row2)-1][6]),))
+                conn.commit()
+
+                c.execute("SELECT * From DoublesCompetition")
+                items = c.fetchall()
+
+                newID = len(items) - len(items) + 1
+                oldID = len(items) - len(items) + 2
+
+                for row in items:
+                    if row != '':
+                        c.execute("UPDATE DoublesCompetition SET doublescompetitionID = :newdoublescompetitionID WHERE doublescompetitionID=:olddoublescompetitionID", {
+                            "newdoublescompetitionID": newID,
+                            "olddoublescompetitionID": oldID
+                        })
+                        newID += 1
+                        oldID += 1
+                    else:
+                        break
+
                 StartUpFinishedDoublesGraph()
 
             else:

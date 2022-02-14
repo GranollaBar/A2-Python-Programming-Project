@@ -2393,7 +2393,7 @@ class NewCompetitionContent:
 
 
 				calendar_label =Label(self.competition, text = 'Singles Competition Dates', fg ='black',bg='white',font=('serif',11,'bold'), bd=2, relief="ridge", padx=10, pady=3)
-				calendar_label.place(rely=0.286,relx=0.67,anchor=CENTER)
+				calendar_label.place(rely=0.298,relx=0.67,anchor=CENTER)
 				today = date.today()
 				cal = Calendar(self.competition, font="serif 16", selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
 				cal.place(rely=0.51, relx=0.67, anchor='center')
