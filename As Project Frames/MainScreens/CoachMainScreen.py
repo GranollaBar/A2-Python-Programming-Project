@@ -5,10 +5,10 @@ from CoachFrame.CoachDetailsScreen import CoachContent
 from CoachingSessionFrame.CoachingSessionScreen import CoachingSessionContent
 from MemberBooking.MemberBookingScreen import BookingContent
 from NewCompetition.NewCompetitionScreen import NewCompetitionContent
-from HomeFrame.MemberHomeScreen import MemberHomeScreenContent
 from HomeFrame.CoachHomeScreen import CoachHomeScreenContent
 from LoginFrame.AS_programming_loginscreen import LoginContent
-from AttendCompetitionsFrame.AttendingCompetitionFrame import AttendingSinglesContent
+from AttendCompetitionsFrame.AttendingCompetitionFrame import AttendingContent
+from ReportsFrame.CoachReportsScreen import CoachReportsContent
 
 
 def clearContent(mainScreen, finalContent):
@@ -22,10 +22,10 @@ def passLoginScreen(loginScreen: LoginContent):
     logins = loginScreen
 
 
-def openMemberHomeContent(mainScreen, content):
+def openCoachHomeContent(mainScreen, content):
     clearContent(mainScreen, content)
-    memberHomeContent = MemberHomeScreenContent(mainScreen)
-    memberHomeContent.generateMemberHomeScreenContnt(logins.finalloginname)
+    coachHomeContent = CoachHomeScreenContent(mainScreen)
+    coachHomeContent.generateCoachHomeScreenContnt(logins.finalloginname)
 
 
 def openMemberContent(mainScreen, content):
@@ -53,10 +53,16 @@ def openNewCompetitionContent(mainScreen, content):
     competitioncontent.generateCompetitionContnt()
 
 
-def openAttendSinglesCompetitionContent(mainScreen, content):
+def openAttendCompetitionContent(mainScreen, content):
     clearContent(mainScreen, content)
-    attendingsinglescontent = AttendingSinglesContent(mainScreen)
-    attendingsinglescontent.generateAttendingSinglesContnt()
+    attendingcontent = AttendingContent(mainScreen)
+    attendingcontent.generateAttendingContnt()
+
+
+def openReportsContent(mainScreen, content):
+    clearContent(mainScreen, content)
+    coachreportcontent = CoachReportsContent(mainScreen)
+    coachreportcontent.generateCoachReportsContnt(logins.finalloginname)
 
 
 def openMemberBooking(mainScreen, content):
@@ -94,12 +100,12 @@ def main():
 
 
     coachhomephoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/Home.png")
-    CoachHomeButton = Button(header, cursor="tcross", image=coachhomephoto, width=30, height=30, command=lambda : openMemberHomeContent(mainScreen, content), bg="black",bd=4,relief='ridge')
+    CoachHomeButton = Button(header, cursor="tcross", image=coachhomephoto, width=30, height=30, command=lambda : openCoachHomeContent(mainScreen, content), bg="black",bd=4,relief='ridge')
     CoachHomeButton.place(rely=0.5,relx=0.05,anchor=CENTER)
     CoachHomeButton.image = coachhomephoto
 
     coachlogoffphoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/Logoff.png")
-    CoachLogoffButton = Button(header, cursor="tcross", image=coachlogoffphoto, width=30, height=30, command=lambda : openMemberHomeContent(mainScreen, content), bg="black",bd=4,relief='ridge')
+    CoachLogoffButton = Button(header, cursor="tcross", image=coachlogoffphoto, width=30, height=30, command=lambda : openCoachHomeContent(mainScreen, content), bg="black",bd=4,relief='ridge')
     CoachLogoffButton.place(rely=0.5,relx=0.95,anchor=CENTER)
     CoachLogoffButton.image = coachlogoffphoto
 
@@ -115,10 +121,10 @@ def main():
     new_competition_button = tkinter.Button(header, text="Competition", command=lambda : openNewCompetitionContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
     new_competition_button.place(rely=0.5, relx=0.491, anchor='center')
 
-    attend_competition_button = tkinter.Button(header, text="Attend Competition", command=lambda : openAttendSinglesCompetitionContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
+    attend_competition_button = tkinter.Button(header, text="Attend Competition", command=lambda : openAttendCompetitionContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
     attend_competition_button.place(rely=0.5, relx=0.678, anchor='center')
 
-    reports_button = tkinter.Button(header, text="Reports", command=lambda : openNewCompetitionContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
+    reports_button = tkinter.Button(header, text="Reports", command=lambda : openReportsContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
     reports_button.place(rely=0.5, relx=0.845, anchor='center')
 
     # member_booking_button = tkinter.Button(header, text="Booking", command=openMemberBooking, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")

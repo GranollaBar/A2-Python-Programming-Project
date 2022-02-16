@@ -15,19 +15,16 @@ from CoachingSessionFrame.CoachingSessionEmail import SessionEmail
 import time
 import matplotlib
 matplotlib.use('TkAgg')
-import numpy as np
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
-from matplotlib.figure import Figure
-import matplotlib.animation as animation
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib import style
 import matplotlib.pyplot as plt
 import Pmw
+from AttendCompetitionsFrame.CurrentCompetitionDocument import buildcompetitiondocument
 
 previous1 = 0
 previous2 = 0
-counter = 0
 
-class AttendingSinglesContent:
+class AttendingContent:
 
     def __init__(self, mainScreen):
         self.attend = mainScreen
@@ -54,7 +51,7 @@ class AttendingSinglesContent:
         #             )""")
 
 
-    def generateAttendingSinglesContnt(self):
+    def generateAttendingContnt(self):
 
         def validate_member_team_score(value1, value2):
             global previous1
@@ -904,6 +901,7 @@ class AttendingSinglesContent:
                 ax1 = fig.add_subplot(111)
                 ax1.plot(secondsIntoGame, player1Scores, color="limegreen", label="Score1")
                 ax1.plot(secondsIntoGame, player2Scores, color="blue", label="Score2")
+                ax1.legend(loc="upper left")
                 ax1.set_title(text, fontdict=font)
                 ax1.set_xlabel('Time (Seconds)', fontdict=font)
                 ax1.set_ylabel('Score', fontdict=font)
@@ -915,8 +913,9 @@ class AttendingSinglesContent:
             else:
                 fig = plt.figure(figsize=(4,4), dpi=70, tight_layout=True)
                 ax1 = fig.add_subplot(111)
-                ax1.plot([0], [0], color="limegreen", label="Score1")
-                ax1.plot([0], [0], color="blue", label="Score2")
+                ax1.plot([0], [0], color="limegreen", label="Score 1")
+                ax1.plot([0], [0], color="blue", label="Score 2")
+                ax1.legend(loc="upper left")
                 ax1.set_title(text, fontdict=font)
                 ax1.set_xlabel('Time (Seconds)', fontdict=font)
                 ax1.set_ylabel('Score', fontdict=font)
@@ -963,8 +962,9 @@ class AttendingSinglesContent:
 
                 fig = plt.figure(figsize=(4,4), dpi=70, tight_layout=True)
                 ax1 = fig.add_subplot(111)
-                ax1.plot(secondsIntoGame, player1Scores, color="limegreen")
-                ax1.plot(secondsIntoGame, player2Scores, color="blue")
+                ax1.plot(secondsIntoGame, player1Scores, color="limegreen", label="Score 1")
+                ax1.plot(secondsIntoGame, player2Scores, color="blue", label="Score 2")
+                ax1.legend(loc="upper left")
                 ax1.set_title(text, fontdict=font)
                 ax1.set_xlabel('Time (Seconds)', fontdict=font)
                 ax1.set_ylabel('Score', fontdict=font)
@@ -976,8 +976,9 @@ class AttendingSinglesContent:
             else:
                 fig = plt.figure(figsize=(4,4), dpi=70, tight_layout=True)
                 ax1 = fig.add_subplot(111)
-                ax1.plot([0], [0], color="limegreen")
-                ax1.plot([0], [0], color="blue")
+                ax1.plot([0], [0], color="limegreen", label="Score 1")
+                ax1.plot([0], [0], color="blue", label="Score 2")
+                ax1.legend(loc="upper left")
                 ax1.set_title(text, fontdict=font)
                 ax1.set_xlabel('Time (Seconds)', fontdict=font)
                 ax1.set_ylabel('Score', fontdict=font)
@@ -1036,6 +1037,11 @@ class AttendingSinglesContent:
 
             clearcanvas(singlescanvas)
 
+            buildcompetitiondocument()
+
+            c.execute("DELETE FROM CurrentCompetitionScores")
+            conn.commit()
+
             c.execute("SELECT * FROM FinshedCompetitions")
             row2 = c.fetchall()
 
@@ -1076,14 +1082,13 @@ class AttendingSinglesContent:
                         break
 
                 StartUpFinishedSinglesGraph()
+                UnplayedSinglesPopulate()
 
             else:
                 pass
 
 
         def StartUpFinishedSinglesGraph():
-            global counter
-
             conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
             c = conn.cursor()
 
@@ -1148,11 +1153,13 @@ class AttendingSinglesContent:
                     fig.tight_layout()
                     ax1 = fig.add_subplot(111)
                     if score1list[1] == '21':
-                        ax1.plot(timelist, score2list, color="blue")
-                        ax1.plot(timelist, score1list, color="limegreen")
+                        ax1.plot(timelist, score2list, color="blue", label="Score 2")
+                        ax1.plot(timelist, score1list, color="limegreen", label="Score 1")
+                        ax1.legend(loc="upper left")
                     else:
-                        ax1.plot(timelist, score1list, color="limegreen")
-                        ax1.plot(timelist, score2list, color="blue")
+                        ax1.plot(timelist, score1list, color="limegreen", label="Score 1")
+                        ax1.plot(timelist, score2list, color="blue", label="Score 2")
+                        ax1.legend(loc="upper left")
                     ax1.set_title(text, fontdict=font)
                     ax1.set_xlabel('Time (Seconds)', fontdict=font)
                     ax1.set_ylabel('Score', fontdict=font)
@@ -1215,6 +1222,11 @@ class AttendingSinglesContent:
 
             clearcanvas(doublescanvas)
 
+            buildcompetitiondocument()
+
+            c.execute("DELETE FROM CurrentCompetitionScores")
+            conn.commit()
+
             c.execute("SELECT * FROM FinshedCompetitions")
             row2 = c.fetchall()
 
@@ -1234,7 +1246,7 @@ class AttendingSinglesContent:
                 v -= 1
 
             if GotARow == True:
-                c.execute(f"DELETE FROM DoublesCompetition WHERE singlescompetitionID =?", (str(row2[len(row2)-1][6]),))
+                c.execute(f"DELETE FROM DoublesCompetition WHERE doublescompetitionID =?", (str(row2[len(row2)-1][6]),))
                 conn.commit()
 
                 c.execute("SELECT * From DoublesCompetition")
@@ -1255,6 +1267,7 @@ class AttendingSinglesContent:
                         break
 
                 StartUpFinishedDoublesGraph()
+                UnplayedDoublesPopulate()
 
             else:
                 pass
@@ -1325,11 +1338,13 @@ class AttendingSinglesContent:
                     fig.tight_layout()
                     ax1 = fig.add_subplot(111)
                     if score1list[1] == '21':
-                        ax1.plot(timelist, score2list, color="blue")
-                        ax1.plot(timelist, score1list, color="limegreen")
+                        ax1.plot(timelist, score2list, color="blue", label="Score 2")
+                        ax1.plot(timelist, score1list, color="limegreen", label="Score 1")
+                        ax1.legend(loc="upper left")
                     else:
-                        ax1.plot(timelist, score1list, color="limegreen")
-                        ax1.plot(timelist, score2list, color="blue")
+                        ax1.plot(timelist, score1list, color="limegreen", label="Score 1")
+                        ax1.plot(timelist, score2list, color="blue", label="Score 2")
+                        ax1.legend(loc="upper left")
                     ax1.set_title(text, fontdict=font)
                     ax1.set_xlabel('Time (Seconds)', fontdict=font)
                     ax1.set_ylabel('Score', fontdict=font)
