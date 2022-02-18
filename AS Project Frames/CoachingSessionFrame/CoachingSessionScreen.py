@@ -1134,7 +1134,6 @@ class CoachingSessionContent:
 		ToolTips = Pmw.Balloon()
 
 
-
 		username_label = tkinter.Label(self.coachSession, text="Username:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		username_label.place(rely=0.36, relx=0.12, anchor='center')
 

@@ -110,14 +110,14 @@ class CoachReportsContent:
 							break
 
 				if GotARow == True:
-					final_result_label = tkinter.Label(self.Reports, text='Final Results', font=('serif', 10, 'bold', 'underline'), fg='black', bg='white')
-					final_result_label.place(rely=0.865, relx=0.592, anchor='center')
+					final_result_label = tkinter.Label(self.Reports, text='Final Results', font=('serif', 9, 'bold', 'underline'), fg='black', bg='white')
+					final_result_label.place(rely=0.88, relx=0.652, anchor='center')
 
-					member1_score_label = tkinter.Label(self.Reports, text='   #' + singlerow[1] + ' - ' + singlerow[2] +'#   ', font=('serif', 9, 'bold'), fg='SpringGreen3', bg='white')
-					member1_score_label.place(rely=0.905, relx=0.592, anchor='center')
+					member1_score_label = tkinter.Label(self.Reports, text='   #' + singlerow[1] + ' - ' + singlerow[2] +'#   ', font=('serif', 8, 'bold'), fg='SpringGreen3', bg='white')
+					member1_score_label.place(rely=0.92, relx=0.652, anchor='center')
 
-					member2_score_label = tkinter.Label(self.Reports, text='   #' + singlerow[3] + ' - ' + singlerow[4] + '#   ', font=('serif', 9, 'bold'), fg='blue', bg='white')
-					member2_score_label.place(rely=0.945, relx=0.592, anchor='center')
+					member2_score_label = tkinter.Label(self.Reports, text='   #' + singlerow[3] + ' - ' + singlerow[4] + '#   ', font=('serif', 8, 'bold'), fg='blue', bg='white')
+					member2_score_label.place(rely=0.96, relx=0.652, anchor='center')
 
 					text = 'ID: ' + str(singlerow[6])
 
@@ -126,7 +126,7 @@ class CoachReportsContent:
 					font = {'family': 'serif',
 							'color':  'black',
 							'weight': 'normal',
-							'size': 16,
+							'size': 12,
 							}
 
 					score1list = []
@@ -140,7 +140,7 @@ class CoachReportsContent:
 					score2list.append(singlerow[4])
 					timelist.append(singlerow[5])
 
-					fig = plt.figure(figsize=(3.9,3.5), dpi=60)
+					fig = plt.figure(figsize=(3.5,3.2), dpi=58)
 					fig.tight_layout()
 					ax1 = fig.add_subplot(111)
 					if score1list[1] == '21':
@@ -156,7 +156,7 @@ class CoachReportsContent:
 					ax1.set_ylabel('Score', fontdict=font)
 
 					finishedcanvas = FigureCanvasTkAgg(fig, self.Reports)
-					finishedcanvas.get_tk_widget().place(relx=0.592,rely=0.673,anchor=CENTER)
+					finishedcanvas.get_tk_widget().place(relx=0.652,rely=0.712,anchor=CENTER)
 					finishedcanvas.draw()
 
 				else:
@@ -197,14 +197,14 @@ class CoachReportsContent:
 							break
 
 				if GotARow == True:
-					final_result_label = tkinter.Label(self.Reports, text='Final Results', font=('serif', 10, 'bold', 'underline'), fg='black', bg='white')
-					final_result_label.place(rely=0.865, relx=0.848, anchor='center')
+					final_result_label = tkinter.Label(self.Reports, text='Final Results', font=('serif', 9, 'bold', 'underline'), fg='black', bg='white')
+					final_result_label.place(rely=0.88, relx=0.872, anchor='center')
 
-					member1_score_label = tkinter.Label(self.Reports, text='   #' + doublerow[1] + ' - ' + doublerow[2] + '#   ', font=('serif', 9, 'bold'), fg='SpringGreen3', bg='white')
-					member1_score_label.place(rely=0.905, relx=0.848, anchor='center')
+					member1_score_label = tkinter.Label(self.Reports, text='   #' + doublerow[1] + ' - ' + doublerow[2] + '#   ', font=('serif', 8, 'bold'), fg='SpringGreen3', bg='white')
+					member1_score_label.place(rely=0.92, relx=0.872, anchor='center')
 
-					member2_score_label = tkinter.Label(self.Reports, text='   #' + doublerow[3] + ' - ' + doublerow[4] + '#   ', font=('serif', 9, 'bold'), fg='blue', bg='white')
-					member2_score_label.place(rely=0.945, relx=0.848, anchor='center')
+					member2_score_label = tkinter.Label(self.Reports, text='   #' + doublerow[3] + ' - ' + doublerow[4] + '#   ', font=('serif', 8, 'bold'), fg='blue', bg='white')
+					member2_score_label.place(rely=0.96, relx=0.872, anchor='center')
 
 					text = 'ID: ' + str(doublerow[6])
 
@@ -213,7 +213,7 @@ class CoachReportsContent:
 					font = {'family': 'serif',
 							'color':  'black',
 							'weight': 'normal',
-							'size': 16,
+							'size': 12,
 							}
 
 					score1list = []
@@ -227,7 +227,7 @@ class CoachReportsContent:
 					score2list.append(doublerow[4])
 					timelist.append(doublerow[5])
 
-					fig = plt.figure(figsize=(3.9,3.5), dpi=60)
+					fig = plt.figure(figsize=(3.5,3.2), dpi=58)
 					fig.tight_layout()
 					ax1 = fig.add_subplot(111)
 					if score1list[1] == '21':
@@ -243,7 +243,7 @@ class CoachReportsContent:
 					ax1.set_ylabel('Score', fontdict=font)
 
 					finishedcanvas = FigureCanvasTkAgg(fig, self.Reports)
-					finishedcanvas.get_tk_widget().place(relx=0.848,rely=0.673,anchor=CENTER)
+					finishedcanvas.get_tk_widget().place(relx=0.872,rely=0.712,anchor=CENTER)
 					finishedcanvas.draw()
 
 				else:
@@ -256,29 +256,29 @@ class CoachReportsContent:
 
 		ToolTips = Pmw.Balloon()
 
-		title_label = tkinter.Label(self.Reports, text=Capitalizedfindfirstandsurname() + "'s Reports", font=('serif', 18, 'bold','underline'), fg='black', bg='white', bd=4, relief='groove', padx=10, pady=4)
-		title_label.place(rely=0.155, relx=0.5, anchor='center')
+		title_label = tkinter.Label(self.Reports, text=Capitalizedfindfirstandsurname() + "'s Reports", font=('serif', 14, 'bold','underline'), fg='black', bg='white', bd=4, relief='groove', padx=10, pady=4)
+		title_label.place(rely=0.145, relx=0.5, anchor='center')
 
 		wordphoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/word.png")
 
 		memberaccount_title_label =Label(self.Reports, text = findfirstandsurname() + "'s Latest Added Member", fg ='black',bg='white',font=('serif',11,'bold'), bd=2, relief="ridge", padx=7, pady=2)
-		memberaccount_title_label.place(rely=0.237,relx=0.72,anchor=CENTER)
+		memberaccount_title_label.place(rely=0.207,relx=0.765,anchor=CENTER)
 		View_member_account_doc = tkinter.Button(self.Reports, cursor="tcross",text="         Member_Account_Details.docx", command=OpenMemberAccountDoc, fg='black', bg='white', bd=3, relief='sunken', font=('serif', 14, 'bold'), padx=6, pady=6)
-		View_member_account_doc.place(rely=0.29, relx=0.72, anchor='center')
+		View_member_account_doc.place(rely=0.26, relx=0.765, anchor='center')
 		ToolTips.bind(View_member_account_doc, 'Click to see the latest member added to the system')
 		wordlogo = Button(self.Reports, cursor="tcross", image=wordphoto, width=40, height=40, command=OpenMemberAccountDoc, borderwidth=0, activebackground="white")
-		wordlogo.place(rely=0.29,relx=0.567,anchor=CENTER)
+		wordlogo.place(rely=0.26,relx=0.612,anchor=CENTER)
 		wordlogo.image = wordphoto
 		wordlogo['relief'] = 'sunken'
 		ToolTips.bind(wordlogo, 'Click to see the latest member added to the system')
 
 		competition_title_label =Label(self.Reports, text = findfirstandsurname() + "'s Lastest Added Results", fg ='black',bg='white',font=('serif',11,'bold'), bd=2, relief="ridge", padx=7, pady=2)
-		competition_title_label.place(rely=0.392,relx=0.72,anchor=CENTER)
+		competition_title_label.place(rely=0.347,relx=0.765,anchor=CENTER)
 		View_competition_doc = tkinter.Button(self.Reports, cursor="tcross",text="         Current_Competition_Results.docx", command=OpenCompetitionDoc, fg='black', bg='white', bd=3, relief='sunken', font=('serif', 14, 'bold'), padx=6, pady=6)
-		View_competition_doc.place(rely=0.445, relx=0.72, anchor='center')
+		View_competition_doc.place(rely=0.4, relx=0.765, anchor='center')
 		ToolTips.bind(View_competition_doc, 'Click to see the latest singles/doubles competition completed')
 		wordlogo2 = Button(self.Reports, cursor="tcross", image=wordphoto, width=40, height=40, command=OpenCompetitionDoc, borderwidth=0, activebackground="white")
-		wordlogo2.place(rely=0.445,relx=0.549,anchor=CENTER)
+		wordlogo2.place(rely=0.4,relx=0.594,anchor=CENTER)
 		wordlogo2.image = wordphoto
 		wordlogo2['relief'] = 'sunken'
 		ToolTips.bind(wordlogo, 'Click to see the latest singles/doubles competition completed')
@@ -354,23 +354,23 @@ class CoachReportsContent:
 		finishedcanvas.draw()
 
 
-		title_label =Label(self.Reports, text = "Most Recent Matches (Sketch)", fg ='black',bg='white',font=('serif',11,'bold'), bd=2, relief="ridge", padx=5, pady=2)
-		title_label.place(rely=0.435,relx=0.72,anchor=CENTER)
+		title_label =Label(self.Reports, text = "Most Recent Matches", fg ='black',bg='white',font=('serif',11,'bold'), bd=2, relief="ridge", padx=5, pady=2)
+		title_label.place(rely=0.49,relx=0.763,anchor=CENTER)
 
-		box =Label(self.Reports, text = "blank", fg ='white',bg='white',font=('serif',8,'bold'), bd=2, relief="sunken", padx=230, pady=160)
-		box.place(rely=0.71,relx=0.72,anchor=CENTER)
+		box =Label(self.Reports, text = "blank", fg ='white',bg='white',font=('serif',8,'bold'), bd=2, relief="sunken", padx=200, pady=145)
+		box.place(rely=0.745,relx=0.76,anchor=CENTER)
 
-		boxsplitvertical =Label(self.Reports, text = "b", fg ='white',bg='white',font=('serif',8,'bold'), bd=2, relief="ridge", padx=1, pady=158.5)
-		boxsplitvertical.place(rely=0.711,relx=0.72,anchor=CENTER)
+		boxsplitvertical =Label(self.Reports, text = "b", fg ='white',bg='white',font=('serif',8,'bold'), bd=2, relief="ridge", padx=1, pady=143.5)
+		boxsplitvertical.place(rely=0.746,relx=0.76,anchor=CENTER)
 
 		box_singles_title = tkinter.Label(self.Reports, text="Most Recent Singles Match", font=('serif', 10, 'bold'), fg='black', bg='white')
-		box_singles_title.place(rely=0.479, relx=0.595, anchor='center')
+		box_singles_title.place(rely=0.539, relx=0.645, anchor='center')
 
 		box_doubles_title = tkinter.Label(self.Reports, text="Most Recent Doubles Match", font=('serif', 10, 'bold'), fg='black', bg='white')
-		box_doubles_title.place(rely=0.479, relx=0.847, anchor='center')
+		box_doubles_title.place(rely=0.539, relx=0.877, anchor='center')
 
-		boxsplithorizontal =Label(self.Reports, text = "b", fg ='white',bg='white',font=('serif',1), bd=2, relief="ridge", padx=244, pady=0.5)
-		boxsplithorizontal.place(rely=0.505,relx=0.72,anchor=CENTER)
+		boxsplithorizontal =Label(self.Reports, text = "b", fg ='white',bg='white',font=('serif',1), bd=2, relief="ridge", padx=214, pady=0.5)
+		boxsplithorizontal.place(rely=0.565,relx=0.76,anchor=CENTER)
 
 
 		StartUpFinishedSinglesGraph()

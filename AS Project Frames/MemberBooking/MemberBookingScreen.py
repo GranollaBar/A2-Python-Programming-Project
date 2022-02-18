@@ -9,24 +9,30 @@ from tkinter import *
 from functools import partial
 from tkcalendar import Calendar
 import datetime
-from tkinter import PhotoImage
 import tkinter as tk
+import Pmw
+from MemberBooking.BookingEmail import Email
+import PIL
+from PIL import Image, ImageTk
+from io import BytesIO
+
+
+courts = False
+previous = ''
 
 class BookingContent:
 
 	def __init__(self, mainScreen):
 		self.booking = mainScreen
-		self.conn = sqlite3.connect('BadmintonClub.db')
+		self.conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 		self.c = self.conn.cursor()
-		self.conn2 = sqlite3.connect('BadmintonClub.db')
-		self.c2 = self.conn2.cursor()
 
 
-		# self.c.execute("""CREATE TABLE booking (
+		# self.c.execute("""CREATE TABLE MemberBooking (
+		# 			image BlOB,
 		# 			username text,
-		# 			username2 text,
+		# 			type text,
 		# 			date text,
-		# 			time text,
 		# 			court text,
 		# 			bookingID integer
 		# 			)""")
@@ -34,61 +40,115 @@ class BookingContent:
 
 	def generateBookingContnt(self):
 
-		def validate_time(value, fieldname, label):
-			if (value ==0):
+		def dateEntryCheck(dob):
+			def assign_dob():
+				eventDate.set(cal.get_date())
+				top.withdraw()
+
+			today = datetime.date.today()
+			top = Toplevel(self.booking)
+
+			cal = Calendar(top, font="serif 16", date_pattern='dd/mm/yyyy',selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
+			cal.pack(fill="both", expand=True)
+			ttk.Button(top, text="ok", command=assign_dob).pack()
+
+
+		def validate_username(value, label):
+			if (value == ''):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must have at least 1 selected")
+				messagebox.showinfo("Validation Error", "The username field cannot be empty", icon='error')
 				return False
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		def validate_court(value, fieldname, label):
-			if (value ==0):
+		def validate_date(value, label):
+			if (value == ''):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must have at least 1 selected")
+				messagebox.showinfo("Validation Error", "The date cannot be empty", icon='error')
 				return False
+
+			presentDate = datetime.datetime.now()
+			date_formated = presentDate.strftime("%d/%m/%Y")
+
+			d1 = datetime.datetime.strptime(value, "%d/%m/%Y").date()
+			d2 = datetime.datetime.strptime(str(date_formated), "%d/%m/%Y").date()
+
+			if d2>d1:
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The start date cannot be before the current date", icon='error')
+				return False
+
+			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			c = conn.cursor()
+
+			c.execute("SELECT * From coachSessionDetails")
+			items = c.fetchall()
+
+			for SessionDates in items:
+				if (value == SessionDates[3]):
+					date_label.config(fg='red')
+					messagebox.showinfo('Validation Error', 'There is already a coaching session on ' + str(value) + '. There can only be one coaching session per day', icon='error')
+					return False
+				else:
+					pass
+
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		def validate_member(value, fieldname, label):
-			if (value == ""):
-				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must have at least 1 selected")
-				return False
-
-			label.config(fg="SpringGreen3")
-			return True
+		def ClickedCourt(courtvalue):
+			if (courtvalue.cget('bg') == 'black'):
+				courtvalue.config(bg='SpringGreen3')
+			else:
+				courtvalue.config(bg='black')
 
 
-		def returnColour(label):
-			label.config(fg="black")
+		def treeviewresizedisable(treeview, event):
+			if treeview.identify_region(event.x, event.y) == "separator":
+				return "break"
 
 
-		def returnColour2(label, label2):
-			label.config(fg="black")
-			label2.config(fg="black")
+		def ConvertPic():
+			if RacquetType_combobox.get() == 'Badminton':
+				filename = 'C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/Badmintonblob.png'
+				with open(filename, 'rb') as file:
+					photo = file.read()
+				return photo
 
+			if RacquetType_combobox.get() == 'Tennis':
+				filename = 'C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/Tennisblob.png'
+				with open(filename, 'rb') as file:
+					photo = file.read()
+				return photo
+
+			if RacquetType_combobox.get() == 'Squash':
+				filename = 'C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/Squashblob.png'
+				with open(filename, 'rb') as file:
+					photo = file.read()
+				return photo
+
+
+		def blank():
+			pass
 
 
 		def clearTv():
-			record=booking_TV.get_children()
+			record=member_booking_Tv.get_children()
 			for elements in record:
-				booking_TV.delete(elements)
+				member_booking_Tv.delete(elements)
 
 
-		def treeviewPopulate():
+		def BookingPopulate():
 			clearTv()
 
-			conn = sqlite3.connect('BadmintonClub.db')
+			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
-			c.execute("SELECT * From booking")
+			c.execute("SELECT * From MemberBooking")
 			items = c.fetchall()
-
 			conn.commit()
 			conn.close()
 
@@ -98,441 +158,918 @@ class BookingContent:
 					pass
 				else:
 					if count%2==0:
-						booking_TV.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4]))
+						member_booking_Tv.insert('','end', text=row[1], values=(row[2],row[3],row[4],row[5]))
 					else:
-						booking_TV.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4]))
+						member_booking_Tv.insert('','end', text=row[1], values=(row[2],row[3],row[4],row[5]))
 					count+=1
 
 
-		def newTreeviewPopulate():
-			clearTv()
-
-			conn = sqlite3.connect('BadmintonClub.db')
+		def GetInformation(imageviewer2, event):
+			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
-			c.execute("SELECT * From booking")
-			items = c.fetchall()
+			items = member_booking_Tv.selection()
+			memberdata = []
 
-			conn.commit()
-			conn.close()
+			for i in items:
+				memberdata.append(member_booking_Tv.item(i)['values'])
 
-			count=0
-			for row in items:
-				if row == [] or row[1] == "" or row[2] == "":
-					pass
+			if len(memberdata) > 0:
+				imageviewer2.place_forget()
+
+				c.execute(f"SELECT image FROM MemberBooking WHERE bookingID=?", (memberdata[0][3],))
+				data = c.fetchone()
+
+				render = Image.open(BytesIO(data[0]))
+				newimage = ImageTk.PhotoImage(render)
+				imageviewer = Button(self.booking, width=95, height=95, command=blank, borderwidth=0, activebackground="white", bd=3)
+				imageviewer.place(rely=0.433,relx=0.76,anchor=CENTER)
+				imageviewer.config(image=newimage)
+				imageviewer['command'] = 0
+				imageviewer['relief'] = 'sunken'
+				imageviewer.image = newimage
+
+
+
+		def RacquetSportSelect(badminton1, badminton2, badminton3, badminton4, badminton5, badminton6, badminton7, badminton8, badminton9, badminton10, badminton11, badminton12, tennis1, tennis2, tennis3, tennis4, squash1, squash2, badminton1l, badminton2l, badminton3l, badminton4l, badminton5l, badminton6l, badminton7l, badminton8l, badminton9l, badminton10l, badminton11l, badminton12l, tennis1l, tennis2l, tennis3l, tennis4l, squash1l, squash2l):
+			global previous
+
+			if RacquetType_combobox.get() == 'Badminton' and previous == '':
+				previous = 'Badminton'
+
+				BadmintonFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/badmintonRacquetsFloor.png")
+
+				BadmintonFloorPlan = Button(self.booking, image=BadmintonFloorPlanPhoto, width=350, height=292, command=blank, borderwidth=0, activebackground="white")
+				BadmintonFloorPlan.place(rely=0.75,relx=0.76,anchor=CENTER)
+				BadmintonFloorPlan.image = BadmintonFloorPlanPhoto
+				BadmintonFloorPlan['command'] = 0
+				BadmintonFloorPlan['relief'] = 'sunken'
+
+
+				badminton1.place(rely=0.48,relx=0.09,anchor=CENTER)
+				badminton1l.place(rely=0.42,relx=0.09,anchor=CENTER)
+
+				badminton2.place(rely=0.48,relx=0.21,anchor=CENTER)
+				badminton2l.place(rely=0.42,relx=0.21,anchor=CENTER)
+
+				badminton3.place(rely=0.48,relx=0.33,anchor=CENTER)
+				badminton3l.place(rely=0.42,relx=0.33,anchor=CENTER)
+
+				badminton4.place(rely=0.48,relx=0.45,anchor=CENTER)
+				badminton4l.place(rely=0.42,relx=0.45,anchor=CENTER)
+
+				badminton5.place(rely=0.66,relx=0.09,anchor=CENTER)
+				badminton5l.place(rely=0.6,relx=0.09,anchor=CENTER)
+
+				badminton6.place(rely=0.66,relx=0.21,anchor=CENTER)
+				badminton6l.place(rely=0.6,relx=0.21,anchor=CENTER)
+
+				badminton7.place(rely=0.66,relx=0.33,anchor=CENTER)
+				badminton7l.place(rely=0.6,relx=0.33,anchor=CENTER)
+
+				badminton8.place(rely=0.66,relx=0.45,anchor=CENTER)
+				badminton8l.place(rely=0.6,relx=0.45,anchor=CENTER)
+
+				badminton9.place(rely=0.84,relx=0.09,anchor=CENTER)
+				badminton9l.place(rely=0.78,relx=0.09,anchor=CENTER)
+
+				badminton10.place(rely=0.84,relx=0.21,anchor=CENTER)
+				badminton10l.place(rely=0.78,relx=0.21,anchor=CENTER)
+
+				badminton11.place(rely=0.84,relx=0.33,anchor=CENTER)
+				badminton11l.place(rely=0.78,relx=0.33,anchor=CENTER)
+
+				badminton12.place(rely=0.84,relx=0.45,anchor=CENTER)
+				badminton12l.place(rely=0.78,relx=0.45,anchor=CENTER)
+
+
+			if RacquetType_combobox.get() == 'Tennis' and previous == '':
+				previous = 'Tennis'
+
+				TennisFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/tennisRacquetsFloor.png")
+
+				TennisFloorPlan = Button(self.booking, image=TennisFloorPlanPhoto, width=350, height=292, command=blank, borderwidth=0, activebackground="white")
+				TennisFloorPlan.place(rely=0.75,relx=0.76,anchor=CENTER)
+				TennisFloorPlan.image = TennisFloorPlanPhoto
+				TennisFloorPlan['command'] = 0
+				TennisFloorPlan['relief'] = 'sunken'
+
+
+				tennis1.place(rely=0.54,relx=0.15,anchor=CENTER)
+				tennis1l.place(rely=0.44,relx=0.15,anchor=CENTER)
+
+				tennis2.place(rely=0.54,relx=0.39,anchor=CENTER)
+				tennis2l.place(rely=0.44,relx=0.39,anchor=CENTER)
+
+				tennis3.place(rely=0.78,relx=0.15,anchor=CENTER)
+				tennis3l.place(rely=0.68,relx=0.15,anchor=CENTER)
+
+				tennis4.place(rely=0.78,relx=0.39,anchor=CENTER)
+				tennis4l.place(rely=0.68,relx=0.39,anchor=CENTER)
+
+
+			if RacquetType_combobox.get() == 'Squash' and previous == '':
+				previous = 'Squash'
+
+				SquashFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/squashRacquetsFloor.png")
+
+				SquashFloorPlan = Button(self.booking, image=SquashFloorPlanPhoto, width=350, height=292, command=blank, borderwidth=0, activebackground="white")
+				SquashFloorPlan.place(rely=0.75,relx=0.76,anchor=CENTER)
+				SquashFloorPlan.image = SquashFloorPlanPhoto
+				SquashFloorPlan['command'] = 0
+				SquashFloorPlan['relief'] = 'sunken'
+
+
+				squash1.place(rely=0.67,relx=0.15,anchor=CENTER)
+				squash1l.place(rely=0.44,relx=0.15,anchor=CENTER)
+
+				squash2.place(rely=0.67,relx=0.39,anchor=CENTER)
+				squash2l.place(rely=0.44,relx=0.39,anchor=CENTER)
+
+
+			if RacquetType_combobox.get() == 'Badminton' and previous == 'Badminton':
+				pass
+
+
+			if RacquetType_combobox.get() == 'Badminton' and previous == 'Tennis':
+				previous = 'Badminton'
+
+				BadmintonFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/badmintonRacquetsFloor.png")
+
+				BadmintonFloorPlan = Button(self.booking, image=BadmintonFloorPlanPhoto, width=350, height=292, command=blank, borderwidth=0, activebackground="white")
+				BadmintonFloorPlan.place(rely=0.75,relx=0.76,anchor=CENTER)
+				BadmintonFloorPlan.image = BadmintonFloorPlanPhoto
+				BadmintonFloorPlan['command'] = 0
+				BadmintonFloorPlan['relief'] = 'sunken'
+
+
+				tennis1.config(bg='black')
+				tennis2.config(bg='black')
+				tennis3.config(bg='black')
+				tennis4.config(bg='black')
+
+				tennis1.place_forget()
+				tennis1l.place_forget()
+				tennis2.place_forget()
+				tennis2l.place_forget()
+				tennis3.place_forget()
+				tennis3l.place_forget()
+				tennis4.place_forget()
+				tennis4l.place_forget()
+
+
+				badminton1.place(rely=0.48,relx=0.09,anchor=CENTER)
+				badminton1l.place(rely=0.42,relx=0.09,anchor=CENTER)
+
+				badminton2.place(rely=0.48,relx=0.21,anchor=CENTER)
+				badminton2l.place(rely=0.42,relx=0.21,anchor=CENTER)
+
+				badminton3.place(rely=0.48,relx=0.33,anchor=CENTER)
+				badminton3l.place(rely=0.42,relx=0.33,anchor=CENTER)
+
+				badminton4.place(rely=0.48,relx=0.45,anchor=CENTER)
+				badminton4l.place(rely=0.42,relx=0.45,anchor=CENTER)
+
+				badminton5.place(rely=0.66,relx=0.09,anchor=CENTER)
+				badminton5l.place(rely=0.6,relx=0.09,anchor=CENTER)
+
+				badminton6.place(rely=0.66,relx=0.21,anchor=CENTER)
+				badminton6l.place(rely=0.6,relx=0.21,anchor=CENTER)
+
+				badminton7.place(rely=0.66,relx=0.33,anchor=CENTER)
+				badminton7l.place(rely=0.6,relx=0.33,anchor=CENTER)
+
+				badminton8.place(rely=0.66,relx=0.45,anchor=CENTER)
+				badminton8l.place(rely=0.6,relx=0.45,anchor=CENTER)
+
+				badminton9.place(rely=0.84,relx=0.09,anchor=CENTER)
+				badminton9l.place(rely=0.78,relx=0.09,anchor=CENTER)
+
+				badminton10.place(rely=0.84,relx=0.21,anchor=CENTER)
+				badminton10l.place(rely=0.78,relx=0.21,anchor=CENTER)
+
+				badminton11.place(rely=0.84,relx=0.33,anchor=CENTER)
+				badminton11l.place(rely=0.78,relx=0.33,anchor=CENTER)
+
+				badminton12.place(rely=0.84,relx=0.45,anchor=CENTER)
+				badminton12l.place(rely=0.78,relx=0.45,anchor=CENTER)
+
+
+			if RacquetType_combobox.get() == 'Badminton' and previous == 'Squash':
+				previous = 'Badminton'
+
+				BadmintonFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/badmintonRacquetsFloor.png")
+
+				BadmintonFloorPlan = Button(self.booking, image=BadmintonFloorPlanPhoto, width=350, height=292, command=blank, borderwidth=0, activebackground="white")
+				BadmintonFloorPlan.place(rely=0.75,relx=0.76,anchor=CENTER)
+				BadmintonFloorPlan.image = BadmintonFloorPlanPhoto
+				BadmintonFloorPlan['command'] = 0
+				BadmintonFloorPlan['relief'] = 'sunken'
+
+
+				squash1.config(bg='black')
+				squash2.config(bg='black')
+
+				squash1.place_forget()
+				squash1l.place_forget()
+				squash2.place_forget()
+				squash2l.place_forget()
+
+
+				badminton1.place(rely=0.48,relx=0.09,anchor=CENTER)
+				badminton1l.place(rely=0.42,relx=0.09,anchor=CENTER)
+
+				badminton2.place(rely=0.48,relx=0.21,anchor=CENTER)
+				badminton2l.place(rely=0.42,relx=0.21,anchor=CENTER)
+
+				badminton3.place(rely=0.48,relx=0.33,anchor=CENTER)
+				badminton3l.place(rely=0.42,relx=0.33,anchor=CENTER)
+
+				badminton4.place(rely=0.48,relx=0.45,anchor=CENTER)
+				badminton4l.place(rely=0.42,relx=0.45,anchor=CENTER)
+
+				badminton5.place(rely=0.66,relx=0.09,anchor=CENTER)
+				badminton5l.place(rely=0.6,relx=0.09,anchor=CENTER)
+
+				badminton6.place(rely=0.66,relx=0.21,anchor=CENTER)
+				badminton6l.place(rely=0.6,relx=0.21,anchor=CENTER)
+
+				badminton7.place(rely=0.66,relx=0.33,anchor=CENTER)
+				badminton7l.place(rely=0.6,relx=0.33,anchor=CENTER)
+
+				badminton8.place(rely=0.66,relx=0.45,anchor=CENTER)
+				badminton8l.place(rely=0.6,relx=0.45,anchor=CENTER)
+
+				badminton9.place(rely=0.84,relx=0.09,anchor=CENTER)
+				badminton9l.place(rely=0.78,relx=0.09,anchor=CENTER)
+
+				badminton10.place(rely=0.84,relx=0.21,anchor=CENTER)
+				badminton10l.place(rely=0.78,relx=0.21,anchor=CENTER)
+
+				badminton11.place(rely=0.84,relx=0.33,anchor=CENTER)
+				badminton11l.place(rely=0.78,relx=0.33,anchor=CENTER)
+
+				badminton12.place(rely=0.84,relx=0.45,anchor=CENTER)
+				badminton12l.place(rely=0.78,relx=0.45,anchor=CENTER)
+
+
+			if RacquetType_combobox.get() == 'Tennis' and previous == 'Tennis':
+				pass
+
+
+			if RacquetType_combobox.get() == 'Tennis' and previous == 'Badminton':
+				previous = 'Tennis'
+
+				TennisFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/tennisRacquetsFloor.png")
+
+				TennisFloorPlan = Button(self.booking, image=TennisFloorPlanPhoto, width=350, height=292, command=blank, borderwidth=0, activebackground="white")
+				TennisFloorPlan.place(rely=0.75,relx=0.76,anchor=CENTER)
+				TennisFloorPlan.image = TennisFloorPlanPhoto
+				TennisFloorPlan['command'] = 0
+				TennisFloorPlan['relief'] = 'sunken'
+
+
+				badminton1.config(bg='black')
+				badminton2.config(bg='black')
+				badminton3.config(bg='black')
+				badminton4.config(bg='black')
+				badminton5.config(bg='black')
+				badminton6.config(bg='black')
+				badminton7.config(bg='black')
+				badminton8.config(bg='black')
+				badminton9.config(bg='black')
+				badminton10.config(bg='black')
+				badminton11.config(bg='black')
+				badminton12.config(bg='black')
+
+				badminton1.place_forget()
+				badminton1l.place_forget()
+				badminton2.place_forget()
+				badminton2l.place_forget()
+				badminton3.place_forget()
+				badminton3l.place_forget()
+				badminton4.place_forget()
+				badminton4l.place_forget()
+				badminton5.place_forget()
+				badminton5l.place_forget()
+				badminton6.place_forget()
+				badminton6l.place_forget()
+				badminton7.place_forget()
+				badminton7l.place_forget()
+				badminton8.place_forget()
+				badminton8l.place_forget()
+				badminton9.place_forget()
+				badminton9l.place_forget()
+				badminton10.place_forget()
+				badminton10l.place_forget()
+				badminton11.place_forget()
+				badminton11l.place_forget()
+				badminton12.place_forget()
+				badminton12l.place_forget()
+
+
+				tennis1.place(rely=0.54,relx=0.15,anchor=CENTER)
+				tennis1l.place(rely=0.44,relx=0.15,anchor=CENTER)
+
+				tennis2.place(rely=0.54,relx=0.39,anchor=CENTER)
+				tennis2l.place(rely=0.44,relx=0.39,anchor=CENTER)
+
+				tennis3.place(rely=0.78,relx=0.15,anchor=CENTER)
+				tennis3l.place(rely=0.68,relx=0.15,anchor=CENTER)
+
+				tennis4.place(rely=0.78,relx=0.39,anchor=CENTER)
+				tennis4l.place(rely=0.68,relx=0.39,anchor=CENTER)
+
+
+			if RacquetType_combobox.get() == 'Tennis' and previous == 'Squash':
+				previous = 'Tennis'
+
+				TennisFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/tennisRacquetsFloor.png")
+
+				TennisFloorPlan = Button(self.booking, image=TennisFloorPlanPhoto, width=350, height=292, command=blank, borderwidth=0, activebackground="white")
+				TennisFloorPlan.place(rely=0.75,relx=0.76,anchor=CENTER)
+				TennisFloorPlan.image = TennisFloorPlanPhoto
+				TennisFloorPlan['command'] = 0
+				TennisFloorPlan['relief'] = 'sunken'
+
+
+				squash1.config(bg='black')
+				squash2.config(bg='black')
+
+				squash1.place_forget()
+				squash1l.place_forget()
+				squash2.place_forget()
+				squash2l.place_forget()
+
+
+				tennis1.place(rely=0.54,relx=0.15,anchor=CENTER)
+				tennis1l.place(rely=0.44,relx=0.15,anchor=CENTER)
+
+				tennis2.place(rely=0.54,relx=0.39,anchor=CENTER)
+				tennis2l.place(rely=0.44,relx=0.39,anchor=CENTER)
+
+				tennis3.place(rely=0.78,relx=0.15,anchor=CENTER)
+				tennis3l.place(rely=0.68,relx=0.15,anchor=CENTER)
+
+				tennis4.place(rely=0.78,relx=0.39,anchor=CENTER)
+				tennis4l.place(rely=0.68,relx=0.39,anchor=CENTER)
+
+
+			if RacquetType_combobox.get() == 'Squash' and previous == 'Squash':
+				pass
+
+
+			if RacquetType_combobox.get() == 'Squash' and previous == 'Badminton':
+				previous = 'Squash'
+
+				SquashFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/squashRacquetsFloor.png")
+
+				SquashFloorPlan = Button(self.booking, image=SquashFloorPlanPhoto, width=350, height=292, command=blank, borderwidth=0, activebackground="white")
+				SquashFloorPlan.place(rely=0.75,relx=0.76,anchor=CENTER)
+				SquashFloorPlan.image = SquashFloorPlanPhoto
+				SquashFloorPlan['command'] = 0
+				SquashFloorPlan['relief'] = 'sunken'
+
+
+				badminton1.config(bg='black')
+				badminton2.config(bg='black')
+				badminton3.config(bg='black')
+				badminton4.config(bg='black')
+				badminton5.config(bg='black')
+				badminton6.config(bg='black')
+				badminton7.config(bg='black')
+				badminton8.config(bg='black')
+				badminton9.config(bg='black')
+				badminton10.config(bg='black')
+				badminton11.config(bg='black')
+				badminton12.config(bg='black')
+
+				badminton1.place_forget()
+				badminton1l.place_forget()
+				badminton2.place_forget()
+				badminton2l.place_forget()
+				badminton3.place_forget()
+				badminton3l.place_forget()
+				badminton4.place_forget()
+				badminton4l.place_forget()
+				badminton5.place_forget()
+				badminton5l.place_forget()
+				badminton6.place_forget()
+				badminton6l.place_forget()
+				badminton7.place_forget()
+				badminton7l.place_forget()
+				badminton8.place_forget()
+				badminton8l.place_forget()
+				badminton9.place_forget()
+				badminton9l.place_forget()
+				badminton10.place_forget()
+				badminton10l.place_forget()
+				badminton11.place_forget()
+				badminton11l.place_forget()
+				badminton12.place_forget()
+				badminton12l.place_forget()
+
+
+				squash1.place(rely=0.67,relx=0.15,anchor=CENTER)
+				squash1l.place(rely=0.44,relx=0.15,anchor=CENTER)
+
+				squash2.place(rely=0.67,relx=0.39,anchor=CENTER)
+				squash2l.place(rely=0.44,relx=0.39,anchor=CENTER)
+
+
+			if RacquetType_combobox.get() == 'Squash' and previous == 'Tennis':
+				previous = 'Squash'
+
+				SquashFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/squashRacquetsFloor.png")
+
+				SquashFloorPlan = Button(self.booking, image=SquashFloorPlanPhoto, width=350, height=292, command=blank, borderwidth=0, activebackground="white")
+				SquashFloorPlan.place(rely=0.75,relx=0.76,anchor=CENTER)
+				SquashFloorPlan.image = SquashFloorPlanPhoto
+				SquashFloorPlan['command'] = 0
+				SquashFloorPlan['relief'] = 'sunken'
+
+
+				tennis1.config(bg='black')
+				tennis2.config(bg='black')
+				tennis3.config(bg='black')
+				tennis4.config(bg='black')
+
+				tennis1.place_forget()
+				tennis1l.place_forget()
+				tennis2.place_forget()
+				tennis2l.place_forget()
+				tennis3.place_forget()
+				tennis3l.place_forget()
+				tennis4.place_forget()
+				tennis4l.place_forget()
+
+
+				squash1.place(rely=0.67,relx=0.15,anchor=CENTER)
+				squash1l.place(rely=0.44,relx=0.15,anchor=CENTER)
+
+				squash2.place(rely=0.67,relx=0.39,anchor=CENTER)
+				squash2l.place(rely=0.44,relx=0.39,anchor=CENTER)
+
+
+		def validate_courts(badminton1, badminton2, badminton3, badminton4, badminton5, badminton6, badminton7, badminton8, badminton9, badminton10, badminton11, badminton12, tennis1, tennis2, tennis3, tennis4, squash1, squash2, racquet_sport_label):
+			global courts
+
+			if RacquetType_combobox.get() == 'Badminton':
+				badmintoncounter = 1
+				badmintonselectedcourts = []
+
+				badmintoncourts = [badminton1, badminton2, badminton3, badminton4, badminton5, badminton6,
+								   badminton7, badminton8, badminton9, badminton10, badminton11, badminton12]
+
+				if (badminton1.cget('bg') != 'SpringGreen3' and badminton2.cget('bg') != 'SpringGreen3' and badminton3.cget('bg') != 'SpringGreen3' and badminton4.cget('bg') != 'SpringGreen3' and badminton5.cget('bg') != 'SpringGreen3' and badminton6.cget('bg') != 'SpringGreen3' and badminton7.cget('bg') != 'SpringGreen3' and badminton8.cget('bg') != 'SpringGreen3' and badminton9.cget('bg') != 'SpringGreen3' and badminton10.cget('bg') != 'SpringGreen3' and badminton11.cget('bg') != 'SpringGreen3' and badminton12.cget('bg') != 'SpringGreen3'):
+					racquet_sport_label.config(fg='red')
+					messagebox.showinfo('Error', 'Please select a court', icon='error')
+
 				else:
-					if count%2==0:
-						booking_TV.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4]))
+
+					for court in badmintoncourts:
+						if (str(badmintoncounter) == court.cget('text') and court.cget('bg') == 'SpringGreen3'):
+							FinalCourt = str(badmintoncounter)
+							badmintonselectedcourts.append(FinalCourt)
+
+						badmintoncounter += 1
+
+					if (len(badmintonselectedcourts) > 1):
+						racquet_sport_label.config(fg='red')
+						messagebox.showinfo('Info', 'Only one court can be selected per booking')
+						badminton1.config(bg='black')
+						badminton2.config(bg='black')
+						badminton3.config(bg='black')
+						badminton4.config(bg='black')
+						badminton5.config(bg='black')
+						badminton6.config(bg='black')
+						badminton7.config(bg='black')
+						badminton8.config(bg='black')
+						badminton9.config(bg='black')
+						badminton10.config(bg='black')
+						badminton11.config(bg='black')
+						badminton12.config(bg='black')
+
 					else:
-						booking_TV.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4]))
-					count+=1
+						courts = True
+						racquet_sport_label.config(fg='SpringGreen3')
+						return badmintonselectedcourts[0]
+
+			if RacquetType_combobox.get() == 'Tennis':
+				tenniscounter = 1
+				tennisselectedcourts = []
+
+				tenniscourts = [tennis1, tennis2, tennis3, tennis4]
+
+				if (tennis1.cget('bg') != 'SpringGreen3' and tennis2.cget('bg') != 'SpringGreen3' and tennis3.cget('bg') != 'SpringGreen3' and tennis4.cget('bg') != 'SpringGreen3'):
+					racquet_sport_label.config(fg='red')
+					messagebox.showinfo('Error', 'Please select a court', icon='error')
+
+				else:
+
+					for court in tenniscourts:
+						if (str(tenniscounter) == court.cget('text') and court.cget('bg') == 'SpringGreen3'):
+							FinalCourt = str(tenniscounter)
+							tennisselectedcourts.append(FinalCourt)
+
+						tenniscounter += 1
+
+					if (len(tennisselectedcourts) > 1):
+						racquet_sport_label.config(fg='red')
+						messagebox.showinfo('Info', 'Only one court can be selected per booking')
+						tennis1.config(bg='black')
+						tennis2.config(bg='black')
+						tennis3.config(bg='black')
+						tennis4.config(bg='black')
+
+					else:
+						courts = True
+						racquet_sport_label.config(fg='SpringGreen3')
+						return tennisselectedcourts[0]
+
+			if RacquetType_combobox.get() == 'Squash':
+				squashcounter = 1
+				squashselectedcourts = []
+
+				squashcourts = [squash1, squash2]
+
+				if (squash1.cget('bg') != 'SpringGreen3' and squash2.cget('bg') != 'SpringGreen3'):
+					racquet_sport_label.config(fg='red')
+					messagebox.showinfo('Error', 'Please select a court', icon='error')
+
+				else:
+
+					for court in squashcourts:
+						if (str(squashcounter) == court.cget('text') and court.cget('bg') == 'SpringGreen3'):
+							FinalCourt = str(squashcounter)
+							squashselectedcourts.append(FinalCourt)
+
+						squashcounter += 1
+
+					if (len(squashselectedcourts) > 1):
+						racquet_sport_label.config(fg='red')
+						messagebox.showinfo('Info', 'Only one court can be selected per booking')
+						squash1.config(bg='black')
+						squash2.config(bg='black')
+
+					else:
+						courts = True
+						racquet_sport_label.config(fg='SpringGreen3')
+						return squashselectedcourts[0]
 
 
+		def SubmitBooking(badminton1, badminton2, badminton3, badminton4, badminton5, badminton6, badminton7, badminton8, badminton9, badminton10, badminton11, badminton12, tennis1, tennis2, tennis3, tennis4, squash1, squash2, badminton1l, badminton2l, badminton3l, badminton4l, badminton5l, badminton6l, badminton7l, badminton8l, badminton9l, badminton10l, badminton11l, badminton12l, tennis1l, tennis2l, tennis3l, tennis4l, squash1l, squash2l, floorplan):
 
-		def dateSelectionleft():
-			currentDateSelected = date_label.cget("text")
-
-			today = datetime.date.today()
-			oneDay = datetime.date.today() + datetime.timedelta(days=1)
-			twoDay = datetime.date.today() + datetime.timedelta(days=2)
-			threeDay = datetime.date.today() + datetime.timedelta(days=3)
-			fourDay = datetime.date.today() + datetime.timedelta(days=4)
-			fiveDay = datetime.date.today() + datetime.timedelta(days=5)
-			sixDay = datetime.date.today() + datetime.timedelta(days=6)
-			sevenDay = datetime.date.today() + datetime.timedelta(days=7)
-
-			todaysWordDate = today.strftime("%B %d, %Y")
-			oneDayWordDate = oneDay.strftime("%B %d, %Y")
-			twoDayWordDate = twoDay.strftime("%B %d, %Y")
-			threeDayWordDate = threeDay.strftime("%B %d, %Y")
-			fourDayWordDate = fourDay.strftime("%B %d, %Y")
-			fiveDayWordDate = fiveDay.strftime("%B %d, %Y")
-			sixDayWordDate = sixDay.strftime("%B %d, %Y")
-			sevenDayWordDate = sevenDay.strftime("%B %d, %Y")
-
-			if (currentDateSelected == oneDayWordDate):
-				date_label.config(text=todaysWordDate)
-				previous_date_button.place_forget()
-			if (currentDateSelected == twoDayWordDate):
-				date_label.config(text=oneDayWordDate)
-			if (currentDateSelected == threeDayWordDate):
-				date_label.config(text=twoDayWordDate)
-			if (currentDateSelected == fourDayWordDate):
-				date_label.config(text=threeDayWordDate)
-			if (currentDateSelected == fiveDayWordDate):
-				date_label.config(text=fourDayWordDate)
-			if (currentDateSelected == sixDayWordDate):
-				date_label.config(text=fiveDayWordDate)
-			if (currentDateSelected == sevenDayWordDate):
-				date_label.config(text=sixDayWordDate)
-				next_date_button.place(rely=0.643, relx=0.535, anchor='center')
-
-
-		def dateSelectionRight():
-			currentDateSelected = date_label.cget("text")
-
-			today = datetime.date.today()
-			oneDay = datetime.date.today() + datetime.timedelta(days=1)
-			twoDay = datetime.date.today() + datetime.timedelta(days=2)
-			threeDay = datetime.date.today() + datetime.timedelta(days=3)
-			fourDay = datetime.date.today() + datetime.timedelta(days=4)
-			fiveDay = datetime.date.today() + datetime.timedelta(days=5)
-			sixDay = datetime.date.today() + datetime.timedelta(days=6)
-			sevenDay = datetime.date.today() + datetime.timedelta(days=7)
-
-			todaysWordDate = today.strftime("%B %d, %Y")
-			oneDayWordDate = oneDay.strftime("%B %d, %Y")
-			twoDayWordDate = twoDay.strftime("%B %d, %Y")
-			threeDayWordDate = threeDay.strftime("%B %d, %Y")
-			fourDayWordDate = fourDay.strftime("%B %d, %Y")
-			fiveDayWordDate = fiveDay.strftime("%B %d, %Y")
-			sixDayWordDate = sixDay.strftime("%B %d, %Y")
-			sevenDayWordDate = sevenDay.strftime("%B %d, %Y")
-
-			if (currentDateSelected == todaysWordDate):
-				date_label.config(text=oneDayWordDate)
-				previous_date_button.place(rely=0.643, relx=0.085, anchor='center')
-			if (currentDateSelected == oneDayWordDate):
-				date_label.config(text=twoDayWordDate)
-			if (currentDateSelected == twoDayWordDate):
-				date_label.config(text=threeDayWordDate)
-			if (currentDateSelected == threeDayWordDate):
-				date_label.config(text=fourDayWordDate)
-			if (currentDateSelected == fourDayWordDate):
-				date_label.config(text=fiveDayWordDate)
-			if (currentDateSelected == fiveDayWordDate):
-				date_label.config(text=sixDayWordDate)
-			if (currentDateSelected == sixDayWordDate):
-				date_label.config(text=sevenDayWordDate)
-				next_date_button.place_forget()
-
-
-		def firstTime():
-			pass
-
-
-		def AutoFillButton():
-			conn = sqlite3.connect('BadmintonClub.db')
+			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			isValid = True
-			isValid = isValid and validate_time(time.get(), "Time", title_label)
-			isValid = isValid and validate_court(court.get(), "Court", title_label)
+			isValid = isValid and validate_username(self.memberNamesAndPasswords.get(), username_label)
+			isValid = isValid and validate_date(eventDate.get(), date_label)
 
 			if isValid:
-				if (time.get() ==1):
-					final_time = '9-10am'
-				if (time.get() ==2):
-					final_time = '10-11am'
-				if (time.get() ==3):
-					final_time = '11-12am'
-				if (time.get() ==4):
-					final_time = '12-1pm'
-				if (time.get() ==5):
-					final_time = '1-2pm'
-				if (time.get() ==6):
-					final_time = '2-3pm'
-				if (time.get() ==7):
-					final_time = '3-4pm'
-				if (time.get() ==8):
-					final_time = '4-5pm'
-				if (time.get() ==9):
-					final_time = '5-6pm'
-				if (time.get() ==10):
-					final_time = '6-7pm'
-				if (time.get() ==11):
-					final_time = '7-8pm'
-				if (time.get() ==12):
-					final_time = '8-9pm'
-				if (time.get() ==13):
-					final_time = '9-10pm'
-				if (time.get() ==14):
-					final_time = '10-11pm'
+				courtnumber = validate_courts(badminton1, badminton2, badminton3, badminton4, badminton5, badminton6, badminton7, badminton8, badminton9, badminton10, badminton11, badminton12, tennis1, tennis2, tennis3, tennis4, squash1, squash2, racquet_sport_label)
 
-				if (court.get() ==1):
-					final_court = '1'
-				if (court.get() ==2):
-					final_court = '2'
-				if (court.get() ==3):
-					final_court = '3'
-				if (court.get() ==4):
-					final_court = '4'
-				if (court.get() ==5):
-					final_court = '5'
-				if (court.get() ==6):
-					final_court = '6'
-				if (court.get() ==7):
-					final_court = '7'
-				if (court.get() ==8):
-					final_court = '8'
-				if (court.get() ==9):
-					final_court = '9'
-				if (court.get() ==10):
-					final_court = '10'
-				if (court.get() ==11):
-					final_court = '11'
-				if (court.get() ==12):
-					final_court = '12'
+			if isValid == True and courts == True:
+				c.execute("SELECT * FROM MemberBooking")
+				row = c.fetchall()
 
-				currentDateSelected = date_label.cget("text")
+				finalusername = self.memberNamesAndPasswords.get()
+				finaltype = RacquetType_combobox.get()
+				finaldate = eventDate.get()
+				finalimage = ConvertPic()
+				finalID = len(row)+1
 
-				response = askyesno("Are you sure?", "Are you sure that the details selected are correct?")
+				response = askyesno("Question", "Are you sure that all information above is correct?", icon='question')
 				if response == False:
-					returnColour(title_label)
-					showinfo("Info", "submition cancelled")
+					showinfo("Info", "submition cancelled", icon='info')
 
 				else:
-					c.execute("SELECT * FROM booking")
-					booking_array = c.fetchall()
+					found = Email("Member Booking Successful", "The booking you have just made has been successfully stored within the Lisburn Racquets Club system" + "\n\n" + "The details of the booking have been listed below:" + "\n" + "Date: " + finaldate + "\n" + "Court No: " + courtnumber + "\n" + "Racquet Sport: " + finaltype + " (Shown in image attached)" + "\n\n" + "Thanks for choosing Lisburn Racquets Club", finalusername, username_label, RacquetType_combobox.get())
+					if found:
+
+						c.execute("INSERT INTO MemberBooking VALUES (:image, :username, :type, :date, :court, :bookingID)",
+								  {
+									  'image': finalimage,
+									  'username': finalusername,
+									  'type': finaltype,
+									  'date': finaldate,
+									  'court': courtnumber,
+									  'bookingID': finalID,
+								  })
 
-					newId = len(booking_array) + 1
+						conn.commit()
+						conn.close()
+
+						self.memberNamesAndPasswords.set('')
 
-					c.execute("INSERT INTO booking VALUES(?, ?, ?, ?, ?, ?)", (
-						"","",currentDateSelected,final_time,final_court,newId
+						if RacquetType_combobox.get() == 'Badminton':
+							badminton1.place_forget()
+							badminton1l.place_forget()
+							badminton2.place_forget()
+							badminton2l.place_forget()
+							badminton3.place_forget()
+							badminton3l.place_forget()
+							badminton4.place_forget()
+							badminton4l.place_forget()
+							badminton5.place_forget()
+							badminton5l.place_forget()
+							badminton6.place_forget()
+							badminton6l.place_forget()
+							badminton7.place_forget()
+							badminton7l.place_forget()
+							badminton8.place_forget()
+							badminton8l.place_forget()
+							badminton9.place_forget()
+							badminton9l.place_forget()
+							badminton10.place_forget()
+							badminton10l.place_forget()
+							badminton11.place_forget()
+							badminton11l.place_forget()
+							badminton12.place_forget()
+							badminton12l.place_forget()
+
+						if RacquetType_combobox.get() == 'Tennis':
+							tennis1.place_forget()
+							tennis1l.place_forget()
+							tennis2.place_forget()
+							tennis2l.place_forget()
+							tennis3.place_forget()
+							tennis3l.place_forget()
+							tennis4.place_forget()
+							tennis4l.place_forget()
+
+						if RacquetType_combobox.get() == 'Squash':
+							squash1.place_forget()
+							squash1l.place_forget()
+							squash2.place_forget()
+							squash2l.place_forget()
+
+						RacquetType_combobox.set('Badminton')
+						floorplan.place(rely=0.75,relx=0.76,anchor=CENTER)
+
+						username_label.config(fg='black')
+						date_label.config(fg='black')
+						racquet_sport_label.config(fg='black')
+
+						BookingPopulate()
+
+
+		eventDate=StringVar()
+		court = StringVar()
+
+		RacqutType = ['Badminton','Tennis','Squash']
+
+
+		ToolTips = Pmw.Balloon()
+
+
+		username_label = tkinter.Label(self.booking, text="Username:", font=('serif', 14, 'bold'), fg='black', bg='white')
+		username_label.place(rely=0.15, relx=0.1, anchor='center')
+
+		date_label = tkinter.Label(self.booking, text="Booking Date:", font=('serif', 14, 'bold'), fg='black', bg='white')
+		date_label.place(rely=0.24, relx=0.1, anchor='center')
+
+		date_entry = Button(self.booking, text='Select Date',font=("serif",10, 'bold'), cursor="tcross",command=lambda : dateEntryCheck(eventDate), padx=10, bd=4, relief="ridge")
+		date_entry.place(rely=0.243, relx=0.27, anchor='center')
+		ToolTips.bind(date_entry, 'Select the date of the booking')
+
+		racquet_sport_label = tkinter.Label(self.booking, text="Racquet Sport:", font=('serif', 14, 'bold'), fg='black', bg='white')
+		racquet_sport_label.place(rely=0.33, relx=0.1, anchor='center')
+
+		RacquetType_combobox = ttk.Combobox(self.booking, value=RacqutType, font=('serif', 11, 'bold'), width=11)
+		RacquetType_combobox.place(rely=0.333, relx=0.27, anchor='center')
+		RacquetType_combobox.current(0)
+		RacquetType_combobox.config(state="readonly")
+
+
+		BlankFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/blankRacquetsFloor.png")
+
+		BlankFloorPlan = Button(self.booking, image=BlankFloorPlanPhoto, width=350, height=292, command=blank, borderwidth=0, activebackground="white")
+		BlankFloorPlan.place(rely=0.75,relx=0.76,anchor=CENTER)
+		BlankFloorPlan.image = BlankFloorPlanPhoto
+		BlankFloorPlan['command'] = 0
+		BlankFloorPlan['relief'] = 'sunken'
+
+
+		box =Label(self.booking, text = "blank", fg ='white',bg='white',font=('serif',8,'bold'), bd=2, relief="sunken", padx=230, pady=160)
+		box.place(rely=0.65,relx=0.27,anchor=CENTER)
+
+
+
+		CourtsImage = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/courts.png")
+		CourtsImage2 = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/bigcourts.png")
+		CourtsImage3 = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/biggestcourts.png")
+
+
+		badmintonCourt1label =Label(self.booking, text = 'Court 1', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+		badmintonCourt1label.place(rely=0.42,relx=0.09,anchor=CENTER)
+		badmintonCourt1Button = Button(self.booking, text='1', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(badmintonCourt1Button), bg="black", highlightthickness=4, activebackground="grey")
+		badmintonCourt1Button.place(rely=0.48,relx=0.09,anchor=CENTER)
+		badmintonCourt1Button.image = CourtsImage
+
+		badmintonCourt2label =Label(self.booking, text = 'Court 2', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+		badmintonCourt2label.place(rely=0.42,relx=0.21,anchor=CENTER)
+		badmintonCourt2Button = Button(self.booking, text='2', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(badmintonCourt2Button), bg="black", highlightthickness=4, activebackground="grey")
+		badmintonCourt2Button.place(rely=0.48,relx=0.21,anchor=CENTER)
+		badmintonCourt2Button.image = CourtsImage
+
+		badmintonCourt3label =Label(self.booking, text = 'Court 3', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+		badmintonCourt3label.place(rely=0.42,relx=0.33,anchor=CENTER)
+		badmintonCourt3Button = Button(self.booking, text='3', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(badmintonCourt3Button), bg="black", highlightthickness=4, activebackground="grey")
+		badmintonCourt3Button.place(rely=0.48,relx=0.33,anchor=CENTER)
+		badmintonCourt3Button.image = CourtsImage
+
+		badmintonCourt4label =Label(self.booking, text = 'Court 4', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+		badmintonCourt4label.place(rely=0.42,relx=0.45,anchor=CENTER)
+		badmintonCourt4Button = Button(self.booking, text='4', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(badmintonCourt4Button), bg="black", highlightthickness=4, activebackground="grey")
+		badmintonCourt4Button.place(rely=0.48,relx=0.45,anchor=CENTER)
+		badmintonCourt4Button.image = CourtsImage
+
+		badmintonCourt5label =Label(self.booking, text = 'Court 5', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+		badmintonCourt5label.place(rely=0.6,relx=0.09,anchor=CENTER)
+		badmintonCourt5Button = Button(self.booking, text='5', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(badmintonCourt5Button), bg="black", highlightthickness=5, activebackground="grey")
+		badmintonCourt5Button.place(rely=0.66,relx=0.09,anchor=CENTER)
+		badmintonCourt5Button.image = CourtsImage
+
+		badmintonCourt6label =Label(self.booking, text = 'Court 6', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+		badmintonCourt6label.place(rely=0.6,relx=0.21,anchor=CENTER)
+		badmintonCourt6Button = Button(self.booking, text='6', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(badmintonCourt6Button), bg="black", highlightthickness=5, activebackground="grey")
+		badmintonCourt6Button.place(rely=0.66,relx=0.21,anchor=CENTER)
+		badmintonCourt6Button.image = CourtsImage
+
+		badmintonCourt7label =Label(self.booking, text = 'Court 7', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+		badmintonCourt7label.place(rely=0.6,relx=0.33,anchor=CENTER)
+		badmintonCourt7Button = Button(self.booking, text='7', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(badmintonCourt7Button), bg="black", highlightthickness=5, activebackground="grey")
+		badmintonCourt7Button.place(rely=0.66,relx=0.33,anchor=CENTER)
+		badmintonCourt7Button.image = CourtsImage
+
+		badmintonCourt8label =Label(self.booking, text = 'Court 8', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+		badmintonCourt8label.place(rely=0.6,relx=0.45,anchor=CENTER)
+		badmintonCourt8Button = Button(self.booking, text='8', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(badmintonCourt8Button), bg="black", highlightthickness=5, activebackground="grey")
+		badmintonCourt8Button.place(rely=0.66,relx=0.45,anchor=CENTER)
+		badmintonCourt8Button.image = CourtsImage
+
+		badmintonCourt9label =Label(self.booking, text = 'Court 9', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+		badmintonCourt9label.place(rely=0.78,relx=0.09,anchor=CENTER)
+		badmintonCourt9Button = Button(self.booking, text='9', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(badmintonCourt9Button), bg="black", highlightthickness=5, activebackground="grey")
+		badmintonCourt9Button.place(rely=0.84,relx=0.09,anchor=CENTER)
+		badmintonCourt9Button.image = CourtsImage
+
+		badmintonCourt10label =Label(self.booking, text = 'Court 10', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+		badmintonCourt10label.place(rely=0.78,relx=0.21,anchor=CENTER)
+		badmintonCourt10Button = Button(self.booking, text='10', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(badmintonCourt10Button), bg="black", highlightthickness=5, activebackground="grey")
+		badmintonCourt10Button.place(rely=0.84,relx=0.21,anchor=CENTER)
+		badmintonCourt10Button.image = CourtsImage
+
+		badmintonCourt11label =Label(self.booking, text = 'Court 11', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+		badmintonCourt11label.place(rely=0.78,relx=0.33,anchor=CENTER)
+		badmintonCourt11Button = Button(self.booking, text='11', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(badmintonCourt11Button), bg="black", highlightthickness=5, activebackground="grey")
+		badmintonCourt11Button.place(rely=0.84,relx=0.33,anchor=CENTER)
+		badmintonCourt11Button.image = CourtsImage
+
+		badmintonCourt12label =Label(self.booking, text = 'Court 12', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+		badmintonCourt12label.place(rely=0.78,relx=0.45,anchor=CENTER)
+		badmintonCourt12Button = Button(self.booking, text='12', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(badmintonCourt12Button), bg="black", highlightthickness=5, activebackground="grey")
+		badmintonCourt12Button.place(rely=0.84,relx=0.45,anchor=CENTER)
+		badmintonCourt12Button.image = CourtsImage
+
+
+		tennisCourt1label =Label(self.booking, text = 'Court 1', fg ='black',bg='white',font=('serif',9,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+		tennisCourt1label.place(rely=0.44,relx=0.15,anchor=CENTER)
+		tennisCourt1Button = Button(self.booking, text='1', cursor="tcross", image=CourtsImage2, width=170, height=97, command=lambda : ClickedCourt(tennisCourt1Button), bg="black", highlightthickness=4, activebackground="grey")
+		tennisCourt1Button.place(rely=0.54,relx=0.15,anchor=CENTER)
+		tennisCourt1Button.image = CourtsImage2
+
+		tennisCourt2label =Label(self.booking, text = 'Court 2', fg ='black',bg='white',font=('serif',9,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+		tennisCourt2label.place(rely=0.44,relx=0.39,anchor=CENTER)
+		tennisCourt2Button = Button(self.booking, text='2', cursor="tcross", image=CourtsImage2, width=170, height=97, command=lambda : ClickedCourt(tennisCourt2Button), bg="black", highlightthickness=4, activebackground="grey")
+		tennisCourt2Button.place(rely=0.54,relx=0.39,anchor=CENTER)
+		tennisCourt2Button.image = CourtsImage2
+
+		tennisCourt3label =Label(self.booking, text = 'Court 3', fg ='black',bg='white',font=('serif',9,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+		tennisCourt3label.place(rely=0.68,relx=0.15,anchor=CENTER)
+		tennisCourt3Button = Button(self.booking, text='3', cursor="tcross", image=CourtsImage2, width=170, height=97, command=lambda : ClickedCourt(tennisCourt3Button), bg="black", highlightthickness=4, activebackground="grey")
+		tennisCourt3Button.place(rely=0.78,relx=0.15,anchor=CENTER)
+		tennisCourt3Button.image = CourtsImage2
+
+		tennisCourt4label =Label(self.booking, text = 'Court 4', fg ='black',bg='white',font=('serif',9,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+		tennisCourt4label.place(rely=0.68,relx=0.39,anchor=CENTER)
+		tennisCourt4Button = Button(self.booking, text='4', cursor="tcross", image=CourtsImage2, width=170, height=97, command=lambda : ClickedCourt(tennisCourt4Button), bg="black", highlightthickness=4, activebackground="grey")
+		tennisCourt4Button.place(rely=0.78,relx=0.39,anchor=CENTER)
+		tennisCourt4Button.image = CourtsImage2
+
+
+		squashCourt1label =Label(self.booking, text = 'Court 1', fg ='black',bg='white',font=('serif',11,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+		squashCourt1label.place(rely=0.44,relx=0.15,anchor=CENTER)
+		squashCourt1Button = Button(self.booking, text='1', cursor="tcross", image=CourtsImage3, width=155, height=270, command=lambda : ClickedCourt(squashCourt1Button), bg="black", highlightthickness=4, activebackground="grey")
+		squashCourt1Button.place(rely=0.67,relx=0.15,anchor=CENTER)
+		squashCourt1Button.image = CourtsImage3
+
+		squashCourt2label =Label(self.booking, text = 'Court 2', fg ='black',bg='white',font=('serif',11,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+		squashCourt2label.place(rely=0.44,relx=0.39,anchor=CENTER)
+		squashCourt2Button = Button(self.booking, textvariable=court,text='2', cursor="tcross", image=CourtsImage3, width=155, height=270, command=lambda : ClickedCourt(squashCourt2Button), bg="black", highlightthickness=4, activebackground="grey")
+		squashCourt2Button.place(rely=0.67,relx=0.39,anchor=CENTER)
+		squashCourt2Button.image = CourtsImage3
+
+
+
+		badmintonCourt1label.place_forget()
+		badmintonCourt1Button.place_forget()
+		badmintonCourt2label.place_forget()
+		badmintonCourt2Button.place_forget()
+		badmintonCourt3label.place_forget()
+		badmintonCourt3Button.place_forget()
+		badmintonCourt4label.place_forget()
+		badmintonCourt4Button.place_forget()
+		badmintonCourt5label.place_forget()
+		badmintonCourt5Button.place_forget()
+		badmintonCourt6label.place_forget()
+		badmintonCourt6Button.place_forget()
+		badmintonCourt7label.place_forget()
+		badmintonCourt7Button.place_forget()
+		badmintonCourt8label.place_forget()
+		badmintonCourt8Button.place_forget()
+		badmintonCourt9label.place_forget()
+		badmintonCourt9Button.place_forget()
+		badmintonCourt10label.place_forget()
+		badmintonCourt10Button.place_forget()
+		badmintonCourt11label.place_forget()
+		badmintonCourt11Button.place_forget()
+		badmintonCourt12label.place_forget()
+		badmintonCourt12Button.place_forget()
+
+		tennisCourt1label.place_forget()
+		tennisCourt1Button.place_forget()
+		tennisCourt2label.place_forget()
+		tennisCourt2Button.place_forget()
+		tennisCourt3label.place_forget()
+		tennisCourt3Button.place_forget()
+		tennisCourt4label.place_forget()
+		tennisCourt4Button.place_forget()
+
+		squashCourt1label.place_forget()
+		squashCourt1Button.place_forget()
+		squashCourt2label.place_forget()
+		squashCourt2Button.place_forget()
+
+
+
+		select_competition_button = tkinter.Button(self.booking, cursor="tcross",text="Choose", command=lambda : RacquetSportSelect(badmintonCourt1Button, badmintonCourt2Button, badmintonCourt3Button, badmintonCourt4Button, badmintonCourt5Button, badmintonCourt6Button, badmintonCourt7Button, badmintonCourt8Button, badmintonCourt9Button, badmintonCourt10Button, badmintonCourt11Button, badmintonCourt12Button, tennisCourt1Button, tennisCourt2Button, tennisCourt3Button, tennisCourt4Button, squashCourt1Button, squashCourt2Button, badmintonCourt1label, badmintonCourt2label, badmintonCourt3label, badmintonCourt4label, badmintonCourt5label, badmintonCourt6label, badmintonCourt7label, badmintonCourt8label, badmintonCourt9label, badmintonCourt10label, badmintonCourt11label, badmintonCourt12label, tennisCourt1label, tennisCourt2label, tennisCourt3label, tennisCourt4label, squashCourt1label, squashCourt2label), fg='white', bg='black', bd=2, relief='ridge', font=('serif', 10, 'bold'), padx=5)
+		select_competition_button.place(rely=0.333, relx=0.4, anchor='center')
+		ToolTips.bind(select_competition_button, 'Confirm ID and competition type')
+
+		submit_button = tkinter.Button(self.booking, cursor="tcross",text="Submit Booking", command=lambda : SubmitBooking(badmintonCourt1Button, badmintonCourt2Button, badmintonCourt3Button, badmintonCourt4Button, badmintonCourt5Button, badmintonCourt6Button, badmintonCourt7Button, badmintonCourt8Button, badmintonCourt9Button, badmintonCourt10Button, badmintonCourt11Button, badmintonCourt12Button, tennisCourt1Button, tennisCourt2Button, tennisCourt3Button, tennisCourt4Button, squashCourt1Button, squashCourt2Button, badmintonCourt1label, badmintonCourt2label, badmintonCourt3label, badmintonCourt4label, badmintonCourt5label, badmintonCourt6label, badmintonCourt7label, badmintonCourt8label, badmintonCourt9label, badmintonCourt10label, badmintonCourt11label, badmintonCourt12label, tennisCourt1label, tennisCourt2label, tennisCourt3label, tennisCourt4label, squashCourt1label, squashCourt2label, BlankFloorPlan), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 11, 'bold'), padx=20)
+		submit_button.place(rely=0.955, relx=0.26, anchor='center')
+		ToolTips.bind(submit_button, 'Submit booking details into database')
+
+		transparentimage = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/white_90x90.png")
+		imageviewer2 = Button(self.booking, image=transparentimage, width=90, height=90, command=blank, borderwidth=0, activebackground="white", bd=3)
+		imageviewer2.place(rely=0.433,relx=0.76,anchor=CENTER)
+		imageviewer2.image = transparentimage
+		imageviewer2['command'] = 0
+		imageviewer2['relief'] = 'sunken'
+
+
+		member_booking_Tv=ttk.Treeview(self.booking,columns=('Type','Date','Court','ID'), height=5)
+		member_booking_Tv.place(relx=0.725,rely=0.24,anchor=CENTER)
+
+		member_booking_Tv.heading("#0",text='Username')
+		member_booking_Tv.column("#0",minwidth=0,width=180)
+		member_booking_Tv.heading("#1",text='Type')
+		member_booking_Tv.column("#1",minwidth=0,width=90)
+		member_booking_Tv.heading("#2",text='Date')
+		member_booking_Tv.column("#2",minwidth=0,width=90)
+		member_booking_Tv.heading("#3",text='Court')
+		member_booking_Tv.column("#3",minwidth=0,width=70)
+		member_booking_Tv.heading("#4",text='ID')
+		member_booking_Tv.column("#4",minwidth=0,width=50)
+		member_booking_Tv.bind('<Button-1>', partial(treeviewresizedisable, member_booking_Tv))
+		member_booking_Tv.bind("<Button-1>", partial(GetInformation, imageviewer2))
+
+		member_booking_ysearch_scrollbar = Scrollbar(self.booking, orient = 'vertical', command = member_booking_Tv.yview, cursor="tcross")
+		member_booking_ysearch_scrollbar.place(relx=0.969,rely=0.24,anchor='center',height=127)
+		member_booking_Tv.configure(yscrollcommand=member_booking_ysearch_scrollbar.set)
+
+
+		BookingPopulate()
 
-					))
 
-					messagebox.showinfo("info", "User's has been successfully stored for the competition")
-
-				today = datetime.date.today()
-				todaysWordDate = today.strftime("%B %d, %Y")
-				date_label.config(text=todaysWordDate)
-				time.set("1")
-				court.set("1")
-
-				returnColour(title_label)
-
-			conn.commit()
-			conn.close()
-
-			treeviewPopulate()
-
-
-		def confirmBooking():
-			conn = sqlite3.connect('BadmintonClub.db')
-			c = conn.cursor()
-
-			isValid = True
-			isValid = isValid and validate_member(self.memberNamesAndPasswords.get(), "Member 1", member_label)
-			isValid = isValid and validate_member(self.memberNamesAndPasswords2.get(), "Member 2", member2_label)
-
-			if isValid:
-				finalMember = self.memberNamesAndPasswords.get()
-				finalMember2 = self.memberNamesAndPasswords2.get()
-
-				response = askyesno("Are you sure?", "Are you sure that the members selected are correct?")
-				if response == False:
-					returnColour2(member_label, member2_label)
-					showinfo("Info", "submition cancelled")
-
-				else:
-					response2 = askyesno("Are you sure?", "These new members will update the latest booking added, is this okay?")
-					if response2 == False:
-						returnColour2(member_label, member2_label)
-						showinfo("Info", "submition cancelled")
-
-					else:
-
-						c.execute("SELECT * FROM booking")
-						competition_array = c.fetchall()
-
-						BookingID = len(competition_array)
-
-						c.execute("""UPDATE booking SET username = :username WHERE bookingID=:bookingID""", {
-							"username": finalMember,
-							"bookingID": BookingID
-						})
-
-						c.execute("""UPDATE booking SET username2 = :username2 WHERE bookingID=:bookingID""", {
-							"username2": finalMember2,
-							"bookingID": BookingID
-						})
-
-					returnColour2(member_label, member2_label)
-					messagebox.showinfo("info", "Booking has been completed")
-
-			conn.commit()
-			conn.close()
-
-			treeviewPopulate()
-
-
-
-		time=IntVar()
-		court=IntVar()
-
-
-
-		line1 = Canvas(self.booking, width=3, height=190)
-		line1.config(bg='black')
-		line1.create_line(3, 0, 200, 100000)
-		line1.place(rely=0.86, relx=0.566, anchor='center')
-
-		background_entry_canvas = Canvas(self.booking,width=900, height=400, bg = "white")
-		background_entry_canvas.place(rely=0.41,relx=0.5,anchor=CENTER)
-
-		background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/BookingTable.png")
-
-		background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
-		background_entry_canvas.background_entry_image = background_entry_image
-
-
-		title_label = tkinter.Label(self.booking, text="Member Booking Table", font=('Tahoma', 21, 'bold', 'underline'), fg='black', bg='white')
-		title_label.place(rely=0.16, relx=0.5, anchor='center')
-
-		firstTimeButton = Radiobutton(self.booking, text="9-10am", cursor="tcross", variable=time, value=1, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		firstTimeButton.place(rely=0.26, relx=0.13, anchor='center')
-
-		secondTimeButton = Radiobutton(self.booking, text="10-11am", cursor="tcross", variable=time, value=2, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		secondTimeButton.place(rely=0.26, relx=0.25, anchor='center')
-
-		thirdTimeButton = Radiobutton(self.booking, text="11-12am", cursor="tcross", variable=time, value=3, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		thirdTimeButton.place(rely=0.26, relx=0.37, anchor='center')
-
-		fourthTimeButton = Radiobutton(self.booking, text="12-1pm", cursor="tcross", variable=time, value=4, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		fourthTimeButton.place(rely=0.26, relx=0.49, anchor='center')
-
-		fifthTimeButton = Radiobutton(self.booking, text="1-2pm", cursor="tcross", variable=time, value=5, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		fifthTimeButton.place(rely=0.35, relx=0.13, anchor='center')
-
-		sixthTimeButton = Radiobutton(self.booking, text="2-3pm", cursor="tcross", variable=time, value=6, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		sixthTimeButton.place(rely=0.35, relx=0.25, anchor='center')
-
-		seventhTimeButton = Radiobutton(self.booking, text="3-4pm", cursor="tcross", variable=time, value=7, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		seventhTimeButton.place(rely=0.35, relx=0.37, anchor='center')
-
-		eigthTimeButton = Radiobutton(self.booking, text="4-5pm", cursor="tcross", variable=time, value=8, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		eigthTimeButton.place(rely=0.35, relx=0.49, anchor='center')
-
-		ninthTimeButton = Radiobutton(self.booking, text="5-6pm", cursor="tcross", variable=time, value=9, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		ninthTimeButton.place(rely=0.44, relx=0.13, anchor='center')
-
-		tenthTimeButton = Radiobutton(self.booking, text="6-7pm", cursor="tcross", variable=time, value=10, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		tenthTimeButton.place(rely=0.44, relx=0.25, anchor='center')
-
-		eleventhTimeButton = Radiobutton(self.booking, text="7-8pm", cursor="tcross", variable=time, value=11, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		eleventhTimeButton.place(rely=0.44, relx=0.37, anchor='center')
-
-		twelthTimeButton = Radiobutton(self.booking, text="8-9pm", cursor="tcross", variable=time, value=12, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		twelthTimeButton.place(rely=0.44, relx=0.49, anchor='center')
-
-		thirteenthTimeButton = Radiobutton(self.booking, text="9-10pm", cursor="tcross", variable=time, value=13, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		thirteenthTimeButton.place(rely=0.52, relx=0.25, anchor='center')
-
-		fourteenthTimeButton = Radiobutton(self.booking, text="10-11pm", cursor="tcross", variable=time, value=14, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		fourteenthTimeButton.place(rely=0.52, relx=0.37, anchor='center')
-		time.set("1")
-
-
-		firstCourtButton = Radiobutton(self.booking, text="Court 1", cursor="tcross", variable=court, value=1, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		firstCourtButton.place(rely=0.26, relx=0.635, anchor='center')
-
-		secondCourtButton = Radiobutton(self.booking, text="Court 2", cursor="tcross", variable=court, value=2, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		secondCourtButton.place(rely=0.26, relx=0.755, anchor='center')
-
-		thirdCourtButton = Radiobutton(self.booking, text="Court 3", cursor="tcross", variable=court, value=3, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		thirdCourtButton.place(rely=0.26, relx=0.875, anchor='center')
-
-		fourthCourtButton = Radiobutton(self.booking, text="Court 4", cursor="tcross", variable=court, value=4, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		fourthCourtButton.place(rely=0.35, relx=0.635, anchor='center')
-
-		fifthCourtButton = Radiobutton(self.booking, text="Court 5", cursor="tcross", variable=court, value=5, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		fifthCourtButton.place(rely=0.35, relx=0.755, anchor='center')
-
-		sixthCourtButton = Radiobutton(self.booking, text="Court 6", cursor="tcross", variable=court, value=6, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		sixthCourtButton.place(rely=0.35, relx=0.875, anchor='center')
-
-		seventhCourtButton = Radiobutton(self.booking, text="Court 7", cursor="tcross", variable=court, value=7, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		seventhCourtButton.place(rely=0.44, relx=0.635, anchor='center')
-
-		eigthCourtButton = Radiobutton(self.booking, text="Court 8", cursor="tcross", variable=court, value=8, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		eigthCourtButton.place(rely=0.44, relx=0.755, anchor='center')
-
-		ninthCourtButton = Radiobutton(self.booking, text="Court 9", cursor="tcross", variable=court, value=9, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		ninthCourtButton.place(rely=0.44, relx=0.875, anchor='center')
-
-		tenthCourtButton = Radiobutton(self.booking, text="Court 10", cursor="tcross", variable=court, value=10, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		tenthCourtButton.place(rely=0.53, relx=0.635, anchor='center')
-
-		eleventhCourtButton = Radiobutton(self.booking, text="Court 11", cursor="tcross", variable=court, value=11, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		eleventhCourtButton.place(rely=0.53, relx=0.755, anchor='center')
-
-		twelthCourtButton = Radiobutton(self.booking, text="Court 12", cursor="tcross", variable=court, value=12, fg='black', bg='white', bd=5, relief='sunken', font=('Tahoma', 8, 'bold'), padx=10, pady=5)
-		twelthCourtButton.place(rely=0.53, relx=0.875, anchor='center')
-		court.set("1")
-
-
-		today = datetime.date.today()
-		todaysWordDate = today.strftime("%B %d, %Y")
-		date_label = tk.Label(self.booking, text=todaysWordDate, font=('Tahoma', 20, 'bold'), fg='black', bg='white')
-		date_label.place(rely=0.64, relx=0.313, anchor='center')
-
-
-		left_date_photo = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/ArrowLeft.png")
-		previous_date_button = Button(self.booking, image=left_date_photo, command=dateSelectionleft, borderwidth=0, cursor="tcross")
-		previous_date_button.image = left_date_photo
-		previous_date_button.place(rely=0.643, relx=0.085, anchor='center')
-		previous_date_button.place_forget()
-
-		right_date_photo = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/ArrowRight.png")
-		next_date_button = Button(self.booking, image=right_date_photo, command=dateSelectionRight, borderwidth=0, cursor="tcross")
-		next_date_button.image = right_date_photo
-		next_date_button.place(rely=0.643, relx=0.535, anchor='center')
-
-
-		autofill_booking_button = tkinter.Button(self.booking, cursor="tcross",text="Auto-Fill Booking", command=AutoFillButton, fg='black', bg='white', bd=5, relief='ridge', font=('Tahoma', 14, 'bold'), padx=25, pady=3)
-		autofill_booking_button.place(rely=0.64, relx=0.755, anchor='center')
-
-
-		member_label = tkinter.Label(self.booking, text="Member 1:", font=('Tahoma', 15, 'bold'), fg='black', bg='white')
-		member_label.place(rely=0.775, relx=0.66, anchor='center')
-
-		member2_label = tkinter.Label(self.booking, text="Member 2:", font=('Tahoma', 15, 'bold'), fg='black', bg='white')
-		member2_label.place(rely=0.845, relx=0.66, anchor='center')
-
-
-		booking_submit_button = tkinter.Button(self.booking, cursor="tcross",text="Confirm Booking", command=confirmBooking, fg='white', bg='black', bd=5, relief='ridge', font=('Tahoma', 14, 'bold'), padx=15)
-		booking_submit_button.place(rely=0.94, relx=0.755, anchor='center')
-
-
-		booking_TV=ttk.Treeview(self.booking,height=7,columns=('Member2','Date','Time','Court'))
-		booking_TV.place(relx=0.278,rely=0.86, anchor=CENTER)
-
-		booking_TV.heading("#0",text='Member1')
-		booking_TV.column("#0",minwidth=0,width=155)
-		booking_TV.heading("#1",text='Member2')
-		booking_TV.column("#1",minwidth=0,width=155)
-		booking_TV.heading("#2",text='Date')
-		booking_TV.column("#2",minwidth=0,width=125)
-		booking_TV.heading("#3",text='Time')
-		booking_TV.column("#3",minwidth=0,width=55)
-		booking_TV.heading("#4",text='Court')
-		booking_TV.column("#4",minwidth=0,width=40)
-
-		booking_ysearch_scrollbar = Scrollbar(self.booking, orient = 'vertical', command = booking_TV.yview, cursor="tcross")
-		booking_ysearch_scrollbar.place(relx=0.554,rely=0.861,anchor='center',height=168)
-		booking_TV.configure(yscrollcommand=booking_ysearch_scrollbar.set)
-
-
-		treeviewPopulate()
 
 
 
 	def memberSelection(self):
 		self.memberNamesAndPasswords = StringVar()
-		self.memberNamesAndPasswords2 = StringVar()
 
 		member_name_choices = self.get_member_details()
 		if (len(member_name_choices) > 0) :
-			member_selection_dropdown = OptionMenu(self.booking, self.memberNamesAndPasswords, *member_name_choices)
-			member_selection_dropdown.place(rely=0.779, relx=0.84, anchor='center')
-
-			member2_selection_dropdown = OptionMenu(self.booking, self.memberNamesAndPasswords2, *member_name_choices)
-			member2_selection_dropdown.place(rely=0.849, relx=0.84, anchor='center')
+			member_selection_dropdown = ttk.Combobox(self.booking, value=member_name_choices, textvariable=self.memberNamesAndPasswords ,font=('serif', 8, 'bold'), width=25)
+			member_selection_dropdown.place(rely=0.152, relx=0.27, anchor='center')
+			member_selection_dropdown.config(state='readonly')
 
 
 	def get_member_details(self):
-		conn = sqlite3.connect('BadmintonClub.db')
+		conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 		c = conn.cursor()
 
 		member_name_list = []

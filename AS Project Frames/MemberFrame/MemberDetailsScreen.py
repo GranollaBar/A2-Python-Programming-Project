@@ -624,22 +624,6 @@ class MemberContent:
 		age_entry.config(fg='grey')
 
 
-		background_entry_canvas = Canvas(self.member,width=160, height=90, bg = "white")
-		background_entry_canvas.place(rely=0.37,relx=0.13,anchor=CENTER)
-
-		background_entry_image = PhotoImage(file = "C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/tennis2.png")
-
-		background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
-		background_entry_canvas.background_entry_image = background_entry_image
-
-		background_entry2_canvas = Canvas(self.member,width=123, height=88, bg = "white")
-		background_entry2_canvas.place(rely=0.37,relx=0.87,anchor=CENTER)
-
-		background_entry2_image = PhotoImage(file = "C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/squash.png")
-
-		background_entry2_canvas.create_image(0,0, anchor = NW, image=background_entry2_image)
-		background_entry2_canvas.background_entry2_image = background_entry2_image
-
 
 		delete_button = tkinter.Button(self.member, cursor="tcross",text="Delete Member", command=lambda : deleteAccountDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 10, 'bold'), padx=50)
 		delete_button.place(rely=0.41, relx=0.37, anchor='center')

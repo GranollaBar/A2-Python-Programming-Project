@@ -1442,7 +1442,7 @@ class AttendingContent:
         competitiontype_label = tkinter.Label(self.attend, text="Type:", font=('serif', 14, 'bold'), fg='black', bg='white')
         competitiontype_label.place(rely=0.41, relx=0.07, anchor='center')
 
-        CompetitionType_combobox = ttk.Combobox(self.attend, value=CompetitionType, font=('serif', 11, 'bold'), width=7)
+        CompetitionType_combobox = ttk.Combobox(self.attend, value=CompetitionType, font=('serif', 11, 'bold'), width=9)
         CompetitionType_combobox.place(rely=0.413, relx=0.15, anchor='center')
         CompetitionType_combobox.current(0)
         CompetitionType_combobox.config(state="readonly")

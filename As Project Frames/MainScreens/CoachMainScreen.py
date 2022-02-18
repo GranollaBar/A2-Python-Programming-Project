@@ -1,14 +1,13 @@
 import tkinter.simpledialog
 from tkinter import *
 from MemberFrame.MemberDetailsScreen import MemberContent
-from CoachFrame.CoachDetailsScreen import CoachContent
 from CoachingSessionFrame.CoachingSessionScreen import CoachingSessionContent
-from MemberBooking.MemberBookingScreen import BookingContent
 from NewCompetition.NewCompetitionScreen import NewCompetitionContent
 from HomeFrame.CoachHomeScreen import CoachHomeScreenContent
 from LoginFrame.AS_programming_loginscreen import LoginContent
 from AttendCompetitionsFrame.AttendingCompetitionFrame import AttendingContent
 from ReportsFrame.CoachReportsScreen import CoachReportsContent
+import Pmw
 
 
 def clearContent(mainScreen, finalContent):
@@ -32,12 +31,6 @@ def openMemberContent(mainScreen, content):
     clearContent(mainScreen, content)
     memberContent = MemberContent(mainScreen)
     memberContent.generateMemberContnt()
-
-
-def openCoachContent(mainScreen, content):
-    clearContent(mainScreen, content)
-    coachContent = CoachContent(mainScreen)
-    coachContent.generateCoachContnt()
 
 
 def openCoachSessionContent(mainScreen, content):
@@ -65,18 +58,6 @@ def openReportsContent(mainScreen, content):
     coachreportcontent.generateCoachReportsContnt(logins.finalloginname)
 
 
-def openMemberBooking(mainScreen, content):
-    clearContent(mainScreen, content)
-    bookingcontent = BookingContent(mainScreen)
-    bookingcontent.memberSelection()
-    bookingcontent.generateBookingContnt()
-
-
-def openStaticstics(mainScreen, content):
-    clearContent(mainScreen, content)
-
-
-
 
 def main():
     mainScreen = Tk()
@@ -95,6 +76,9 @@ def main():
     content.grid(row=1, sticky="nsew")
 
 
+    ToolTips = Pmw.Balloon()
+
+
     coachHomeContent = CoachHomeScreenContent(mainScreen)
     coachHomeContent.generateCoachHomeScreenContnt(logins.finalloginname)
 
@@ -103,32 +87,33 @@ def main():
     CoachHomeButton = Button(header, cursor="tcross", image=coachhomephoto, width=30, height=30, command=lambda : openCoachHomeContent(mainScreen, content), bg="black",bd=4,relief='ridge')
     CoachHomeButton.place(rely=0.5,relx=0.05,anchor=CENTER)
     CoachHomeButton.image = coachhomephoto
+    ToolTips.bind(CoachHomeButton, 'Coach Home Screen')
+
+    add_member_button = tkinter.Button(header, text="Member", command=lambda : openMemberContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
+    add_member_button.place(rely=0.5, relx=0.155, anchor='center')
+    ToolTips.bind(add_member_button, 'Member Screen')
+
+    coaching_session_button = tkinter.Button(header, text="Coaching Session", command=lambda : openCoachSessionContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
+    coaching_session_button.place(rely=0.5, relx=0.315, anchor='center')
+    ToolTips.bind(coaching_session_button, 'Coaching Session Screen')
+
+    new_competition_button = tkinter.Button(header, text="Competition", command=lambda : openNewCompetitionContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
+    new_competition_button.place(rely=0.5, relx=0.491, anchor='center')
+    ToolTips.bind(new_competition_button, 'Competition Screen')
+
+    attend_competition_button = tkinter.Button(header, text="Attend Competition", command=lambda : openAttendCompetitionContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
+    attend_competition_button.place(rely=0.5, relx=0.678, anchor='center')
+    ToolTips.bind(attend_competition_button, 'Attend Competition Screen')
+
+    reports_button = tkinter.Button(header, text="Reports", command=lambda : openReportsContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
+    reports_button.place(rely=0.5, relx=0.845, anchor='center')
+    ToolTips.bind(reports_button, 'Coach Reports Screen')
 
     coachlogoffphoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/Logoff.png")
     CoachLogoffButton = Button(header, cursor="tcross", image=coachlogoffphoto, width=30, height=30, command=lambda : openCoachHomeContent(mainScreen, content), bg="black",bd=4,relief='ridge')
     CoachLogoffButton.place(rely=0.5,relx=0.95,anchor=CENTER)
     CoachLogoffButton.image = coachlogoffphoto
-
-    add_member_button = tkinter.Button(header, text="Member", command=lambda : openMemberContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
-    add_member_button.place(rely=0.5, relx=0.155, anchor='center')
-
-    # add_coach_button = tkinter.Button(header, text="Add Coach", command=lambda : openCoachContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
-    # add_coach_button.place(rely=0.5, relx=0.22, anchor='center')
-
-    coaching_session_button = tkinter.Button(header, text="Coaching Session", command=lambda : openCoachSessionContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
-    coaching_session_button.place(rely=0.5, relx=0.315, anchor='center')
-
-    new_competition_button = tkinter.Button(header, text="Competition", command=lambda : openNewCompetitionContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
-    new_competition_button.place(rely=0.5, relx=0.491, anchor='center')
-
-    attend_competition_button = tkinter.Button(header, text="Attend Competition", command=lambda : openAttendCompetitionContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
-    attend_competition_button.place(rely=0.5, relx=0.678, anchor='center')
-
-    reports_button = tkinter.Button(header, text="Reports", command=lambda : openReportsContent(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
-    reports_button.place(rely=0.5, relx=0.845, anchor='center')
-
-    # member_booking_button = tkinter.Button(header, text="Booking", command=openMemberBooking, fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
-    # member_booking_button.place(rely=0.5, relx=0.676, anchor='center')
+    ToolTips.bind(CoachLogoffButton, 'Log Out')
 
 
     mainScreen.mainloop()

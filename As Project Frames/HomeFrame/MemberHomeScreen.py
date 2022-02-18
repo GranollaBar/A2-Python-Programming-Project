@@ -342,7 +342,7 @@ class MemberHomeScreenContent:
 		paid_successfully_label = tkinter.Label(self.MemberHome, text="Not Paid", font=('serif', 16, 'bold'), fg='red', bg='white')
 		paid_successfully_label.place(rely=0.395, relx=0.27, anchor='center')
 
-		googlemapsphoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/2021-12-31_9_2_507x315.png")
+		googlemapsphoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/Googlemaps.png")
 
 		GoogleMapsButton = Button(self.MemberHome, cursor="tcross", image=googlemapsphoto, width=507, height=315, command=GoogleMapsLocation, bg="white", activebackground="grey")
 		GoogleMapsButton.place(rely=0.73,relx=0.67,anchor=CENTER)
