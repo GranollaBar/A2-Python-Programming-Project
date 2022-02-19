@@ -25,7 +25,7 @@ def passLoginScreen(loginScreen: LoginContent):
 def openCoachHomeContent(mainScreen, content):
     clearContent(mainScreen, content)
     coachHomeContent = CoachHomeScreenContent(mainScreen)
-    coachHomeContent.generateCoachHomeScreenContnt(logins.finalloginname)
+    coachHomeContent.generateCoachHomeScreenContnt(logins.finalloginname, mainScreen)
 
 
 def openMemberContent(mainScreen, content):
@@ -86,7 +86,7 @@ def main():
 
 
     coachHomeContent = CoachHomeScreenContent(mainScreen)
-    coachHomeContent.generateCoachHomeScreenContnt(logins.finalloginname)
+    coachHomeContent.generateCoachHomeScreenContnt(logins.finalloginname, mainScreen)
 
 
     coachhomephoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/Home.png")

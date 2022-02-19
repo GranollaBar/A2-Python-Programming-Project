@@ -20,7 +20,7 @@ import webbrowser
 i = 0
 PassedLogin = False
 
-class CoachHomeScreenContent:
+class ManagerHomeScreenContent:
 
 	def __init__(self, mainScreen):
 		self.CoachHome = mainScreen
@@ -36,7 +36,7 @@ class CoachHomeScreenContent:
 	# 			)""")
 
 
-	def generateCoachHomeScreenContnt(self, FinalUsername, main):
+	def generateManagerHomeScreenContnt(self, FinalUsername):
 
 		def ImageSlider():
 			global i, show
@@ -53,13 +53,14 @@ class CoachHomeScreenContent:
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
-			c.execute("SELECT * FROM coach WHERE username=:coachusername", {
-				"coachusername": FinalUsername
+			c.execute("SELECT * FROM manager WHERE username=:managerusername", {
+				"managerusername": FinalUsername
 			})
 			items = c.fetchone()
 			labelusername = items[2] + ' ' + items[3]
 
 			return labelusername
+
 
 		def AllCalendarSelection(cal, event=None):
 			AllChangeSelection = False
@@ -401,8 +402,6 @@ class CoachHomeScreenContent:
 					count+=1
 
 
-		countdown()
-
 
 		title_label = tkinter.Label(self.CoachHome, text="Main Menu: Coach", font=('serif', 18, 'bold','underline'), fg='black', bg='white', bd=4, relief='groove', padx=10, pady=4)
 		title_label.place(rely=0.16, relx=0.17, anchor='center')
@@ -484,11 +483,12 @@ class CoachHomeScreenContent:
 
 
 
-		if PassedLogin == True:
-			ImageSlider()
-			CoachShiftTime()
-			GetCurrentWeeday()
-			# changeCalendarColour(cal)
-			treeviewPopulate(past_event_Tv)
-			# SinglesChangeCalendarColour(cal)
-			# DoublesChangeCalendarColour(cal)
+		# countdown()
+		# if PassedLogin == True:
+		# 	ImageSlider()
+		# 	CoachShiftTime()
+		# 	GetCurrentWeeday()
+		# 	# changeCalendarColour(cal)
+		# 	treeviewPopulate(past_event_Tv)
+		# 	# SinglesChangeCalendarColour(cal)
+		# 	# DoublesChangeCalendarColour(cal)

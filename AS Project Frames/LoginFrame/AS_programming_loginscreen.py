@@ -33,15 +33,27 @@ class LoginContent:
         #                 status text
         #                 )""")
 
+        # self.c.execute("""CREATE TABLE manager (
+        #                 username text,
+        #                 password text,
+        #                 firstname text,
+        #                 surname text
+        #                 )""")
+
+
 
     def generateLoginContnt(self):
 
         def validate_password(value, label):
             if value is None:
                 return False
+            if (value == 'e.g. password123'):
+                label.config(fg="red")
+                messagebox.showinfo("Validation Error", "The password field cannot be empty", icon='error')
+                return False
             if (value == ''):
                 label.config(fg="red")
-                messagebox.showinfo("Validation Error", "The password field must contain a .", icon='error')
+                messagebox.showinfo("Validation Error", "The password field cannot be empty", icon='error')
                 return False
             if (len(value) < 8):
                 label.config(fg="red")
@@ -59,7 +71,11 @@ class LoginContent:
         def validate_username(value, label):
             if value is None:
                 return False
-            if (value == ''):
+            if (value == 'e.g. greg@gmail.com'):
+                label.config(fg="red")
+                messagebox.showinfo("Validation Error", "The username field cannot be empty", icon='error')
+                return False
+            if value == '':
                 label.config(fg="red")
                 messagebox.showinfo("Validation Error", "The username field cannot be empty", icon='error')
                 return False
@@ -89,6 +105,46 @@ class LoginContent:
                 messagebox.showinfo("Validation Error", "The username field must contain a .", icon='error')
                 return False
 
+            return True
+
+
+        def validate_firstname(value, label):
+            if value is None:
+                return False
+            if (value == 'e.g. joe'):
+                label.config(fg="red")
+                messagebox.showinfo("Validation Error", "The username field cannot be empty", icon='error')
+                return False
+            if (value == ''):
+                label.config(fg="red")
+                messagebox.showinfo("Validation Error", "The firstname field cannot be empty", icon='error')
+                return False
+            if (len(value) > 15):
+                label.config(fg="red")
+                messagebox.showinfo("Validation Error", "The firstname field have more than 15 characters", icon='error')
+                return False
+
+            label.config(fg="SpringGreen3")
+            return True
+
+
+        def validate_surname(value, label):
+            if value is None:
+                return False
+            if (value == 'e.g. jones'):
+                label.config(fg="red")
+                messagebox.showinfo("Validation Error", "The surname field cannot be empty", icon='error')
+                return False
+            if (value == ''):
+                label.config(fg="red")
+                messagebox.showinfo("Validation Error", "The surname field cannot be empty", icon='error')
+                return False
+            if (len(value) > 15):
+                label.config(fg="red")
+                messagebox.showinfo("Validation Error", "The surname field have more than 15 characters", icon='error')
+                return False
+
+            label.config(fg="SpringGreen3")
             return True
 
 
@@ -252,6 +308,55 @@ class LoginContent:
             conn.close()
 
 
+        def first_login_submit(username, password, firstname, surname):
+            conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+            c = conn.cursor()
+
+            isValid = True
+            isValid = isValid and validate_username(username, username_label)
+            isValid = isValid and validate_password(password, password_label)
+            isValid = isValid and validate_firstname(firstname, firstname_label)
+            isValid = isValid and validate_surname(surname, surname_label)
+
+            if isValid:
+                c.execute("INSERT INTO manager VALUES (:username, :password, :firstname, :surname)",
+                          {
+                              'username': username,
+                              'password': password,
+                              'firstname': firstname,
+                              'surname': surname,
+                          })
+
+                c.execute("INSERT INTO account VALUES (:username, :password, :status)",
+                          {
+                              'username': username,
+                              'password': password,
+                              'status': 'manager',
+                          })
+
+                messagebox.showinfo("Info", "Manager account created for " + firstname + " " + surname, icon='info')
+                messagebox.showinfo("Info", "Login Successful", icon='info')
+
+                username_label.config(fg="black")
+                password_label.config(fg="black")
+                firstname_label.config(fg="black")
+                surname_label.config(fg="black")
+
+                loginUsername.set('')
+                loginPassword.set('')
+                loginfirstname.set('')
+                loginsurname.set('')
+
+                self.login.destroy()
+
+                conn.commit()
+                conn.close()
+
+                from MainScreens import ManagerMainScreen
+                ManagerMainScreen.passLoginScreen(self)
+                ManagerMainScreen.main()
+
+
         def login_submit(login_username, login_password):
             conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
             c = conn.cursor()
@@ -293,9 +398,9 @@ class LoginContent:
 
 
                     if (data[2] == 'manager'):
-                        from MainScreens import MainScreen
-                        MainScreen.passLoginScreen(self)
-                        MainScreen.main()
+                        from MainScreens import ManagerMainScreen
+                        ManagerMainScreen.passLoginScreen(self)
+                        ManagerMainScreen.main()
 
 
             conn.commit()
@@ -340,6 +445,34 @@ class LoginContent:
                 password_entry.config(fg='grey')
 
 
+        def firstname_click(event):
+            if firstname_entry.get() == 'e.g. joe':
+                firstname_entry.delete(0, "end")
+                firstname_entry.insert(0, '')
+                firstname_entry.config(fg='black')
+
+
+        def firstname_unclick(event):
+            if firstname_entry.get() == '':
+                firstname_entry.config(show="")
+                firstname_entry.insert(0, 'e.g. joe')
+                firstname_entry.config(fg='grey')
+
+
+        def surname_click(event):
+            if surname_entry.get() == 'e.g. jones':
+                surname_entry.delete(0, "end")
+                surname_entry.insert(0, '')
+                surname_entry.config(fg='black')
+
+
+        def surname_unclick(event):
+            if surname_entry.get() == '':
+                surname_entry.config(show="")
+                surname_entry.insert(0, 'e.g. jones')
+                surname_entry.config(fg='grey')
+
+
         def show_password(self):
             password_entry.config(show="")
 
@@ -360,86 +493,192 @@ class LoginContent:
 
 
 
+        conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+        c = conn.cursor()
+
+        c.execute("SELECT * FROM account")
+        row = c.fetchall()
+
+
         loginUsername = StringVar()
         loginPassword = StringVar()
+        loginfirstname = StringVar()
+        loginsurname = StringVar()
         choosing=IntVar()
 
         ToolTips = Pmw.Balloon()
 
+        if len(row) != 0:
+            title_label = tkinter.Label(self.login, text="Welcome To Lisburn Racquets Club", font=('serif', 18, 'underline', 'bold'), fg='SpringGreen3', bg='white')
+            title_label.place(rely=0.06, relx=0.5, anchor='center')
 
-        title_label = tkinter.Label(self.login, text="Welcome To Lisburn Racquets Club", font=('serif', 18, 'underline', 'bold'), fg='SpringGreen3', bg='white')
-        title_label.place(rely=0.06, relx=0.5, anchor='center')
+            username_label = tkinter.Label(self.login, text="Username:", font=('serif', 18, 'bold'),fg='black', bg='white')
+            username_label.place(rely=0.45, relx=0.295, anchor='center')
 
-        username_label = tkinter.Label(self.login, text="Username:", font=('serif', 18, 'bold'),fg='black', bg='white')
-        username_label.place(rely=0.45, relx=0.295, anchor='center')
-
-        password_label = tkinter.Label(self.login, text="Password:", font=('serif', 18, 'bold'), fg='black', bg='white')
-        password_label.place(rely=0.6, relx=0.3, anchor='center')
-
-
-        username_entry = tkinter.Entry(self.login, width=30, textvariable=loginUsername, bd=4, relief='ridge', cursor="tcross")
-        username_entry.place(rely=0.454, relx=0.655, anchor='center')
-        username_entry.insert(0, 'e.g. greg@gmail.com')
-        username_entry.bind('<FocusIn>', username_click)
-        username_entry.bind('<FocusOut>', username_unclick)
-        username_entry.config(fg='grey')
-
-        password_entry = tkinter.Entry(self.login, width=30, textvariable=loginPassword, bd=4, relief='ridge', cursor="tcross")
-        password_entry.place(rely=0.604, relx=0.655, anchor='center')
-        password_entry.insert(0, 'e.g. password123')
-        password_entry.bind('<FocusIn>', password_click)
-        password_entry.bind('<FocusOut>', password_unclick)
-        password_entry.config(fg='grey')
+            password_label = tkinter.Label(self.login, text="Password:", font=('serif', 18, 'bold'), fg='black', bg='white')
+            password_label.place(rely=0.6, relx=0.3, anchor='center')
 
 
-        twitterImage = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/twitter.png")
-        facebookImage = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/facebook.png")
-        passwordImage = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/eye.png")
-        notpasswordImage = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/noteye.png")
+            username_entry = tkinter.Entry(self.login, width=30, textvariable=loginUsername, bd=4, relief='ridge', cursor="tcross")
+            username_entry.place(rely=0.454, relx=0.655, anchor='center')
+            username_entry.insert(0, 'e.g. greg@gmail.com')
+            username_entry.bind('<FocusIn>', username_click)
+            username_entry.bind('<FocusOut>', username_unclick)
+            username_entry.config(fg='grey')
+
+            password_entry = tkinter.Entry(self.login, width=30, textvariable=loginPassword, bd=4, relief='ridge', cursor="tcross")
+            password_entry.place(rely=0.604, relx=0.655, anchor='center')
+            password_entry.insert(0, 'e.g. password123')
+            password_entry.bind('<FocusIn>', password_click)
+            password_entry.bind('<FocusOut>', password_unclick)
+            password_entry.config(fg='grey')
 
 
-        twitterButton = Button(self.login, cursor="tcross", image=twitterImage, width=75, height=75, command=twitterLink, bg="white", highlightthickness=2, activebackground="grey")
-        twitterButton.place(rely=0.25,relx=0.86,anchor=CENTER)
-        twitterButton.image = twitterImage
-        ToolTips.bind(twitterButton, 'Follow link to Lisburn Racquets Club Twitter')
-
-        facebookButton = Button(self.login, cursor="tcross", image=facebookImage, width=74, height=74, command=facebookLink, bg="white", highlightthickness=2, activebackground="grey")
-        facebookButton.place(rely=0.25,relx=0.14,anchor=CENTER)
-        facebookButton.image = facebookImage
-        ToolTips.bind(facebookButton, 'Follow link to Lisburn Racquets Club Facebook')
-
-        passwordButton = Button(self.login, cursor="tcross", image=passwordImage, width=20, height=20, bg="white", highlightthickness=2, activebackground="grey")
-        passwordButton.place(rely=0.604,relx=0.885,anchor=CENTER)
-        passwordButton.image = passwordImage
-        passwordButton.bind("<ButtonRelease-1>", show_password)
-
-        notpasswordButton = Button(self.login, cursor="tcross", image=notpasswordImage, width=20, height=20, bg="white", highlightthickness=2, activebackground="grey")
-        notpasswordButton.place(rely=0.604,relx=0.955,anchor=CENTER)
-        notpasswordButton.image = notpasswordImage
-        notpasswordButton.bind("<ButtonRelease-1>", dont_show_password)
+            twitterImage = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/twitter.png")
+            facebookImage = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/facebook.png")
+            passwordImage = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/eye.png")
+            notpasswordImage = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/noteye.png")
 
 
-        background_entry_canvas = Canvas(self.login,width=218, height=130, bg = "white")
-        background_entry_canvas.place(rely=0.26,relx=0.5,anchor=CENTER)
+            twitterButton = Button(self.login, cursor="tcross", image=twitterImage, width=75, height=75, command=twitterLink, bg="white", highlightthickness=2, activebackground="grey")
+            twitterButton.place(rely=0.25,relx=0.86,anchor=CENTER)
+            twitterButton.image = twitterImage
+            ToolTips.bind(twitterButton, 'Follow link to Lisburn Racquets Club Twitter')
 
-        background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/lisburnraquetsclub.png")
+            facebookButton = Button(self.login, cursor="tcross", image=facebookImage, width=74, height=74, command=facebookLink, bg="white", highlightthickness=2, activebackground="grey")
+            facebookButton.place(rely=0.25,relx=0.14,anchor=CENTER)
+            facebookButton.image = facebookImage
+            ToolTips.bind(facebookButton, 'Follow link to Lisburn Racquets Club Facebook')
 
-        background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
-        background_entry_canvas.background_entry_image = background_entry_image
+            passwordButton = Button(self.login, cursor="tcross", image=passwordImage, width=20, height=20, bg="white", highlightthickness=2, activebackground="grey")
+            passwordButton.place(rely=0.604,relx=0.885,anchor=CENTER)
+            passwordButton.image = passwordImage
+            passwordButton.bind("<ButtonRelease-1>", show_password)
+
+            notpasswordButton = Button(self.login, cursor="tcross", image=notpasswordImage, width=20, height=20, bg="white", highlightthickness=2, activebackground="grey")
+            notpasswordButton.place(rely=0.604,relx=0.955,anchor=CENTER)
+            notpasswordButton.image = notpasswordImage
+            notpasswordButton.bind("<ButtonRelease-1>", dont_show_password)
 
 
-        forgot_password_button = tkinter.Button(self.login, cursor="tcross", text="Forgot Password", command=forgot_system, fg='white', bg='black', bd=6, relief='ridge', font=('serif', 12, 'bold'), padx=10)
-        forgot_password_button.place(rely=0.7, relx=0.5, anchor='center')
-        ToolTips.bind(forgot_password_button, 'Create a new password to enter the system')
+            background_entry_canvas = Canvas(self.login,width=218, height=130, bg = "white")
+            background_entry_canvas.place(rely=0.26,relx=0.5,anchor=CENTER)
 
-        clear_button = tkinter.Button(self.login, cursor="tcross", text="Clear", command=login_clear, fg='white', bg='black', bd=6, relief='groove', font=('serif', 16, 'bold'), padx=50)
-        clear_button.place(rely=0.9, relx=0.27, anchor='center')
-        ToolTips.bind(clear_button, 'Clears data entered')
+            background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/lisburnraquetsclub.png")
 
-        def completeLogin():
-            self.finalloginname = loginUsername.get()
-            login_submit(loginUsername.get(), loginPassword.get())
+            background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
+            background_entry_canvas.background_entry_image = background_entry_image
 
-        login_button = tkinter.Button(self.login, cursor="tcross",text="Login", command=completeLogin, fg='white', bg='black', bd=6, relief='groove', font=('serif', 16, 'bold'), padx=50)
-        login_button.place(rely=0.9, relx=0.73, anchor='center')
-        ToolTips.bind(login_button, 'Login to the system')
+
+            forgot_password_button = tkinter.Button(self.login, cursor="tcross", text="Forgot Password", command=forgot_system, fg='white', bg='black', bd=6, relief='ridge', font=('serif', 12, 'bold'), padx=10)
+            forgot_password_button.place(rely=0.7, relx=0.5, anchor='center')
+            ToolTips.bind(forgot_password_button, 'Create a new password to enter the system')
+
+            clear_button = tkinter.Button(self.login, cursor="tcross", text="Clear", command=login_clear, fg='white', bg='black', bd=6, relief='groove', font=('serif', 16, 'bold'), padx=50)
+            clear_button.place(rely=0.9, relx=0.27, anchor='center')
+            ToolTips.bind(clear_button, 'Clears data entered')
+
+            def completeLogin():
+                self.finalloginname = loginUsername.get()
+                login_submit(loginUsername.get(), loginPassword.get())
+
+            login_button = tkinter.Button(self.login, cursor="tcross",text="Login", command=completeLogin, fg='white', bg='black', bd=6, relief='groove', font=('serif', 16, 'bold'), padx=50)
+            login_button.place(rely=0.9, relx=0.73, anchor='center')
+            ToolTips.bind(login_button, 'Login to the system')
+
+
+        else:
+
+
+            title_label = tkinter.Label(self.login, text="Welcome To Lisburn Racquets Club", font=('serif', 18, 'underline', 'bold'), fg='SpringGreen3', bg='white')
+            title_label.place(rely=0.06, relx=0.5, anchor='center')
+
+            username_label = tkinter.Label(self.login, text="Username:", font=('serif', 12, 'bold'),fg='black', bg='white')
+            username_label.place(rely=0.45, relx=0.295, anchor='center')
+
+            password_label = tkinter.Label(self.login, text="Password:", font=('serif', 12, 'bold'), fg='black', bg='white')
+            password_label.place(rely=0.55, relx=0.3, anchor='center')
+
+            firstname_label = tkinter.Label(self.login, text="Firstname:", font=('serif', 12, 'bold'), fg='black', bg='white')
+            firstname_label.place(rely=0.65, relx=0.295, anchor='center')
+
+            surname_label = tkinter.Label(self.login, text="Surname:", font=('serif', 12, 'bold'), fg='black', bg='white')
+            surname_label.place(rely=0.75, relx=0.295, anchor='center')
+
+
+            username_entry = tkinter.Entry(self.login, width=30, textvariable=loginUsername, bd=2, relief='ridge', cursor="tcross")
+            username_entry.place(rely=0.454, relx=0.655, anchor='center')
+            username_entry.insert(0, 'e.g. greg@gmail.com')
+            username_entry.bind('<FocusIn>', username_click)
+            username_entry.bind('<FocusOut>', username_unclick)
+            username_entry.config(fg='grey')
+
+            password_entry = tkinter.Entry(self.login, width=30, textvariable=loginPassword, bd=2, relief='ridge', cursor="tcross")
+            password_entry.place(rely=0.554, relx=0.655, anchor='center')
+            password_entry.insert(0, 'e.g. password123')
+            password_entry.bind('<FocusIn>', password_click)
+            password_entry.bind('<FocusOut>', password_unclick)
+            password_entry.config(fg='grey')
+
+            firstname_entry = tkinter.Entry(self.login, width=17, textvariable=loginfirstname, bd=2, relief='ridge', cursor="tcross")
+            firstname_entry.place(rely=0.654, relx=0.655, anchor='center')
+            firstname_entry.insert(0, 'e.g. joe')
+            firstname_entry.bind('<FocusIn>', firstname_click)
+            firstname_entry.bind('<FocusOut>', firstname_unclick)
+            firstname_entry.config(fg='grey')
+
+            surname_entry = tkinter.Entry(self.login, width=17, textvariable=loginsurname, bd=2, relief='ridge', cursor="tcross")
+            surname_entry.place(rely=0.754, relx=0.655, anchor='center')
+            surname_entry.insert(0, 'e.g. jones')
+            surname_entry.bind('<FocusIn>', surname_click)
+            surname_entry.bind('<FocusOut>', surname_unclick)
+            surname_entry.config(fg='grey')
+
+
+            twitterImage = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/twitter.png")
+            facebookImage = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/facebook.png")
+            passwordImage = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/eye.png")
+            notpasswordImage = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/noteye.png")
+
+
+            twitterButton = Button(self.login, cursor="tcross", image=twitterImage, width=75, height=75, command=twitterLink, bg="white", highlightthickness=2, activebackground="grey")
+            twitterButton.place(rely=0.25,relx=0.86,anchor=CENTER)
+            twitterButton.image = twitterImage
+            ToolTips.bind(twitterButton, 'Follow link to Lisburn Racquets Club Twitter')
+
+            facebookButton = Button(self.login, cursor="tcross", image=facebookImage, width=74, height=74, command=facebookLink, bg="white", highlightthickness=2, activebackground="grey")
+            facebookButton.place(rely=0.25,relx=0.14,anchor=CENTER)
+            facebookButton.image = facebookImage
+            ToolTips.bind(facebookButton, 'Follow link to Lisburn Racquets Club Facebook')
+
+            passwordButton = Button(self.login, cursor="tcross", image=passwordImage, width=20, height=20, bg="white", highlightthickness=2, activebackground="grey")
+            passwordButton.place(rely=0.554,relx=0.885,anchor=CENTER)
+            passwordButton.image = passwordImage
+            passwordButton.bind("<ButtonRelease-1>", show_password)
+
+            notpasswordButton = Button(self.login, cursor="tcross", image=notpasswordImage, width=20, height=20, bg="white", highlightthickness=2, activebackground="grey")
+            notpasswordButton.place(rely=0.554,relx=0.955,anchor=CENTER)
+            notpasswordButton.image = notpasswordImage
+            notpasswordButton.bind("<ButtonRelease-1>", dont_show_password)
+
+
+            background_entry_canvas = Canvas(self.login,width=218, height=130, bg = "white")
+            background_entry_canvas.place(rely=0.26,relx=0.5,anchor=CENTER)
+
+            background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/lisburnraquetsclub.png")
+
+            background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
+            background_entry_canvas.background_entry_image = background_entry_image
+
+
+            clear_button = tkinter.Button(self.login, cursor="tcross", text="Clear", command=login_clear, fg='white', bg='black', bd=6, relief='groove', font=('serif', 16, 'bold'), padx=50)
+            clear_button.place(rely=0.9, relx=0.27, anchor='center')
+            ToolTips.bind(clear_button, 'Clears data entered')
+
+            def firstcompleteLogin():
+                self.finalloginname = loginUsername.get()
+                first_login_submit(loginUsername.get(), loginPassword.get(), loginfirstname.get(), loginsurname.get())
+
+            login_button = tkinter.Button(self.login, cursor="tcross",text="Login", command=firstcompleteLogin, fg='white', bg='black', bd=6, relief='groove', font=('serif', 16, 'bold'), padx=50)
+            login_button.place(rely=0.9, relx=0.73, anchor='center')
+            ToolTips.bind(login_button, 'Login to the system')

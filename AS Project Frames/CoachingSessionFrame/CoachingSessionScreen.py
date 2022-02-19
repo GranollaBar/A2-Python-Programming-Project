@@ -508,87 +508,20 @@ class CoachingSessionContent:
 				title_label.place(rely=0.1,relx=0.5,anchor=CENTER)
 
 				update_time=Button(updateCoachSession, cursor="tcross",text = 'Update Time', command = lambda : updateCoachSessionTime(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('serif',9,'bold'), padx =20)
-				update_time.place(rely=0.25,relx=0.5,anchor=CENTER)
+				update_time.place(rely=0.27,relx=0.5,anchor=CENTER)
 				ToolTips.bind(update_time, 'Update the coaching session time')
 
 				update_date=Button(updateCoachSession, cursor="tcross", text = 'Update Date', command = lambda : updateCoachSessionDate(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('serif',9,'bold'), padx =20)
-				update_date.place(rely=0.4,relx=0.5,anchor=CENTER)
+				update_date.place(rely=0.47,relx=0.5,anchor=CENTER)
 				ToolTips.bind(update_date, 'Update the date of the coaching session')
 
 				update_courts=Button(updateCoachSession, cursor="tcross",text = 'Update Courts', command = lambda : updateCoachSessionCourts(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('serif',9,'bold'), padx =20)
-				update_courts.place(rely=0.55,relx=0.5,anchor=CENTER)
+				update_courts.place(rely=0.67,relx=0.5,anchor=CENTER)
 				ToolTips.bind(update_courts, 'Update the court of the competition')
 
-				update_groups=Button(updateCoachSession, cursor="tcross",text = 'Update Groups', command = lambda : updateCoachSessionGroups(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('serif',9,'bold'), padx =20)
-				update_groups.place(rely=0.7,relx=0.5,anchor=CENTER)
-				ToolTips.bind(update_groups, 'Update the group of the competition')
-
 				update_technique=Button(updateCoachSession, cursor="tcross",text = 'Update Technique', command = lambda : updateCoachSessionTechnique(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('serif',9,'bold'), padx =20)
-				update_technique.place(rely=0.85,relx=0.5,anchor=CENTER)
+				update_technique.place(rely=0.87,relx=0.5,anchor=CENTER)
 				ToolTips.bind(update_technique, 'Update the technique used for the coaching session')
-
-
-		def updateCoachSessionGroups(frame):
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
-			c = conn.cursor()
-
-			frame.withdraw()
-
-			coachUsername = simpledialog.askstring("Response", "Enter the username of the coach you want to update")
-			if coachUsername != '' and len(coachUsername) <25 and '@' in coachUsername and '.' in coachUsername:
-				c.execute(f"SELECT * FROM coach WHERE username=?", (coachUsername,))
-				data = c.fetchone()
-				if not data:
-					messagebox.showinfo("Error", "The username entered was not found in the database", icon='error')
-
-				else:
-
-					groupNumber = tkinter.simpledialog.askstring("Response","Enter the new group number for the coaching session (1-20)")
-
-					isValid = True
-					isValid = isValid and validate_entry_group(groupNumber)
-
-					if isValid:
-						GroupFinder = groupNumber
-						UpdateGroups(GroupFinder, coachUsername)
-
-
-		def UpdateGroups(group, username):
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
-			c = conn.cursor()
-
-			AllEmailsComplete = 0
-
-			findMembers()
-
-			c.execute("SELECT * From member")
-			items = c.fetchall()
-
-			for row in items:
-				if str(row[7]) != str(GroupFinder) or row == []:
-					pass
-					AllEmailsComplete += 1
-				else:
-					member_name = row[0]
-					SessionEmail("Coaching Session Date Set", "A coach at Lisburn Racquets Club has set up a new coaching session. The date and time of the session is listed below:" + "\n\n" + "Date: " + coachsession_date + "\n\n" + "From: " + coachsession_starttime + "\n" + "To: " + coachsession_endtime + "\n\n" + "Thanks for choosing Lisburn Racquets Club", member_name, username_label)
-					AllEmailsComplete += 1
-					if (AllEmailsComplete == len(items)):
-						messagebox.showinfo('Info', 'All members in group ' + str(GroupFinder) + ' have been sent information on the new coaching session', icon='info')
-
-
-
-			c.execute("UPDATE coachSessionDetails SET membergroup = :new_member_group WHERE username=:username", {
-				"new_member_group": group,
-				"username": username
-			})
-
-			messagebox.showinfo("Info", "The coach's new session group is: "+str(group), icon='info')
-
-			conn.commit()
-			conn.close()
-
-			treeviewPopulate()
-
 
 
 		def updateCoachSessionTime(frame):
