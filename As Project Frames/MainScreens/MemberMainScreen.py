@@ -3,6 +3,7 @@ from tkinter import *
 from MemberBooking.MemberBookingScreen import BookingContent
 from HomeFrame.MemberHomeScreen import MemberHomeScreenContent
 from LoginFrame.AS_programming_loginscreen import LoginContent
+from LogoffFrame.LogoffScreen import LogoffContent
 import Pmw
 
 
@@ -28,6 +29,11 @@ def openMemberBooking(mainScreen, content):
     bookingcontent = BookingContent(mainScreen)
     bookingcontent.memberSelection()
     bookingcontent.generateBookingContnt()
+
+
+def openLogoffContent(mainScreen):
+    logoffcontent = LogoffContent(mainScreen)
+    logoffcontent.generateLogoffContnt(mainScreen)
 
 
 
@@ -66,7 +72,7 @@ def main():
     ToolTips.bind(member_booking_button, 'Member Booking Screen')
 
     memberlogoffphoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/Logoff.png")
-    MemberLogoffButton = Button(header, cursor="tcross", image=memberlogoffphoto, width=30, height=30, command=lambda : openMemberHomeContent(mainScreen, content), bg="black",bd=4,relief='ridge')
+    MemberLogoffButton = Button(header, cursor="tcross", image=memberlogoffphoto, width=30, height=30, command=lambda : openLogoffContent(mainScreen), bg="black",bd=4,relief='ridge')
     MemberLogoffButton.place(rely=0.5,relx=0.65,anchor=CENTER)
     MemberLogoffButton.image = memberlogoffphoto
     ToolTips.bind(MemberLogoffButton, 'Log Out')

@@ -1,4 +1,3 @@
-import tkinter.simpledialog
 from tkinter import *
 from LoginFrame.AS_programming_loginscreen import LoginContent
 

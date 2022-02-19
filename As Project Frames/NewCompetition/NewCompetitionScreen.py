@@ -2704,6 +2704,61 @@ class NewCompetitionContent:
 
 
 
+		presentDate = datetime.datetime.now()
+		current_date = presentDate.strftime("%d/%m/%Y")
+
+		conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+		c = conn.cursor()
+
+		c.execute("SELECT * From SinglesCompetition")
+		items = c.fetchall()
+
+		for row in items:
+			rowsplitdate = str(row[3]).split('/')
+			currentdatesplit = current_date.split('/')
+
+			if rowsplitdate[2] < currentdatesplit[2]:
+				c.execute('DELETE FROM SinglesCompetition WHERE singlescompetitionID=:ID', {
+					"ID": row[5]
+				})
+			else:
+				if rowsplitdate[2] >= currentdatesplit[2] and rowsplitdate[1] < currentdatesplit[1]:
+					c.execute('DELETE FROM SinglesCompetition WHERE singlescompetitionID=:ID', {
+						"ID": row[5]
+					})
+				else:
+					if rowsplitdate[2] >= currentdatesplit[2] and rowsplitdate[1] >= currentdatesplit[1] and rowsplitdate[0] < currentdatesplit[0]:
+						c.execute('DELETE FROM SinglesCompetition WHERE singlescompetitionID=:ID', {
+							"ID": row[5]
+						})
+					else:
+						pass
+
+		c.execute("SELECT * From DoublesCompetition")
+		items2 = c.fetchall()
+
+		for row2 in items2:
+			rowsplitdate = str(row2[5]).split('/')
+			currentdatesplit = current_date.split('/')
+
+			if rowsplitdate[2] < currentdatesplit[2]:
+				c.execute('DELETE FROM DoublesCompetition WHERE doublescompetitionID=:ID', {
+					"ID": row2[9]
+				})
+			else:
+				if rowsplitdate[2] >= currentdatesplit[2] and rowsplitdate[1] < currentdatesplit[1]:
+					c.execute('DELETE FROM DoublesCompetition WHERE doublescompetitionID=:ID', {
+						"ID": row2[9]
+					})
+				else:
+					if rowsplitdate[2] >= currentdatesplit[2] and rowsplitdate[1] >= currentdatesplit[1] and rowsplitdate[0] < currentdatesplit[0]:
+						c.execute('DELETE FROM DoublesCompetition WHERE doublescompetitionID=:ID', {
+							"ID": row2[9]
+						})
+					else:
+						pass
+
+
 		MatchType=IntVar()
 		CompetitionStatus=IntVar()
 		UpdateSelectionSingles=IntVar()

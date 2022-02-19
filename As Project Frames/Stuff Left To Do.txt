@@ -1,0 +1,6 @@
+Stuff to finish:
+
+1) Fix all home screens of each user
+3) Finish Manager reports screen
+4) fix SMS system for forget password
+5) Fix time schedule for coaches logging into system

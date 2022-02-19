@@ -35,7 +35,8 @@ class CoachingSessionContent:
 		# 			courts text,
 		# 			membergroup integer,
 		# 			people text,
-		# 			technique text
+		# 			technique text,
+		# 			sessionID text
 		# 			)""")
 
 
@@ -182,40 +183,27 @@ class CoachingSessionContent:
 
 		def validate_new_start_time(value, value2):
 			if (float(value) <8.00):
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be before 8am", icon='error')
+				messagebox.showinfo("Validation Error", "The start time cannot be before 8am", icon='error')
 				return False
 			if (float(value) >22.00):
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be past 10pm", icon='error')
+				messagebox.showinfo("Validation Error", "The start time cannot be after 10pm", icon='error')
 				return False
 			if (float(value) > float(value2)):
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be higher than the end time", icon='error')
+				messagebox.showinfo("Validation Error", "The start time cannot be higher than the end time", icon='error')
 				return False
 
 			return True
 
 
-		def validate_new_end_time(value, fieldname):
-			if (float(value) <9.00):
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be empty", icon='error')
+		def validate_new_end_time(value, value2):
+			if (float(value2) <9.00):
+				messagebox.showinfo("Validation Error", "The end time cannot be before 9am", icon='error')
 				return False
-			if (float(value) >23.00):
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " Can Not Be empty", icon='error')
+			if (float(value2) >23.00):
+				messagebox.showinfo("Validation Error", "The end time cannot be after 11pm", icon='error')
 				return False
-
-			return True
-
-
-		def validate_new_courts(value, value2, value3, value4, value5, value6, value7, value8, value9, value10, value11, value12, fieldname):
-			if (value ==0 and value2 ==0 and value3 ==0 and value4 ==0 and value5 ==0 and value6 ==0 and value7 ==0 and value8 ==0 and value9 ==0 and value10 ==0 and value11 ==0 and value12 ==0):
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must have at least 1 selected")
-				return False
-
-			return True
-
-
-		def validate_new_groups(value, value2, value3, value4, value5, value6, value7, value8, value9, value10, value11, value12, value13, value14, value15, value16, value17, value18, value19, value20, fieldname):
-			if (value ==0 and value2 ==0 and value3 ==0 and value4 ==0 and value5 ==0 and value6 ==0 and value7 ==0 and value8 ==0 and value9 ==0 and value10 ==0 and value11 ==0 and value12 ==0 and value13 ==0 and value14 ==0 and value15 ==0 and value16 ==0 and value17 ==0 and value18 ==0 and value19 ==0 and value20 ==0):
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must have at least 1 selected")
+			if (float(value) == float(value2)):
+				messagebox.showinfo("Validation Error", "The start and end time cannot equal each other", icon='error')
 				return False
 
 			return True
@@ -385,6 +373,7 @@ class CoachingSessionContent:
 		def groupRequired():
 			global GroupFinder
 			global GroupTrue
+
 			groupNumber = tkinter.simpledialog.askstring("Response","Enter the group number that you want the coaching session for (1-20)")
 
 			isValid = True
@@ -414,12 +403,11 @@ class CoachingSessionContent:
 					PeopleCounter += 1
 
 			conn.commit()
-			conn.close()
 
 			return PeopleCounter
 
 
-		def updateCoachSessionDate(newDate, frame):
+		def updateCoachSessionDate(frame):
 			def new_assign_dob(username):
 				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 				c = conn.cursor()
@@ -440,13 +428,14 @@ class CoachingSessionContent:
 				conn.close()
 
 				treeviewPopulate()
+				changeCalendarColour()
 
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			frame.withdraw()
 
-			coachUsername = simpledialog.askstring("Response", "Enter the username of the coach you want to update", icon='error')
+			coachUsername = simpledialog.askstring("Response", "Enter the username of the coach you want to update")
 			if coachUsername != '' and len(coachUsername) <25 and '@' in coachUsername and '.' in coachUsername:
 				c.execute(f"SELECT * FROM coachSessionDetails WHERE username=?", (coachUsername,))
 				data = c.fetchone()
@@ -457,7 +446,7 @@ class CoachingSessionContent:
 
 					top = Toplevel(self.coachSession)
 
-					newcal = Calendar(top, font="serif 16", selectmode='day', cursor="tcross", year=2021, month=5, day=29)
+					newcal = Calendar(top, font="serif 16", date_pattern='dd/mm/yyyy',selectmode='day', cursor="tcross", year=today.year, month=today.month, day=today.day)
 					newcal.pack(fill="both", expand=True)
 					ttk.Button(top, text="Update", command= lambda : new_assign_dob(coachUsername)).pack()
 
@@ -522,7 +511,7 @@ class CoachingSessionContent:
 				update_time.place(rely=0.25,relx=0.5,anchor=CENTER)
 				ToolTips.bind(update_time, 'Update the coaching session time')
 
-				update_date=Button(updateCoachSession, cursor="tcross", text = 'Update Date', command = lambda : updateCoachSessionDate(newEventDate, updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('serif',9,'bold'), padx =20)
+				update_date=Button(updateCoachSession, cursor="tcross", text = 'Update Date', command = lambda : updateCoachSessionDate(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('serif',9,'bold'), padx =20)
 				update_date.place(rely=0.4,relx=0.5,anchor=CENTER)
 				ToolTips.bind(update_date, 'Update the date of the coaching session')
 
@@ -530,12 +519,75 @@ class CoachingSessionContent:
 				update_courts.place(rely=0.55,relx=0.5,anchor=CENTER)
 				ToolTips.bind(update_courts, 'Update the court of the competition')
 
-				# update_groups=Button(updateCoachSession, cursor="tcross",text = 'Update Groups', command = lambda : updateCoachSessionGroups(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('serif',9,'bold'), padx =20)
-				# update_groups.place(rely=0.7,relx=0.5,anchor=CENTER)
+				update_groups=Button(updateCoachSession, cursor="tcross",text = 'Update Groups', command = lambda : updateCoachSessionGroups(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('serif',9,'bold'), padx =20)
+				update_groups.place(rely=0.7,relx=0.5,anchor=CENTER)
+				ToolTips.bind(update_groups, 'Update the group of the competition')
 
 				update_technique=Button(updateCoachSession, cursor="tcross",text = 'Update Technique', command = lambda : updateCoachSessionTechnique(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('serif',9,'bold'), padx =20)
 				update_technique.place(rely=0.85,relx=0.5,anchor=CENTER)
 				ToolTips.bind(update_technique, 'Update the technique used for the coaching session')
+
+
+		def updateCoachSessionGroups(frame):
+			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			c = conn.cursor()
+
+			frame.withdraw()
+
+			coachUsername = simpledialog.askstring("Response", "Enter the username of the coach you want to update")
+			if coachUsername != '' and len(coachUsername) <25 and '@' in coachUsername and '.' in coachUsername:
+				c.execute(f"SELECT * FROM coach WHERE username=?", (coachUsername,))
+				data = c.fetchone()
+				if not data:
+					messagebox.showinfo("Error", "The username entered was not found in the database", icon='error')
+
+				else:
+
+					groupNumber = tkinter.simpledialog.askstring("Response","Enter the new group number for the coaching session (1-20)")
+
+					isValid = True
+					isValid = isValid and validate_entry_group(groupNumber)
+
+					if isValid:
+						GroupFinder = groupNumber
+						UpdateGroups(GroupFinder, coachUsername)
+
+
+		def UpdateGroups(group, username):
+			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			c = conn.cursor()
+
+			AllEmailsComplete = 0
+
+			findMembers()
+
+			c.execute("SELECT * From member")
+			items = c.fetchall()
+
+			for row in items:
+				if str(row[7]) != str(GroupFinder) or row == []:
+					pass
+					AllEmailsComplete += 1
+				else:
+					member_name = row[0]
+					SessionEmail("Coaching Session Date Set", "A coach at Lisburn Racquets Club has set up a new coaching session. The date and time of the session is listed below:" + "\n\n" + "Date: " + coachsession_date + "\n\n" + "From: " + coachsession_starttime + "\n" + "To: " + coachsession_endtime + "\n\n" + "Thanks for choosing Lisburn Racquets Club", member_name, username_label)
+					AllEmailsComplete += 1
+					if (AllEmailsComplete == len(items)):
+						messagebox.showinfo('Info', 'All members in group ' + str(GroupFinder) + ' have been sent information on the new coaching session', icon='info')
+
+
+
+			c.execute("UPDATE coachSessionDetails SET membergroup = :new_member_group WHERE username=:username", {
+				"new_member_group": group,
+				"username": username
+			})
+
+			messagebox.showinfo("Info", "The coach's new session group is: "+str(group), icon='info')
+
+			conn.commit()
+			conn.close()
+
+			treeviewPopulate()
 
 
 
@@ -590,7 +642,7 @@ class CoachingSessionContent:
 
 			isValid = True
 			isValid = isValid and validate_new_start_time(new_start_time.get(), new_end_time.get())
-			isValid = isValid and validate_new_end_time(new_end_time.get(), "End Time")
+			isValid = isValid and validate_new_end_time(new_start_time.get(), new_end_time.get())
 
 			if isValid:
 				newCoachSessionStartTime = new_start_time.get()
@@ -605,8 +657,8 @@ class CoachingSessionContent:
 					"username": username
 				})
 
-				messagebox.showinfo("Info", "The coach's new session start time is now "+newCoachSessionStartTime, icon='info')
-				messagebox.showinfo("Info", "The coach's new session end time is now "+newCoachSessionEndTime, icon='info')
+				messagebox.showinfo("Info", "The coach's new session start time is: "+newCoachSessionStartTime, icon='info')
+				messagebox.showinfo("Info", "The coach's new session end time is: "+newCoachSessionEndTime, icon='info')
 
 			conn.commit()
 			conn.close()
@@ -628,213 +680,137 @@ class CoachingSessionContent:
 					messagebox.showinfo("Error", "The username entered was not found in the database", icon='error')
 
 				else:
+					courts = Toplevel(self.coachSession, bg="white")
+					courts.geometry('500x500')
 
-					newcourts = Toplevel(self.coachSession, bg="white")
-					newcourts.geometry('500x500')
+					title_label =Label(courts, cursor="tcross",text = 'Update the Number of Courts Required', fg ='black',bg='white',font=('serif',11,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+					title_label.place(rely=0.027,relx=0.5,anchor=CENTER)
 
-					title_label = tkinter.Label(newcourts, text="Update the No. Courts Needed For The Session", font=('serif', 15, 'underline', 'bold'), fg='SpringGreen3', bg='white')
-					title_label.place(rely=0.03, relx=0.5, anchor='center')
+					CourtsImage = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/courts.png")
 
-					confirm_button = tkinter.Button(newcourts, text="Confirm Selection", command=lambda : updateCourts(newcourts, coachUsername), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 10, 'bold'), padx=35, cursor="tcross")
-					confirm_button.place(rely=0.112, relx=0.5, anchor='center')
 
-					all_button = tkinter.Button(newcourts, text="Select All", command=lambda : addAllCourts(newcourt1, newcourt2, newcourt3, newcourt4, newcourt5, newcourt6, newcourt7, newcourt8, newcourt9, newcourt10, newcourt11, newcourt12), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 8, 'bold'), padx=10, cursor="tcross")
-					all_button.place(rely=0.112, relx=0.15, anchor='center')
+					Court1label =Label(courts, text = 'Court 1', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+					Court1label.place(rely=0.155,relx=0.15,anchor=CENTER)
+					Court1Button = Button(courts, text='1', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court1Button), bg="black", highlightthickness=5, activebackground="grey")
+					Court1Button.place(rely=0.24,relx=0.15,anchor=CENTER)
+					Court1Button.image = CourtsImage
 
-					clear_button = tkinter.Button(newcourts, text="Clear All", command=lambda : clearAllCourts(newcourt1, newcourt2, newcourt3, newcourt4, newcourt5, newcourt6, newcourt7, newcourt8, newcourt9, newcourt10, newcourt11, newcourt12), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 8, 'bold'), padx=10, cursor="tcross")
-					clear_button.place(rely=0.112, relx=0.85, anchor='center')
 
+					Court2label =Label(courts, text = 'Court 2', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+					Court2label.place(rely=0.375,relx=0.15,anchor=CENTER)
+					Court2Button = Button(courts, text='2', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court2Button), bg="black", highlightthickness=5, activebackground="grey")
+					Court2Button.place(rely=0.46,relx=0.15,anchor=CENTER)
+					Court2Button.image = CourtsImage
 
-					confirm_court1 = Checkbutton(newcourts, cursor="tcross",text="Court 1  V", variable=newcourt1,bg="white",bd=2, relief="sunken", font=('serif', 10,'bold'),onvalue=1, offvalue=0)
-					confirm_court1.place(rely=0.2, relx=0.15, anchor='center')
 
-					confirm_court2 = Checkbutton(newcourts, cursor="tcross",text="Court 2  V", variable=newcourt2,bg="white",bd=2, relief="sunken", font=('serif', 10,'bold'),onvalue=1, offvalue=0)
-					confirm_court2.place(rely=0.4, relx=0.15, anchor='center')
+					Court3label =Label(courts, text = 'Court 3', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+					Court3label.place(rely=0.595,relx=0.15,anchor=CENTER)
+					Court3Button = Button(courts, text='3', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court3Button), bg="black", highlightthickness=5, activebackground="grey")
+					Court3Button.place(rely=0.68,relx=0.15,anchor=CENTER)
+					Court3Button.image = CourtsImage
 
-					confirm_court3 = Checkbutton(newcourts, cursor="tcross",text="Court 3  V", variable=newcourt3,bg="white",bd=2, relief="sunken", font=('serif', 10,'bold'),onvalue=1, offvalue=0)
-					confirm_court3.place(rely=0.6, relx=0.15, anchor='center')
 
-					confirm_court4 = Checkbutton(newcourts, cursor="tcross",text="Court 4  V", variable=newcourt4,bg="white",bd=2, relief="sunken", font=('serif', 10,'bold'),onvalue=1, offvalue=0)
-					confirm_court4.place(rely=0.8, relx=0.15, anchor='center')
+					Court4label =Label(courts, text = 'Court 4', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+					Court4label.place(rely=0.815,relx=0.15,anchor=CENTER)
+					Court4Button = Button(courts, text='4', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court4Button), bg="black", highlightthickness=5, activebackground="grey")
+					Court4Button.place(rely=0.9,relx=0.15,anchor=CENTER)
+					Court4Button.image = CourtsImage
 
-					confirm_court5 = Checkbutton(newcourts, cursor="tcross",text="Court 5  V", variable=newcourt5,bg="white",bd=2, relief="sunken", font=('serif', 10,'bold'),onvalue=1, offvalue=0)
-					confirm_court5.place(rely=0.2, relx=0.5, anchor='center')
 
-					confirm_court6 = Checkbutton(newcourts, cursor="tcross",text="Court 6  V", variable=newcourt6,bg="white",bd=2, relief="sunken", font=('serif', 10,'bold'),onvalue=1, offvalue=0)
-					confirm_court6.place(rely=0.4, relx=0.5, anchor='center')
+					Court5label =Label(courts, text = 'Court 5', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+					Court5label.place(rely=0.155,relx=0.5,anchor=CENTER)
+					Court5Button = Button(courts, text='5', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court5Button), bg="black", highlightthickness=5, activebackground="grey")
+					Court5Button.place(rely=0.24,relx=0.5,anchor=CENTER)
+					Court5Button.image = CourtsImage
 
-					confirm_court7 = Checkbutton(newcourts, cursor="tcross",text="Court 7  V", variable=newcourt7,bg="white",bd=2, relief="sunken", font=('serif', 10,'bold'),onvalue=1, offvalue=0)
-					confirm_court7.place(rely=0.6, relx=0.5, anchor='center')
 
-					confirm_court8 = Checkbutton(newcourts, cursor="tcross",text="Court 8  V", variable=newcourt8,bg="white",bd=2, relief="sunken", font=('serif', 10,'bold'),onvalue=1, offvalue=0)
-					confirm_court8.place(rely=0.8, relx=0.5, anchor='center')
+					Court6label =Label(courts, text = 'Court 6', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+					Court6label.place(rely=0.375,relx=0.5,anchor=CENTER)
+					Court6Button = Button(courts, text='6', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court6Button), bg="black", highlightthickness=5, activebackground="grey")
+					Court6Button.place(rely=0.46,relx=0.5,anchor=CENTER)
+					Court6Button.image = CourtsImage
 
-					confirm_court9 = Checkbutton(newcourts, cursor="tcross",text="Court 9  V", variable=newcourt9,bg="white",bd=2, relief="sunken", font=('serif', 10,'bold'),onvalue=1, offvalue=0)
-					confirm_court9.place(rely=0.2, relx=0.85, anchor='center')
 
-					confirm_court10 = Checkbutton(newcourts, cursor="tcross",text="Court 10  V", variable=newcourt10,bg="white",bd=2, relief="sunken", font=('serif', 10,'bold'),onvalue=1, offvalue=0)
-					confirm_court10.place(rely=0.4, relx=0.85, anchor='center')
+					Court7label =Label(courts, text = 'Court 7', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+					Court7label.place(rely=0.595,relx=0.5,anchor=CENTER)
+					Court7Button = Button(courts, text='7', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court7Button), bg="black", highlightthickness=5, activebackground="grey")
+					Court7Button.place(rely=0.68,relx=0.5,anchor=CENTER)
+					Court7Button.image = CourtsImage
 
-					confirm_court11 = Checkbutton(newcourts, cursor="tcross",text="Court 11 V", variable=newcourt11,bg="white",bd=2, relief="sunken", font=('serif', 10,'bold'),onvalue=1, offvalue=0)
-					confirm_court11.place(rely=0.6, relx=0.85, anchor='center')
 
-					confirm_court12 = Checkbutton(newcourts, cursor="tcross",text="Court 12 V", variable=newcourt12,bg="white",bd=2, relief="sunken", font=('serif', 10,'bold'),onvalue=1, offvalue=0)
-					confirm_court12.place(rely=0.8, relx=0.85, anchor='center')
+					Court8label =Label(courts, text = 'Court 8', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+					Court8label.place(rely=0.815,relx=0.5,anchor=CENTER)
+					Court8Button = Button(courts, text='8', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court8Button), bg="black", highlightthickness=5, activebackground="grey")
+					Court8Button.place(rely=0.9,relx=0.5,anchor=CENTER)
+					Court8Button.image = CourtsImage
 
 
-					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
-					background_entry_canvas.place(rely=0.3,relx=0.15,anchor=CENTER)
+					Court9label =Label(courts, text = 'Court 9', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+					Court9label.place(rely=0.155,relx=0.85,anchor=CENTER)
+					Court9Button = Button(courts, text='9', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court9Button), bg="black", highlightthickness=5, activebackground="grey")
+					Court9Button.place(rely=0.24,relx=0.85,anchor=CENTER)
+					Court9Button.image = CourtsImage
 
-					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
-					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
-					background_entry_canvas.background_entry_image = background_entry_image
+					Court10label =Label(courts, text = 'Court 10', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+					Court10label.place(rely=0.375,relx=0.85,anchor=CENTER)
+					Court10Button = Button(courts, text='10', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court10Button), bg="black", highlightthickness=5, activebackground="grey")
+					Court10Button.place(rely=0.46,relx=0.85,anchor=CENTER)
+					Court10Button.image = CourtsImage
 
 
-					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
-					background_entry_canvas.place(rely=0.5,relx=0.15,anchor=CENTER)
+					Court11label =Label(courts, text = 'Court 11', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+					Court11label.place(rely=0.595,relx=0.85,anchor=CENTER)
+					Court11Button = Button(courts, text='11', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court11Button), bg="black", highlightthickness=5, activebackground="grey")
+					Court11Button.place(rely=0.68,relx=0.85,anchor=CENTER)
+					Court11Button.image = CourtsImage
 
-					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
-					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
-					background_entry_canvas.background_entry_image = background_entry_image
+					Court12label =Label(courts, text = 'Court 12', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
+					Court12label.place(rely=0.815,relx=0.85,anchor=CENTER)
+					Court12Button = Button(courts, text='12', cursor="tcross", image=CourtsImage, width=95, height=53, command=lambda : ClickedCourt(Court12Button), bg="black", highlightthickness=5, activebackground="grey")
+					Court12Button.place(rely=0.9,relx=0.85,anchor=CENTER)
+					Court12Button.image = CourtsImage
 
 
-					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
-					background_entry_canvas.place(rely=0.7,relx=0.15,anchor=CENTER)
+					SelectCourtsButton=Button(courts, cursor="tcross",text = 'Select Courts', command = lambda : updateCourts(courts, coachUsername, Court1Button, Court2Button, Court3Button, Court4Button, Court5Button, Court6Button, Court7Button, Court8Button, Court9Button, Court10Button, Court11Button, Court12Button), fg ='white', bg='black', relief= 'groove', font = ('serif',8,'bold'), padx =15)
+					SelectCourtsButton.place(rely=0.095,relx=0.5,anchor=CENTER)
+					ToolTips.bind(SelectCourtsButton, 'Pick the courts required for the coaching session')
 
-					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
 
-					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
-					background_entry_canvas.background_entry_image = background_entry_image
+		def updateCourts(frame, username, courtvalue, courtvalue2, courtvalue3, courtvalue4, courtvalue5, courtvalue6, courtvalue7, courtvalue8, courtvalue9, courtvalue10, courtvalue11, courtvalue12):
 
+			counter = 1
+			SelectedCourts = []
 
-					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
-					background_entry_canvas.place(rely=0.9,relx=0.15,anchor=CENTER)
+			courts = [courtvalue, courtvalue2, courtvalue3, courtvalue4, courtvalue5, courtvalue6,
+					  courtvalue7, courtvalue8, courtvalue9, courtvalue10, courtvalue11, courtvalue12]
 
-					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
+			if (courtvalue.cget('bg') != 'SpringGreen3' and courtvalue2.cget('bg') != 'SpringGreen3' and courtvalue3.cget('bg') != 'SpringGreen3' and courtvalue4.cget('bg') != 'SpringGreen3' and courtvalue5.cget('bg') != 'SpringGreen3' and courtvalue6.cget('bg') != 'SpringGreen3' and courtvalue7.cget('bg') != 'SpringGreen3' and courtvalue8.cget('bg') != 'SpringGreen3' and courtvalue9.cget('bg') != 'SpringGreen3' and courtvalue10.cget('bg') != 'SpringGreen3' and courtvalue11.cget('bg') != 'SpringGreen3' and courtvalue12.cget('bg') != 'SpringGreen3'):
+				messagebox.showinfo('Error', 'Please select a court to continue', icon='error')
 
-					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
-					background_entry_canvas.background_entry_image = background_entry_image
+			else:
+				frame.withdraw()
 
+				for court in courts:
+					if (str(counter) == court.cget('text') and court.cget('bg') == 'SpringGreen3'):
+						FinalCourt = str(counter)
+						SelectedCourts.append(FinalCourt)
 
-					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
-					background_entry_canvas.place(rely=0.3,relx=0.5,anchor=CENTER)
+					counter += 1
 
-					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
+				FinalSelectedCourts = ''
+				for court in SelectedCourts:
+					FinalSelectedCourts = FinalSelectedCourts + court + ", "
 
-					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
-					background_entry_canvas.background_entry_image = background_entry_image
+				FinalSelectedCourts = FinalSelectedCourts[0: len(FinalSelectedCourts) - 2]
 
-
-					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
-					background_entry_canvas.place(rely=0.5,relx=0.5,anchor=CENTER)
-
-					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
-
-					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
-					background_entry_canvas.background_entry_image = background_entry_image
-
-
-					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
-					background_entry_canvas.place(rely=0.7,relx=0.5,anchor=CENTER)
-
-					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
-
-					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
-					background_entry_canvas.background_entry_image = background_entry_image
-
-
-					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
-					background_entry_canvas.place(rely=0.9,relx=0.5,anchor=CENTER)
-
-					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
-
-					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
-					background_entry_canvas.background_entry_image = background_entry_image
-
-
-					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
-					background_entry_canvas.place(rely=0.3,relx=0.85,anchor=CENTER)
-
-					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
-
-					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
-					background_entry_canvas.background_entry_image = background_entry_image
-
-
-					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
-					background_entry_canvas.place(rely=0.5,relx=0.85,anchor=CENTER)
-
-					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
-
-					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
-					background_entry_canvas.background_entry_image = background_entry_image
-
-
-					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
-					background_entry_canvas.place(rely=0.7,relx=0.85,anchor=CENTER)
-
-					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
-
-					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
-					background_entry_canvas.background_entry_image = background_entry_image
-
-
-					background_entry_canvas = Canvas(newcourts,width=100, height=58, bg = "white")
-					background_entry_canvas.place(rely=0.9,relx=0.85,anchor=CENTER)
-
-					background_entry_image = PhotoImage(file ="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images/Images/courts.png")
-
-					background_entry_canvas.create_image(0,0, anchor = NW, image=background_entry_image)
-					background_entry_canvas.background_entry_image = background_entry_image
-
-			conn.commit()
-			conn.close()
-
-
-		def updateCourts(frame, username):
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
-			c = conn.cursor()
-
-			frame.withdraw()
-
-			isValid = True
-			isValid = isValid and validate_new_courts(newcourt1.get(), newcourt2.get(), newcourt3.get(), newcourt4.get(), newcourt5.get(), newcourt6.get(), newcourt7.get(), newcourt8.get(), newcourt9.get(), newcourt10.get(), newcourt11.get(), newcourt12.get(), "Court")
-
-			if isValid:
-				final_courts = ""
-				if (newcourt1.get() ==1):
-					final_courts = final_courts + '1, '
-				if (newcourt2.get() ==1):
-					final_courts = final_courts + '2, '
-				if (newcourt3.get() ==1):
-					final_courts = final_courts + '3, '
-				if (newcourt4.get() ==1):
-					final_courts = final_courts + '4, '
-				if (newcourt5.get() ==1):
-					final_courts = final_courts + '5, '
-				if (newcourt6.get() ==1):
-					final_courts = final_courts + '6, '
-				if (newcourt7.get() ==1):
-					final_courts = final_courts + '7, '
-				if (newcourt8.get() ==1):
-					final_courts = final_courts + '8, '
-				if (newcourt9.get() ==1):
-					final_courts = final_courts + '9, '
-				if (newcourt10.get() ==1):
-					final_courts = final_courts + '10, '
-				if (newcourt11.get() ==1):
-					final_courts = final_courts + '11, '
-				if (newcourt12.get() ==1):
-					final_courts = final_courts + '12'
-
-				c.execute("""UPDATE coachSessionDetails SET courts = :newCourts WHERE username=:username""", {
-					"newCourts": str(final_courts),
+				c.execute("UPDATE coachSessionDetails SET courts = :newCourts WHERE username=:username", {
+					"newCourts": FinalSelectedCourts,
 					"username": username
 				})
 
-				messagebox.showinfo("Info", "The session's new courts are now "+final_courts, icon='info')
+				messagebox.showinfo("Info", "The session's new courts are now "+FinalSelectedCourts, icon='info')
 
 			conn.commit()
 			conn.close()
@@ -860,23 +836,23 @@ class CoachingSessionContent:
 					updateTechnique=Toplevel(bg="white")
 					updateTechnique.geometry('200x200')
 
-					title_label =Label(updateTechnique,text ="Select New Technique" , fg ='SpringGreen3',bg='white',font=('serif',11,'bold','underline'))
-					title_label.place(rely=0.06,relx=0.5,anchor=CENTER)
+					title_label =Label(updateTechnique,text ="Select New Technique" , fg ='SpringGreen3',bg='white',font=('serif',10,'bold','underline'))
+					title_label.place(rely=0.055,relx=0.5,anchor=CENTER)
 
 					technique1_radiobutton = Radiobutton(updateTechnique, text="Net Play", variable=newtechnique, value=1, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
-					technique1_radiobutton.place(rely=0.22, relx=0.5, anchor='center')
+					technique1_radiobutton.place(rely=0.225, relx=0.5, anchor='center')
 
 					technique2_radiobutton = Radiobutton(updateTechnique, text="Smash", variable=newtechnique, value=2, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
-					technique2_radiobutton.place(rely=0.4, relx=0.5, anchor='center')
+					technique2_radiobutton.place(rely=0.39, relx=0.5, anchor='center')
 
 					technique3_radiobutton = Radiobutton(updateTechnique, text="Rally", variable=newtechnique, value=3, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
-					technique3_radiobutton.place(rely=0.58, relx=0.5, anchor='center')
+					technique3_radiobutton.place(rely=0.55, relx=0.5, anchor='center')
 
 					technique4_radiobutton = Radiobutton(updateTechnique, text="Back Court", variable=newtechnique, value=4, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
-					technique4_radiobutton.place(rely=0.76, relx=0.5, anchor='center')
+					technique4_radiobutton.place(rely=0.715, relx=0.5, anchor='center')
 
-					technique_update_button=Button(updateTechnique,text = 'Confirm Update', command = lambda : techniqueUpdate(updateTechnique, coachUsername), fg ='white', bg='black', relief= 'groove', font = ('serif',11,'bold'), padx =30)
-					technique_update_button.place(rely=0.93,relx=0.5,anchor=CENTER)
+					technique_update_button=Button(updateTechnique,text = 'Confirm Update', command = lambda : techniqueUpdate(updateTechnique, coachUsername), fg ='white', bg='black', relief= 'groove', font = ('serif',10,'bold'), padx =10)
+					technique_update_button.place(rely=0.9,relx=0.5,anchor=CENTER)
 					ToolTips.bind(technique_update_button, 'Confirm new technique')
 
 			conn.commit()
@@ -907,7 +883,7 @@ class CoachingSessionContent:
 					"username": username
 				})
 
-				messagebox.showinfo("Info", "The session's new technique is now "+ final_technique, icon='info')
+				messagebox.showinfo("Info", "The session's new technique is now "+ str(final_technique), icon='info')
 
 			conn.commit()
 			conn.close()
@@ -980,6 +956,9 @@ class CoachingSessionContent:
 
 
 		def submitCoachSession():
+			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			c = conn.cursor()
+
 			AllEmailsComplete = 0
 
 			isValid = True
@@ -993,10 +972,14 @@ class CoachingSessionContent:
 
 
 			if isValid:
+				c.execute("SELECT * From coachSessionDetails")
+				rows = c.fetchall()
+
 				coachsession_username = self.coachNamesAndPasswords.get()
 				coachsession_starttime= timeStart.get()
 				coachsession_endtime= timeEnd.get()
 				coachsession_date = eventDate.get()
+				coachID = len(rows)+1
 
 				final_coach_starttime = format(float(coachsession_starttime), '.2f')
 				final_coach_endtime = format(float(coachsession_endtime), '.2f')
@@ -1018,9 +1001,6 @@ class CoachingSessionContent:
 				else:
 					findMembers()
 
-					conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
-					c = conn.cursor()
-
 					c.execute("SELECT * From member")
 					items = c.fetchall()
 
@@ -1037,7 +1017,7 @@ class CoachingSessionContent:
 
 					conn2 = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 					c2 = conn2.cursor()
-					c2.execute("INSERT INTO coachSessionDetails VALUES (:username, :startTime, :endTime, :date, :courts, :membergroup, :people, :technique)",
+					c2.execute("INSERT INTO coachSessionDetails VALUES (:username, :startTime, :endTime, :date, :courts, :membergroup, :people, :technique, :sessionID)",
 							{
 								'username': coachsession_username,
 								'startTime': final_coach_starttime,
@@ -1047,6 +1027,7 @@ class CoachingSessionContent:
 								'membergroup': GroupFinder,
 								'people': PeopleCounter,
 								'technique': final_technique,
+								'sessionID': coachID,
 							})
 
 					conn.commit()
@@ -1116,6 +1097,37 @@ class CoachingSessionContent:
 			conn.commit()
 			conn.close()
 
+
+
+		presentDate = datetime.datetime.now()
+		current_date = presentDate.strftime("%d/%m/%Y")
+
+		conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+		c = conn.cursor()
+
+		c.execute("SELECT * From coachSessionDetails")
+		items = c.fetchall()
+
+		for row in items:
+			rowsplitdate = str(row[3]).split('/')
+			currentdatesplit = current_date.split('/')
+
+			if rowsplitdate[2] < currentdatesplit[2]:
+				c.execute('DELETE FROM coachSessionDetails WHERE sessionID=:ID', {
+					"ID": row[8]
+				})
+			else:
+				if rowsplitdate[2] >= currentdatesplit[2] and rowsplitdate[1] < currentdatesplit[1]:
+					c.execute('DELETE FROM coachSessionDetails WHERE sessionID=:ID', {
+						"ID": row[8]
+					})
+				else:
+					if rowsplitdate[2] >= currentdatesplit[2] and rowsplitdate[1] >= currentdatesplit[1] and rowsplitdate[0] < currentdatesplit[0]:
+						c.execute('DELETE FROM coachSessionDetails WHERE sessionID=:ID', {
+							"ID": row[8]
+						})
+					else:
+						pass
 
 
 
@@ -1200,11 +1212,11 @@ class CoachingSessionContent:
 
 		search_button = tkinter.Button(self.coachSession, cursor="tcross",text="Search", command=searchCoachSessionDetails, fg='white', bg='black', bd=4, relief='ridge', font=('serif', 12, 'bold'), padx=10, pady=5)
 		search_button.place(rely=0.95, relx=0.276, anchor='center')
-		ToolTips.bind(update_button, 'Search data inside coaching session database')
+		ToolTips.bind(search_button, 'Search data inside coaching session database')
 
 		create_button = tkinter.Button(self.coachSession, cursor="tcross",text="Submit", command=submitCoachSession, fg='white', bg='black', bd=4, relief='ridge', font=('serif', 12, 'bold'), padx=10, pady=5)
 		create_button.place(rely=0.95, relx=0.384, anchor='center')
-		ToolTips.bind(update_button, 'Creates a new coaching session')
+		ToolTips.bind(create_button, 'Creates a new coaching session')
 
 
 		coachsession_search_Tv=ttk.Treeview(self.coachSession,height=4,columns=('Start Time','End Time','Date','Courts','Group','No. People','Technique'))

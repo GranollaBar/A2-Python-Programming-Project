@@ -815,6 +815,37 @@ class BookingContent:
 						BookingPopulate()
 
 
+		presentDate = datetime.datetime.now()
+		current_date = presentDate.strftime("%d/%m/%Y")
+
+		conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+		c = conn.cursor()
+
+		c.execute("SELECT * From MemberBooking")
+		items = c.fetchall()
+
+		for row in items:
+			rowsplitdate = str(row[3]).split('/')
+			currentdatesplit = current_date.split('/')
+
+			if rowsplitdate[2] < currentdatesplit[2]:
+				c.execute('DELETE FROM MemberBooking WHERE bookingID=:ID', {
+					"ID": row[5]
+				})
+			else:
+				if rowsplitdate[2] >= currentdatesplit[2] and rowsplitdate[1] < currentdatesplit[1]:
+					c.execute('DELETE FROM MemberBooking WHERE bookingID=:ID', {
+						"ID": row[5]
+					})
+				else:
+					if rowsplitdate[2] >= currentdatesplit[2] and rowsplitdate[1] >= currentdatesplit[1] and rowsplitdate[0] < currentdatesplit[0]:
+						c.execute('DELETE FROM MemberBooking WHERE bookingID=:ID', {
+							"ID": row[5]
+						})
+					else:
+						pass
+
+
 		eventDate=StringVar()
 		court = StringVar()
 

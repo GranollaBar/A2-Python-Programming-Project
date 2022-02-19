@@ -7,6 +7,7 @@ from HomeFrame.CoachHomeScreen import CoachHomeScreenContent
 from LoginFrame.AS_programming_loginscreen import LoginContent
 from AttendCompetitionsFrame.AttendingCompetitionFrame import AttendingContent
 from ReportsFrame.CoachReportsScreen import CoachReportsContent
+from LogoffFrame.LogoffScreen import LogoffContent
 import Pmw
 
 
@@ -56,6 +57,11 @@ def openReportsContent(mainScreen, content):
     clearContent(mainScreen, content)
     coachreportcontent = CoachReportsContent(mainScreen)
     coachreportcontent.generateCoachReportsContnt(logins.finalloginname)
+
+
+def openLogoffContent(mainScreen):
+    logoffcontent = LogoffContent(mainScreen)
+    logoffcontent.generateLogoffContnt(mainScreen)
 
 
 
@@ -110,7 +116,7 @@ def main():
     ToolTips.bind(reports_button, 'Coach Reports Screen')
 
     coachlogoffphoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/Logoff.png")
-    CoachLogoffButton = Button(header, cursor="tcross", image=coachlogoffphoto, width=30, height=30, command=lambda : openCoachHomeContent(mainScreen, content), bg="black",bd=4,relief='ridge')
+    CoachLogoffButton = Button(header, cursor="tcross", image=coachlogoffphoto, width=30, height=30, command=lambda : openLogoffContent(mainScreen), bg="black",bd=4,relief='ridge')
     CoachLogoffButton.place(rely=0.5,relx=0.95,anchor=CENTER)
     CoachLogoffButton.image = coachlogoffphoto
     ToolTips.bind(CoachLogoffButton, 'Log Out')

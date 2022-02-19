@@ -476,7 +476,7 @@ class CoachContent:
 		def updateCoachDetails(self):
 			response = askyesno("Question", "Do you want to update a coach's details?", icon='question')
 			if response == False:
-				showinfo("Info", "Update cancelled", icon='info')
+				messagebox.showinfo("Info", "Update cancelled", icon='info')
 
 			else:
 
