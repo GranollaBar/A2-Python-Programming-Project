@@ -69,7 +69,7 @@ def main():
 
     managerhomephoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/Home.png")
     ManagerHomeButton = Button(header, cursor="tcross", image=managerhomephoto, width=30, height=30, command=lambda : openManagerHomeContent(mainScreen, content), bg="black",bd=4,relief='ridge')
-    ManagerHomeButton.place(rely=0.5,relx=0.25,anchor=CENTER)
+    ManagerHomeButton.place(rely=0.5,relx=0.264,anchor=CENTER)
     ManagerHomeButton.image = managerhomephoto
     ToolTips.bind(ManagerHomeButton, 'Manager Home Screen')
 

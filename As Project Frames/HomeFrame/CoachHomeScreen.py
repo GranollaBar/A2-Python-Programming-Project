@@ -401,7 +401,6 @@ class CoachHomeScreenContent:
 					count+=1
 
 
-		countdown()
 
 
 		title_label = tkinter.Label(self.CoachHome, text="Main Menu: Coach", font=('serif', 18, 'bold','underline'), fg='black', bg='white', bd=4, relief='groove', padx=10, pady=4)
@@ -484,6 +483,7 @@ class CoachHomeScreenContent:
 
 
 
+		countdown()
 		if PassedLogin == True:
 			ImageSlider()
 			CoachShiftTime()

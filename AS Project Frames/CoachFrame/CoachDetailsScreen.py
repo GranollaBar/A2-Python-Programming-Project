@@ -649,6 +649,7 @@ class CoachContent:
 
 						c.execute(f"DELETE FROM coach WHERE username =?", (coachUsername,))
 						c.execute(f"DELETE FROM coachTimetable WHERE username =?", (coachUsername,))
+						c.execute(f"DELETE FROM account WHERE username =?", (coachUsername,))
 						messagebox.showinfo("Info", "The coach with username "+coachUsername+" has been deleted from the database", icon='info')
 
 				else:

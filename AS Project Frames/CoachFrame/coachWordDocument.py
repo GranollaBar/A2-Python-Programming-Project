@@ -27,6 +27,6 @@ def buildCoachDocument(username, password, firstname, surname, gender, DOB, post
     parag.add_run("\n\n" + "Thanks for choosing Lisburn Racquets Club").bold=True
     doc.add_picture('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/lisburnraquetsclub.png',width=Inches(3))
 
-    filename = "C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Doc/coach_Account_Details.docx"
+    filename = "C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Doc/Coach_Account_Details.docx"
     doc.save(filename)
     return open(filename,'rb')

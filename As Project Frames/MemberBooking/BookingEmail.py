@@ -10,9 +10,9 @@ def Email(subject, msg, recipientemail, label, value):
 		server=smtplib.SMTP('smtp.gmail.com:587')
 		server.ehlo()
 		server.starttls()
-		server.login("josnoble113@gmail.com", "jn11jn11")
+		server.login("gamblingwolf113@gmail.com", "WPKa4VAqpuHxdQyt")
 		emailText = buildEmailMsg(subject, msg, recipientemail, value)
-		server.sendmail("josnoble113@gmail.com",recipientemail,emailText)
+		server.sendmail("gamblingwolf113@gmail.com",recipientemail,emailText)
 		server.quit()
 		messagebox.showinfo("Info","The details of the user were sent to "+ recipientemail)
 		return True
@@ -24,7 +24,7 @@ def Email(subject, msg, recipientemail, label, value):
 
 def buildEmailMsg(subject, msgBody, recipientemail, type):
 	msg = MIMEMultipart()
-	msg['From'] = "josnoble113@gmail.com"
+	msg['From'] = "gamblingwolf113@gmail.com"
 	msg['To'] = recipientemail
 	msg['Subject'] = subject
 	msg.attach(MIMEText (msgBody,'plain'))

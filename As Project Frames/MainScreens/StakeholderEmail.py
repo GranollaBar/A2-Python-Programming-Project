@@ -10,9 +10,9 @@ def Email(subject, msg, recipientemail, doc, label):
 		server=smtplib.SMTP('smtp.gmail.com:587')
 		server.ehlo()
 		server.starttls()
-		server.login("josnoble113@gmail.com", "jn11jn11")
+		server.login("gamblingwolf113@gmail.com", "WPKa4VAqpuHxdQyt")
 		emailText = buildEmailMsg(subject, msg, recipientemail, doc)
-		server.sendmail("josnoble113@gmail.com",recipientemail,emailText)
+		server.sendmail("gamblingwolf113@gmail.com",recipientemail,emailText)
 		server.quit()
 		messagebox.showinfo("Info","The details of the user were sent to "+ recipientemail)
 		return True
@@ -24,7 +24,7 @@ def Email(subject, msg, recipientemail, doc, label):
 
 def buildEmailMsg(subject, msgBody, recipientemail, attachment):
 	msg = MIMEMultipart()
-	msg['From'] = "josnoble113@gmail.com"
+	msg['From'] = "gamblingwolf113@gmail.com"
 	msg['To'] = recipientemail
 	msg['Subject'] = subject
 	msg.attach(MIMEText (msgBody,'plain'))
@@ -33,7 +33,7 @@ def buildEmailMsg(subject, msgBody, recipientemail, attachment):
 
 	part.set_payload((attachment).read())
 	encoders.encode_base64(part)
-	part.add_header('Content-Disposition',"attachment; filename=coach_Account_Details.docx")
+	part.add_header('Content-Disposition',"attachment; filename=Coach_Account_Details.docx")
 	msg.attach(part)
 	return msg.as_string()
 
