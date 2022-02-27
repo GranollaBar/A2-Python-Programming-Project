@@ -758,6 +758,13 @@ class BookingContent:
 									  'bookingID': finalID,
 								  })
 
+						c.execute("INSERT INTO fees VALUES (:username, :coachingsessionfee, :memberbookingfee)",
+								  {
+									  'username': finalusername,
+									  'coachingsessionfee': '',
+									  'memberbookingfee': '£3.00',
+								  })
+
 						conn.commit()
 						conn.close()
 

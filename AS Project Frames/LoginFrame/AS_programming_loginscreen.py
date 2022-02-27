@@ -40,6 +40,12 @@ class LoginContent:
         #                 surname text
         #                 )""")
 
+        # self.c.execute("""CREATE TABLE fees (
+        #                 username text,
+        #                 coachingsessionfee text,
+        #                 memberbookingfee text
+        #                 )""")
+
 
 
     def generateLoginContnt(self):

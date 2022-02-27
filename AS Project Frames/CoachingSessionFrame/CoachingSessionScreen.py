@@ -948,9 +948,7 @@ class CoachingSessionContent:
 							if (AllEmailsComplete == len(items)):
 								messagebox.showinfo('Info', 'All members in group ' + str(GroupFinder) + ' have been sent information on the new coaching session', icon='info')
 
-					conn2 = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
-					c2 = conn2.cursor()
-					c2.execute("INSERT INTO coachSessionDetails VALUES (:username, :startTime, :endTime, :date, :courts, :membergroup, :people, :technique, :sessionID)",
+					c.execute("INSERT INTO coachSessionDetails VALUES (:username, :startTime, :endTime, :date, :courts, :membergroup, :people, :technique, :sessionID)",
 							{
 								'username': coachsession_username,
 								'startTime': final_coach_starttime,
@@ -963,11 +961,20 @@ class CoachingSessionContent:
 								'sessionID': coachID,
 							})
 
+					for data in items:
+						if str(data[7]) != str(GroupFinder) or data == []:
+							pass
+						else:
+							fee_member_name = data[0]
+							c.execute("INSERT INTO fees VALUES (:username, :coachingsessionfee, :memberbookingfee)",
+									  {
+										  'username': fee_member_name,
+										  'coachingsessionfee': '£5.00',
+										  'memberbookingfee': '',
+									  })
+
 					conn.commit()
 					conn.close()
-
-					conn2.commit()
-					conn2.close()
 
 					changeCalendarColour()
 

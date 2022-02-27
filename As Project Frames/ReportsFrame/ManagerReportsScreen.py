@@ -24,6 +24,9 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib import style
 import matplotlib.pyplot as plt
 import random
+from matplotlib import figure
+from pandas import DataFrame
+import numpy as np
 
 
 
@@ -67,180 +70,6 @@ class ManagerReportsContent:
 			os.startfile(r'C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Doc/coach_Account_Details.docx')
 
 
-		def StartUpFinishedSinglesGraph():
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
-			c = conn.cursor()
-
-			c.execute("SELECT * FROM FinshedCompetitions")
-			row2 = c.fetchall()
-
-			if len(row2) != 0:
-				GotARow = False
-
-				if row2[len(row2)-1][0] == 'Singles':
-					c.execute("SELECT * FROM FinshedCompetitions WHERE CompetitionType=:Type AND CurrentID=:ID", {
-						"Type": 'Singles',
-						"ID": row2[len(row2)-1][6]
-					})
-					singlerow = c.fetchone()
-					GotARow = True
-
-				if GotARow == False:
-					for x in reversed(row2):
-						c.execute("SELECT * FROM FinshedCompetitions WHERE CompetitionType=:Type", {
-							"Type": 'Singles'
-						})
-						singlerow = c.fetchone()
-						if (singlerow is None):
-							pass
-						else:
-							GotARow = True
-							break
-
-				if GotARow == True:
-					final_result_label = tkinter.Label(self.Reports, text='Final Results', font=('serif', 9, 'bold', 'underline'), fg='black', bg='white')
-					final_result_label.place(rely=0.88, relx=0.652, anchor='center')
-
-					member1_score_label = tkinter.Label(self.Reports, text='   #' + singlerow[1] + ' - ' + singlerow[2] +'#   ', font=('serif', 8, 'bold'), fg='SpringGreen3', bg='white')
-					member1_score_label.place(rely=0.92, relx=0.652, anchor='center')
-
-					member2_score_label = tkinter.Label(self.Reports, text='   #' + singlerow[3] + ' - ' + singlerow[4] + '#   ', font=('serif', 8, 'bold'), fg='blue', bg='white')
-					member2_score_label.place(rely=0.96, relx=0.652, anchor='center')
-
-					text = 'ID: ' + str(singlerow[6])
-
-					style.use('seaborn-darkgrid')
-
-					font = {'family': 'serif',
-							'color':  'black',
-							'weight': 'normal',
-							'size': 12,
-							}
-
-					score1list = []
-					score2list = []
-					timelist = []
-
-					score1list.append(0)
-					score2list.append(0)
-					timelist.append(0)
-					score1list.append(singlerow[2])
-					score2list.append(singlerow[4])
-					timelist.append(singlerow[5])
-
-					fig = plt.figure(figsize=(3.5,3.2), dpi=58)
-					fig.tight_layout()
-					ax1 = fig.add_subplot(111)
-					if score1list[1] == '21':
-						ax1.plot(timelist, score2list, color="blue", label="Score 2")
-						ax1.plot(timelist, score1list, color="limegreen", label="Score 1")
-						ax1.legend(loc="upper left")
-					else:
-						ax1.plot(timelist, score1list, color="limegreen", label="Score 1")
-						ax1.plot(timelist, score2list, color="blue", label="Score 2")
-						ax1.legend(loc="upper left")
-					ax1.set_title(text, fontdict=font)
-					ax1.set_xlabel('Time (Seconds)', fontdict=font)
-					ax1.set_ylabel('Score', fontdict=font)
-
-					finishedcanvas = FigureCanvasTkAgg(fig, self.Reports)
-					finishedcanvas.get_tk_widget().place(relx=0.652,rely=0.712,anchor=CENTER)
-					finishedcanvas.draw()
-
-				else:
-					pass
-
-			else:
-				pass
-
-
-		def StartUpFinishedDoublesGraph():
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
-			c = conn.cursor()
-
-			c.execute("SELECT * FROM FinshedCompetitions")
-			row2 = c.fetchall()
-
-			if len(row2) != 0:
-				GotARow = False
-
-				if row2[len(row2)-1][0] == 'Doubles':
-					c.execute("SELECT * FROM FinshedCompetitions WHERE CompetitionType=:Type AND CurrentID=:ID", {
-						"Type": 'Doubles',
-						"ID": row2[len(row2)-1][6]
-					})
-					doublerow = c.fetchone()
-					GotARow = True
-
-				if GotARow == False:
-					for x in reversed(row2):
-						c.execute("SELECT * FROM FinshedCompetitions WHERE CompetitionType=:Type", {
-							"Type": 'Doubles'
-						})
-						doublerow = c.fetchone()
-						if (doublerow is None):
-							pass
-						else:
-							GotARow = True
-							break
-
-				if GotARow == True:
-					final_result_label = tkinter.Label(self.Reports, text='Final Results', font=('serif', 9, 'bold', 'underline'), fg='black', bg='white')
-					final_result_label.place(rely=0.88, relx=0.872, anchor='center')
-
-					member1_score_label = tkinter.Label(self.Reports, text='   #' + doublerow[1] + ' - ' + doublerow[2] + '#   ', font=('serif', 8, 'bold'), fg='SpringGreen3', bg='white')
-					member1_score_label.place(rely=0.92, relx=0.872, anchor='center')
-
-					member2_score_label = tkinter.Label(self.Reports, text='   #' + doublerow[3] + ' - ' + doublerow[4] + '#   ', font=('serif', 8, 'bold'), fg='blue', bg='white')
-					member2_score_label.place(rely=0.96, relx=0.872, anchor='center')
-
-					text = 'ID: ' + str(doublerow[6])
-
-					style.use('seaborn-darkgrid')
-
-					font = {'family': 'serif',
-							'color':  'black',
-							'weight': 'normal',
-							'size': 12,
-							}
-
-					score1list = []
-					score2list = []
-					timelist = []
-
-					score1list.append(0)
-					score2list.append(0)
-					timelist.append(0)
-					score1list.append(doublerow[2])
-					score2list.append(doublerow[4])
-					timelist.append(doublerow[5])
-
-					fig = plt.figure(figsize=(3.5,3.2), dpi=58)
-					fig.tight_layout()
-					ax1 = fig.add_subplot(111)
-					if score1list[1] == '21':
-						ax1.plot(timelist, score2list, color="blue", label="Score 2")
-						ax1.plot(timelist, score1list, color="limegreen", label="Score 1")
-						ax1.legend(loc="upper left")
-					else:
-						ax1.plot(timelist, score1list, color="limegreen", label="Score 1")
-						ax1.plot(timelist, score2list, color="blue", label="Score 2")
-						ax1.legend(loc="upper left")
-					ax1.set_title(text, fontdict=font)
-					ax1.set_xlabel('Time (Seconds)', fontdict=font)
-					ax1.set_ylabel('Score', fontdict=font)
-
-					finishedcanvas = FigureCanvasTkAgg(fig, self.Reports)
-					finishedcanvas.get_tk_widget().place(relx=0.872,rely=0.712,anchor=CENTER)
-					finishedcanvas.draw()
-
-				else:
-					pass
-
-			else:
-				pass
-
-
 
 		ToolTips = Pmw.Balloon()
 
@@ -250,12 +79,12 @@ class ManagerReportsContent:
 		wordphoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/word.png")
 
 		coachaccount_title_label =Label(self.Reports, text = findfirstandsurname() + "'s Latest Added Coach", fg ='black',bg='white',font=('serif',11,'bold'), bd=2, relief="ridge", padx=7, pady=2)
-		coachaccount_title_label.place(rely=0.257,relx=0.765,anchor=CENTER)
+		coachaccount_title_label.place(rely=0.227,relx=0.765,anchor=CENTER)
 		View_coach_account_doc = tkinter.Button(self.Reports, cursor="tcross",text="         Coach_Account_Details.docx", command=OpenCoachAccountDoc, fg='black', bg='white', bd=3, relief='sunken', font=('serif', 14, 'bold'), padx=6, pady=6)
-		View_coach_account_doc.place(rely=0.31, relx=0.765, anchor='center')
+		View_coach_account_doc.place(rely=0.28, relx=0.765, anchor='center')
 		ToolTips.bind(View_coach_account_doc, 'Click to see the latest coach added to the system')
 		wordlogo = Button(self.Reports, cursor="tcross", image=wordphoto, width=40, height=40, command=OpenCoachAccountDoc, borderwidth=0, activebackground="white")
-		wordlogo.place(rely=0.31,relx=0.612,anchor=CENTER)
+		wordlogo.place(rely=0.28,relx=0.612,anchor=CENTER)
 		wordlogo.image = wordphoto
 		wordlogo['relief'] = 'sunken'
 		ToolTips.bind(wordlogo, 'Click to see the latest coach added to the system')
@@ -266,22 +95,165 @@ class ManagerReportsContent:
 		font = {'family': 'serif',
 				'color':  'black',
 				'weight': 'normal',
-				'size': 16,
+				'size': 10,
 				}
 
-		fig = plt.figure(figsize=(3.9,3.5), dpi=60)
+		conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+		c = conn.cursor()
+
+		c.execute("SELECT * FROM MemberBooking")
+		row = c.fetchall()
+
+		badmintoncounter = 0
+		tenniscounter = 0
+		squashcounter = 0
+
+		for data in row:
+			if data[2] == 'Badminton':
+				badmintoncounter += 1
+			elif data[2] == 'Tennis':
+				tenniscounter += 1
+			else:
+				squashcounter += 1
+
+		xvalues = ['Badminton', 'Tennis', 'Squash']
+		yvalues = [badmintoncounter, tenniscounter, squashcounter]
+
+		dictionary = {'Type Of Competition': xvalues, 'No. Bookings': yvalues}
+
+		framedata = DataFrame(dictionary, columns=['Type Of Competition','No. Bookings'])
+
+		fig = plt.figure(figsize=(7.5,4), dpi=65)
 		fig.tight_layout()
 		ax1 = fig.add_subplot(111)
-		ax1.plot(kind='bar', legend=True)
-		ax1.legend(loc="upper left")
-		ax1.set_title('monkey', fontdict=font)
-		ax1.set_xlabel('Time (Seconds)', fontdict=font)
-		ax1.set_ylabel('Score', fontdict=font)
+		framedata = framedata[['Type Of Competition','No. Bookings']].groupby('Type Of Competition').sum()
+		framedata.plot(kind='barh', legend='True', ax=ax1, fontsize=10)
 
 		finishedcanvas = FigureCanvasTkAgg(fig, self.Reports)
-		finishedcanvas.get_tk_widget().place(relx=0.848,rely=0.673,anchor=CENTER)
+		finishedcanvas.get_tk_widget().place(relx=0.3,rely=0.38,anchor=CENTER)
 		finishedcanvas.draw()
 
 
+		c.execute("SELECT * FROM fees")
+		data = c.fetchall()
+
+		member_name_list = []
+
+		for values in data:
+			if values == []:
+				pass
+			else:
+				member_name = values[0]
+				if member_name in member_name_list:
+					pass
+				else:
+					member_name_list.append(member_name)
+
+		coachingfees = 0
+		bookingfees = 0
+
+		MemberBookingFees = []
+		CoachingSessionFees = []
+
+		t = 0
+
+		for names in member_name_list:
+			c.execute("SELECT * FROM fees WHERE username =?", (names,))
+			namerows = c.fetchall()
+			for individualrows in namerows:
+				if individualrows[1] != '':
+					newcoachingfee = str(individualrows[1])[1:]
+					finalcoachingfee = format(float(newcoachingfee), '.2f')
+					coachingfees = coachingfees + float(finalcoachingfee)
+					t += 1
+				else:
+					newbookingfee = str(individualrows[2])[1:]
+					finalbookingfee = format(float(newbookingfee), '.2f')
+					bookingfees = bookingfees + float(finalbookingfee)
+					t += 1
+
+			if t == len(namerows):
+				t = 0
+				CoachingSessionFees.append(coachingfees)
+				MemberBookingFees.append(bookingfees)
+				coachingfees = 0
+				bookingfees = 0
+
+		fullnames = []
+
+		for fullgivennames in member_name_list:
+			c.execute("SELECT * FROM member WHERE username=:memberusername", {
+				"memberusername": fullgivennames
+			})
+			rowdata = c.fetchone()
+			fulltitle = rowdata[2] + ' ' + rowdata[3]
+			fullnames.append(fulltitle)
+
+		fig2 = plt.figure(figsize=(6.1,4.1), dpi=65, tight_layout=True)
+		ax2 = fig2.add_subplot(111)
+
+		bar1 = np.arange(len(member_name_list))
+		bar2 = [i+0.4 for i in bar1]
+
+		ax2.bar(bar1, MemberBookingFees, 0.4, label='MemberBookingFees')
+		ax2.bar(bar2, CoachingSessionFees, 0.4, Label='CoachingSessionFees')
+		ax2.legend(loc="upper right")
+		ax2.set_title('Costs For Each Member', fontdict=font)
+		ax2.set_xlabel('Type Of Fee', fontdict=font)
+		ax2.set_ylabel('Cost', fontdict=font)
+		ax2.set_xticks(bar1)
+		ax2.set_xticklabels(fullnames)
+
+		finishedfeescanvas = FigureCanvasTkAgg(fig2, self.Reports)
+		finishedfeescanvas.get_tk_widget().place(relx=0.3,rely=0.78,anchor=CENTER)
+		finishedfeescanvas.draw()
 
 
+		c.execute("SELECT * FROM fees")
+		row = c.fetchall()
+
+		finalsessioncost = 0
+		finalbookingcost = 0
+
+		for items in row:
+			if items[1] != '':
+				cutsessionfee = str(items[1])[1:]
+				finalsessioncost = finalsessioncost + float(cutsessionfee)
+				newfinalsessioncost = format(float(finalsessioncost), '.2f')
+			else:
+				cutbookingfee = str(items[2])[1:]
+				finalbookingcost = finalbookingcost + float(cutbookingfee)
+				newfinalbookingcost = format(float(finalbookingcost), '.2f')
+
+		sessioncosts = [newfinalsessioncost]
+		bookingcosts = [newfinalbookingcost]
+
+		finalvalues = sessioncosts + bookingcosts
+
+		pielabels = ['Coaching Sessions','Member Bookings']
+		text = 'Overall Fees Ratio'
+
+		allcolours = ['r','g','b','c','m','y','#760000','#b24900','#b2b300','#b2f800'
+			,'#f5f800','#976d01','#004b01','#004b63','#ff4bc8','#b24bc8','#754bc8','#751783'
+			,'#e81783','#001783','#00a583','#00a5e6','#cc5200','#ffe0cc','#cc0000','#999966'
+			,'#ffff66','#cccc00','#5c8a8a','#000066','#9999ff','#33cccc','#805500','#4d0026']
+		randomlist = []
+		t = 0
+
+		while t != 4:
+			randomnumber = random.randint(0,33)
+			randomlist.append(randomnumber)
+			t += 1
+
+		finalcolours = [allcolours[randomlist[0]],allcolours[randomlist[1]],allcolours[randomlist[2]],allcolours[randomlist[3]]]
+
+		fig3 = plt.Figure(figsize=(6,7), dpi=65, tight_layout=True)
+		ax3 = fig3.add_subplot(111)
+		ax3.pie(finalvalues, radius=1, labels=pielabels, autopct='%1.1f%%', shadow=True, colors=finalcolours, textprops={'fontsize': 10, 'family': 'serif', 'color':  'black', 'weight': 'normal'})
+		ax3.legend(loc="upper center")
+		ax3.set_title(text, fontdict=font)
+		ax3.axis('equal')
+
+		piefinishedcanvas = FigureCanvasTkAgg(fig3, self.Reports)
+		piefinishedcanvas.get_tk_widget().place(relx=0.75,rely=0.7,anchor=CENTER)
+		piefinishedcanvas.draw()
