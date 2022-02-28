@@ -10,7 +10,6 @@ import math
 from functools import partial
 from MainScreens.StakeholderEmail import Email
 from MemberFrame.memberWordDocument import buildMemberDocument
-from MainScreens.SMSSystem import MemberJoingSMS
 import Pmw
 
 

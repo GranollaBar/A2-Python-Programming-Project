@@ -1,21 +1,6 @@
-from tkinter import ttk
-from tkinter import messagebox
 import tkinter.simpledialog
-from tkinter.messagebox import showinfo
-from tkinter.messagebox import askyesno
 import sqlite3
-from tkinter import simpledialog
 from tkinter import *
-from functools import partial
-from tkcalendar import Calendar
-from CoachingSessionFrame.CoachingSessionEmail import SessionEmail
-import time
-from time import strftime
-from datetime import date, datetime,timedelta
-import datetime
-from PIL import Image, ImageTk
-import calendar
-import webbrowser
 import Pmw
 import os
 import matplotlib
@@ -24,7 +9,6 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib import style
 import matplotlib.pyplot as plt
 import random
-from matplotlib import figure
 from pandas import DataFrame
 import numpy as np
 
@@ -128,6 +112,7 @@ class ManagerReportsContent:
 		ax1 = fig.add_subplot(111)
 		framedata = framedata[['Type Of Competition','No. Bookings']].groupby('Type Of Competition').sum()
 		framedata.plot(kind='barh', legend='True', ax=ax1, fontsize=10)
+		ax1.set_title('No. Bookings For Each Competition Type')
 
 		finishedcanvas = FigureCanvasTkAgg(fig, self.Reports)
 		finishedcanvas.get_tk_widget().place(relx=0.3,rely=0.38,anchor=CENTER)

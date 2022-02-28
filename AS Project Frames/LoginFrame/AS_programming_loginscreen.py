@@ -8,8 +8,6 @@ import sqlite3
 from tkinter import *
 import webbrowser
 from MainScreens.ChangingPasswordEmail import ChangePassword
-from MainScreens.SMSSystem import MemberJoingSMS
-from MainScreens.SMSSystem import ChangingPassword
 import Pmw
 
 
@@ -172,101 +170,39 @@ class LoginContent:
 
                 else:
 
-                    choosing_toplevel=Toplevel(width=250, height=100, bg="white")
+                    verification = IntVar()
+                    newpassword = StringVar()
+                    verificationCode = random.randint(100000,999999)
 
-                    title_label = tkinter.Label(choosing_toplevel, text="Where do you want the code sent to", font=('Verdana', 9, 'underline', 'bold'), fg='SpringGreen3', bg='white')
-                    title_label.place(rely=0.125, relx=0.5, anchor='center')
+                    found = ChangePassword("Lisburn Racquets Verification code","\n" + "This is an automated message sent from Lisburn Racquet's Club" + "\n" + "The verification code to change your passwords is: " + "\n\n" + str(verificationCode) + "\n\n" + "Please do not respond to this email",finalname)
+                    if found:
 
-                    choosing1_radiobutton = Radiobutton(choosing_toplevel, text="Email", variable=choosing, value=1, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
-                    choosing1_radiobutton.place(rely=0.4, relx=0.3, anchor='center')
+                        email_toplevel=Toplevel(width=300, height=200, bg="white")
 
-                    choosing2_radiobutton = Radiobutton(choosing_toplevel, text="SMS", variable=choosing, value=2, font=("Segoe UI Black",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
-                    choosing2_radiobutton.place(rely=0.4, relx=0.7, anchor='center')
+                        title_label = tkinter.Label(email_toplevel, text="Forgot Password System", font=('Verdana', 14, 'underline', 'bold'), fg='SpringGreen3', bg='white')
+                        title_label.place(rely=0.125, relx=0.5, anchor='center')
 
-                    choosing_button=Button(choosing_toplevel,text = 'Select', command = lambda : completeVerification(choosing, recipient, choosing_toplevel), fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =30)
-                    choosing_button.place(rely=0.8,relx=0.5,anchor=CENTER)
-                    ToolTips.bind(choosing_button, 'Choice between SMS and email')
+                        verification_label = Label(email_toplevel,text = 'Verification Code:', fg ='black', bg='white', font = ('Verdana',12,'bold'))
+                        verification_label.place(rely=0.4,relx=0.3,anchor=CENTER)
 
+                        newpassword_label = Label(email_toplevel,text = 'New Password:', fg ='black', bg='white', font = ('Verdana',12,'bold'))
+                        newpassword_label.place(rely=0.6,relx=0.3,anchor=CENTER)
 
-        def completeVerification(value, name, frame):
-            final_choosing = value.get()
+                        verification_entry = Entry(email_toplevel,width=15, borderwidth=2, textvariable=verification)
+                        verification_entry.place(rely=0.403,relx=0.8,anchor=CENTER)
+                        verification.set('')
 
-            if (final_choosing == 1):
-                emailSending(name, frame)
-            if (final_choosing == 2):
-                SMSSending(name, frame)
+                        newpassword_entry = Entry(email_toplevel,width=15, borderwidth=2, textvariable=newpassword)
+                        newpassword_entry.place(rely=0.603,relx=0.8,anchor=CENTER)
 
+                        def completeVerification():
+                            newPasswordUpdate(newpassword.get(), verificationCode, verification.get(), email_toplevel, verification, newpassword, finalname)
 
-        def emailSending(finalname, finalframe):
-            verification = IntVar()
-            newpassword = StringVar()
-            verificationCode = random.randint(100000,999999)
+                        newpassword_button=Button(email_toplevel,text = 'Update Password', command = completeVerification, fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20)
+                        newpassword_button.place(rely=0.85,relx=0.5,anchor=CENTER)
+                        ToolTips.bind(newpassword_button, 'Updates the password to the new one inputted')
 
-            found = ChangePassword("Lisburn Racquets Verification code","\n" + "This is an automated message sent from Lisburn Racquet's Club" + "\n" + "The verification code to change your passwords is: " + "\n\n" + str(verificationCode) + "\n\n" + "Please do not respond to this email",finalname)
-            if found:
-
-                email_toplevel=Toplevel(width=300, height=200, bg="white")
-
-                title_label = tkinter.Label(email_toplevel, text="Forgot Password System", font=('Verdana', 14, 'underline', 'bold'), fg='SpringGreen3', bg='white')
-                title_label.place(rely=0.125, relx=0.5, anchor='center')
-
-                verification_label = Label(email_toplevel,text = 'Verification Code:', fg ='black', bg='white', font = ('Verdana',12,'bold'))
-                verification_label.place(rely=0.4,relx=0.3,anchor=CENTER)
-
-                newpassword_label = Label(email_toplevel,text = 'New Password:', fg ='black', bg='white', font = ('Verdana',12,'bold'))
-                newpassword_label.place(rely=0.6,relx=0.3,anchor=CENTER)
-
-                verification_entry = Entry(email_toplevel,width=15, borderwidth=2, textvariable=verification)
-                verification_entry.place(rely=0.403,relx=0.8,anchor=CENTER)
-                verification.set('')
-
-                newpassword_entry = Entry(email_toplevel,width=15, borderwidth=2, textvariable=newpassword)
-                newpassword_entry.place(rely=0.603,relx=0.8,anchor=CENTER)
-
-                def completeVerification():
-                    newPasswordUpdate(newpassword.get(), verificationCode, verification.get(), email_toplevel, verification, newpassword, finalname)
-
-                newpassword_button=Button(email_toplevel,text = 'Update Password', command = completeVerification, fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20)
-                newpassword_button.place(rely=0.85,relx=0.5,anchor=CENTER)
-                ToolTips.bind(newpassword_button, 'Updates the password to the new one inputted')
-
-                finalframe.destroy()
-
-
-        def SMSSending(finalname, finalframe):
-            verification = IntVar()
-            newpassword = StringVar()
-            verificationCode = random.randint(100000,999999)
-
-            found = ChangingPassword(str(verificationCode), finalframe)
-            if found:
-
-                SMS_toplevel=Toplevel(width=300, height=200, bg="white")
-
-                title_label = tkinter.Label(SMS_toplevel, text="Forgot Password System", font=('Verdana', 14, 'underline', 'bold'), fg='SpringGreen3', bg='white')
-                title_label.place(rely=0.125, relx=0.5, anchor='center')
-
-                verification_label = Label(SMS_toplevel,text = 'Verification Code:', fg ='black', bg='white', font = ('Verdana',12,'bold'))
-                verification_label.place(rely=0.4,relx=0.3,anchor=CENTER)
-
-                newpassword_label = Label(SMS_toplevel,text = 'New Password:', fg ='black', bg='white', font = ('Verdana',12,'bold'))
-                newpassword_label.place(rely=0.6,relx=0.3,anchor=CENTER)
-
-                verification_entry = Entry(SMS_toplevel,width=15, borderwidth=2, textvariable=verification)
-                verification_entry.place(rely=0.403,relx=0.8,anchor=CENTER)
-                verification.set('')
-
-                newpassword_entry = Entry(SMS_toplevel,width=15, borderwidth=2, textvariable=newpassword)
-                newpassword_entry.place(rely=0.603,relx=0.8,anchor=CENTER)
-
-                def completeVerification():
-                    newPasswordUpdate(newpassword.get(), verificationCode, verification.get(), SMS_toplevel, verification, newpassword, finalname)
-
-                newpassword_button=Button(SMS_toplevel,text = 'Update Password', command = completeVerification, fg ='white', bg='black', relief= 'groove', font = ('Verdana',10,'bold'), padx =20)
-                newpassword_button.place(rely=0.85,relx=0.5,anchor=CENTER)
-                ToolTips.bind(newpassword_button, 'Updates the password to the new one inputted')
-
-                finalframe.destroy()
+                        email_toplevel.destroy()
 
 
         def newPasswordUpdate(newPassword, verificationCode, verification_entry, frame, value, value2, finalname):

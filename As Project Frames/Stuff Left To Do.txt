@@ -1,4 +1,0 @@
-Stuff to finish:
-
-1) Fix all home screens of each user
-2) Finish Manager reports screen

@@ -4,15 +4,12 @@ import tkinter.simpledialog
 from tkinter.messagebox import showinfo
 from tkinter.messagebox import askyesno
 import sqlite3
-from tkinter import simpledialog
 from tkinter import *
 from functools import partial
 from tkcalendar import Calendar
 import datetime
-import tkinter as tk
 import Pmw
 from MemberBooking.BookingEmail import Email
-import PIL
 from PIL import Image, ImageTk
 from io import BytesIO
 

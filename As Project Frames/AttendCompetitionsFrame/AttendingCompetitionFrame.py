@@ -1,17 +1,12 @@
 from tkinter import ttk
 from tkinter import messagebox
 import tkinter.simpledialog
-from tkinter.messagebox import showinfo
-from tkinter.messagebox import askyesno
 import sqlite3
-from tkinter import simpledialog
 from tkinter import *
 from functools import partial
-from tkcalendar import Calendar
 import datetime
 from datetime import timedelta
 from datetime import date
-from CoachingSessionFrame.CoachingSessionEmail import SessionEmail
 import time
 import matplotlib
 matplotlib.use('TkAgg')

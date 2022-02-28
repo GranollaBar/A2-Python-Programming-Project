@@ -10,7 +10,6 @@ from functools import partial
 import datetime
 from tkcalendar import Calendar
 from CoachingSessionFrame.CoachingSessionEmail import SessionEmail
-from PIL import ImageTk,Image
 import Pmw
 
 
