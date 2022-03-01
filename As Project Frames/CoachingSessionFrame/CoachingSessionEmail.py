@@ -8,7 +8,7 @@ def SessionEmail(subject, msg, recipientemail, label):
 		server=smtplib.SMTP('smtp.gmail.com:587')
 		server.ehlo()
 		server.starttls()
-		server.login("josnoble113@gmail.com", "jn11jn11")
+		server.login("gamblingwolf113@gmail.com", "WPKa4VAqpuHxdQyt")
 		emailText = buildEmailMsg(subject, msg, recipientemail)
 		server.sendmail("josnoble113@gmail.com",recipientemail,emailText)
 		server.quit()
@@ -21,7 +21,7 @@ def SessionEmail(subject, msg, recipientemail, label):
 
 def buildEmailMsg(subject, msgBody, recipientemail):	
 	msg = MIMEMultipart()
-	msg['From'] = "josnoble113@gmail.com"
+	msg['From'] = "gamblingwolf113@gmail.com"
 	msg['To'] = recipientemail
 	msg['Subject'] = subject
 	msg.attach(MIMEText(msgBody,'plain'))

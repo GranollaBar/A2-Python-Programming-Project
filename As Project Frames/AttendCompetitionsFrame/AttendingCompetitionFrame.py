@@ -16,10 +16,12 @@ import matplotlib.pyplot as plt
 import Pmw
 from AttendCompetitionsFrame.CurrentCompetitionDocument import buildcompetitiondocument
 
-previous1 = 0
-previous2 = 0
+
 
 class AttendingContent:
+
+    previous1 = 0
+    previous2 = 0
 
     def __init__(self, mainScreen):
         self.attend = mainScreen
@@ -49,35 +51,32 @@ class AttendingContent:
     def generateAttendingContnt(self):
 
         def validate_member_team_score(value1, value2):
-            global previous1
-            global previous2
-
-            if value1 <= (previous1 - 1):
+            if value1 <= (self.previous1 - 1):
                 messagebox.showinfo("Validation Error", "Score 1 must not be less than the previous score entered", icon='error')
                 return False
 
-            if value2 <= (previous2 - 1):
+            if value2 <= (self.previous2 - 1):
                 messagebox.showinfo("Validation Error", "Score 2 must not be less than the previous score entered", icon='error')
                 return False
 
-            if value1 > (previous1 + 1):
+            if value1 > (self.previous1 + 1):
                 messagebox.showinfo("Validation Error", "Score 1 can only be increased by 1 each cycle", icon='error')
                 return False
 
-            if value2 > (previous2 + 1):
+            if value2 > (self.previous2 + 1):
                 messagebox.showinfo("Validation Error", "Score 2 can only be increased by 1 each cycle", icon='error')
                 return False
 
-            if value1 == previous1 and value2 == previous2:
+            if value1 == self.previous1 and value2 == self.previous2:
                 messagebox.showinfo("Validation Error", "One score must be increased by 1 each cycle", icon='error')
                 return False
 
-            if value1 == previous1+1 and value2 == previous2+1:
+            if value1 == self.previous1+1 and value2 == self.previous2+1:
                 messagebox.showinfo("Validation Error", "Only one score can be increased each cycle", icon='error')
                 return False
 
-            previous1 = value1
-            previous2 = value2
+            self.previous1 = value1
+            self.previous2 = value2
             return True
 
 

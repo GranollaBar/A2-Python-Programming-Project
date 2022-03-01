@@ -13,12 +13,13 @@ from CoachingSessionFrame.CoachingSessionEmail import SessionEmail
 import Pmw
 
 
-GroupFinder=0
-CourtsTrue = False
-GroupTrue = False
-
 
 class CoachingSessionContent:
+
+	CourtsTrue = False
+	GroupTrue = False
+	GroupFinder = 0
+	PeopleCounter = 0
 
 	def __init__(self, mainScreen):
 		self.coachSession = mainScreen
@@ -163,12 +164,12 @@ class CoachingSessionContent:
 				return False
 
 			for records in items:
-				if (str(records[7]) != str(GroupFinder) or records == []):
+				if (str(records[7]) != str(self.GroupFinder) or records == []):
 					GroupExistsCounter += 1
 					pass
 					if (GroupExistsCounter == len(items)):
 						group_label.config(fg='red')
-						messagebox.showinfo('Validation Error', 'There are no members in group ' + str(GroupFinder) + '. You must choose a group with members in order to create a valid coaching session', icon='error')
+						messagebox.showinfo('Validation Error', 'There are no members in group ' + str(self.GroupFinder) + '. You must choose a group with members in order to create a valid coaching session', icon='error')
 						return False
 
 			label.config(fg="SpringGreen3")
@@ -336,10 +337,8 @@ class CoachingSessionContent:
 			ToolTips.bind(SelectCourtsButton, 'Pick the courts required for the coaching session')
 
 
-
 		def ChangeCourtsColour(frame, courtvalue, courtvalue2, courtvalue3, courtvalue4, courtvalue5, courtvalue6, courtvalue7, courtvalue8, courtvalue9, courtvalue10, courtvalue11, courtvalue12):
 			global FinalSelectedCourts
-			global CourtsTrue
 
 			counter = 1
 			SelectedCourts = []
@@ -351,7 +350,7 @@ class CoachingSessionContent:
 				messagebox.showinfo('Error', 'Please select a court to continue', icon='error')
 
 			else:
-				CourtsTrue = True
+				self.CourtsTrue = True
 				frame.withdraw()
 				for court in courts:
 					if (str(counter) == court.cget('text') and court.cget('bg') == 'SpringGreen3'):
@@ -370,40 +369,27 @@ class CoachingSessionContent:
 
 
 		def groupRequired():
-			global GroupFinder
-			global GroupTrue
-
-			groupNumber = tkinter.simpledialog.askstring("Response","Enter the group number that you want the coaching session for (1-20)")
-
-			isValid = True
-			isValid = isValid and validate_entry_group(groupNumber)
-
-			if isValid:
-				GroupTrue = True
-				GroupFinder = groupNumber
-
-				return GroupFinder
-
-
-		def findMembers():
-			global PeopleCounter
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
-			PeopleCounter = 0
+			groupNumber = tkinter.simpledialog.askstring("Response","Enter the group number that you want the coaching session for (1-20)")
+			monkey = groupNumber
 
-			c.execute("SELECT * From member")
-			items = c.fetchall()
+			isValid = True
+			isValid = isValid and validate_entry_group(str(monkey))
 
-			for row in items:
-				if row[7] != GroupFinder or row == []:
-					pass
-				else:
-					PeopleCounter += 1
+			if isValid:
+				self.GroupTrue = True
+				self.GroupFinder = groupNumber
 
-			conn.commit()
+				c.execute("SELECT * From member")
+				items = c.fetchall()
 
-			return PeopleCounter
+				for row in items:
+					if str(row[7]) != str(groupNumber) or row == []:
+						pass
+					else:
+						self.PeopleCounter += 1
 
 
 		def updateCoachSessionDate(frame):
@@ -898,8 +884,8 @@ class CoachingSessionContent:
 			isValid = isValid and validate_start_time(timeStart.get(), timeEnd.get(), starttime_label)
 			isValid = isValid and validate_end_time(timeEnd.get(), endtime_label)
 			isValid = isValid and validate_date(eventDate.get(), date_label)
-			isValid = isValid and validate_courts(CourtsTrue, courts_needed_label)
-			isValid = isValid and validate_group(GroupTrue, group_label)
+			isValid = isValid and validate_courts(self.CourtsTrue, courts_needed_label)
+			isValid = isValid and validate_group(self.GroupTrue, group_label)
 			isValid = isValid and validate_techniques(techniques_label)
 
 
@@ -931,13 +917,14 @@ class CoachingSessionContent:
 					showinfo("Info", "submition cancelled", icon='info')
 
 				else:
-					findMembers()
+					finalgroup = self.GroupFinder
+					finalnopeople = self.PeopleCounter
 
 					c.execute("SELECT * From member")
 					items = c.fetchall()
 
 					for row in items:
-						if str(row[7]) != str(GroupFinder) or row == []:
+						if str(row[7]) != str(finalgroup) or row == []:
 							pass
 							AllEmailsComplete += 1
 						else:
@@ -945,7 +932,7 @@ class CoachingSessionContent:
 							SessionEmail("Coaching Session Date Set", "A coach at Lisburn Racquets Club has set up a new coaching session. The date and time of the session is listed below:" + "\n\n" + "Date: " + coachsession_date + "\n\n" + "From: " + coachsession_starttime + "\n" + "To: " + coachsession_endtime + "\n\n" + "Thanks for choosing Lisburn Racquets Club", member_name, username_label)
 							AllEmailsComplete += 1
 							if (AllEmailsComplete == len(items)):
-								messagebox.showinfo('Info', 'All members in group ' + str(GroupFinder) + ' have been sent information on the new coaching session', icon='info')
+								messagebox.showinfo('Info', 'All members in group ' + str(self.GroupFinder) + ' have been sent information on the new coaching session', icon='info')
 
 					c.execute("INSERT INTO coachSessionDetails VALUES (:username, :startTime, :endTime, :date, :courts, :membergroup, :people, :technique, :sessionID)",
 							{
@@ -954,14 +941,14 @@ class CoachingSessionContent:
 								'endTime': final_coach_endtime,
 								'date': coachsession_date,
 								'courts': FinalSelectedCourts,
-								'membergroup': GroupFinder,
-								'people': PeopleCounter,
+								'membergroup': finalgroup,
+								'people': finalnopeople,
 								'technique': final_technique,
 								'sessionID': coachID,
 							})
 
 					for data in items:
-						if str(data[7]) != str(GroupFinder) or data == []:
+						if str(data[7]) != str(self.GroupFinder) or data == []:
 							pass
 						else:
 							fee_member_name = data[0]
@@ -1067,7 +1054,6 @@ class CoachingSessionContent:
 						})
 					else:
 						pass
-
 
 
 		timeStart=StringVar()
@@ -1194,7 +1180,6 @@ class CoachingSessionContent:
 
 		treeviewPopulate()
 		changeCalendarColour()
-		findMembers()
 
 
 		def onTreeviewPopup(tvPopup, event=None):

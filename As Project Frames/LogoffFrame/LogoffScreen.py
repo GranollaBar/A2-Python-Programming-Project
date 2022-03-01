@@ -2,6 +2,7 @@ from tkinter import messagebox
 from tkinter.messagebox import askyesno
 
 
+
 class LogoffContent:
 
 	def __init__(self, mainScreen):

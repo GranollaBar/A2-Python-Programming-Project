@@ -1,6 +1,5 @@
 import docx
-import os
-from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 import sqlite3
 
 def buildcompetitiondocument():
@@ -19,7 +18,7 @@ def buildcompetitiondocument():
 
     doc = docx.Document()
     heading = doc.add_heading('Latest Competition Results',0)
-    heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    heading.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
     parag=doc.add_paragraph("")
     parag.add_run("These are the results of the most previous " + str(row[0][0]).lower() + ' match with ID: ' + str(row[0][4])).bold=True
 

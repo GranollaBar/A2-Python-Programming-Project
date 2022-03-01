@@ -14,10 +14,11 @@ from PIL import Image, ImageTk
 from io import BytesIO
 
 
-courts = False
-previous = ''
 
 class BookingContent:
+
+	previous = ''
+	courts = False
 
 	def __init__(self, mainScreen):
 		self.booking = mainScreen
@@ -189,10 +190,8 @@ class BookingContent:
 
 
 		def RacquetSportSelect(badminton1, badminton2, badminton3, badminton4, badminton5, badminton6, badminton7, badminton8, badminton9, badminton10, badminton11, badminton12, tennis1, tennis2, tennis3, tennis4, squash1, squash2, badminton1l, badminton2l, badminton3l, badminton4l, badminton5l, badminton6l, badminton7l, badminton8l, badminton9l, badminton10l, badminton11l, badminton12l, tennis1l, tennis2l, tennis3l, tennis4l, squash1l, squash2l):
-			global previous
-
-			if RacquetType_combobox.get() == 'Badminton' and previous == '':
-				previous = 'Badminton'
+			if RacquetType_combobox.get() == 'Badminton' and self.previous == '':
+				self.previous = 'Badminton'
 
 				BadmintonFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/badmintonRacquetsFloor.png")
 
@@ -240,8 +239,8 @@ class BookingContent:
 				badminton12l.place(rely=0.78,relx=0.45,anchor=CENTER)
 
 
-			if RacquetType_combobox.get() == 'Tennis' and previous == '':
-				previous = 'Tennis'
+			if RacquetType_combobox.get() == 'Tennis' and self.previous == '':
+				self.previous = 'Tennis'
 
 				TennisFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/tennisRacquetsFloor.png")
 
@@ -265,8 +264,8 @@ class BookingContent:
 				tennis4l.place(rely=0.68,relx=0.39,anchor=CENTER)
 
 
-			if RacquetType_combobox.get() == 'Squash' and previous == '':
-				previous = 'Squash'
+			if RacquetType_combobox.get() == 'Squash' and self.previous == '':
+				self.previous = 'Squash'
 
 				SquashFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/squashRacquetsFloor.png")
 
@@ -284,12 +283,12 @@ class BookingContent:
 				squash2l.place(rely=0.44,relx=0.39,anchor=CENTER)
 
 
-			if RacquetType_combobox.get() == 'Badminton' and previous == 'Badminton':
+			if RacquetType_combobox.get() == 'Badminton' and self.previous == 'Badminton':
 				pass
 
 
-			if RacquetType_combobox.get() == 'Badminton' and previous == 'Tennis':
-				previous = 'Badminton'
+			if RacquetType_combobox.get() == 'Badminton' and self.previous == 'Tennis':
+				self.previous = 'Badminton'
 
 				BadmintonFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/badmintonRacquetsFloor.png")
 
@@ -352,8 +351,8 @@ class BookingContent:
 				badminton12l.place(rely=0.78,relx=0.45,anchor=CENTER)
 
 
-			if RacquetType_combobox.get() == 'Badminton' and previous == 'Squash':
-				previous = 'Badminton'
+			if RacquetType_combobox.get() == 'Badminton' and self.previous == 'Squash':
+				self.previous = 'Badminton'
 
 				BadmintonFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/badmintonRacquetsFloor.png")
 
@@ -410,12 +409,12 @@ class BookingContent:
 				badminton12l.place(rely=0.78,relx=0.45,anchor=CENTER)
 
 
-			if RacquetType_combobox.get() == 'Tennis' and previous == 'Tennis':
+			if RacquetType_combobox.get() == 'Tennis' and self.previous == 'Tennis':
 				pass
 
 
-			if RacquetType_combobox.get() == 'Tennis' and previous == 'Badminton':
-				previous = 'Tennis'
+			if RacquetType_combobox.get() == 'Tennis' and self.previous == 'Badminton':
+				self.previous = 'Tennis'
 
 				TennisFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/tennisRacquetsFloor.png")
 
@@ -478,8 +477,8 @@ class BookingContent:
 				tennis4l.place(rely=0.68,relx=0.39,anchor=CENTER)
 
 
-			if RacquetType_combobox.get() == 'Tennis' and previous == 'Squash':
-				previous = 'Tennis'
+			if RacquetType_combobox.get() == 'Tennis' and self.previous == 'Squash':
+				self.previous = 'Tennis'
 
 				TennisFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/tennisRacquetsFloor.png")
 
@@ -512,12 +511,12 @@ class BookingContent:
 				tennis4l.place(rely=0.68,relx=0.39,anchor=CENTER)
 
 
-			if RacquetType_combobox.get() == 'Squash' and previous == 'Squash':
+			if RacquetType_combobox.get() == 'Squash' and self.previous == 'Squash':
 				pass
 
 
-			if RacquetType_combobox.get() == 'Squash' and previous == 'Badminton':
-				previous = 'Squash'
+			if RacquetType_combobox.get() == 'Squash' and self.previous == 'Badminton':
+				self.previous = 'Squash'
 
 				SquashFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/squashRacquetsFloor.png")
 
@@ -574,8 +573,8 @@ class BookingContent:
 				squash2l.place(rely=0.44,relx=0.39,anchor=CENTER)
 
 
-			if RacquetType_combobox.get() == 'Squash' and previous == 'Tennis':
-				previous = 'Squash'
+			if RacquetType_combobox.get() == 'Squash' and self.previous == 'Tennis':
+				self.previous = 'Squash'
 
 				SquashFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/squashRacquetsFloor.png")
 
@@ -609,8 +608,6 @@ class BookingContent:
 
 
 		def validate_courts(badminton1, badminton2, badminton3, badminton4, badminton5, badminton6, badminton7, badminton8, badminton9, badminton10, badminton11, badminton12, tennis1, tennis2, tennis3, tennis4, squash1, squash2, racquet_sport_label):
-			global courts
-
 			if RacquetType_combobox.get() == 'Badminton':
 				badmintoncounter = 1
 				badmintonselectedcourts = []
@@ -648,7 +645,7 @@ class BookingContent:
 						badminton12.config(bg='black')
 
 					else:
-						courts = True
+						self.courts = True
 						racquet_sport_label.config(fg='SpringGreen3')
 						return badmintonselectedcourts[0]
 
@@ -680,7 +677,7 @@ class BookingContent:
 						tennis4.config(bg='black')
 
 					else:
-						courts = True
+						self.courts = True
 						racquet_sport_label.config(fg='SpringGreen3')
 						return tennisselectedcourts[0]
 
@@ -710,7 +707,7 @@ class BookingContent:
 						squash2.config(bg='black')
 
 					else:
-						courts = True
+						self.courts = True
 						racquet_sport_label.config(fg='SpringGreen3')
 						return squashselectedcourts[0]
 
@@ -727,7 +724,7 @@ class BookingContent:
 			if isValid:
 				courtnumber = validate_courts(badminton1, badminton2, badminton3, badminton4, badminton5, badminton6, badminton7, badminton8, badminton9, badminton10, badminton11, badminton12, tennis1, tennis2, tennis3, tennis4, squash1, squash2, racquet_sport_label)
 
-			if isValid == True and courts == True:
+			if isValid == True and self.courts == True:
 				c.execute("SELECT * FROM MemberBooking")
 				row = c.fetchall()
 

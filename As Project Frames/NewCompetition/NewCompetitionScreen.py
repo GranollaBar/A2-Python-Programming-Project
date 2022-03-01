@@ -13,10 +13,11 @@ import datetime
 import Pmw
 
 
-CourtsTrue = False
-
 
 class NewCompetitionContent:
+
+	CourtsTrue = False
+	FinalSelectedCourts = ''
 
 	def __init__(self, mainScreen):
 		self.competition = mainScreen
@@ -930,9 +931,6 @@ class NewCompetitionContent:
 
 
 		def ChangeCourtsColour(frame, courtvalue, courtvalue2, courtvalue3, courtvalue4, courtvalue5, courtvalue6, courtvalue7, courtvalue8, courtvalue9, courtvalue10, courtvalue11, courtvalue12):
-			global FinalSelectedCourts
-			global CourtsTrue
-
 			counter = 1
 			SelectedCourts = []
 
@@ -967,16 +965,16 @@ class NewCompetitionContent:
 					courtvalue12.config(bg='black')
 
 				else:
-					CourtsTrue = True
+					self.CourtsTrue = True
 					frame.withdraw()
 
-					FinalSelectedCourts = ''
+					self.FinalSelectedCourts = ''
 					for court in SelectedCourts:
-						FinalSelectedCourts = FinalSelectedCourts + court + ", "
+						self.FinalSelectedCourts = self.FinalSelectedCourts + court + ", "
 
-					FinalSelectedCourts = FinalSelectedCourts[0: len(FinalSelectedCourts) - 2]
+					self.FinalSelectedCourts = self.FinalSelectedCourts[0: len(self.FinalSelectedCourts) - 2]
 
-					return FinalSelectedCourts
+					return self.FinalSelectedCourts
 
 
 		def SinglesCalendarSelection(cal, event=None):
@@ -1421,7 +1419,7 @@ class NewCompetitionContent:
 			if (UpdateSelectionSingles.get() == 3):
 				isValid = True
 				isValid = isValid and validate_group_delete(value1.get(), label1)
-				isValid = isValid and validate_court(CourtsTrue, label2)
+				isValid = isValid and validate_court(self.CourtsTrue, label2)
 
 				if isValid:
 					GroupSelected = value1.get()
@@ -1442,11 +1440,11 @@ class NewCompetitionContent:
 						else:
 
 							c.execute("UPDATE SinglesCompetition SET court = :newcourt WHERE singlescompetitionID=:groupID", {
-								"newcourt": FinalSelectedCourts,
+								"newcourt": self.FinalSelectedCourts,
 								"groupID": str(GroupSelected)
 							})
 
-							messagebox.showinfo('Info', "Group " + str(GroupSelected) + " has been updated, and has now been assigned court " + FinalSelectedCourts, icon='info')
+							messagebox.showinfo('Info', "Group " + str(GroupSelected) + " has been updated, and has now been assigned court " + self.FinalSelectedCourts, icon='info')
 
 							value1.set('')
 
@@ -1576,7 +1574,7 @@ class NewCompetitionContent:
 			if (UpdateSelectionDoubles.get() == 3):
 				isValid = True
 				isValid = isValid and validate_group_delete(value1.get(), label1)
-				isValid = isValid and validate_court(CourtsTrue, label2)
+				isValid = isValid and validate_court(self.CourtsTrue, label2)
 
 				if isValid:
 					GroupSelected = value1.get()
@@ -1597,11 +1595,11 @@ class NewCompetitionContent:
 						else:
 
 							c.execute("UPDATE DoublesCompetition SET court = :newcourt WHERE doublescompetitionID=:groupID", {
-								"newcourt": FinalSelectedCourts,
+								"newcourt": self.FinalSelectedCourts,
 								"groupID": str(GroupSelected)
 							})
 
-							messagebox.showinfo('Info', "Group " + str(GroupSelected) + " has been updated, and has now been assigned court " + FinalSelectedCourts, icon='info')
+							messagebox.showinfo('Info', "Group " + str(GroupSelected) + " has been updated, and has now been assigned court " + self.FinalSelectedCourts, icon='info')
 
 							value1.set('')
 
@@ -1622,14 +1620,14 @@ class NewCompetitionContent:
 			isValid = isValid and validate_singles_second_member(memberNamesAndPasswords.get(), memberNamesAndPasswords2.get(), label1, label2)
 			isValid = isValid and validate_singles_competition_start_date(startDate.get(), label3)
 			isValid = isValid and validate_singles_competition_end_date(startDate.get(), endDate.get(), label4)
-			isValid = isValid and validate_court(CourtsTrue, label5)
+			isValid = isValid and validate_court(self.CourtsTrue, label5)
 
 			if isValid:
 				FinalMember1 = memberNamesAndPasswords.get()
 				FinalMember2 = memberNamesAndPasswords2.get()
 				FinalStartDate = startDate.get()
 				FinalEndDate = endDate.get()
-				FinalCourt = FinalSelectedCourts
+				FinalCourt = self.FinalSelectedCourts
 
 				response = askyesno("Question", "Are you sure that all information above is correct?", icon='question')
 				if response == False:
@@ -1663,7 +1661,7 @@ class NewCompetitionContent:
 								   'member2': FinalMember2,
 								   'startDate': FinalStartDate,
 								   'endDate': FinalEndDate,
-								   'court': FinalSelectedCourts,
+								   'court': self.FinalSelectedCourts,
 								   'singlescompetitionID': newId,
 							   })
 
@@ -1691,7 +1689,7 @@ class NewCompetitionContent:
 			isValid = isValid and validate_doubles_fourth_member(memberNamesAndPasswords.get(), memberNamesAndPasswords2.get(), memberNamesAndPasswords3.get(), memberNamesAndPasswords4.get(), label2)
 			isValid = isValid and validate_doubles_competition_start_date(startDate.get(), label3)
 			isValid = isValid and validate_doubles_competition_end_date(startDate.get(), endDate.get(), label4)
-			isValid = isValid and validate_court(CourtsTrue, label5)
+			isValid = isValid and validate_court(self.CourtsTrue, label5)
 
 			if isValid:
 				FinalMember1 = memberNamesAndPasswords.get()
@@ -1700,7 +1698,7 @@ class NewCompetitionContent:
 				FinalMember4 = memberNamesAndPasswords4.get()
 				FinalStartDate = startDate.get()
 				FinalEndDate = endDate.get()
-				FinalCourt = FinalSelectedCourts
+				FinalCourt = self.FinalSelectedCourts
 
 				response = askyesno("Question", "Are you sure that all information above is correct?", icon='question')
 				if response == False:
@@ -1788,7 +1786,7 @@ class NewCompetitionContent:
 								  'member4': FinalMember4,
 								  'startDate': FinalStartDate,
 								  'endDate': FinalEndDate,
-								  'court': FinalSelectedCourts,
+								  'court': self.FinalSelectedCourts,
 								  'team1': team1,
 								  'team2': team2,
 								  'doublescompetitionID': newId,
@@ -1805,6 +1803,7 @@ class NewCompetitionContent:
 					memberNamesAndPasswords4.set('')
 
 					returnColour(label1, label2, label3, label4, label5)
+					self.FinalSelectedCourts = ''
 					messagebox.showinfo("Info", "Details have been successfully stored", icon='info')
 
 			doublestreeviewPopulate(treeview)

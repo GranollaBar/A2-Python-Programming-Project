@@ -1,12 +1,11 @@
 import docx
-import os
 from docx.shared import Inches
-from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 
 def buildCoachDocument(username, password, firstname, surname, gender, DOB, postcode, monday, tuesday, wednesday, thursday, friday, saturday, sunday):
     doc = docx.Document()
     heading = doc.add_heading('Lisburn Racquets Coach Details',0)
-    heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    heading.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
     parag=doc.add_paragraph("")
     parag.add_run("You have successfully created your coach account for Lisburn Racquets Club").bold=True
     parag.add_run("\n\n" + "Your details are listed below:").bold=True
