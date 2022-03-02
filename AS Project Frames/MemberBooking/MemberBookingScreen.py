@@ -26,14 +26,14 @@ class BookingContent:
 		self.c = self.conn.cursor()
 
 
-		# self.c.execute("""CREATE TABLE MemberBooking (
-		# 			image BlOB,
-		# 			username text,
-		# 			type text,
-		# 			date text,
-		# 			court text,
-		# 			bookingID integer
-		# 			)""")
+		self.c.execute("""CREATE TABLE IF NOT EXISTS MemberBooking (
+					image BlOB,
+					username text,
+					type text,
+					date text,
+					court text,
+					bookingID integer
+					)""")
 
 
 	def generateBookingContnt(self):

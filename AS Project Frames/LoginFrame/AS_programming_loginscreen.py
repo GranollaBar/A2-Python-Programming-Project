@@ -1,3 +1,5 @@
+# Login Screen
+
 import tkinter
 from tkinter import messagebox
 import random
@@ -14,9 +16,11 @@ import Pmw
 
 class LoginContent:
 
+    # will store the username of the user entering the system
     def getloginname(self):
         return self.finalloginname
 
+    # Initiates main screen window
     def __init__(self, mainScreen):
         self.finalloginname = ''
 
@@ -25,29 +29,29 @@ class LoginContent:
         self.c = self.conn.cursor()
 
 
-        # self.c.execute("""CREATE TABLE account (
-        #                 username text,
-        #                 password text,
-        #                 status text
-        #                 )""")
+        self.c.execute("""CREATE TABLE IF NOT EXISTS account (
+                        username text,
+                        password text,
+                        status text
+                        )""")
 
-        # self.c.execute("""CREATE TABLE manager (
-        #                 username text,
-        #                 password text,
-        #                 firstname text,
-        #                 surname text
-        #                 )""")
+        self.c.execute("""CREATE TABLE IF NOT EXISTS manager (
+                        username text,
+                        password text,
+                        firstname text,
+                        surname text
+                        )""")
 
-        # self.c.execute("""CREATE TABLE fees (
-        #                 username text,
-        #                 coachingsessionfee text,
-        #                 memberbookingfee text
-        #                 )""")
-
+        self.c.execute("""CREATE TABLE IF NOT EXISTS fees (
+                        username text,
+                        coachingsessionfee text,
+                        memberbookingfee text
+                        )""")
 
 
     def generateLoginContnt(self):
 
+        # Ensures password entered conforms to the rules
         def validate_password(value, label):
             if value is None:
                 return False
@@ -72,6 +76,7 @@ class LoginContent:
             return True
 
 
+        # Ensures username entered conforms to the rules
         def validate_username(value, label):
             if value is None:
                 return False
@@ -96,6 +101,7 @@ class LoginContent:
             return True
 
 
+        # Ensures username entered  for email conforms to the rules
         def validate_username2(value):
             if value is None:
                 return False
@@ -112,6 +118,7 @@ class LoginContent:
             return True
 
 
+        # Ensures firstname entered conforms to the rules
         def validate_firstname(value, label):
             if value is None:
                 return False
@@ -132,6 +139,7 @@ class LoginContent:
             return True
 
 
+        # Ensures surname entered conforms to the rules
         def validate_surname(value, label):
             if value is None:
                 return False
@@ -152,6 +160,7 @@ class LoginContent:
             return True
 
 
+        # An existant user can create a new password if they have forgotten their old password
         def forgot_system():
             conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
             c = conn.cursor()
@@ -205,6 +214,7 @@ class LoginContent:
                         email_toplevel.destroy()
 
 
+        # Password will be updated for the user
         def newPasswordUpdate(newPassword, verificationCode, verification_entry, frame, value, value2, finalname):
             conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
             c = conn.cursor()
@@ -250,6 +260,7 @@ class LoginContent:
             conn.close()
 
 
+        # This will only occur for the first user entering the system (i.e. manager)
         def first_login_submit(username, password, firstname, surname):
             conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
             c = conn.cursor()
@@ -299,6 +310,7 @@ class LoginContent:
                 ManagerMainScreen.main()
 
 
+        # Login Details entered will be submitted to ensure the entered username and password exist in the system. If so, the user may enter the main system.
         def login_submit(login_username, login_password):
             conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
             c = conn.cursor()
@@ -349,6 +361,7 @@ class LoginContent:
             conn.close()
 
 
+        # Will clear all details inputted into the login screen
         def login_clear():
             response = askyesno("Question", "Do you want to clear all details entered so far", icon='question')
             if response == False:
@@ -360,6 +373,7 @@ class LoginContent:
                 loginPassword.set('')
 
 
+        # Will add and remove placeholder text into the username entry box
         def username_click(event):
             if username_entry.get() == 'e.g. greg@gmail.com':
                 username_entry.delete(0, "end")
@@ -372,13 +386,13 @@ class LoginContent:
                 username_entry.config(fg='grey')
 
 
+        # Will add and remove placeholder text into the password entry box
         def password_click(event):
             if password_entry.get() == 'e.g. password123':
                 password_entry.delete(0, "end")
                 password_entry.insert(0, '')
                 password_entry.config(fg='black')
                 password_entry.config(show="*")
-
 
         def password_unclick(event):
             if password_entry.get() == '':
@@ -387,12 +401,12 @@ class LoginContent:
                 password_entry.config(fg='grey')
 
 
+        # Will add and remove placeholder text into the first name entry box
         def firstname_click(event):
             if firstname_entry.get() == 'e.g. joe':
                 firstname_entry.delete(0, "end")
                 firstname_entry.insert(0, '')
                 firstname_entry.config(fg='black')
-
 
         def firstname_unclick(event):
             if firstname_entry.get() == '':
@@ -401,12 +415,12 @@ class LoginContent:
                 firstname_entry.config(fg='grey')
 
 
+        # Will add and remove placeholder text into the surname entry box
         def surname_click(event):
             if surname_entry.get() == 'e.g. jones':
                 surname_entry.delete(0, "end")
                 surname_entry.insert(0, '')
                 surname_entry.config(fg='black')
-
 
         def surname_unclick(event):
             if surname_entry.get() == '':
@@ -415,10 +429,12 @@ class LoginContent:
                 surname_entry.config(fg='grey')
 
 
+        # Shows the password entered in plain text
         def show_password(self):
             password_entry.config(show="")
 
 
+        # Shows the password entered as stars
         def dont_show_password(self):
             if password_entry.get() != 'e.g. password123':
                 password_entry.config(show="*")
@@ -426,10 +442,12 @@ class LoginContent:
                 password_entry.config(show="")
 
 
+        # Links to Lisburn Racquets Club twitter account
         def twitterLink():
             webbrowser.open("https://twitter.com/lisburnracquets")
 
 
+        # Links to Lisburn Racquets Club facebook account
         def facebookLink():
             webbrowser.open("https://www.facebook.com/LisburnRacquetsClub")
 

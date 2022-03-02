@@ -20,14 +20,6 @@ class CoachReportsContent:
 		self.c = self.conn.cursor()
 
 
-	# self.c.execute("""CREATE TABLE PastEvents (
-	# 			username text,
-	# 			event text,
-	# 			date text,
-	# 			status text
-	# 			)""")
-
-
 	def generateCoachReportsContnt(self, FinalUsername):
 
 		def findfirstandsurname():

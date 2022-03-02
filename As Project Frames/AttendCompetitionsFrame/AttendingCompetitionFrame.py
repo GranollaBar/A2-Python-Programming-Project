@@ -29,23 +29,23 @@ class AttendingContent:
         self.c = self.conn.cursor()
 
 
-        # self.c.execute("""CREATE TABLE CurrentCompetitionScores (
-        #             CompetitionType text,
-        #             Member_Team_1_Score text,
-        #             Member_Team_2_Score text,
-        #             Time text,
-        #             CurrentID text
-        #             )""")
-        #
-        # self.c.execute("""CREATE TABLE FinshedCompetitions (
-        #             CompetitionType text,
-        #             Member_Team_1 text,
-        #             Member_Team_1_Score text,
-        #             Member_Team_2 text,
-        #             Member_Team_2_Score text,
-        #             Final_time_seconds text,
-        #             CurrentID text
-        #             )""")
+        self.c.execute("""CREATE TABLE IF NOT EXISTS CurrentCompetitionScores (
+                    CompetitionType text,
+                    Member_Team_1_Score text,
+                    Member_Team_2_Score text,
+                    Time text,
+                    CurrentID text
+                    )""")
+
+        self.c.execute("""CREATE TABLE IF NOT EXISTS FinshedCompetitions (
+                    CompetitionType text,
+                    Member_Team_1 text,
+                    Member_Team_1_Score text,
+                    Member_Team_2 text,
+                    Member_Team_2_Score text,
+                    Final_time_seconds text,
+                    CurrentID text
+                    )""")
 
 
     def generateAttendingContnt(self):

@@ -27,17 +27,17 @@ class CoachingSessionContent:
 		self.c = self.conn.cursor()
 
 
-		# self.c.execute("""CREATE TABLE coachSessionDetails (
-		# 			username text,
-		# 			startTime text,
-		# 			endTime text,
-		# 			date text,
-		# 			courts text,
-		# 			membergroup integer,
-		# 			people text,
-		# 			technique text,
-		# 			sessionID text
-		# 			)""")
+		self.c.execute("""CREATE TABLE IF NOT EXISTS coachSessionDetails (
+					username text,
+					startTime text,
+					endTime text,
+					date text,
+					courts text,
+					membergroup integer,
+					people text,
+					technique text,
+					sessionID text
+					)""")
 
 
 	def generateCoachSessionContnt(self):

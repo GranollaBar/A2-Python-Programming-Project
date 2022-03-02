@@ -25,27 +25,27 @@ class NewCompetitionContent:
 		self.c = self.conn.cursor()
 
 
-		# self.c.execute("""CREATE TABLE SinglesCompetition (
-		# 			username text,
-		# 			username2 text,
-		# 			start_date text,
-		# 			end_date text,
-		# 			court text,
-		# 			singlescompetitionID integer
-		# 			)""")
-		#
-		# self.c.execute("""CREATE TABLE DoublesCompetition (
-		# 			username text,
-		# 			username2 text,
-		# 			username3 text,
-		# 			username4 text,
-		# 			start_date text,
-		# 			end_date text,
-		# 			court text,
-		# 			team1 text,
-		# 			team2 text,
-		# 			doublescompetitionID integer
-		# 			)""")
+		self.c.execute("""CREATE TABLE IF NOT EXISTS SinglesCompetition (
+					username text,
+					username2 text,
+					start_date text,
+					end_date text,
+					court text,
+					singlescompetitionID integer
+					)""")
+
+		self.c.execute("""CREATE TABLE IF NOT EXISTS DoublesCompetition (
+					username text,
+					username2 text,
+					username3 text,
+					username4 text,
+					start_date text,
+					end_date text,
+					court text,
+					team1 text,
+					team2 text,
+					doublescompetitionID integer
+					)""")
 
 
 	def generateCompetitionContnt(self):

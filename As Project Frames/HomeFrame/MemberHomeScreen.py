@@ -27,14 +27,6 @@ class MemberHomeScreenContent:
 		self.c = self.conn.cursor()
 
 
-		# self.c.execute("""CREATE TABLE PastEvents (
-		# 			username text,
-		# 			event text,
-		# 			date text,
-		# 			status text
-		# 			)""")
-
-
 	def generateMemberHomeScreenContnt(self, FinalUsername):
 
 		def time():

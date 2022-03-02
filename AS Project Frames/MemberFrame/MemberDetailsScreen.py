@@ -22,17 +22,17 @@ class MemberContent:
 		self.c = self.conn.cursor()
 
 
-		# self.c.execute("""CREATE TABLE member (
-		# 			username text,
-		# 			password text,
-		# 			firstname text,
-		# 			surname text,
-		# 			telephone text,
-		# 			postcode text,
-		# 			age integer,
-		# 			member_group integer,
-		# 			competitions string
-		# 			)""")
+		self.c.execute("""CREATE TABLE IF NOT EXISTS member (
+					username text,
+					password text,
+					firstname text,
+					surname text,
+					telephone text,
+					postcode text,
+					age integer,
+					member_group integer,
+					competitions string
+					)""")
 
 
 	def generateMemberContnt(self):

@@ -23,27 +23,27 @@ class CoachContent:
 		self.c = self.conn.cursor()
 
 
-		# self.c.execute("""CREATE TABLE coach (
-		# 			username text,
-		# 			password text,
-		# 			firstname text,
-		# 			surname text,
-		# 			gender text,
-		# 			DOB text,
-		# 			address text,
-		# 			availability text
-		# 			)""")
-		#
-		# self.c.execute("""CREATE TABLE coachTimetable (
-		# 			username text,
-		# 			Monday text,
-		# 			Tuesday text,
-		# 			Wednesday text,
-		# 			Thursday text,
-		# 			Friday text,
-		# 			Saturday text,
-		# 			Sunday text
-		# 			)""")
+		self.c.execute("""CREATE TABLE IF NOT EXISTS coach (
+					username text,
+					password text,
+					firstname text,
+					surname text,
+					gender text,
+					DOB text,
+					address text,
+					availability text
+					)""")
+
+		self.c.execute("""CREATE TABLE IF NOT EXISTS coachTimetable (
+					username text,
+					Monday text,
+					Tuesday text,
+					Wednesday text,
+					Thursday text,
+					Friday text,
+					Saturday text,
+					Sunday text
+					)""")
 
 
 	def generateCoachContnt(self):
