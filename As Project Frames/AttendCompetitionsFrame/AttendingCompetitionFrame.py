@@ -1,3 +1,5 @@
+# Attending Competition Frame
+
 from tkinter import ttk
 from tkinter import messagebox
 import tkinter.simpledialog
@@ -18,17 +20,20 @@ from AttendCompetitionsFrame.CurrentCompetitionDocument import buildcompetitiond
 
 
 
+# Attending Competition Class
 class AttendingContent:
 
     previous1 = 0
     previous2 = 0
 
+    # Initiates main screen window
     def __init__(self, mainScreen):
         self.attend = mainScreen
         self.conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
         self.c = self.conn.cursor()
 
 
+        # Creates CurrentCompetitionScores database table if it does not exist
         self.c.execute("""CREATE TABLE IF NOT EXISTS CurrentCompetitionScores (
                     CompetitionType text,
                     Member_Team_1_Score text,
@@ -37,6 +42,7 @@ class AttendingContent:
                     CurrentID text
                     )""")
 
+        # Creates FinshedCompetitions database table if it does not exist
         self.c.execute("""CREATE TABLE IF NOT EXISTS FinshedCompetitions (
                     CompetitionType text,
                     Member_Team_1 text,
@@ -48,8 +54,10 @@ class AttendingContent:
                     )""")
 
 
+    # Generate attending competition content
     def generateAttendingContnt(self):
 
+        # Ensures member_team_scores entered conform to the rules
         def validate_member_team_score(value1, value2):
             if value1 <= (self.previous1 - 1):
                 messagebox.showinfo("Validation Error", "Score 1 must not be less than the previous score entered", icon='error')
@@ -80,23 +88,27 @@ class AttendingContent:
             return True
 
 
+        # Clears Canvas
         def clearcanvas(singlescanvas):
             for item in singlescanvas.get_tk_widget().find_all():
                 singlescanvas.get_tk_widget().delete(item)
 
 
+        # Clears singles tree view data
         def ClearSinglesTV():
             record=unplayed_singles_competitions_Tv.get_children()
             for elements in record:
                 unplayed_singles_competitions_Tv.delete(elements)
 
 
+        # Clears doubles tree view data
         def ClearDoublesTV():
             record=unplayed_doubles_competitions_Tv.get_children()
             for elements in record:
                 unplayed_doubles_competitions_Tv.delete(elements)
 
 
+        # Singles tree view populate
         def UnplayedSinglesPopulate():
             ClearSinglesTV()
 
@@ -272,6 +284,7 @@ class AttendingContent:
                 unplayed_singles_competitions_Tv.insert('','end',text='',values=('','',''))
 
 
+        # Doubles tree view populate
         def UnplayedDoublesPopulate():
             ClearDoublesTV()
 
@@ -447,6 +460,7 @@ class AttendingContent:
                 unplayed_doubles_competitions_Tv.insert('','end',text='',values=('','',''))
 
 
+        # Find member's first name and surname and returns the value
         def findfirstandsurnamemember(username):
             conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
             c = conn.cursor()
@@ -460,17 +474,18 @@ class AttendingContent:
             return labelusername
 
 
+        # Removes the ability to resize all tree views
         def treeviewresizedisable(treeview, event):
             if treeview.identify_region(event.x, event.y) == "separator":
                 return "break"
 
 
+        # Will add and remove placeholder text into the ID entry box
         def ID_click(event):
             if ID_entry.get() == 'e.g. 3':
                 ID_entry.delete(0, "end")
                 ID_entry.insert(0, '')
                 ID_entry.config(fg='black')
-
 
         def ID_unclick(event):
             if ID_entry.get() == '':
@@ -478,6 +493,7 @@ class AttendingContent:
                 ID_entry.config(fg='grey')
 
 
+        # Depending on the competition type and ID selected, different competitions will be performed
         def SelectTypeandID():
             conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
             c = conn.cursor()
@@ -859,6 +875,7 @@ class AttendingContent:
                         messagebox.showinfo('Error', 'There are no doubles competitions currently listed for the date: ' + currentday, icon='error')
 
 
+        # Draws the single competition selected onto a canvas using matplotlib line graphs
         def DrawLineGraphSingles(singlessubmitbutton):
             conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
             c = conn.cursor()
@@ -922,6 +939,7 @@ class AttendingContent:
                 FinishedSinglesGraph(singlessubmitbutton, canvas)
 
 
+        # Draws the double competition selected onto a canvas using matplotlib line graphs
         def DrawLineGraphDoubles(doublessubmitbutton):
             conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
             c = conn.cursor()
@@ -985,6 +1003,7 @@ class AttendingContent:
                 FinishedDoublesGraph(doublessubmitbutton, canvas)
 
 
+        # Once the singles competition selected has been finished (i.e. one users score is 21), details will be inserted into FinshedCompetitions
         def FinishedSinglesGraph(singlessubmitbutton, singlescanvas):
             conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
             c = conn.cursor()
@@ -1082,6 +1101,7 @@ class AttendingContent:
                 pass
 
 
+        # Draws the most recently finished singles competition
         def StartUpFinishedSinglesGraph():
             conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
             c = conn.cursor()
@@ -1169,7 +1189,7 @@ class AttendingContent:
                 pass
 
 
-
+        # Once the doubles competition selected has been finished (i.e. one users score is 21), details will be inserted into FinshedCompetitions
         def FinishedDoublesGraph(doublessubmitbutton, doublescanvas):
             conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
             c = conn.cursor()
@@ -1267,6 +1287,7 @@ class AttendingContent:
                 pass
 
 
+        # Draws the most recently finished doubles competition
         def StartUpFinishedDoublesGraph():
             conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
             c = conn.cursor()
@@ -1354,6 +1375,7 @@ class AttendingContent:
                 pass
 
 
+        # Submits singles scores entered into the CurrentCompetitionScores database table
         def SubmitSinglesResults(singlessubmitbutton):
             member_team1_score = score1.get()
             member_team2_score = score2.get()
@@ -1384,6 +1406,7 @@ class AttendingContent:
                 DrawLineGraphSingles(singlessubmitbutton)
 
 
+        # Submits doubles scores entered into the CurrentCompetitionScores database table
         def SubmitDoublesResults(doublessubmitbutton):
             member_team1_score = score1.get()
             member_team2_score = score2.get()

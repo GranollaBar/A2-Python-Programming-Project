@@ -2,6 +2,7 @@ import docx
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 import sqlite3
 
+# Builds the most recently completed competition into a word document
 def buildcompetitiondocument():
     conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
     c = conn.cursor()

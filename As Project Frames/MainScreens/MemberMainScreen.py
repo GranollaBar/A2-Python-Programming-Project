@@ -1,3 +1,5 @@
+# Member Main Screen
+
 import tkinter.simpledialog
 from tkinter import *
 from MemberBooking.MemberBookingScreen import BookingContent
@@ -7,23 +9,28 @@ from LogoffFrame.LogoffScreen import LogoffContent
 import Pmw
 
 
+
+# Clears the content of the current screen
 def clearContent(mainScreen, finalContent):
     finalContent.destroy()
     content = Frame(mainScreen, bg='white')
     content.grid(row=1, sticky="nsew")
 
 
+# Stored the username of the member entering the system
 def passLoginScreen(loginScreen: LoginContent):
     global logins
     logins = loginScreen
 
 
+# Opens member home screen
 def openMemberHomeContent(mainScreen, content):
     clearContent(mainScreen, content)
     memberHomeContent = MemberHomeScreenContent(mainScreen)
     memberHomeContent.generateMemberHomeScreenContnt(logins.finalloginname)
 
 
+# Opens member booking screen
 def openMemberBooking(mainScreen, content):
     clearContent(mainScreen, content)
     bookingcontent = BookingContent(mainScreen)
@@ -31,12 +38,14 @@ def openMemberBooking(mainScreen, content):
     bookingcontent.generateBookingContnt()
 
 
+# Log off system
 def openLogoffContent(mainScreen):
     logoffcontent = LogoffContent(mainScreen)
     logoffcontent.generateLogoffContnt(mainScreen)
 
 
 
+# Location of main screen and all associated windows
 def main():
     mainScreen = Tk()
     mainScreen.title('Lisburn Raquets Club')

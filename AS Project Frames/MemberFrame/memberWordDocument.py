@@ -2,6 +2,7 @@ import docx
 from docx.shared import Inches
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 
+# Builds the most recently member into a word document
 def buildMemberDocument(username, password, firstname, surname, telephone, postcode, age, group):
     doc = docx.Document()
     heading = doc.add_heading('Lisburn Racquets Account Details',0)

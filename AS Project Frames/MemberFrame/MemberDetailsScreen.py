@@ -1,3 +1,5 @@
+# Member Details Screen
+
 from tkinter import ttk
 from tkinter import messagebox
 import tkinter.simpledialog
@@ -14,14 +16,17 @@ import Pmw
 
 
 
+# Member Details Class
 class MemberContent:
 
+	# Initiates main screen window
 	def __init__(self, mainScreen):
 		self.member = mainScreen
 		self.conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 		self.c = self.conn.cursor()
 
 
+		# Creates member database table if it does not exist
 		self.c.execute("""CREATE TABLE IF NOT EXISTS member (
 					username text,
 					password text,
@@ -35,8 +40,10 @@ class MemberContent:
 					)""")
 
 
+	# Generate member details content
 	def generateMemberContnt(self):
 
+		# Ensures username entered conforms to the rules
 		def validate_username(value, label):
 			if (value == ''):
 				label.config(fg="red")
@@ -55,6 +62,7 @@ class MemberContent:
 			return True
 
 
+		# Ensures password entered conforms to the rules
 		def validate_password(value, label):
 			if (value == ''):
 				label.config(fg="red")
@@ -73,6 +81,7 @@ class MemberContent:
 			return True
 
 
+		# Ensures telephone entered conforms to the rules
 		def validate_telephone(value, label):
 			if (value == ''):
 				label.config(fg="red")
@@ -91,6 +100,7 @@ class MemberContent:
 			return True
 
 
+		# Ensures first name entered conforms to the rules
 		def validate_firstname(value, label):
 			if (value == ""):
 				label.config(fg="red")
@@ -109,6 +119,7 @@ class MemberContent:
 			return True
 
 
+		# Ensures surname entered conforms to the rules
 		def validate_surname(value, label):
 			if (value == ""):
 				label.config(fg="red")
@@ -127,16 +138,18 @@ class MemberContent:
 			return True
 
 
-		def validate_address(value, label):
+		# Ensures postcode entered conforms to the rules
+		def validate_postcode(value, label):
 			if (value == ''):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The address field cannot be empty", icon='error')
+				messagebox.showinfo("Validation Error", "The postcode field cannot be empty", icon='error')
 				return False
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
+		# Ensures age entered conforms to the rules
 		def validate_age(value, label):
 			if (value ==''):
 				label.config(fg="red")
@@ -151,16 +164,17 @@ class MemberContent:
 			return True
 
 
+		# Caculates the correct group for the member
 		def ageToGroup(value):
 			return math.ceil(value.get()/5)
 
 
+		# Will add and remove placeholder text in the username name entry box
 		def username_click(event):
 			if username_entry.get() == 'e.g. bobby564@gmail.com':
 				username_entry.delete(0, "end")
 				username_entry.insert(0, '')
 				username_entry.config(fg='black')
-
 
 		def username_unclick(event):
 			if username_entry.get() == '':
@@ -168,13 +182,13 @@ class MemberContent:
 				username_entry.config(fg='grey')
 
 
+		# Will add and remove placeholder text in the password name entry box
 		def password_click(event):
 			if password_entry.get() == 'e.g. RossBob24':
 				password_entry.delete(0, "end")
 				password_entry.insert(0, '')
 				password_entry.config(fg='black')
 				password_entry.config(show="*")
-
 
 		def password_unclick(event):
 			if password_entry.get() == '':
@@ -183,12 +197,12 @@ class MemberContent:
 				password_entry.config(fg='grey')
 
 
+		# Will add and remove placeholder text in the first name name entry box
 		def firstname_click(event):
 			if firstname_entry.get() == 'e.g. Johhny':
 				firstname_entry.delete(0, "end")
 				firstname_entry.insert(0, '')
 				firstname_entry.config(fg='black')
-
 
 		def firstname_unclick(event):
 			if firstname_entry.get() == '':
@@ -196,12 +210,12 @@ class MemberContent:
 				firstname_entry.config(fg='grey')
 
 
+		# Will add and remove placeholder text in the surname name entry box
 		def surname_click(event):
 			if surname_entry.get() == 'e.g. Synders':
 				surname_entry.delete(0, "end")
 				surname_entry.insert(0, '')
 				surname_entry.config(fg='black')
-
 
 		def surname_unclick(event):
 			if surname_entry.get() == '':
@@ -209,12 +223,12 @@ class MemberContent:
 				surname_entry.config(fg='grey')
 
 
+		# Will add and remove placeholder text in the telephone name entry box
 		def telephone_click(event):
 			if telephone_entry.get() == 'e.g. 03358629462':
 				telephone_entry.delete(0, "end")
 				telephone_entry.insert(0, '')
 				telephone_entry.config(fg='black')
-
 
 		def telephone_unclick(event):
 			if telephone_entry.get() == '':
@@ -222,12 +236,12 @@ class MemberContent:
 				telephone_entry.config(fg='grey')
 
 
+		# Will add and remove placeholder text in the postcode name entry box
 		def postcode_click(event):
 			if postcode_entry.get() == 'e.g. BT12 4RF':
 				postcode_entry.delete(0, "end")
 				postcode_entry.insert(0, '')
 				postcode_entry.config(fg='black')
-
 
 		def postcode_unclick(event):
 			if postcode_entry.get() == '':
@@ -235,6 +249,7 @@ class MemberContent:
 				postcode_entry.config(fg='grey')
 
 
+		# Ensures age entered conforms to the rules
 		def age_click(event):
 			if age_entry.get() == 'e.g. 27':
 				age_entry.delete(0, "end")
@@ -248,12 +263,14 @@ class MemberContent:
 				age_entry.config(fg='grey')
 
 
+		# Clears member details tree view data
 		def clearTv():
 			record=member_search_Tv.get_children()
 			for elements in record:
 				member_search_Tv.delete(elements)
 
 
+		# Member details tree view populate
 		def treeviewPopulate():
 			clearTv()
 
@@ -278,11 +295,13 @@ class MemberContent:
 					count+=1
 
 
+		# Removes the ability to resize all tree views
 		def treeviewresizedisable(treeview, event):
 			if treeview.identify_region(event.x, event.y) == "separator":
 				return "break"
 
 
+		# Returns black colouring to all labels
 		def returnColour(usernameReturn, passwordReturn, firstnameReturn, surnameReturn, telephoneReturn, postcodeReturn, ageReturn):
 			usernameReturn.config(fg="black")
 			passwordReturn.config(fg="black")
@@ -293,6 +312,7 @@ class MemberContent:
 			ageReturn.config(fg="black")
 
 
+		# Updates member details
 		def updateAccountDetails(self):
 			response = askyesno("Question", "Do you want to update a students details?", icon='question')
 			if response == False:
@@ -314,7 +334,7 @@ class MemberContent:
 				ToolTips.bind(update_postcode, "Update the member's postcode")
 
 
-
+		# Updates member's telephone
 		def update_member_telephone(frame):
 			frame.withdraw()
 
@@ -355,6 +375,7 @@ class MemberContent:
 			treeviewPopulate()
 
 
+		# Updates member's postcode
 		def update_member_postcode(frame):
 			frame.withdraw()
 
@@ -395,6 +416,7 @@ class MemberContent:
 			treeviewPopulate()
 
 
+		# Delete member details
 		def deleteAccountDetails(self):
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -430,6 +452,7 @@ class MemberContent:
 			treeviewPopulate()
 
 
+		# Search member details
 		def searchAccountDetails():
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -460,6 +483,7 @@ class MemberContent:
 			treeviewPopulate()
 
 
+		# Submit member details, generating and sending a word document to the member's email containg their details
 		def saveAccountDetails():
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -470,7 +494,7 @@ class MemberContent:
 			isValid = isValid and validate_firstname(firstname.get(), firstname_label)
 			isValid = isValid and validate_surname(surname.get(), surname_label)
 			isValid = isValid and validate_telephone(number.get(), telephone_label)
-			isValid = isValid and validate_address(postcode.get(), postcode_label)
+			isValid = isValid and validate_postcode(postcode.get(), postcode_label)
 			isValid = isValid and validate_age(age.get(), age_label)
 
 			if isValid:
@@ -670,6 +694,8 @@ class MemberContent:
 		treeviewPopulate()
 
 
+
+		# A pop-up will be produced if a user right-clicks the member details treeview, allowing them to update/delete that members details
 		def onTreeviewPopup(tvPopup, event=None):
 			try:
 				rowItem = member_search_Tv.identify_row(event.y)

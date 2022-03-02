@@ -1,3 +1,5 @@
+# Coach Reports Screen
+
 import tkinter.simpledialog
 import sqlite3
 from tkinter import *
@@ -12,16 +14,20 @@ import random
 
 
 
+# Coach Reports Class
 class CoachReportsContent:
 
+	# Initiates main screen window
 	def __init__(self, mainScreen):
 		self.Reports = mainScreen
 		self.conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 		self.c = self.conn.cursor()
 
 
+	# Generate coach reports content
 	def generateCoachReportsContnt(self, FinalUsername):
 
+		# Find coach's first name and surname and returns the value
 		def findfirstandsurname():
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -35,6 +41,7 @@ class CoachReportsContent:
 			return labelusername
 
 
+		# Find coach's first name and surname and returns the value (capitalized form)
 		def Capitalizedfindfirstandsurname():
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -48,14 +55,17 @@ class CoachReportsContent:
 			return labelusername
 
 
+		# Opens the member account doc (most recently added member)
 		def OpenMemberAccountDoc():
 			os.startfile(r'C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Doc/Member_Account_Details.docx')
 
 
+		# Opens the competition doc (most recently added competition - singles & doubles)
 		def OpenCompetitionDoc():
 			os.startfile(r'C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Doc/Current_Competition_Results.docx')
 
 
+		# Draws the most recently finished singles competition
 		def StartUpFinishedSinglesGraph():
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -143,6 +153,7 @@ class CoachReportsContent:
 				pass
 
 
+		# Draws the most recently finished doubles competition
 		def StartUpFinishedDoublesGraph():
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()

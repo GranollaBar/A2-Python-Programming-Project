@@ -14,6 +14,7 @@ import Pmw
 
 
 
+# Login Class
 class LoginContent:
 
     # will store the username of the user entering the system
@@ -29,12 +30,14 @@ class LoginContent:
         self.c = self.conn.cursor()
 
 
+        # Creates account database table if it does not exist
         self.c.execute("""CREATE TABLE IF NOT EXISTS account (
                         username text,
                         password text,
                         status text
                         )""")
 
+        # Creates manager database table if it does not exist
         self.c.execute("""CREATE TABLE IF NOT EXISTS manager (
                         username text,
                         password text,
@@ -42,6 +45,7 @@ class LoginContent:
                         surname text
                         )""")
 
+        # Creates fees database table if it does not exist
         self.c.execute("""CREATE TABLE IF NOT EXISTS fees (
                         username text,
                         coachingsessionfee text,
@@ -49,6 +53,7 @@ class LoginContent:
                         )""")
 
 
+    # Generate login content
     def generateLoginContnt(self):
 
         # Ensures password entered conforms to the rules

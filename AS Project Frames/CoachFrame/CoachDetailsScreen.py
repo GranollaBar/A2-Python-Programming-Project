@@ -1,3 +1,5 @@
+# Coach Details Screen
+
 from tkinter import ttk
 from tkinter import messagebox
 import tkinter.simpledialog
@@ -15,14 +17,17 @@ import Pmw
 
 
 
+# Coach Details Class
 class CoachContent:
 
+	# Initiates main screen window
 	def __init__(self, mainScreen):
 		self.coach = mainScreen
 		self.conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 		self.c = self.conn.cursor()
 
 
+		# Creates coach database table if it does not exist
 		self.c.execute("""CREATE TABLE IF NOT EXISTS coach (
 					username text,
 					password text,
@@ -34,6 +39,7 @@ class CoachContent:
 					availability text
 					)""")
 
+		# Creates coachTimetable database table if it does not exist
 		self.c.execute("""CREATE TABLE IF NOT EXISTS coachTimetable (
 					username text,
 					Monday text,
@@ -46,8 +52,10 @@ class CoachContent:
 					)""")
 
 
+	# Generate coach details content
 	def generateCoachContnt(self):
 
+		# Select the date of birth of the coach
 		def dateEntryCheck(dob):
 			def assign_dob():
 				dateOfBirth.set(cal.get_date())
@@ -61,6 +69,7 @@ class CoachContent:
 			ttk.Button(top, text="Select", command=assign_dob).pack()
 
 
+		# Ensures username entered conforms to the rules
 		def validate_username(value, label):
 			if (value == ''):
 				label.config(fg="red")
@@ -79,6 +88,7 @@ class CoachContent:
 			return True
 
 
+		# Ensures password entered conforms to the rules
 		def validate_password(value, label):
 			if (value == ''):
 				label.config(fg="red")
@@ -97,6 +107,7 @@ class CoachContent:
 			return True
 
 
+		# Ensures first name entered conforms to the rules
 		def validate_firstname(value, label):
 			if (value == ""):
 				label.config(fg="red")
@@ -115,6 +126,7 @@ class CoachContent:
 			return True
 
 
+		# Ensures surname entered conforms to the rules
 		def validate_surname(value, label):
 			if (value == ""):
 				label.config(fg="red")
@@ -133,7 +145,7 @@ class CoachContent:
 			return True
 
 
-
+		# Ensures address entered conforms to the rules
 		def validate_address(value, label):
 			if (value == ''):
 				label.config(fg="red")
@@ -144,6 +156,7 @@ class CoachContent:
 			return True
 
 
+		# Ensures at least 1 working day has been selected for the coach
 		def validate_all_availability(value, value2, value3, value4, value5, value6, value7):
 			if (value ==0 and value2 ==0 and value3 ==0 and value4 ==0 and value5 ==0 and value6 ==0 and value7 ==0):
 				messagebox.showinfo("Validation Error", "One availability should be selected", icon='error')
@@ -152,6 +165,7 @@ class CoachContent:
 			return True
 
 
+		# Ensures monday availability entered conforms to the rules
 		def validate_monday_availability(value, value2, label):
 			if (float(value) >= float(value2)):
 				label.config(fg="red")
@@ -162,6 +176,7 @@ class CoachContent:
 			return True
 
 
+		# Ensures tuesday availability entered conforms to the rules
 		def validate_tuesday_availability(value, value2, label):
 			if (float(value) >= float(value2)):
 				label.config(fg="red")
@@ -172,6 +187,7 @@ class CoachContent:
 			return True
 
 
+		# Ensures wednesday availability entered conforms to the rules
 		def validate_wednesday_availability(value, value2, label):
 			if (float(value) >= float(value2)):
 				label.config(fg="red")
@@ -181,6 +197,8 @@ class CoachContent:
 			label.config(fg="SpringGreen3")
 			return True
 
+
+		# Ensures thursday availability entered conforms to the rules
 		def validate_thursday_availability(value, value2, label):
 			if (float(value) >= float(value2)):
 				label.config(fg="red")
@@ -191,6 +209,7 @@ class CoachContent:
 			return True
 
 
+		# Ensures friday availability entered conforms to the rules
 		def validate_friday_availability(value, value2, label):
 			if (float(value) >= float(value2)):
 				label.config(fg="red")
@@ -201,6 +220,7 @@ class CoachContent:
 			return True
 
 
+		# Ensures saturday availability entered conforms to the rules
 		def validate_saturday_availability(value, value2, label):
 			if (float(value) >= float(value2)):
 				label.config(fg="red")
@@ -211,6 +231,7 @@ class CoachContent:
 			return True
 
 
+		# Ensures sunday availability entered conforms to the rules
 		def validate_sunday_availability(value, value2, label):
 			if (float(value) >= float(value2)):
 				label.config(fg="red")
@@ -221,11 +242,13 @@ class CoachContent:
 			return True
 
 
+		# Ensures gender selected conforms to the rules
 		def validate_gender(label):
 			label.config(fg="SpringGreen3")
 			return True
 
 
+		# Ensures DOB selected conforms to the rules
 		def validate_DOB(value, label):
 			presentDate = datetime.datetime.now()
 			date_formated = presentDate.strftime("%d/%m/%Y")
@@ -242,6 +265,7 @@ class CoachContent:
 			return True
 
 
+		# Ensures monday availability entered conforms to the rules
 		def validate_new_availability(value, value2, value3, value4, value5, value6, value7):
 			if (value ==0 and value2 ==0 and value3 ==0 and value4 ==0 and value5 ==0 and value6 ==0 and value7 ==0):
 				messagebox.showinfo("Validation Error", "One avaliablity day should be selected", icon='error')
@@ -250,17 +274,27 @@ class CoachContent:
 			return True
 
 
+		# Removes the ability to resize all tree views
+		def treeviewresizedisable(treeview, event):
+			if treeview.identify_region(event.x, event.y) == "separator":
+				return "break"
+
+
+		# Clears coach details tree view data
 		def clearTv():
 			record=coach_search_Tv.get_children()
 			for elements in record:
 				coach_search_Tv.delete(elements)
 
+
+		# Clears coach timetable tree view data
 		def clearTimesTv():
 			record=coach_times_search_Tv.get_children()
 			for elements in record:
 				coach_times_search_Tv.delete(elements)
 
 
+		# Coach details tree view populate
 		def treeviewPopulate():
 			clearTv()
 
@@ -284,11 +318,7 @@ class CoachContent:
 					count+=1
 
 
-		def treeviewresizedisable(treeview, event):
-			if treeview.identify_region(event.x, event.y) == "separator":
-				return "break"
-
-
+		# Coach timetable populate
 		def timestreeviewPopulate():
 			clearTimesTv()
 
@@ -312,13 +342,12 @@ class CoachContent:
 					count+=1
 
 
-
+		# Will add and remove placeholder text in the username name entry box
 		def username_click(event):
 			if username_entry.get() == 'e.g. sooney@gmail.com':
 				username_entry.delete(0, "end")
 				username_entry.insert(0, '')
 				username_entry.config(fg='black')
-
 
 		def username_unclick(event):
 			if username_entry.get() == '':
@@ -326,13 +355,13 @@ class CoachContent:
 				username_entry.config(fg='grey')
 
 
+		# Will add and remove placeholder text in the password name entry box
 		def password_click(event):
 			if password_entry.get() == 'e.g. Ch12ch12':
 				password_entry.delete(0, "end")
 				password_entry.insert(0, '')
 				password_entry.config(fg='black')
 				password_entry.config(show="*")
-
 
 		def password_unclick(event):
 			if password_entry.get() == '':
@@ -341,12 +370,12 @@ class CoachContent:
 				password_entry.config(fg='grey')
 
 
+		# Will add and remove placeholder text in the first name name entry box
 		def firstname_click(event):
 			if firstname_entry.get() == 'e.g. Connor':
 				firstname_entry.delete(0, "end")
 				firstname_entry.insert(0, '')
 				firstname_entry.config(fg='black')
-
 
 		def firstname_unclick(event):
 			if firstname_entry.get() == '':
@@ -354,12 +383,12 @@ class CoachContent:
 				firstname_entry.config(fg='grey')
 
 
+		# Will add and remove placeholder text in the surname name entry box
 		def surname_click(event):
 			if surname_entry.get() == 'e.g. Blair':
 				surname_entry.delete(0, "end")
 				surname_entry.insert(0, '')
 				surname_entry.config(fg='black')
-
 
 		def surname_unclick(event):
 			if surname_entry.get() == '':
@@ -367,12 +396,12 @@ class CoachContent:
 				surname_entry.config(fg='grey')
 
 
+		# Will add and remove placeholder text in the address name entry box
 		def address_click(event):
 			if address_entry.get() == 'e.g. 47 star street':
 				address_entry.delete(0, "end")
 				address_entry.insert(0, '')
 				address_entry.config(fg='black')
-
 
 		def address_unclick(event):
 			if address_entry.get() == '':
@@ -380,6 +409,7 @@ class CoachContent:
 				address_entry.config(fg='grey')
 
 
+		# Returns black colouring to all labels
 		def returnColour(usernameReturn, passwordReturn, firstnameReturn, surnameReturn, genderReturn, DOBReturn, addressReturn, mondayReturn, tuesdayReturn, wednesdayReturn, thursdayReturn, fridayReturn, saturdayReturn, sundayReturn):
 			usernameReturn.config(fg="black")
 			passwordReturn.config(fg="black")
@@ -397,6 +427,7 @@ class CoachContent:
 			sundayReturn.config(fg="black")
 
 
+		# Activates & deactivates functionality of monday work hours based on checkbox response
 		def check_monday_checkbox(value):
 			if (value.get() == 0):
 				monday_from_combobox.config(state="disable")
@@ -408,6 +439,7 @@ class CoachContent:
 				monday_to_combobox.config(state="readonly")
 
 
+		# Activates & deactivates functionality of tuesday work hours based on checkbox response
 		def check_tuesday_checkbox(value):
 			if (value.get() == 0):
 				tuesday_from_combobox.config(state="disable")
@@ -419,6 +451,7 @@ class CoachContent:
 				tuesday_to_combobox.config(state="readonly")
 
 
+		# Activates & deactivates functionality of wednesday work hours based on checkbox response
 		def check_wednesday_checkbox(value):
 			if (value.get() == 0):
 				wednesday_from_combobox.config(state="disable")
@@ -430,6 +463,7 @@ class CoachContent:
 				wednesday_to_combobox.config(state="readonly")
 
 
+		# Activates & deactivates functionality of thursday work hours based on checkbox response
 		def check_thursday_checkbox(value):
 			if (value.get() == 0):
 				thursday_from_combobox.config(state="disable")
@@ -441,6 +475,7 @@ class CoachContent:
 				thursday_to_combobox.config(state="readonly")
 
 
+		# Activates & deactivates functionality of friday work hours based on checkbox response
 		def check_friday_checkbox(value):
 			if (value.get() == 0):
 				friday_from_combobox.config(state="disable")
@@ -452,6 +487,7 @@ class CoachContent:
 				friday_to_combobox.config(state="readonly")
 
 
+		# Activates & deactivates functionality of saturday work hours based on checkbox response
 		def check_saturday_checkbox(value):
 			if (value.get() == 0):
 				saturday_from_combobox.config(state="disable")
@@ -463,6 +499,7 @@ class CoachContent:
 				saturday_to_combobox.config(state="readonly")
 
 
+		# Activates & deactivates functionality of sunday work hours based on checkbox response
 		def check_sunday_checkbox(value):
 			if (value.get() == 0):
 				sunday_from_combobox.config(state="disable")
@@ -474,6 +511,7 @@ class CoachContent:
 				sunday_to_combobox.config(state="readonly")
 
 
+		# Updates coaches details
 		def updateCoachDetails(self):
 			response = askyesno("Question", "Do you want to update a coach's details?", icon='question')
 			if response == False:
@@ -495,6 +533,7 @@ class CoachContent:
 				ToolTips.bind(update_availiability, "Update the coach's availiability")
 
 
+		# Updates coaches postcode
 		def update_coach_postcode(frame):
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -535,6 +574,7 @@ class CoachContent:
 			treeviewPopulate()
 
 
+		# Updates coaches availability top-level
 		def update_coach_availability(frame):
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -585,6 +625,7 @@ class CoachContent:
 			conn.close()
 
 
+		# Updates coaches availability
 		def availableUpdate(frame, username):
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -627,6 +668,7 @@ class CoachContent:
 			timestreeviewPopulate()
 
 
+		# Delete coaches details
 		def deleteCoachDetails(self):
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -664,6 +706,7 @@ class CoachContent:
 			timestreeviewPopulate()
 
 
+		# Search coaches details
 		def searchCoachDetails():
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -698,6 +741,7 @@ class CoachContent:
 			timestreeviewPopulate()
 
 
+		# Submit coaches details and send a generated word document to the coaches email
 		def saveCoachDetails():
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -1220,6 +1264,7 @@ class CoachContent:
 		timestreeviewPopulate()
 
 
+		# A pop-up will be produced if a user right-clicks the coach details or coach timetable treeview, allowing them to update/delete that coaches details
 		def onTreeviewPopup(tvPopup, event=None):
 			try:
 				rowItem = coach_search_Tv.identify_row(event.y)

@@ -38,7 +38,7 @@ class CoachHomeScreenContent:
 			else:
 				i = i + 1
 				slide_image.configure(image=images[i])
-			show = slide_image.after(2000, ImageSlider)
+			show = slide_image.after(3000, ImageSlider)
 
 
 		def findfirstandsurname():

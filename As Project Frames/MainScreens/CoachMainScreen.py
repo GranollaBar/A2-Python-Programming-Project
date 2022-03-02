@@ -1,3 +1,5 @@
+# Coach Main Screen
+
 import tkinter.simpledialog
 from tkinter import *
 from MemberFrame.MemberDetailsScreen import MemberContent
@@ -11,29 +13,35 @@ from LogoffFrame.LogoffScreen import LogoffContent
 import Pmw
 
 
+
+# Clears the content of the current screen
 def clearContent(mainScreen, finalContent):
     finalContent.destroy()
     content = Frame(mainScreen, bg='white')
     content.grid(row=1, sticky="nsew")
 
 
+# Stored the username of the coach entering the system
 def passLoginScreen(loginScreen: LoginContent):
     global logins
     logins = loginScreen
 
 
+# Opens coach home screen
 def openCoachHomeContent(mainScreen, content):
     clearContent(mainScreen, content)
     coachHomeContent = CoachHomeScreenContent(mainScreen)
     coachHomeContent.generateCoachHomeScreenContnt(logins.finalloginname, mainScreen)
 
 
+# Opens member details screen
 def openMemberContent(mainScreen, content):
     clearContent(mainScreen, content)
     memberContent = MemberContent(mainScreen)
     memberContent.generateMemberContnt()
 
 
+# Opens coaching session screen
 def openCoachSessionContent(mainScreen, content):
     clearContent(mainScreen, content)
     myCoaching = CoachingSessionContent(mainScreen)
@@ -41,30 +49,35 @@ def openCoachSessionContent(mainScreen, content):
     myCoaching.generateCoachSessionContnt()
 
 
+# Opens competition screen
 def openNewCompetitionContent(mainScreen, content):
     clearContent(mainScreen, content)
     competitioncontent = NewCompetitionContent(mainScreen)
     competitioncontent.generateCompetitionContnt()
 
 
+# Opens attend competitions screen
 def openAttendCompetitionContent(mainScreen, content):
     clearContent(mainScreen, content)
     attendingcontent = AttendingContent(mainScreen)
     attendingcontent.generateAttendingContnt()
 
 
+# Opens coach reports screen
 def openReportsContent(mainScreen, content):
     clearContent(mainScreen, content)
     coachreportcontent = CoachReportsContent(mainScreen)
     coachreportcontent.generateCoachReportsContnt(logins.finalloginname)
 
 
+# Log off system
 def openLogoffContent(mainScreen):
     logoffcontent = LogoffContent(mainScreen)
     logoffcontent.generateLogoffContnt(mainScreen)
 
 
 
+# Location of main screen and all associated windows
 def main():
     mainScreen = Tk()
     mainScreen.title('Lisburn Raquets Club')

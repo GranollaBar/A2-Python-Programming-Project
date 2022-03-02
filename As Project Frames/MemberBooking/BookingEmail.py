@@ -5,7 +5,8 @@ from email.mime.base import MIMEBase
 from email import encoders
 from tkinter import messagebox
 
-def Email(subject, msg, recipientemail, label, value):
+# Sends an email to the member making a booking
+def BookingEmail(subject, msg, recipientemail, label, value):
 	try:
 		server=smtplib.SMTP('smtp.gmail.com:587')
 		server.ehlo()
@@ -22,6 +23,7 @@ def Email(subject, msg, recipientemail, label, value):
 		messagebox.showinfo('info','The email was not sent successfully to '+ recipientemail + "\n" + "Make sure the username entered exists", icon='error')
 		return False
 
+# Builds the entire message to the user
 def buildEmailMsg(subject, msgBody, recipientemail, type):
 	msg = MIMEMultipart()
 	msg['From'] = "gamblingwolf113@gmail.com"

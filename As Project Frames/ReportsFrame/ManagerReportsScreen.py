@@ -1,3 +1,5 @@
+# Manager Reports Screen
+
 import tkinter.simpledialog
 import sqlite3
 from tkinter import *
@@ -14,16 +16,20 @@ import numpy as np
 
 
 
+# Manager Reports Class
 class ManagerReportsContent:
 
+	# Initiates main screen window
 	def __init__(self, mainScreen):
 		self.Reports = mainScreen
 		self.conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 		self.c = self.conn.cursor()
 
 
+	# Generate manager reports content
 	def generateManagerReportsContnt(self, FinalUsername):
 
+		# Find manager's first name and surname and returns the value
 		def findfirstandsurname():
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -37,6 +43,7 @@ class ManagerReportsContent:
 			return labelusername
 
 
+		# Find manager's first name and surname and returns the value (capitalized form)
 		def Capitalizedfindfirstandsurname():
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -50,6 +57,7 @@ class ManagerReportsContent:
 			return labelusername
 
 
+		# Opens the coach account doc (most recently added coach)
 		def OpenCoachAccountDoc():
 			os.startfile(r'C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Doc/coach_Account_Details.docx')
 

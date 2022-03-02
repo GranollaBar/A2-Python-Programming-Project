@@ -1,3 +1,5 @@
+# Coach Session Screen
+
 from tkinter import ttk
 from tkinter import messagebox
 import tkinter.simpledialog
@@ -14,6 +16,7 @@ import Pmw
 
 
 
+# Coach Session Class
 class CoachingSessionContent:
 
 	CourtsTrue = False
@@ -21,12 +24,14 @@ class CoachingSessionContent:
 	GroupFinder = 0
 	PeopleCounter = 0
 
+	# Initiates main screen window
 	def __init__(self, mainScreen):
 		self.coachSession = mainScreen
 		self.conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 		self.c = self.conn.cursor()
 
 
+		# Creates coachSessionDetails database table if it does not exist
 		self.c.execute("""CREATE TABLE IF NOT EXISTS coachSessionDetails (
 					username text,
 					startTime text,
@@ -40,8 +45,10 @@ class CoachingSessionContent:
 					)""")
 
 
+	# Generate coach session content
 	def generateCoachSessionContnt(self):
 
+		# Ensures username entered conform to the rules
 		def validate_username(value, label):
 			if (value == ''):
 				label.config(fg="red")
@@ -52,6 +59,7 @@ class CoachingSessionContent:
 			return True
 
 
+		# Ensures start time selected conform to the rules
 		def validate_start_time(value, value2, label):
 			if (float(value) <8.00):
 				label.config(fg="red")
@@ -70,6 +78,7 @@ class CoachingSessionContent:
 			return True
 
 
+		# Ensures end time selected conform to the rules
 		def validate_end_time(value, label):
 			if (float(value) <9.00):
 				label.config(fg="red")
@@ -84,6 +93,7 @@ class CoachingSessionContent:
 			return True
 
 
+		# Ensures date selected conform to the rules
 		def validate_date(value, label):
 			if (value == ''):
 				label.config(fg="red")
@@ -120,6 +130,7 @@ class CoachingSessionContent:
 			return True
 
 
+		# Ensures courts selected conform to the rules
 		def validate_courts(value, label):
 			if (value != True):
 				label.config(fg="red")
@@ -130,6 +141,7 @@ class CoachingSessionContent:
 			return True
 
 
+		# Ensures group entered conform to the rules
 		def validate_entry_group(value):
 			if value is None:
 				return False
@@ -149,6 +161,7 @@ class CoachingSessionContent:
 			return True
 
 
+		# Ensures group entered conform to the rules
 		def validate_group(value, label):
 			GroupExistsCounter = 0
 
@@ -176,11 +189,13 @@ class CoachingSessionContent:
 			return True
 
 
+		# Ensures technique selected conform to the rules
 		def validate_techniques(label):
 			label.config(fg="SpringGreen3")
 			return True
 
 
+		# Ensures new start time selected conform to the rules
 		def validate_new_start_time(value, value2):
 			if (float(value) <8.00):
 				messagebox.showinfo("Validation Error", "The start time cannot be before 8am", icon='error')
@@ -195,6 +210,7 @@ class CoachingSessionContent:
 			return True
 
 
+		# Ensures new end time selected conform to the rules
 		def validate_new_end_time(value, value2):
 			if (float(value2) <9.00):
 				messagebox.showinfo("Validation Error", "The end time cannot be before 9am", icon='error')
@@ -209,6 +225,7 @@ class CoachingSessionContent:
 			return True
 
 
+		# Ensures new technique entered conform to the rules
 		def validate_new_techniques(value, fieldname):
 			if (value ==0):
 				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must have at least 1 selected")
@@ -217,6 +234,7 @@ class CoachingSessionContent:
 			return True
 
 
+		# Ensures date selected conform to the rules
 		def dateEntryCheck(dob):
 			def assign_dob():
 				eventDate.set(cal.get_date())
@@ -230,6 +248,7 @@ class CoachingSessionContent:
 			ttk.Button(top, text="ok", command=assign_dob).pack()
 
 
+		# Courts selected will change background colour to SpringGreen3 or black
 		def ClickedCourt(courtvalue):
 			if (courtvalue.cget('bg') == 'black'):
 				courtvalue.config(bg='SpringGreen3')
@@ -237,6 +256,7 @@ class CoachingSessionContent:
 				courtvalue.config(bg='black')
 
 
+		# Select courts top-level
 		def courtsRequired():
 			courts = Toplevel(self.coachSession, bg="white")
 			courts.geometry('500x500')
@@ -332,12 +352,13 @@ class CoachingSessionContent:
 			Court12Button.image = CourtsImage
 
 
-			SelectCourtsButton=Button(courts, cursor="tcross",text = 'Select Courts', command = lambda : ChangeCourtsColour(courts,Court1Button, Court2Button, Court3Button, Court4Button, Court5Button, Court6Button, Court7Button, Court8Button, Court9Button, Court10Button, Court11Button, Court12Button), fg ='white', bg='black', relief= 'groove', font = ('serif',8,'bold'), padx =15)
+			SelectCourtsButton=Button(courts, cursor="tcross",text = 'Select Courts', command = lambda : SelectCourts(courts,Court1Button, Court2Button, Court3Button, Court4Button, Court5Button, Court6Button, Court7Button, Court8Button, Court9Button, Court10Button, Court11Button, Court12Button), fg ='white', bg='black', relief= 'groove', font = ('serif',8,'bold'), padx =15)
 			SelectCourtsButton.place(rely=0.095,relx=0.5,anchor=CENTER)
 			ToolTips.bind(SelectCourtsButton, 'Pick the courts required for the coaching session')
 
 
-		def ChangeCourtsColour(frame, courtvalue, courtvalue2, courtvalue3, courtvalue4, courtvalue5, courtvalue6, courtvalue7, courtvalue8, courtvalue9, courtvalue10, courtvalue11, courtvalue12):
+		# Finalises court selection
+		def SelectCourts(frame, courtvalue, courtvalue2, courtvalue3, courtvalue4, courtvalue5, courtvalue6, courtvalue7, courtvalue8, courtvalue9, courtvalue10, courtvalue11, courtvalue12):
 			global FinalSelectedCourts
 
 			counter = 1
@@ -368,6 +389,7 @@ class CoachingSessionContent:
 				return FinalSelectedCourts
 
 
+		# Selects the group required
 		def groupRequired():
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -392,6 +414,162 @@ class CoachingSessionContent:
 						self.PeopleCounter += 1
 
 
+		# Clears coach session tree view data
+		def clearTv():
+			record=coachsession_search_Tv.get_children()
+			for elements in record:
+				coachsession_search_Tv.delete(elements)
+
+
+		# Coaching session tree view populate
+		def treeviewPopulate():
+			clearTv()
+
+			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			c = conn.cursor()
+
+			c.execute("SELECT * From coachSessionDetails")
+			items = c.fetchall()
+			conn.commit()
+			conn.close()
+
+			count=0
+			for row in items:
+				if row == []:
+					pass
+				else:
+					if count%2==0:
+						coachsession_search_Tv.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4],row[5],row[6],row[7]))
+					else:
+						coachsession_search_Tv.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4],row[5],row[6],row[7]))
+					count+=1
+
+
+		# Removes the ability to resize all tree views
+		def treeviewresizedisable(treeview, event):
+			if treeview.identify_region(event.x, event.y) == "separator":
+				return "break"
+
+
+		# Returns black colouring to all labels
+		def returnColour(usernameReturn, startTimeReturn, endTimeReturn, dateReturn, courtReturn, groupReturn, techniqueReturn):
+			usernameReturn.config(fg="black")
+			startTimeReturn.config(fg="black")
+			endTimeReturn.config(fg="black")
+			dateReturn.config(fg="black")
+			courtReturn.config(fg="black")
+			groupReturn.config(fg="black")
+			techniqueReturn.config(fg="black")
+
+
+		# Updates coaching sessions
+		def updateCoachSessionDetails(self):
+			response = askyesno("Question", "Do you want to update a coach's session?", icon='question')
+			if response == False:
+				showinfo("Info", "Update cancelled", icon='info')
+
+			else:
+
+				updateCoachSession=Toplevel(bg="white")
+
+				title_label =Label(updateCoachSession, cursor="tcross",text = 'Update Session' , fg ='SpringGreen3',bg='white',font=('serif',15,'bold'))
+				title_label.place(rely=0.1,relx=0.5,anchor=CENTER)
+
+				update_time=Button(updateCoachSession, cursor="tcross",text = 'Update Time', command = lambda : updateCoachSessionTime(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('serif',9,'bold'), padx =20)
+				update_time.place(rely=0.27,relx=0.5,anchor=CENTER)
+				ToolTips.bind(update_time, 'Update the coaching session time')
+
+				update_date=Button(updateCoachSession, cursor="tcross", text = 'Update Date', command = lambda : updateCoachSessionDate(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('serif',9,'bold'), padx =20)
+				update_date.place(rely=0.47,relx=0.5,anchor=CENTER)
+				ToolTips.bind(update_date, 'Update the date of the coaching session')
+
+				update_courts=Button(updateCoachSession, cursor="tcross",text = 'Update Courts', command = lambda : updateCoachSessionCourts(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('serif',9,'bold'), padx =20)
+				update_courts.place(rely=0.67,relx=0.5,anchor=CENTER)
+				ToolTips.bind(update_courts, 'Update the court of the competition')
+
+				update_technique=Button(updateCoachSession, cursor="tcross",text = 'Update Technique', command = lambda : updateCoachSessionTechnique(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('serif',9,'bold'), padx =20)
+				update_technique.place(rely=0.87,relx=0.5,anchor=CENTER)
+				ToolTips.bind(update_technique, 'Update the technique used for the coaching session')
+
+
+		# Updates coaching sessions time top-level
+		def updateCoachSessionTime(frame):
+			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			c = conn.cursor()
+
+			frame.withdraw()
+
+			coachUsername = simpledialog.askstring("Response", "Enter the username of the coach you want to update")
+			if coachUsername != '' and len(coachUsername) <25 and '@' in coachUsername and '.' in coachUsername:
+				c.execute(f"SELECT * FROM coach WHERE username=?", (coachUsername,))
+				data = c.fetchone()
+				if not data:
+					messagebox.showinfo("Error", "The username entered was not found in the database", icon='error')
+
+				else:
+
+					updateTimes=Toplevel(bg="white")
+					updateTimes.geometry('200x200')
+
+					title_label =Label(updateTimes,text ="Select New Times", fg ='SpringGreen3',bg='white',font=('serif',13,'bold','underline'))
+					title_label.place(rely=0.1,relx=0.5,anchor=CENTER)
+
+					update_starttime_label =Label(updateTimes,text ="New Start Time:", fg ='black',bg='white',font=('serif',9,'bold'))
+					update_starttime_label.place(rely=0.35,relx=0.3,anchor=CENTER)
+
+					update_endtime_label =Label(updateTimes,text ="New End Time:", fg ='black',bg='white',font=('serif',9,'bold'))
+					update_endtime_label.place(rely=0.55,relx=0.3,anchor=CENTER)
+
+					update_starttime_spinbox = Spinbox(updateTimes, width=7,font=("serif",8, 'bold'), bd=3, relief='ridge', cursor="tcross",textvariable=new_start_time, values=('8.00', '8.15', '8.30', '8.45', '9.00', '9.15', '9.30', '9.45', '10.00', '10.15', '10.30', '10.45', '11.00', '11.15', '11.30', '11.45', '12.00', '12.15','12.30','12.45','13.00','13.15','13.30','13.45','14.00','14.15','14.30','14.45','15.00','15.15','15.30','15.45','16.00','16.15','16.30','16.45','17.00','17.15','17.30','17.45','18.00','18.15','18.30','18.45','19.00','19.15','19.30','19.45','20.00','20.15','20.30','20.45','21.00','21.15','21.30','21.45','22.00'))
+					update_starttime_spinbox.place(rely=0.353, relx=0.79, anchor='center')
+
+					update_endtime_spinbox = Spinbox(updateTimes, width=7,font=("serif",8, 'bold'), bd=3, relief='ridge', cursor="tcross", textvariable=new_end_time, values=('9.00', '9.15', '9.30', '9.45', '10.00', '10.15', '10.30', '10.45', '11.00', '11.15', '11.30', '11.45', '12.00', '12.15','12.30','12.45','13.00','13.15','13.30','13.45','14.00','14.15','14.30','14.45','15.00','15.15','15.30','15.45','16.00','16.15','16.30','16.45','17.00','17.15','17.30','17.45','18.00','18.15','18.30','18.45','19.00','19.15','19.30','19.45','20.00','20.15','20.30','20.45','21.00','21.15','21.30','21.45','22.00','22.15','22.30','22.45','23.00'))
+					update_endtime_spinbox.place(rely=0.553, relx=0.79, anchor='center')
+
+					update_time_button = Button(updateTimes, text='Confirm Update',font=("serif",10, 'bold'), fg='white', bg='black',cursor="tcross",command=lambda : confirmNewTimes(updateTimes, coachUsername), padx=10, bd=4, relief="ridge")
+					update_time_button.place(rely=0.85, relx=0.5, anchor='center')
+					ToolTips.bind(update_time_button, 'Confirm new time')
+
+			conn.commit()
+			conn.close()
+
+			treeviewPopulate()
+
+
+		# Updates coaching sessions time
+		def confirmNewTimes(frame, username):
+			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			c = conn.cursor()
+
+			frame.withdraw()
+
+			isValid = True
+			isValid = isValid and validate_new_start_time(new_start_time.get(), new_end_time.get())
+			isValid = isValid and validate_new_end_time(new_start_time.get(), new_end_time.get())
+
+			if isValid:
+				newCoachSessionStartTime = new_start_time.get()
+				newCoachSessionEndTime = new_end_time.get()
+
+				c.execute("""UPDATE coachSessionDetails SET startTime = :new_start_time WHERE username=:username""", {
+					"new_start_time": str(new_start_time.get()),
+					"username": username
+				})
+				c.execute("""UPDATE coachSessionDetails SET endTime = :new_end_time WHERE username=:username""", {
+					"new_end_time": str(new_end_time.get()),
+					"username": username
+				})
+
+				messagebox.showinfo("Info", "The coach's new session start time is: "+newCoachSessionStartTime, icon='info')
+				messagebox.showinfo("Info", "The coach's new session end time is: "+newCoachSessionEndTime, icon='info')
+
+			conn.commit()
+			conn.close()
+
+			treeviewPopulate()
+
+
+		# Updates coaching sessions date
 		def updateCoachSessionDate(frame):
 			def new_assign_dob(username):
 				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
@@ -436,154 +614,7 @@ class CoachingSessionContent:
 					ttk.Button(top, text="Update", command= lambda : new_assign_dob(coachUsername)).pack()
 
 
-		def clearTv():
-			record=coachsession_search_Tv.get_children()
-			for elements in record:
-				coachsession_search_Tv.delete(elements)
-
-
-		def treeviewPopulate():
-			clearTv()
-
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
-			c = conn.cursor()
-
-			c.execute("SELECT * From coachSessionDetails")
-			items = c.fetchall()
-			conn.commit()
-			conn.close()
-
-			count=0
-			for row in items:
-				if row == []:
-					pass
-				else:
-					if count%2==0:
-						coachsession_search_Tv.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4],row[5],row[6],row[7]))
-					else:
-						coachsession_search_Tv.insert('','end',text=row[0],values=(row[1],row[2],row[3],row[4],row[5],row[6],row[7]))
-					count+=1
-
-
-		def treeviewresizedisable(treeview, event):
-			if treeview.identify_region(event.x, event.y) == "separator":
-				return "break"
-
-
-		def returnColour(usernameReturn, startTimeReturn, endTimeReturn, dateReturn, courtReturn, groupReturn, techniqueReturn):
-			usernameReturn.config(fg="black")
-			startTimeReturn.config(fg="black")
-			endTimeReturn.config(fg="black")
-			dateReturn.config(fg="black")
-			courtReturn.config(fg="black")
-			groupReturn.config(fg="black")
-			techniqueReturn.config(fg="black")
-
-
-		def updateCoachSessionDetails(self):
-			response = askyesno("Question", "Do you want to update a coach's session?", icon='question')
-			if response == False:
-				showinfo("Info", "Update cancelled", icon='info')
-
-			else:
-
-				updateCoachSession=Toplevel(bg="white")
-
-				title_label =Label(updateCoachSession, cursor="tcross",text = 'Update Session' , fg ='SpringGreen3',bg='white',font=('serif',15,'bold'))
-				title_label.place(rely=0.1,relx=0.5,anchor=CENTER)
-
-				update_time=Button(updateCoachSession, cursor="tcross",text = 'Update Time', command = lambda : updateCoachSessionTime(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('serif',9,'bold'), padx =20)
-				update_time.place(rely=0.27,relx=0.5,anchor=CENTER)
-				ToolTips.bind(update_time, 'Update the coaching session time')
-
-				update_date=Button(updateCoachSession, cursor="tcross", text = 'Update Date', command = lambda : updateCoachSessionDate(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('serif',9,'bold'), padx =20)
-				update_date.place(rely=0.47,relx=0.5,anchor=CENTER)
-				ToolTips.bind(update_date, 'Update the date of the coaching session')
-
-				update_courts=Button(updateCoachSession, cursor="tcross",text = 'Update Courts', command = lambda : updateCoachSessionCourts(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('serif',9,'bold'), padx =20)
-				update_courts.place(rely=0.67,relx=0.5,anchor=CENTER)
-				ToolTips.bind(update_courts, 'Update the court of the competition')
-
-				update_technique=Button(updateCoachSession, cursor="tcross",text = 'Update Technique', command = lambda : updateCoachSessionTechnique(updateCoachSession), fg ='white', bg='black', relief= 'groove', font = ('serif',9,'bold'), padx =20)
-				update_technique.place(rely=0.87,relx=0.5,anchor=CENTER)
-				ToolTips.bind(update_technique, 'Update the technique used for the coaching session')
-
-
-		def updateCoachSessionTime(frame):
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
-			c = conn.cursor()
-
-			frame.withdraw()
-
-			coachUsername = simpledialog.askstring("Response", "Enter the username of the coach you want to update")
-			if coachUsername != '' and len(coachUsername) <25 and '@' in coachUsername and '.' in coachUsername:
-				c.execute(f"SELECT * FROM coach WHERE username=?", (coachUsername,))
-				data = c.fetchone()
-				if not data:
-					messagebox.showinfo("Error", "The username entered was not found in the database", icon='error')
-
-				else:
-
-					updateTimes=Toplevel(bg="white")
-					updateTimes.geometry('200x200')
-
-					title_label =Label(updateTimes,text ="Select New Times", fg ='SpringGreen3',bg='white',font=('serif',13,'bold','underline'))
-					title_label.place(rely=0.1,relx=0.5,anchor=CENTER)
-
-					update_starttime_label =Label(updateTimes,text ="New Start Time:", fg ='black',bg='white',font=('serif',9,'bold'))
-					update_starttime_label.place(rely=0.35,relx=0.3,anchor=CENTER)
-
-					update_endtime_label =Label(updateTimes,text ="New End Time:", fg ='black',bg='white',font=('serif',9,'bold'))
-					update_endtime_label.place(rely=0.55,relx=0.3,anchor=CENTER)
-
-					update_starttime_spinbox = Spinbox(updateTimes, width=7,font=("serif",8, 'bold'), bd=3, relief='ridge', cursor="tcross",textvariable=new_start_time, values=('8.00', '8.15', '8.30', '8.45', '9.00', '9.15', '9.30', '9.45', '10.00', '10.15', '10.30', '10.45', '11.00', '11.15', '11.30', '11.45', '12.00', '12.15','12.30','12.45','13.00','13.15','13.30','13.45','14.00','14.15','14.30','14.45','15.00','15.15','15.30','15.45','16.00','16.15','16.30','16.45','17.00','17.15','17.30','17.45','18.00','18.15','18.30','18.45','19.00','19.15','19.30','19.45','20.00','20.15','20.30','20.45','21.00','21.15','21.30','21.45','22.00'))
-					update_starttime_spinbox.place(rely=0.353, relx=0.79, anchor='center')
-
-					update_endtime_spinbox = Spinbox(updateTimes, width=7,font=("serif",8, 'bold'), bd=3, relief='ridge', cursor="tcross", textvariable=new_end_time, values=('9.00', '9.15', '9.30', '9.45', '10.00', '10.15', '10.30', '10.45', '11.00', '11.15', '11.30', '11.45', '12.00', '12.15','12.30','12.45','13.00','13.15','13.30','13.45','14.00','14.15','14.30','14.45','15.00','15.15','15.30','15.45','16.00','16.15','16.30','16.45','17.00','17.15','17.30','17.45','18.00','18.15','18.30','18.45','19.00','19.15','19.30','19.45','20.00','20.15','20.30','20.45','21.00','21.15','21.30','21.45','22.00','22.15','22.30','22.45','23.00'))
-					update_endtime_spinbox.place(rely=0.553, relx=0.79, anchor='center')
-
-					update_time_button = Button(updateTimes, text='Confirm Update',font=("serif",10, 'bold'), fg='white', bg='black',cursor="tcross",command=lambda : confirmNewTimes(updateTimes, coachUsername), padx=10, bd=4, relief="ridge")
-					update_time_button.place(rely=0.85, relx=0.5, anchor='center')
-					ToolTips.bind(update_time_button, 'Confirm new time')
-
-			conn.commit()
-			conn.close()
-
-			treeviewPopulate()
-
-
-		def confirmNewTimes(frame, username):
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
-			c = conn.cursor()
-
-			frame.withdraw()
-
-			isValid = True
-			isValid = isValid and validate_new_start_time(new_start_time.get(), new_end_time.get())
-			isValid = isValid and validate_new_end_time(new_start_time.get(), new_end_time.get())
-
-			if isValid:
-				newCoachSessionStartTime = new_start_time.get()
-				newCoachSessionEndTime = new_end_time.get()
-
-				c.execute("""UPDATE coachSessionDetails SET startTime = :new_start_time WHERE username=:username""", {
-					"new_start_time": str(new_start_time.get()),
-					"username": username
-				})
-				c.execute("""UPDATE coachSessionDetails SET endTime = :new_end_time WHERE username=:username""", {
-					"new_end_time": str(new_end_time.get()),
-					"username": username
-				})
-
-				messagebox.showinfo("Info", "The coach's new session start time is: "+newCoachSessionStartTime, icon='info')
-				messagebox.showinfo("Info", "The coach's new session end time is: "+newCoachSessionEndTime, icon='info')
-
-			conn.commit()
-			conn.close()
-
-			treeviewPopulate()
-
-
+		# Updates coaching sessions courts top-level
 		def updateCoachSessionCourts(frame):
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -696,6 +727,7 @@ class CoachingSessionContent:
 					ToolTips.bind(SelectCourtsButton, 'Pick the courts required for the coaching session')
 
 
+		# Updates coaching sessions courts
 		def updateCourts(frame, username, courtvalue, courtvalue2, courtvalue3, courtvalue4, courtvalue5, courtvalue6, courtvalue7, courtvalue8, courtvalue9, courtvalue10, courtvalue11, courtvalue12):
 
 			counter = 1
@@ -736,6 +768,7 @@ class CoachingSessionContent:
 			treeviewPopulate()
 
 
+		# Updates coaching sessions technique top-level
 		def updateCoachSessionTechnique(frame):
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -777,6 +810,7 @@ class CoachingSessionContent:
 			conn.close()
 
 
+		# Updates coaching sessions technique
 		def techniqueUpdate(frame, username):
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -809,6 +843,90 @@ class CoachingSessionContent:
 			treeviewPopulate()
 
 
+		# Updates coaching session calendar to include a message outlining the details of a coaching session
+		def CalendarSelection(event):
+			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			c = conn.cursor()
+
+			date = cal.get_date()
+			date=str(date).split('/')
+			newdate=date[0],date[1],date[2]
+			a_date = datetime.date(int('20'+newdate[2]),int(newdate[0]), int(newdate[1]))
+
+			string_date = a_date.strftime("%d/%m/%Y")
+
+			c.execute("SELECT * From coachSessionDetails WHERE date=?", (string_date,))
+			items = c.fetchone()
+			if not items:
+				messagebox.showinfo("Error", "There is no coaching session on this date", icon='error')
+
+			else:
+
+				messagebox.showinfo("info", "There is a coaching session on this date" + "\n" +
+									"The details are listed below:" + "\n\n"
+									+ "Coach: " + items[0] + "\n"
+									+ "Start Time: " + str(items[1]) + "\n"
+									+ "End Time: " + str(items[2]) + "\n"
+									+ "Court(s): " + items[4] + "\n"
+									+ "Group: " + str(items[5]) + "\n"
+									+ "No. People: " + str(items[6]) + "\n"
+									+ "Technique: " + items[7])
+
+			conn.commit()
+			conn.close()
+
+
+		# Updates coaching session calendar's colour from black to SpringGreen3 based on all th dates in the coachSessionDetails database table
+		def changeCalendarColour():
+			cal.calevent_remove("all")
+			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			c = conn.cursor()
+
+			c.execute("SELECT * FROM coachSessionDetails")
+			session_array = c.fetchall()
+
+			for row in session_array:
+				cal.calevent_create(datetime.date(int(row[3][6:10]), int(row[3][3:5]), int(row[3][0:2])),"View Coaching Session Details","message")
+
+			cal.tag_config("message", background="SpringGreen3", foreground="black")
+
+			conn.commit()
+			conn.close()
+
+
+
+		presentDate = datetime.datetime.now()
+		current_date = presentDate.strftime("%d/%m/%Y")
+
+		conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+		c = conn.cursor()
+
+		c.execute("SELECT * From coachSessionDetails")
+		items = c.fetchall()
+
+		for row in items:
+			rowsplitdate = str(row[3]).split('/')
+			currentdatesplit = current_date.split('/')
+
+			if rowsplitdate[2] < currentdatesplit[2]:
+				c.execute('DELETE FROM coachSessionDetails WHERE sessionID=:ID', {
+					"ID": row[8]
+				})
+			else:
+				if rowsplitdate[2] >= currentdatesplit[2] and rowsplitdate[1] < currentdatesplit[1]:
+					c.execute('DELETE FROM coachSessionDetails WHERE sessionID=:ID', {
+						"ID": row[8]
+					})
+				else:
+					if rowsplitdate[2] >= currentdatesplit[2] and rowsplitdate[1] >= currentdatesplit[1] and rowsplitdate[0] < currentdatesplit[0]:
+						c.execute('DELETE FROM coachSessionDetails WHERE sessionID=:ID', {
+							"ID": row[8]
+						})
+					else:
+						pass
+
+
+		# Delete coaching session details
 		def deleteCoachSessionDetails(self):
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -843,6 +961,7 @@ class CoachingSessionContent:
 			treeviewPopulate()
 
 
+		# Search coaching session details
 		def searchCoachSessionDetails():
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -873,6 +992,7 @@ class CoachingSessionContent:
 			treeviewPopulate()
 
 
+		# Submit coaching session details and send email to all members included, along with the information of the session
 		def submitCoachSession():
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -974,86 +1094,6 @@ class CoachingSessionContent:
 
 			treeviewPopulate()
 
-
-		def CalendarSelection(event):
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
-			c = conn.cursor()
-
-			date = cal.get_date()
-			date=str(date).split('/')
-			newdate=date[0],date[1],date[2]
-			a_date = datetime.date(int('20'+newdate[2]),int(newdate[0]), int(newdate[1]))
-
-			string_date = a_date.strftime("%d/%m/%Y")
-
-			c.execute("SELECT * From coachSessionDetails WHERE date=?", (string_date,))
-			items = c.fetchone()
-			if not items:
-				messagebox.showinfo("Error", "There is no coaching session on this date", icon='error')
-
-			else:
-
-				messagebox.showinfo("info", "There is a coaching session on this date" + "\n" +
-				"The details are listed below:" + "\n\n"
-				+ "Coach: " + items[0] + "\n"
-				+ "Start Time: " + str(items[1]) + "\n"
-				+ "End Time: " + str(items[2]) + "\n"
-				+ "Court(s): " + items[4] + "\n"
-				+ "Group: " + str(items[5]) + "\n"
-				+ "No. People: " + str(items[6]) + "\n"
-			    + "Technique: " + items[7])
-
-			conn.commit()
-			conn.close()
-
-
-		def changeCalendarColour():
-			cal.calevent_remove("all")
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
-			c = conn.cursor()
-
-			c.execute("SELECT * FROM coachSessionDetails")
-			session_array = c.fetchall()
-
-			for row in session_array:
-				cal.calevent_create(datetime.date(int(row[3][6:10]), int(row[3][3:5]), int(row[3][0:2])),"View Coaching Session Details","message")
-
-			cal.tag_config("message", background="SpringGreen3", foreground="black")
-
-			conn.commit()
-			conn.close()
-
-
-
-		presentDate = datetime.datetime.now()
-		current_date = presentDate.strftime("%d/%m/%Y")
-
-		conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
-		c = conn.cursor()
-
-		c.execute("SELECT * From coachSessionDetails")
-		items = c.fetchall()
-
-		for row in items:
-			rowsplitdate = str(row[3]).split('/')
-			currentdatesplit = current_date.split('/')
-
-			if rowsplitdate[2] < currentdatesplit[2]:
-				c.execute('DELETE FROM coachSessionDetails WHERE sessionID=:ID', {
-					"ID": row[8]
-				})
-			else:
-				if rowsplitdate[2] >= currentdatesplit[2] and rowsplitdate[1] < currentdatesplit[1]:
-					c.execute('DELETE FROM coachSessionDetails WHERE sessionID=:ID', {
-						"ID": row[8]
-					})
-				else:
-					if rowsplitdate[2] >= currentdatesplit[2] and rowsplitdate[1] >= currentdatesplit[1] and rowsplitdate[0] < currentdatesplit[0]:
-						c.execute('DELETE FROM coachSessionDetails WHERE sessionID=:ID', {
-							"ID": row[8]
-						})
-					else:
-						pass
 
 
 		timeStart=StringVar()

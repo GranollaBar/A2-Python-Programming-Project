@@ -1,3 +1,5 @@
+# Manager Main Screen
+
 import tkinter.simpledialog
 from tkinter import *
 from CoachFrame.CoachDetailsScreen import CoachContent
@@ -8,41 +10,49 @@ from LogoffFrame.LogoffScreen import LogoffContent
 import Pmw
 
 
+
+# Clears the content of the current screen
 def clearContent(mainScreen, finalContent):
     finalContent.destroy()
     content = Frame(mainScreen, bg='white')
     content.grid(row=1, sticky="nsew")
 
 
+# Stored the username of the manager entering the system
 def passLoginScreen(loginScreen: LoginContent):
     global logins
     logins = loginScreen
 
 
+# Opens manager home screen
 def openManagerHomeContent(mainScreen, content):
     clearContent(mainScreen, content)
     managerHomeContent = ManagerHomeScreenContent(mainScreen)
     managerHomeContent.generateManagerHomeScreenContnt(logins.finalloginname)
 
 
+# Opens coach details screen
 def openCoachDetails(mainScreen, content):
     clearContent(mainScreen, content)
     coachcontent = CoachContent(mainScreen)
     coachcontent.generateCoachContnt()
 
 
+# Opens manager reports screen
 def openManagerReports(mainScreen, content):
     clearContent(mainScreen, content)
     managerreports = ManagerReportsContent(mainScreen)
     managerreports.generateManagerReportsContnt(logins.finalloginname)
 
 
+# Log off system
 def openLogoffContent(mainScreen):
     logoffcontent = LogoffContent(mainScreen)
     logoffcontent.generateLogoffContnt(mainScreen)
 
 
 
+# Location of main screen and all associated windows
 def main():
     mainScreen = Tk()
     mainScreen.title('Lisburn Raquets Club')

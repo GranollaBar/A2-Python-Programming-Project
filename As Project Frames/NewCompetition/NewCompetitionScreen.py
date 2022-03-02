@@ -1,3 +1,5 @@
+# Competition Screen
+
 from tkinter import ttk
 from tkinter import messagebox
 import tkinter.simpledialog
@@ -14,17 +16,20 @@ import Pmw
 
 
 
+# Competition Class
 class NewCompetitionContent:
 
 	CourtsTrue = False
 	FinalSelectedCourts = ''
 
+	# Initiates main screen window
 	def __init__(self, mainScreen):
 		self.competition = mainScreen
 		self.conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 		self.c = self.conn.cursor()
 
 
+		# Creates SinglesCompetition database table if it does not exist
 		self.c.execute("""CREATE TABLE IF NOT EXISTS SinglesCompetition (
 					username text,
 					username2 text,
@@ -34,6 +39,7 @@ class NewCompetitionContent:
 					singlescompetitionID integer
 					)""")
 
+		# Creates DoublesCompetition database table if it does not exist
 		self.c.execute("""CREATE TABLE IF NOT EXISTS DoublesCompetition (
 					username text,
 					username2 text,
@@ -48,8 +54,10 @@ class NewCompetitionContent:
 					)""")
 
 
+	# Generate competition content
 	def generateCompetitionContnt(self):
 
+		# Select the start date of the booking
 		def startDateCheck(dob):
 			def assign_start_date():
 				startDate.set(start_cal.get_date())
@@ -63,6 +71,7 @@ class NewCompetitionContent:
 			ttk.Button(startDateTop, text="ok", command=assign_start_date).pack()
 
 
+		# Select the end date of the booking
 		def endDateCheck(dob):
 			def assign_end_date():
 				endDate.set(end_cal.get_date())
@@ -76,6 +85,7 @@ class NewCompetitionContent:
 			ttk.Button(endDateTop, text="ok", command=assign_end_date).pack()
 
 
+		# Ensures singles start date selected conforms to the rules
 		def validate_singles_competition_start_date(value, label):
 			if (value == ''):
 				label.config(fg="red")
@@ -135,6 +145,7 @@ class NewCompetitionContent:
 			return True
 
 
+		# Ensures doubles start date selected conforms to the rules
 		def validate_doubles_competition_start_date(value, label):
 			if (value == ''):
 				label.config(fg="red")
@@ -191,6 +202,7 @@ class NewCompetitionContent:
 			return True
 
 
+		# Ensures singles end date selected conforms to the rules
 		def validate_singles_competition_end_date(value, value2, label2):
 			if (value2 == ''):
 				label2.config(fg="red")
@@ -259,6 +271,7 @@ class NewCompetitionContent:
 			return True
 
 
+		# Ensures doubles end date selected conforms to the rules
 		def validate_doubles_competition_end_date(value, value2, label2):
 			if (value2 == ''):
 				label2.config(fg="red")
@@ -327,6 +340,7 @@ class NewCompetitionContent:
 			return True
 
 
+		# Ensures start date selected conforms to the rules
 		def validate_startdate_update(value, label, SinglesTrue):
 			if (value == ''):
 				label.config(fg="red")
@@ -423,6 +437,7 @@ class NewCompetitionContent:
 				return True
 
 
+		# Ensures end date entered conforms to the rules
 		def validate_enddate_update(value, value2, label, DoublesTrue):
 			if (value2 == ''):
 				label.config(fg="red")
@@ -531,7 +546,7 @@ class NewCompetitionContent:
 				return True
 
 
-
+		# Ensures singles first username entered conforms to the rules
 		def validate_singles_first_member(value, label):
 			if (value == ''):
 				label.config(fg="red")
@@ -553,6 +568,7 @@ class NewCompetitionContent:
 			return True
 
 
+		# Ensures singles second username entered conforms to the rules
 		def validate_singles_second_member(value, value2, label, label2):
 			if (value2 == ''):
 				label2.config(fg="red")
@@ -581,6 +597,7 @@ class NewCompetitionContent:
 			return True
 
 
+		# Ensures doubles first username entered conforms to the rules
 		def validate_doubles_first_member(value, label):
 			if (value == ''):
 				label.config(fg="red")
@@ -602,6 +619,7 @@ class NewCompetitionContent:
 			return True
 
 
+		# Ensures doubles second username entered conforms to the rules
 		def validate_doubles_second_member(value, value2, label):
 			if (value2 == ''):
 				label.config(fg="red")
@@ -628,6 +646,7 @@ class NewCompetitionContent:
 			return True
 
 
+		# Ensures doubles third username entered conforms to the rules
 		def validate_doubles_third_member(value, value2, value3, label):
 			if (value3 == ''):
 				label.config(fg="red")
@@ -658,6 +677,7 @@ class NewCompetitionContent:
 			return True
 
 
+		# Ensures doubles fourth username entered conforms to the rules
 		def validate_doubles_fourth_member(value, value2, value3, value4, label):
 			if (value4 == ''):
 				label.config(fg="red")
@@ -692,6 +712,7 @@ class NewCompetitionContent:
 			return True
 
 
+		# Ensures username entered conforms to the rules
 		def validate_username_update(value, value2, label1, label2):
 			if (value == ''):
 				label1.config(fg="red")
@@ -712,6 +733,7 @@ class NewCompetitionContent:
 			return True
 
 
+		# Ensures court selected conforms to the rules
 		def validate_court(value, label):
 			if (value != True):
 				label.config(fg="red")
@@ -722,6 +744,7 @@ class NewCompetitionContent:
 			return True
 
 
+		# Ensures group entered conforms to the rules
 		def validate_group_delete(value, label):
 			if (value == ''):
 				label.config(fg="red")
@@ -732,12 +755,14 @@ class NewCompetitionContent:
 			return True
 
 
+		# Clears competition tree view data
 		def clearTv(treeview):
 			record=treeview.get_children()
 			for elements in record:
 				treeview.delete(elements)
 
 
+		# Singles Competition tree view populate
 		def singlestreeviewPopulate(treeview):
 			clearTv(treeview)
 
@@ -762,6 +787,7 @@ class NewCompetitionContent:
 					count+=1
 
 
+		# Doubles competition tree view populate
 		def doublestreeviewPopulate(treeview):
 			clearTv(treeview)
 
@@ -786,11 +812,13 @@ class NewCompetitionContent:
 					count+=1
 
 
+		# Removes the ability to resize all tree views
 		def treeviewresizedisable(treeview, event):
 			if treeview.identify_region(event.x, event.y) == "separator":
 				return "break"
 
 
+		# Returns black colouring to all labels
 		def returnColour(usernameReturn, username2Return, startDateReturn, endDateReturn, CourtReturn):
 			usernameReturn.config(fg="black")
 			username2Return.config(fg="black")
@@ -799,21 +827,25 @@ class NewCompetitionContent:
 			CourtReturn.config(fg="black")
 
 
+		# Returns black colouring to groups label
 		def one_return_colour(DeleteGroup):
 			DeleteGroup.config(fg="black")
 
 
+		# Returns black colouring to courts label
 		def return_two_colour(UpdateGroup, UpdateCourt):
 			UpdateGroup.config(fg="black")
 			UpdateCourt.config(fg="black")
 
 
+		# Returns black colouring to members label
 		def return_three_colour(UpdateGroup, Updatemember1, UpdateMember2):
 			UpdateGroup.config(fg='black')
 			Updatemember1.config(fg='black')
 			UpdateMember2.config(fg='black')
 
 
+		# Returns black colouring to members label
 		def return_five_colour(UpdateGroup, Updatemember1, Updatemember2, Updatemember3, Updatemember4):
 			UpdateGroup.config(fg='black')
 			Updatemember1.config(fg='black')
@@ -822,6 +854,7 @@ class NewCompetitionContent:
 			Updatemember4.config(fg='black')
 
 
+		# Courts selected will change background colour to SpringGreen3 or black
 		def ClickedCourt(courtvalue):
 			if (courtvalue.cget('bg') == 'black'):
 				courtvalue.config(bg='SpringGreen3')
@@ -829,6 +862,7 @@ class NewCompetitionContent:
 				courtvalue.config(bg='black')
 
 
+		# Select courts top-level
 		def courtRequired():
 			courts = Toplevel(self.competition, bg="white")
 			courts.geometry('500x500')
@@ -930,6 +964,7 @@ class NewCompetitionContent:
 			ToolTips.bind(SelectCourtsButton, 'Confirm courts selected')
 
 
+		# Finalises court selection
 		def ChangeCourtsColour(frame, courtvalue, courtvalue2, courtvalue3, courtvalue4, courtvalue5, courtvalue6, courtvalue7, courtvalue8, courtvalue9, courtvalue10, courtvalue11, courtvalue12):
 			counter = 1
 			SelectedCourts = []
@@ -977,6 +1012,7 @@ class NewCompetitionContent:
 					return self.FinalSelectedCourts
 
 
+		# Updates singles competition calendar to include a message outlining the details of a singles competition
 		def SinglesCalendarSelection(cal, event=None):
 			ListComplete = False
 			AllListComplete = 0
@@ -1019,6 +1055,7 @@ class NewCompetitionContent:
 			conn.close()
 
 
+		# Updates doubles competition calendar to include a message outlining the details of a doubles competition
 		def DoublesCalendarSelection(cal, event=None):
 			ListComplete = False
 			AllListComplete = 0
@@ -1064,6 +1101,7 @@ class NewCompetitionContent:
 			conn.close()
 
 
+		# Updates singles competition calendar's colour from black to SpringGreen3 based on all th dates in the SinglesCompetition database table
 		def SinglesChangeCalendarColour(cal):
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -1114,6 +1152,7 @@ class NewCompetitionContent:
 			conn.close()
 
 
+		# Updates doubles competition calendar's colour from black to SpringGreen3 based on all th dates in the DoublesCompetition database table
 		def DoublesChangeCalendarColour(cal):
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -1163,6 +1202,7 @@ class NewCompetitionContent:
 			conn.close()
 
 
+		# Delete singles competition details
 		def SinglesDeleteCompetition(value, value2, value3):
 			isValid = True
 			isValid = isValid and validate_group_delete(value2.get(), value)
@@ -1236,7 +1276,7 @@ class NewCompetitionContent:
 						conn.close()
 
 
-
+		# Delete doubles competition details
 		def DoublesDeleteCompetition(value, value2, value3):
 			isValid = True
 			isValid = isValid and validate_group_delete(value2.get(), value)
@@ -1315,7 +1355,7 @@ class NewCompetitionContent:
 						conn.close()
 
 
-
+		# Update singles competition details
 		def SinglesUpdateCompetition(label1, label2, label3, value1, value2, value3, treeview):
 			if (UpdateSelectionSingles.get() == 1):
 				isValid = True
@@ -1456,6 +1496,7 @@ class NewCompetitionContent:
 							singlestreeviewPopulate(treeview)
 
 
+		# Update doubles competition details
 		def DoublesUpdateCompetition(label1, label2, label3, label4, label5, value1, value2, value3, value4, value5, treeview):
 			if (UpdateSelectionDoubles.get() == 1):
 				isValid = True
@@ -1611,7 +1652,7 @@ class NewCompetitionContent:
 							doublestreeviewPopulate(treeview)
 
 
-
+		# Submit singles competition details, sending details to the members of the competition
 		def SubmitNewSingles(label1, label2, label3, label4, label5, cal, treeview):
 			AllEmailsComplete = 0
 
@@ -1679,6 +1720,7 @@ class NewCompetitionContent:
 			singlestreeviewPopulate(treeview)
 
 
+		# Submit doubles competition details, sending details to the members of the competition
 		def SubmitNewDoubles(label1, label2, label3, label4, label5, cal, treeview):
 			AllEmailsComplete = 0
 
@@ -1809,6 +1851,7 @@ class NewCompetitionContent:
 			doublestreeviewPopulate(treeview)
 
 
+		# Confirmation of singles update
 		def UpdateSinglesSelectionConfirmation(value, value2, value3, value4, value5):
 			value.config(fg='grey')
 			value2.config(state='disabled')
@@ -2033,6 +2076,7 @@ class NewCompetitionContent:
 				ToolTips.bind(singles_update_button, 'Update details of singles competition')
 
 
+		# Confirmation of doubles update
 		def UpdateDoublesSelectionConfirmation(value1, value2, value3, value4, value5):
 			value1.config(fg='grey')
 			value2.config(state='disabled')
@@ -2295,8 +2339,7 @@ class NewCompetitionContent:
 				ToolTips.bind(doubles_update_button, 'Update doubles group of the competition')
 
 
-
-
+		# Type of match confirmation
 		def MatchTypeConfirmation(value, value2, value3, value4):
 			value.config(fg='grey')
 			value2.config(state='disabled')
@@ -2326,6 +2369,7 @@ class NewCompetitionContent:
 			competition_status_line.place(rely=0.233, relx=0.5, anchor='center')
 
 
+		# Effect of this confirmation
 		def CompetitionStatusConfirmation(value5, value6, value7, value8, value9):
 			value5.config(fg='grey')
 			value6.config(state='disabled')
