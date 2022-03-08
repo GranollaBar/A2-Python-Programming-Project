@@ -27,10 +27,11 @@ class AttendingContent:
     previous2 = 0
 
     # Initiates main screen window
-    def __init__(self, mainScreen):
+    def __init__(self, mainScreen, filepath):
         self.attend = mainScreen
-        self.conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+        self.conn = sqlite3.connect(filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
         self.c = self.conn.cursor()
+        self.filepath = filepath
 
 
         # Creates CurrentCompetitionScores database table if it does not exist
@@ -114,7 +115,7 @@ class AttendingContent:
         def UnplayedSinglesPopulate():
             ClearSinglesTV()
 
-            conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+            conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
             c = conn.cursor()
 
             currentday = datetime.datetime.today().strftime('%d/%m/%Y')
@@ -292,7 +293,7 @@ class AttendingContent:
         def UnplayedDoublesPopulate():
             ClearDoublesTV()
 
-            conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+            conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
             c = conn.cursor()
 
             currentday = datetime.datetime.today().strftime('%d/%m/%Y')
@@ -466,7 +467,7 @@ class AttendingContent:
 
         # Find member's first name and surname and returns the value
         def findfirstandsurnamemember(username):
-            conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+            conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
             c = conn.cursor()
 
             c.execute("SELECT * FROM member WHERE username=:memberusername", {
@@ -500,7 +501,7 @@ class AttendingContent:
         # Depending on the competition type and ID selected, different competitions will be performed
         # It will ensure that the ID and competition type selected are valid and can be permoed on the current date
         def SelectTypeandID():
-            conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+            conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
             c = conn.cursor()
 
             c.execute("SELECT * FROM CurrentCompetitionScores")
@@ -882,7 +883,7 @@ class AttendingContent:
 
         # Draws the single competition selected onto a canvas using matplotlib line graphs
         def DrawLineGraphSingles(singlessubmitbutton):
-            conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+            conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
             c = conn.cursor()
 
             c.execute("SELECT * FROM CurrentCompetitionScores")
@@ -946,7 +947,7 @@ class AttendingContent:
 
         # Draws the double competition selected onto a canvas using matplotlib line graphs
         def DrawLineGraphDoubles(doublessubmitbutton):
-            conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+            conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
             c = conn.cursor()
 
             c.execute("SELECT * FROM CurrentCompetitionScores")
@@ -1011,7 +1012,7 @@ class AttendingContent:
         # Once the singles competition selected has been finished (i.e. one users score is 21),
         # details will be inserted into FinshedCompetitions
         def FinishedSinglesGraph(singlessubmitbutton, singlescanvas):
-            conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+            conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
             c = conn.cursor()
 
             c.execute("SELECT * FROM CurrentCompetitionScores")
@@ -1110,7 +1111,7 @@ class AttendingContent:
         # Draws the most recently finished singles competition
         # Final results of the member's scores will also be provided
         def StartUpFinishedSinglesGraph():
-            conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+            conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
             c = conn.cursor()
 
             c.execute("SELECT * FROM FinshedCompetitions")
@@ -1199,7 +1200,7 @@ class AttendingContent:
         # Once the doubles competition selected has been finished (i.e. one users score is 21),
         # details will be inserted into FinshedCompetitions
         def FinishedDoublesGraph(doublessubmitbutton, doublescanvas):
-            conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+            conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
             c = conn.cursor()
 
             c.execute("SELECT * FROM CurrentCompetitionScores")
@@ -1298,7 +1299,7 @@ class AttendingContent:
         # Draws the most recently finished doubles competition
         # Final results of the member's scores will also be provided
         def StartUpFinishedDoublesGraph():
-            conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+            conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
             c = conn.cursor()
 
             c.execute("SELECT * FROM FinshedCompetitions")
@@ -1394,7 +1395,7 @@ class AttendingContent:
             isValid = isValid and validate_member_team_score(member_team1_score, member_team2_score)
 
             if isValid:
-                conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+                conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
                 c = conn.cursor()
 
                 c.execute("SELECT * FROM CurrentCompetitionScores")
@@ -1425,7 +1426,7 @@ class AttendingContent:
             isValid = isValid and validate_member_team_score(member_team1_score, member_team2_score)
 
             if isValid:
-                conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+                conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
                 c = conn.cursor()
 
                 c.execute("SELECT * FROM CurrentCompetitionScores")
@@ -1457,7 +1458,7 @@ class AttendingContent:
 
 
         # Deletes all details from database table: CurrentCompetitionScores as to allow the coach to finish other competitions
-        conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+        conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
         c = conn.cursor()
 
         c.execute("DELETE FROM CurrentCompetitionScores")

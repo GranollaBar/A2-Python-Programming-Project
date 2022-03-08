@@ -22,10 +22,11 @@ class CoachHomeScreenContent:
 	PassedLogin = False
 
 	# Initiates main screen window
-	def __init__(self, mainScreen):
+	def __init__(self, mainScreen, filepath):
 		self.CoachHome = mainScreen
-		self.conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+		self.conn = sqlite3.connect(filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 		self.c = self.conn.cursor()
+		self.filepath = filepath
 
 
 	# Generate coach home content
@@ -44,7 +45,7 @@ class CoachHomeScreenContent:
 
 		# Find coach's first name and surname and returns the value
 		def findfirstandsurname():
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * FROM coach WHERE username=:coachusername", {
@@ -61,7 +62,7 @@ class CoachHomeScreenContent:
 		def AllCalendarSelection(cal, event=None):
 			AllChangeSelection = False
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			coachdate = cal.get_date()
@@ -163,7 +164,7 @@ class CoachHomeScreenContent:
 		# Will change the calendar's colour from black to SpringGreen3
 		# This is based on all the dates in the coachSessionDetails database table
 		def changeCalendarColour(cal):
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * FROM coachSessionDetails")
@@ -180,7 +181,7 @@ class CoachHomeScreenContent:
 		# Will change the calendar's colour from black to SpringGreen3
 		# This is based on all the dates in the SinglesCompetition database table
 		def SinglesChangeCalendarColour(cal):
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * FROM SinglesCompetition")
@@ -225,7 +226,7 @@ class CoachHomeScreenContent:
 		# Will change the calendar's colour from black to SpringGreen3
 		# This is based on all the dates in the DoublesCompetition database table
 		def DoublesChangeCalendarColour(cal):
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * FROM DoublesCompetition")
@@ -277,7 +278,7 @@ class CoachHomeScreenContent:
 		def CoachShiftTime():
 			Weekday = datetime.datetime.today().strftime('%A')
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT " + str(Weekday) + " FROM coachTimetable WHERE username=:username", {
@@ -289,7 +290,7 @@ class CoachHomeScreenContent:
 			if 'n/a' in StrippedWeedayTime:
 				messagebox.showinfo('Error', 'Coach ' + findfirstandsurname() + ' cannot enter the system at this time. You will now be returned to the login screen', icon='error')
 				main.destroy()
-				from LoginFrame import LoginMainScreen
+				import LoginMainScreen
 			else:
 				time = str(StrippedWeedayTime[0])
 				strippedTime = time.split('-')
@@ -312,7 +313,7 @@ class CoachHomeScreenContent:
 		def countdown():
 			Weekday = datetime.datetime.today().strftime('%A')
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT " + str(Weekday) + " FROM coachTimetable WHERE username=:username", {
@@ -324,7 +325,7 @@ class CoachHomeScreenContent:
 			if 'n/a' in StrippedWeedayTime:
 				messagebox.showinfo('Error', 'Coach ' + findfirstandsurname() + ' cannot enter the system at this time. You will now be returned to the login screen', icon='error')
 				main.destroy()
-				from LoginFrame import LoginMainScreen
+				import LoginMainScreen
 			else:
 				self.PassedLogin = True
 
@@ -377,7 +378,7 @@ class CoachHomeScreenContent:
 		def treeviewPopulate(treeview):
 			clearTv(treeview)
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * From PastEvents")
@@ -428,23 +429,23 @@ class CoachHomeScreenContent:
 		timer_label = tkinter.Label(self.CoachHome, font=('serif', 14, 'bold'), fg='black', bg='white', bd=3, relief='sunken', padx=3, pady=1)
 		timer_label.place(rely=0.433, relx=0.26, anchor='center')
 
-		googlemapsphoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/Googlemaps.png")
+		googlemapsphoto = PhotoImage(file=self.filepath + '\\_databases_images_doc\\Images\\Googlemaps.png')
 
 		GoogleMapsButton = Button(self.CoachHome, cursor="tcross", image=googlemapsphoto, width=507, height=315, command=GoogleMapsLocation, bg="white", activebackground="grey")
 		GoogleMapsButton.place(rely=0.73,relx=0.67,anchor=CENTER)
 		GoogleMapsButton.image = googlemapsphoto
 
-		img1 = Image.open('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/MemberImageSlider4.png')
+		img1 = Image.open(self.filepath + '\\_databases_images_doc\\Images\\MemberImageSlider4.png')
 		img1.thumbnail((300, 300))
-		img2 = Image.open('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/MemberImageSlider1.png')
+		img2 = Image.open(self.filepath + '\\_databases_images_doc\\Images\\MemberImageSlider1.png')
 		img2.thumbnail((300, 300))
-		img3 = Image.open('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/MemberImageSlider2.png')
+		img3 = Image.open(self.filepath + '\\_databases_images_doc\\Images\\MemberImageSlider2.png')
 		img3.thumbnail((300, 300))
-		img4 = Image.open('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/MemberImageSlider5.png')
+		img4 = Image.open(self.filepath + '\\_databases_images_doc\\Images\\MemberImageSlider5.png')
 		img4.thumbnail((300, 300))
-		img5 = Image.open('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/MemberImageSlider3.png')
+		img5 = Image.open(self.filepath + '\\_databases_images_doc\\Images\\MemberImageSlider3.png')
 		img5.thumbnail((300, 300))
-		img6 = Image.open('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/MemberImageSlider6.png')
+		img6 = Image.open(self.filepath + '\\_databases_images_doc\\Images\\MemberImageSlider6.png')
 		img6.thumbnail((300, 300))
 
 		image1 = ImageTk.PhotoImage(img1)

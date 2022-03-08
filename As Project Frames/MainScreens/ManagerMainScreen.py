@@ -5,7 +5,7 @@ from tkinter import *
 from CoachFrame.CoachDetailsScreen import CoachContent
 from HomeFrame.ManagerHomeScreen import ManagerHomeScreenContent
 from ReportsFrame.ManagerReportsScreen import ManagerReportsContent
-from LoginFrame.AS_programming_loginscreen import LoginContent
+from AS_programming_loginscreen import LoginContent
 from LogoffFrame.LogoffScreen import LogoffContent
 import Pmw
 
@@ -25,23 +25,23 @@ def passLoginScreen(loginScreen: LoginContent):
 
 
 # Opens manager home screen
-def openManagerHomeContent(mainScreen, content):
+def openManagerHomeContent(mainScreen, content, filepath):
     clearContent(mainScreen, content)
-    managerHomeContent = ManagerHomeScreenContent(mainScreen)
+    managerHomeContent = ManagerHomeScreenContent(mainScreen, filepath)
     managerHomeContent.generateManagerHomeScreenContnt(logins.finalloginname)
 
 
 # Opens coach details screen
-def openCoachDetails(mainScreen, content):
+def openCoachDetails(mainScreen, content, filepath):
     clearContent(mainScreen, content)
-    coachcontent = CoachContent(mainScreen)
+    coachcontent = CoachContent(mainScreen, filepath)
     coachcontent.generateCoachContnt()
 
 
 # Opens manager reports screen
-def openManagerReports(mainScreen, content):
+def openManagerReports(mainScreen, content, filepath):
     clearContent(mainScreen, content)
-    managerreports = ManagerReportsContent(mainScreen)
+    managerreports = ManagerReportsContent(mainScreen, filepath)
     managerreports.generateManagerReportsContnt(logins.finalloginname)
 
 
@@ -53,7 +53,7 @@ def openLogoffContent(mainScreen):
 
 
 # Location of main screen and all associated windows
-def main():
+def main(filepath):
     mainScreen = Tk()
     mainScreen.title('Lisburn Raquets Club')
     mainScreen.geometry('985x650')
@@ -73,21 +73,21 @@ def main():
     ToolTips = Pmw.Balloon()
 
 
-    managerHomeContent = ManagerHomeScreenContent(mainScreen)
+    managerHomeContent = ManagerHomeScreenContent(mainScreen, filepath)
     managerHomeContent.generateManagerHomeScreenContnt(logins.finalloginname)
 
 
     managerhomephoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/Home.png")
-    ManagerHomeButton = Button(header, cursor="tcross", image=managerhomephoto, width=30, height=30, command=lambda : openManagerHomeContent(mainScreen, content), bg="black",bd=4,relief='ridge')
+    ManagerHomeButton = Button(header, cursor="tcross", image=managerhomephoto, width=30, height=30, command=lambda : openManagerHomeContent(mainScreen, content, filepath), bg="black",bd=4,relief='ridge')
     ManagerHomeButton.place(rely=0.5,relx=0.264,anchor=CENTER)
     ManagerHomeButton.image = managerhomephoto
     ToolTips.bind(ManagerHomeButton, 'Manager Home Screen')
 
-    CoachDetailsButton = tkinter.Button(header, text="Coach Details", command=lambda : openCoachDetails(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
+    CoachDetailsButton = tkinter.Button(header, text="Coach Details", command=lambda : openCoachDetails(mainScreen, content, filepath), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
     CoachDetailsButton.place(rely=0.5, relx=0.4, anchor='center')
     ToolTips.bind(CoachDetailsButton, 'Coach Details Screen')
 
-    ManagerReportsButton = tkinter.Button(header, text="Manager Reports", command=lambda : openManagerReports(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
+    ManagerReportsButton = tkinter.Button(header, text="Manager Reports", command=lambda : openManagerReports(mainScreen, content, filepath), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
     ManagerReportsButton.place(rely=0.5, relx=0.6, anchor='center')
     ToolTips.bind(ManagerReportsButton, 'Manager Reports Screen')
 

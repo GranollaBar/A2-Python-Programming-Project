@@ -24,10 +24,11 @@ class BookingContent:
 	courts = False
 
 	# Initiates main screen window
-	def __init__(self, mainScreen):
+	def __init__(self, mainScreen, filepath):
 		self.booking = mainScreen
-		self.conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+		self.conn = sqlite3.connect(filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 		self.c = self.conn.cursor()
+		self.filepath = filepath
 
 
 		# Creates MemberBooking database table if it does not exist
@@ -87,7 +88,7 @@ class BookingContent:
 				messagebox.showinfo("Validation Error", "The start date cannot be before the current date", icon='error')
 				return False
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * From coachSessionDetails")
@@ -123,19 +124,19 @@ class BookingContent:
 		# Returns the photo based on the member's chose of competition selected
 		def ConvertPic():
 			if RacquetType_combobox.get() == 'Badminton':
-				filename = 'C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/Badmintonblob.png'
+				filename = self.filepath + '\\_databases_images_doc\\Images\\Badmintonblob.png'
 				with open(filename, 'rb') as file:
 					photo = file.read()
 				return photo
 
 			if RacquetType_combobox.get() == 'Tennis':
-				filename = 'C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/Tennisblob.png'
+				filename = self.filepath + '\\_databases_images_doc\\Images\\Tennisblob.png'
 				with open(filename, 'rb') as file:
 					photo = file.read()
 				return photo
 
 			if RacquetType_combobox.get() == 'Squash':
-				filename = 'C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/Squashblob.png'
+				filename = self.filepath + '\\_databases_images_doc\\Images\\Squashblob.png'
 				with open(filename, 'rb') as file:
 					photo = file.read()
 				return photo
@@ -152,7 +153,7 @@ class BookingContent:
 		def BookingPopulate():
 			clearTv()
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * From MemberBooking")
@@ -174,7 +175,7 @@ class BookingContent:
 
 		# If you double click a certain user, an image of that user's selected sport will be presented within a canvas below the tree view
 		def GetInformation(imageviewer2, event):
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			items = member_booking_Tv.selection()
@@ -204,7 +205,7 @@ class BookingContent:
 			if RacquetType_combobox.get() == 'Badminton' and self.previous == '':
 				self.previous = 'Badminton'
 
-				BadmintonFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/badmintonRacquetsFloor.png")
+				BadmintonFloorPlanPhoto = PhotoImage(file=self.filepath + '\\_databases_images_doc\\Images\\badmintonRacquetsFloor.png')
 
 				BadmintonFloorPlan = Button(self.booking, image=BadmintonFloorPlanPhoto, width=350, height=292, borderwidth=0, activebackground="white")
 				BadmintonFloorPlan.place(rely=0.75,relx=0.76,anchor=CENTER)
@@ -253,7 +254,7 @@ class BookingContent:
 			if RacquetType_combobox.get() == 'Tennis' and self.previous == '':
 				self.previous = 'Tennis'
 
-				TennisFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/tennisRacquetsFloor.png")
+				TennisFloorPlanPhoto = PhotoImage(file=self.filepath + '\\_databases_images_doc\\Images\\tennisRacquetsFloor.png')
 
 				TennisFloorPlan = Button(self.booking, image=TennisFloorPlanPhoto, width=350, height=292, borderwidth=0, activebackground="white")
 				TennisFloorPlan.place(rely=0.75,relx=0.76,anchor=CENTER)
@@ -278,7 +279,7 @@ class BookingContent:
 			if RacquetType_combobox.get() == 'Squash' and self.previous == '':
 				self.previous = 'Squash'
 
-				SquashFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/squashRacquetsFloor.png")
+				SquashFloorPlanPhoto = PhotoImage(file=self.filepath + '\\_databases_images_doc\\Images\\squashRacquetsFloor.png')
 
 				SquashFloorPlan = Button(self.booking, image=SquashFloorPlanPhoto, width=350, height=292, borderwidth=0, activebackground="white")
 				SquashFloorPlan.place(rely=0.75,relx=0.76,anchor=CENTER)
@@ -301,7 +302,7 @@ class BookingContent:
 			if RacquetType_combobox.get() == 'Badminton' and self.previous == 'Tennis':
 				self.previous = 'Badminton'
 
-				BadmintonFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/badmintonRacquetsFloor.png")
+				BadmintonFloorPlanPhoto = PhotoImage(file=self.filepath + '\\_databases_images_doc\\Images\\badmintonRacquetsFloor.png')
 
 				BadmintonFloorPlan = Button(self.booking, image=BadmintonFloorPlanPhoto, width=350, height=292, borderwidth=0, activebackground="white")
 				BadmintonFloorPlan.place(rely=0.75,relx=0.76,anchor=CENTER)
@@ -365,7 +366,7 @@ class BookingContent:
 			if RacquetType_combobox.get() == 'Badminton' and self.previous == 'Squash':
 				self.previous = 'Badminton'
 
-				BadmintonFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/badmintonRacquetsFloor.png")
+				BadmintonFloorPlanPhoto = PhotoImage(file=self.filepath + '\\_databases_images_doc\\Images\\badmintonRacquetsFloor.png')
 
 				BadmintonFloorPlan = Button(self.booking, image=BadmintonFloorPlanPhoto, width=350, height=292, borderwidth=0, activebackground="white")
 				BadmintonFloorPlan.place(rely=0.75,relx=0.76,anchor=CENTER)
@@ -427,7 +428,7 @@ class BookingContent:
 			if RacquetType_combobox.get() == 'Tennis' and self.previous == 'Badminton':
 				self.previous = 'Tennis'
 
-				TennisFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/tennisRacquetsFloor.png")
+				TennisFloorPlanPhoto = PhotoImage(file=self.filepath + '\\_databases_images_doc\\Images\\tennisRacquetsFloor.png')
 
 				TennisFloorPlan = Button(self.booking, image=TennisFloorPlanPhoto, width=350, height=292, borderwidth=0, activebackground="white")
 				TennisFloorPlan.place(rely=0.75,relx=0.76,anchor=CENTER)
@@ -491,7 +492,7 @@ class BookingContent:
 			if RacquetType_combobox.get() == 'Tennis' and self.previous == 'Squash':
 				self.previous = 'Tennis'
 
-				TennisFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/tennisRacquetsFloor.png")
+				TennisFloorPlanPhoto = PhotoImage(file=self.filepath + '\\_databases_images_doc\\Images\\tennisRacquetsFloor.png')
 
 				TennisFloorPlan = Button(self.booking, image=TennisFloorPlanPhoto, width=350, height=292, borderwidth=0, activebackground="white")
 				TennisFloorPlan.place(rely=0.75,relx=0.76,anchor=CENTER)
@@ -529,7 +530,7 @@ class BookingContent:
 			if RacquetType_combobox.get() == 'Squash' and self.previous == 'Badminton':
 				self.previous = 'Squash'
 
-				SquashFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/squashRacquetsFloor.png")
+				SquashFloorPlanPhoto = PhotoImage(file=self.filepath + '\\_databases_images_doc\\Images\\squashRacquetsFloor.png')
 
 				SquashFloorPlan = Button(self.booking, image=SquashFloorPlanPhoto, width=350, height=292, borderwidth=0, activebackground="white")
 				SquashFloorPlan.place(rely=0.75,relx=0.76,anchor=CENTER)
@@ -587,7 +588,7 @@ class BookingContent:
 			if RacquetType_combobox.get() == 'Squash' and self.previous == 'Tennis':
 				self.previous = 'Squash'
 
-				SquashFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/squashRacquetsFloor.png")
+				SquashFloorPlanPhoto = PhotoImage(file=self.filepath + '\\_databases_images_doc\\Images\\squashRacquetsFloor.png')
 
 				SquashFloorPlan = Button(self.booking, image=SquashFloorPlanPhoto, width=350, height=292, borderwidth=0, activebackground="white")
 				SquashFloorPlan.place(rely=0.75,relx=0.76,anchor=CENTER)
@@ -729,7 +730,7 @@ class BookingContent:
 		# This will subsequently be sent to the member who made the booking
 		def SubmitBooking(badminton1, badminton2, badminton3, badminton4, badminton5, badminton6, badminton7, badminton8, badminton9, badminton10, badminton11, badminton12, tennis1, tennis2, tennis3, tennis4, squash1, squash2, badminton1l, badminton2l, badminton3l, badminton4l, badminton5l, badminton6l, badminton7l, badminton8l, badminton9l, badminton10l, badminton11l, badminton12l, tennis1l, tennis2l, tennis3l, tennis4l, squash1l, squash2l, floorplan):
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			isValid = True
@@ -861,7 +862,7 @@ class BookingContent:
 		RacquetType_combobox.config(state="readonly")
 
 
-		BlankFloorPlanPhoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/blankRacquetsFloor.png")
+		BlankFloorPlanPhoto = PhotoImage(file=self.filepath + '\\_databases_images_doc\\Images\\blankRacquetsFloor.png')
 
 		BlankFloorPlan = Button(self.booking, image=BlankFloorPlanPhoto, width=350, height=292, borderwidth=0, activebackground="white")
 		BlankFloorPlan.place(rely=0.75,relx=0.76,anchor=CENTER)
@@ -875,9 +876,9 @@ class BookingContent:
 
 
 
-		CourtsImage = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/courts.png")
-		CourtsImage2 = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/bigcourts.png")
-		CourtsImage3 = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/biggestcourts.png")
+		CourtsImage = PhotoImage(file=self.filepath + '\\_databases_images_doc\\Images\\courts.png')
+		CourtsImage2 = PhotoImage(file=self.filepath + '\\_databases_images_doc\\Images\\bigcourts.png')
+		CourtsImage3 = PhotoImage(file=self.filepath + '\\_databases_images_doc\\Images\\biggestcourts.png')
 
 
 		badmintonCourt1label =Label(self.booking, text = 'Court 1', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
@@ -1041,7 +1042,7 @@ class BookingContent:
 		submit_button.place(rely=0.955, relx=0.26, anchor='center')
 		ToolTips.bind(submit_button, 'Submit booking details into database')
 
-		transparentimage = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/white_90x90.png")
+		transparentimage = PhotoImage(file=self.filepath + '\\_databases_images_doc\\Images\\white.png')
 		imageviewer2 = Button(self.booking, image=transparentimage, width=90, height=90, borderwidth=0, activebackground="white", bd=3)
 		imageviewer2.place(rely=0.433,relx=0.76,anchor=CENTER)
 		imageviewer2.image = transparentimage
@@ -1088,7 +1089,7 @@ class BookingContent:
 
 	# Fetches all usernames within the member database table
 	def get_member_details(self):
-		conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+		conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 		c = conn.cursor()
 
 		member_name_list = []

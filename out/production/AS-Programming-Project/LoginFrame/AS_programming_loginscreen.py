@@ -7,9 +7,9 @@ from tkinter.messagebox import askyesno
 import sqlite3
 from tkinter import *
 import webbrowser
-from LoginFrame.test_email import sendEmail
-from MainScreens.SMSSystem import MemberJoingSMS
-from MainScreens.SMSSystem import ChangingPassword
+# from LoginFrame.test_email import sendEmail
+# from MainScreens.SMSSystem import MemberJoingSMS
+# from MainScreens.SMSSystem import ChangingPassword
 
 login = tkinter.Tk()
 login.title('Lisburn Raquets Club')

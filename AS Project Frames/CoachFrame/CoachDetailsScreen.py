@@ -21,10 +21,11 @@ import Pmw
 class CoachContent:
 
 	# Initiates main screen window
-	def __init__(self, mainScreen):
+	def __init__(self, mainScreen, filepath):
 		self.coach = mainScreen
-		self.conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+		self.conn = sqlite3.connect(filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 		self.c = self.conn.cursor()
+		self.filepath = filepath
 
 
 		# Creates coach database table if it does not exist
@@ -298,7 +299,7 @@ class CoachContent:
 		def treeviewPopulate():
 			clearTv()
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * From coach")
@@ -322,7 +323,7 @@ class CoachContent:
 		def timestreeviewPopulate():
 			clearTimesTv()
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * From coachTimetable")
@@ -535,7 +536,7 @@ class CoachContent:
 
 		# Updates coaches postcode
 		def update_coach_postcode(frame):
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			frame.withdraw()
@@ -576,7 +577,7 @@ class CoachContent:
 
 		# Updates coaches availability top-level
 		def update_coach_availability(frame):
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			frame.withdraw()
@@ -627,7 +628,7 @@ class CoachContent:
 
 		# Updates coaches availability
 		def availableUpdate(frame, username):
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			frame.withdraw()
@@ -670,7 +671,7 @@ class CoachContent:
 
 		# Delete coaches details from coach and coachTimetable database tables
 		def deleteCoachDetails(self):
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			response = askyesno("Question", "Do you want to delete a coach?", icon='question')
@@ -708,7 +709,7 @@ class CoachContent:
 
 		# Search coaches details from coach and coachTimetable database tables
 		def searchCoachDetails():
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			response = askyesno("Question", "Do you want to search a coach's details?", icon='question')
@@ -745,7 +746,7 @@ class CoachContent:
 		# Will generate a document containing all details stored about the member
 		# This will subsequently be sent to the member's email address
 		def saveCoachDetails():
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			isValid = True

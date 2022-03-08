@@ -19,10 +19,6 @@ import datetime
 # Login Class
 class LoginContent:
 
-    # will store the username of the user entering the system
-    def getloginname(self):
-        return self.finalloginname
-
     # Initiates main screen window
     def __init__(self, mainScreen):
         self.finalloginname = ''
@@ -56,7 +52,7 @@ class LoginContent:
 
 
     # Generate login content
-    def generateLoginContnt(self):
+    def generateLoginContnt(self, filepath):
 
         # Ensures password entered conforms to the rules
         def validate_password(value, label):
@@ -352,19 +348,19 @@ class LoginContent:
                     if (data[2] == 'member'):
                         from MainScreens import MemberMainScreen
                         MemberMainScreen.passLoginScreen(self)
-                        MemberMainScreen.main()
+                        MemberMainScreen.main(filepath)
 
 
                     if (data[2] == 'coach'):
                         from MainScreens import CoachMainScreen
                         CoachMainScreen.passLoginScreen(self)
-                        CoachMainScreen.main()
+                        CoachMainScreen.main(filepath)
 
 
                     if (data[2] == 'manager'):
                         from MainScreens import ManagerMainScreen
                         ManagerMainScreen.passLoginScreen(self)
-                        ManagerMainScreen.main()
+                        ManagerMainScreen.main(filepath)
 
 
             conn.commit()

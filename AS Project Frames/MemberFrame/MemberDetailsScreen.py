@@ -20,10 +20,11 @@ import Pmw
 class MemberContent:
 
 	# Initiates main screen window
-	def __init__(self, mainScreen):
+	def __init__(self, mainScreen, filepath):
 		self.member = mainScreen
-		self.conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+		self.conn = sqlite3.connect(filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 		self.c = self.conn.cursor()
+		self.filepath = filepath
 
 
 		# Creates member database table if it does not exist
@@ -274,7 +275,7 @@ class MemberContent:
 		def treeviewPopulate():
 			clearTv()
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * From member")
@@ -313,7 +314,7 @@ class MemberContent:
 
 
 		# Updates member details, such as: telephone and postcode
-		def updateAccountDetails(self):
+		def updateAccountDetails(event):
 			response = askyesno("Question", "Do you want to update a students details?", icon='question')
 			if response == False:
 				showinfo("Info", "Update cancelled", icon='info')
@@ -338,7 +339,7 @@ class MemberContent:
 		def update_member_telephone(frame):
 			frame.withdraw()
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			memberUsername = simpledialog.askstring("Response", "Enter the username of the member you want to update")
@@ -379,7 +380,7 @@ class MemberContent:
 		def update_member_postcode(frame):
 			frame.withdraw()
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			memberUsername = simpledialog.askstring("Response", "Enter the username of the member you want to update")
@@ -417,8 +418,8 @@ class MemberContent:
 
 
 		# Delete member details from member database table
-		def deleteAccountDetails(self):
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+		def deleteAccountDetails(event):
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			response = askyesno("Question", "Do you want to delete a member?", icon='question')
@@ -454,7 +455,7 @@ class MemberContent:
 
 		# Search member details from member database table
 		def searchAccountDetails():
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			response = askyesno("Question", "Do you want to search a members details?", icon='question')
@@ -487,7 +488,7 @@ class MemberContent:
 		# Will generate a document containing all details stored about the member
 		# This will subsequently be sent to the member's email
 		def saveAccountDetails():
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			isValid = True

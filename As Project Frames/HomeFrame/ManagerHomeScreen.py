@@ -16,10 +16,11 @@ class ManagerHomeScreenContent:
 	i = 0
 
 	# Initiates main screen window
-	def __init__(self, mainScreen):
+	def __init__(self, mainScreen, filepath):
 		self.ManagerHome = mainScreen
-		self.conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+		self.conn = sqlite3.connect(filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 		self.c = self.conn.cursor()
+		self.filepath = filepath
 
 
 	# Generate manager home content
@@ -38,7 +39,7 @@ class ManagerHomeScreenContent:
 
 		# Will calculate how many members and coaches have been added to the system
 		def Memberandcoachcounter():
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			membercounter = 0
@@ -97,23 +98,23 @@ class ManagerHomeScreenContent:
 		no_coaches = Label(self.ManagerHome, font=('serif', 14, 'bold'), fg='black', bg='white', bd=3, relief='sunken', padx=3, pady=1)
 		no_coaches.place(rely=0.393, relx=0.575, anchor='center')
 
-		googlemapsphoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/Googlemaps.png")
+		googlemapsphoto = PhotoImage(file=self.filepath + '\\_databases_images_doc\\Images\\Googlemaps.png')
 
 		GoogleMapsButton = Button(self.ManagerHome, cursor="tcross", image=googlemapsphoto, width=507, height=315, command=GoogleMapsLocation, bg="white", activebackground="grey")
 		GoogleMapsButton.place(rely=0.73,relx=0.67,anchor=CENTER)
 		GoogleMapsButton.image = googlemapsphoto
 
-		img1 = Image.open('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/MemberImageSlider4.png')
+		img1 = Image.open(self.filepath + '\\_databases_images_doc\\Images\\MemberImageSlider4.png')
 		img1.thumbnail((300, 300))
-		img2 = Image.open('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/MemberImageSlider1.png')
+		img2 = Image.open(self.filepath + '\\_databases_images_doc\\Images\\MemberImageSlider1.png')
 		img2.thumbnail((300, 300))
-		img3 = Image.open('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/MemberImageSlider2.png')
+		img3 = Image.open(self.filepath + '\\_databases_images_doc\\Images\\MemberImageSlider2.png')
 		img3.thumbnail((300, 300))
-		img4 = Image.open('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/MemberImageSlider5.png')
+		img4 = Image.open(self.filepath + '\\_databases_images_doc\\Images\\MemberImageSlider5.png')
 		img4.thumbnail((300, 300))
-		img5 = Image.open('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/MemberImageSlider3.png')
+		img5 = Image.open(self.filepath + '\\_databases_images_doc\\Images\\MemberImageSlider3.png')
 		img5.thumbnail((300, 300))
-		img6 = Image.open('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/MemberImageSlider6.png')
+		img6 = Image.open(self.filepath + '\\_databases_images_doc\\Images\\MemberImageSlider6.png')
 		img6.thumbnail((300, 300))
 
 		image1 = ImageTk.PhotoImage(img1)

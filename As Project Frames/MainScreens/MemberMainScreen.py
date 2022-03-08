@@ -4,7 +4,7 @@ import tkinter.simpledialog
 from tkinter import *
 from MemberBooking.MemberBookingScreen import BookingContent
 from HomeFrame.MemberHomeScreen import MemberHomeScreenContent
-from LoginFrame.AS_programming_loginscreen import LoginContent
+from AS_programming_loginscreen import LoginContent
 from LogoffFrame.LogoffScreen import LogoffContent
 import Pmw
 
@@ -24,16 +24,16 @@ def passLoginScreen(loginScreen: LoginContent):
 
 
 # Opens member home screen
-def openMemberHomeContent(mainScreen, content):
+def openMemberHomeContent(mainScreen, content, filepath):
     clearContent(mainScreen, content)
-    memberHomeContent = MemberHomeScreenContent(mainScreen)
+    memberHomeContent = MemberHomeScreenContent(mainScreen, filepath)
     memberHomeContent.generateMemberHomeScreenContnt(logins.finalloginname)
 
 
 # Opens member booking screen
-def openMemberBooking(mainScreen, content):
+def openMemberBooking(mainScreen, content, filepath):
     clearContent(mainScreen, content)
-    bookingcontent = BookingContent(mainScreen)
+    bookingcontent = BookingContent(mainScreen, filepath)
     bookingcontent.memberSelection()
     bookingcontent.generateBookingContnt()
 
@@ -46,7 +46,7 @@ def openLogoffContent(mainScreen):
 
 
 # Location of main screen and all associated windows
-def main():
+def main(filepath):
     mainScreen = Tk()
     mainScreen.title('Lisburn Raquets Club')
     mainScreen.geometry('985x650')
@@ -66,17 +66,17 @@ def main():
     ToolTips = Pmw.Balloon()
 
 
-    memberHomeContent = MemberHomeScreenContent(mainScreen)
+    memberHomeContent = MemberHomeScreenContent(mainScreen, filepath)
     memberHomeContent.generateMemberHomeScreenContnt(logins.finalloginname)
 
 
     memberhomephoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/Home.png")
-    MemberHomeButton = Button(header, cursor="tcross", image=memberhomephoto, width=30, height=30, command=lambda : openMemberHomeContent(mainScreen, content), bg="black",bd=4,relief='ridge')
+    MemberHomeButton = Button(header, cursor="tcross", image=memberhomephoto, width=30, height=30, command=lambda : openMemberHomeContent(mainScreen, content, filepath), bg="black",bd=4,relief='ridge')
     MemberHomeButton.place(rely=0.5,relx=0.35,anchor=CENTER)
     MemberHomeButton.image = memberhomephoto
     ToolTips.bind(MemberHomeButton, 'Member Home Screen')
 
-    member_booking_button = tkinter.Button(header, text="Member Booking", command=lambda : openMemberBooking(mainScreen, content), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
+    member_booking_button = tkinter.Button(header, text="Member Booking", command=lambda : openMemberBooking(mainScreen, content, filepath), fg='white', bg='black', bd=4, relief='ridge', font=('Tahoma', 12, 'bold'), padx=10, cursor="tcross")
     member_booking_button.place(rely=0.5, relx=0.5, anchor='center')
     ToolTips.bind(member_booking_button, 'Member Booking Screen')
 

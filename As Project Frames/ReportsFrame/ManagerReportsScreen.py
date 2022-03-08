@@ -20,10 +20,11 @@ import numpy as np
 class ManagerReportsContent:
 
 	# Initiates main screen window
-	def __init__(self, mainScreen):
+	def __init__(self, mainScreen, filepath):
 		self.Reports = mainScreen
-		self.conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+		self.conn = sqlite3.connect(filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 		self.c = self.conn.cursor()
+		self.filepath = filepath
 
 
 	# Generate manager reports content
@@ -31,7 +32,7 @@ class ManagerReportsContent:
 
 		# Find manager's first name and surname and returns the value
 		def findfirstandsurname():
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * FROM manager WHERE username=:managerusername", {
@@ -45,7 +46,7 @@ class ManagerReportsContent:
 
 		# Find manager's first name and surname and returns the value (capitalized form)
 		def Capitalizedfindfirstandsurname():
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * FROM manager WHERE username=:managerusername", {
@@ -59,7 +60,7 @@ class ManagerReportsContent:
 
 		# Opens the coach account doc (most recently added coach)
 		def OpenCoachAccountDoc():
-			os.startfile(r'C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Doc/coach_Account_Details.docx')
+			os.startfile(self.filepath + '\\_databases_images_doc\\Doc\\coach_Account_Details.docx')
 
 
 
@@ -70,7 +71,7 @@ class ManagerReportsContent:
 		title_label = tkinter.Label(self.Reports, text=Capitalizedfindfirstandsurname() + "'s Reports", font=('serif', 14, 'bold','underline'), fg='black', bg='white', bd=4, relief='groove', padx=10, pady=4)
 		title_label.place(rely=0.145, relx=0.5, anchor='center')
 
-		wordphoto = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/word.png")
+		wordphoto = PhotoImage(file=self.filepath + '\\_databases_images_doc\\Images\\word.png')
 
 		coachaccount_title_label =Label(self.Reports, text = findfirstandsurname() + "'s Latest Added Coach", fg ='black',bg='white',font=('serif',11,'bold'), bd=2, relief="ridge", padx=7, pady=2)
 		coachaccount_title_label.place(rely=0.227,relx=0.765,anchor=CENTER)
@@ -92,7 +93,7 @@ class ManagerReportsContent:
 				'size': 10,
 				}
 
-		conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+		conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 		c = conn.cursor()
 
 		c.execute("SELECT * FROM MemberBooking")

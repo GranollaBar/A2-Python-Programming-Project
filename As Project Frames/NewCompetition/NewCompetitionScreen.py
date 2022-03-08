@@ -23,10 +23,11 @@ class NewCompetitionContent:
 	FinalSelectedCourts = ''
 
 	# Initiates main screen window
-	def __init__(self, mainScreen):
+	def __init__(self, mainScreen, filepath):
 		self.competition = mainScreen
-		self.conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+		self.conn = sqlite3.connect(filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 		self.c = self.conn.cursor()
+		self.filepath = filepath
 
 
 		# Creates SinglesCompetition database table if it does not exist
@@ -103,7 +104,7 @@ class NewCompetitionContent:
 				messagebox.showinfo("Validation Error", "The start date cannot be before the current date", icon='error')
 				return False
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * FROM SinglesCompetition")
@@ -161,7 +162,7 @@ class NewCompetitionContent:
 				messagebox.showinfo("Validation Error", "The start date cannot be before the current date", icon='error')
 				return False
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * FROM DoublesCompetition")
@@ -230,7 +231,7 @@ class NewCompetitionContent:
 			else:
 				pass
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * FROM SinglesCompetition")
@@ -299,7 +300,7 @@ class NewCompetitionContent:
 			else:
 				pass
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * FROM DoublesCompetition")
@@ -357,7 +358,7 @@ class NewCompetitionContent:
 				return False
 
 			if (SinglesTrue == True):
-				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+				conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 				c = conn.cursor()
 
 				c.execute("SELECT * FROM SinglesCompetition")
@@ -396,7 +397,7 @@ class NewCompetitionContent:
 				return True
 
 			else:
-				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+				conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 				c = conn.cursor()
 
 				c.execute("SELECT * FROM DoublesCompetition")
@@ -466,7 +467,7 @@ class NewCompetitionContent:
 				pass
 
 			if (DoublesTrue == True):
-				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+				conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 				c = conn.cursor()
 
 				c.execute("SELECT * FROM SinglesCompetition")
@@ -505,7 +506,7 @@ class NewCompetitionContent:
 				return True
 
 			else:
-				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+				conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 				c = conn.cursor()
 
 				c.execute("SELECT * FROM DoublesCompetition")
@@ -551,7 +552,7 @@ class NewCompetitionContent:
 				messagebox.showinfo("Validation Error", "The username cannot be empty", icon='error')
 				return False
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute(f"SELECT * FROM member WHERE username=?", (str(value),))
@@ -573,7 +574,7 @@ class NewCompetitionContent:
 				messagebox.showinfo("Validation Error", "The username cannot be empty", icon='error')
 				return False
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute(f"SELECT * FROM member WHERE username=?", (str(value2),))
@@ -602,7 +603,7 @@ class NewCompetitionContent:
 				messagebox.showinfo("Validation Error", "The username cannot be empty", icon='error')
 				return False
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute(f"SELECT * FROM member WHERE username=?", (str(value),))
@@ -624,7 +625,7 @@ class NewCompetitionContent:
 				messagebox.showinfo("Validation Error", "The username cannot be empty", icon='error')
 				return False
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute(f"SELECT * FROM member WHERE username=?", (str(value2),))
@@ -651,7 +652,7 @@ class NewCompetitionContent:
 				messagebox.showinfo("Validation Error", "The username cannot be empty", icon='error')
 				return False
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute(f"SELECT * FROM member WHERE username=?", (str(value3),))
@@ -682,7 +683,7 @@ class NewCompetitionContent:
 				messagebox.showinfo("Validation Error", "The username cannot be empty", icon='error')
 				return False
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute(f"SELECT * FROM member WHERE username=?", (str(value4),))
@@ -764,7 +765,7 @@ class NewCompetitionContent:
 		def singlestreeviewPopulate(treeview):
 			clearTv(treeview)
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * From SinglesCompetition")
@@ -789,7 +790,7 @@ class NewCompetitionContent:
 		def doublestreeviewPopulate(treeview):
 			clearTv(treeview)
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * From DoublesCompetition")
@@ -870,7 +871,7 @@ class NewCompetitionContent:
 			title_label.place(rely=0.027,relx=0.5,anchor=CENTER)
 
 
-			CourtsImage = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/courts.png")
+			CourtsImage = PhotoImage(file=self.filepath + '\\_databases_images_doc\\Images\\courts.png')
 
 
 			Court1label =Label(courts, text = 'Court 1', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
@@ -1015,7 +1016,7 @@ class NewCompetitionContent:
 			ListComplete = False
 			AllListComplete = 0
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * FROM SinglesCompetition")
@@ -1058,7 +1059,7 @@ class NewCompetitionContent:
 			ListComplete = False
 			AllListComplete = 0
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * FROM DoublesCompetition")
@@ -1099,9 +1100,10 @@ class NewCompetitionContent:
 			conn.close()
 
 
-		# Updates singles competition calendar's colour from black to SpringGreen3 based on all th dates in the SinglesCompetition database table
+		# Updates singles competition calendar's colour from black to SpringGreen3
+		# Based on all the dates in the SinglesCompetition database table
 		def SinglesChangeCalendarColour(cal):
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * FROM SinglesCompetition")
@@ -1148,9 +1150,10 @@ class NewCompetitionContent:
 			conn.close()
 
 
-		# Updates doubles competition calendar's colour from black to SpringGreen3 based on all th dates in the DoublesCompetition database table
+		# Updates doubles competition calendar's colour from black to SpringGreen3
+		# Based on all the dates in the DoublesCompetition database table
 		def DoublesChangeCalendarColour(cal):
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * FROM DoublesCompetition")
@@ -1198,7 +1201,7 @@ class NewCompetitionContent:
 			conn.close()
 
 
-		# Delete singles competition details
+		# Delete singles competition details from SinglesCompetition database table
 		def SinglesDeleteCompetition(value, value2, value3):
 			isValid = True
 			isValid = isValid and validate_group_delete(value2.get(), value)
@@ -1211,7 +1214,7 @@ class NewCompetitionContent:
 					showinfo("Info", "Deletion cancelled", icon='info')
 
 				else:
-					conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+					conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 					c = conn.cursor()
 
 					c.execute(f"SELECT * FROM SinglesCompetition WHERE singlescompetitionID =?", (str(GroupSelected),))
@@ -1272,7 +1275,7 @@ class NewCompetitionContent:
 						conn.close()
 
 
-		# Delete doubles competition details
+		# Delete doubles competition details from DoublesCompetition database table
 		def DoublesDeleteCompetition(value, value2, value3):
 			isValid = True
 			isValid = isValid and validate_group_delete(value2.get(), value)
@@ -1285,7 +1288,7 @@ class NewCompetitionContent:
 					showinfo("Info", "Deletion cancelled", icon='info')
 
 				else:
-					conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+					conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 					c = conn.cursor()
 
 					c.execute(f"SELECT * FROM DoublesCompetition WHERE doublescompetitionID =?", (str(GroupSelected),))
@@ -1351,7 +1354,7 @@ class NewCompetitionContent:
 						conn.close()
 
 
-		# Update singles competition details
+		# Update singles competition details, such as: usernames, dates and court
 		def SinglesUpdateCompetition(label1, label2, label3, value1, value2, value3, treeview):
 			if (UpdateSelectionSingles.get() == 1):
 				isValid = True
@@ -1368,7 +1371,7 @@ class NewCompetitionContent:
 						showinfo("Info", "Update cancelled", icon='info')
 
 					else:
-						conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+						conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 						c = conn.cursor()
 
 						c.execute(f"SELECT * FROM SinglesCompetition WHERE singlescompetitionID =?", (str(GroupSelected),))
@@ -1419,7 +1422,7 @@ class NewCompetitionContent:
 						showinfo("Info", "Update cancelled", icon='info')
 
 					else:
-						conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+						conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 						c = conn.cursor()
 
 						c.execute(f"SELECT * FROM SinglesCompetition WHERE singlescompetitionID =?", (str(GroupSelected),))
@@ -1465,7 +1468,7 @@ class NewCompetitionContent:
 						showinfo("Info", "Update cancelled", icon='info')
 
 					else:
-						conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+						conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 						c = conn.cursor()
 
 						c.execute(f"SELECT * FROM SinglesCompetition WHERE singlescompetitionID =?", (str(GroupSelected),))
@@ -1492,7 +1495,7 @@ class NewCompetitionContent:
 							singlestreeviewPopulate(treeview)
 
 
-		# Update doubles competition details
+		# Update doubles competition details, such as: usernames, dates and court
 		def DoublesUpdateCompetition(label1, label2, label3, label4, label5, value1, value2, value3, value4, value5, treeview):
 			if (UpdateSelectionDoubles.get() == 1):
 				isValid = True
@@ -1514,7 +1517,7 @@ class NewCompetitionContent:
 						showinfo("Info", "Update cancelled", icon='info')
 
 					else:
-						conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+						conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 						c = conn.cursor()
 
 						c.execute(f"SELECT * FROM DoublesCompetition WHERE doublescompetitionID =?", (str(GroupSelected),))
@@ -1575,7 +1578,7 @@ class NewCompetitionContent:
 						showinfo("Info", "Update cancelled", icon='info')
 
 					else:
-						conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+						conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 						c = conn.cursor()
 
 						c.execute(f"SELECT * FROM DoublesCompetition WHERE doublescompetitionID =?", (str(GroupSelected),))
@@ -1621,7 +1624,7 @@ class NewCompetitionContent:
 						showinfo("Info", "Update cancelled", icon='info')
 
 					else:
-						conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+						conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 						c = conn.cursor()
 
 						c.execute(f"SELECT * FROM DoublesCompetition WHERE doublescompetitionID =?", (str(GroupSelected),))
@@ -1648,7 +1651,8 @@ class NewCompetitionContent:
 							doublestreeviewPopulate(treeview)
 
 
-		# Submit singles competition details, sending details to the members of the competition
+		# Submit singles competition details
+		# An email address containing all the information will be sent to members involved
 		def SubmitNewSingles(label1, label2, label3, label4, label5, cal, treeview):
 			AllEmailsComplete = 0
 
@@ -1671,7 +1675,7 @@ class NewCompetitionContent:
 					showinfo("Info", "submition cancelled", icon='info')
 
 				else:
-					conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+					conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 					c = conn.cursor()
 
 					c.execute("SELECT * From member")
@@ -1716,7 +1720,8 @@ class NewCompetitionContent:
 			singlestreeviewPopulate(treeview)
 
 
-		# Submit doubles competition details, sending details to the members of the competition
+		# Submit doubles competition details
+		# An email address containing all the information will be sent to members involved
 		def SubmitNewDoubles(label1, label2, label3, label4, label5, cal, treeview):
 			AllEmailsComplete = 0
 
@@ -1743,7 +1748,7 @@ class NewCompetitionContent:
 					showinfo("Info", "submition cancelled", icon='info')
 
 				else:
-					conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+					conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 					c = conn.cursor()
 
 					c.execute("SELECT * From member")
@@ -1888,7 +1893,7 @@ class NewCompetitionContent:
 				select_singles_group_label = tkinter.Label(self.competition, text="Select group:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				select_singles_group_label.place(rely=0.92, relx=0.1, anchor='center')
 
-				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+				conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 				c = conn.cursor()
 
 				singles_competitionID_list = []
@@ -1970,7 +1975,7 @@ class NewCompetitionContent:
 				select_singles_group_label = tkinter.Label(self.competition, text="Select group:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				select_singles_group_label.place(rely=0.92, relx=0.1, anchor='center')
 
-				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+				conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 				c = conn.cursor()
 
 				singles_competitionID_list = []
@@ -2038,7 +2043,7 @@ class NewCompetitionContent:
 				select_singles_group_label = tkinter.Label(self.competition, text="Select group:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				select_singles_group_label.place(rely=0.92, relx=0.1, anchor='center')
 
-				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+				conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 				c = conn.cursor()
 
 				singles_competitionID_list = []
@@ -2121,7 +2126,7 @@ class NewCompetitionContent:
 				select_doubles_group_label = tkinter.Label(self.competition, text="Select group:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				select_doubles_group_label.place(rely=0.884, relx=0.1, anchor='center')
 
-				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+				conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 				c = conn.cursor()
 
 				doubles_competitionID_list = []
@@ -2225,7 +2230,7 @@ class NewCompetitionContent:
 				select_doubles_group_label = tkinter.Label(self.competition, text="Select group:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				select_doubles_group_label.place(rely=0.92, relx=0.1, anchor='center')
 
-				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+				conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 				c = conn.cursor()
 
 				doubles_competitionID_list = []
@@ -2301,7 +2306,7 @@ class NewCompetitionContent:
 				select_doubles_group_label = tkinter.Label(self.competition, text="Select group:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				select_doubles_group_label.place(rely=0.92, relx=0.1, anchor='center')
 
-				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+				conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 				c = conn.cursor()
 
 				doubles_competitionID_list = []
@@ -2381,7 +2386,7 @@ class NewCompetitionContent:
 				username2_label.place(rely=0.37, relx=0.09, anchor='center')
 
 
-				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+				conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 				c = conn.cursor()
 
 				member_name_list = []
@@ -2473,7 +2478,7 @@ class NewCompetitionContent:
 				team2_label.place(rely=0.37, relx=0.09, anchor='center')
 
 
-				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+				conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 				c = conn.cursor()
 
 				member_name_list = []
@@ -2630,7 +2635,7 @@ class NewCompetitionContent:
 				select_group_delete_label = tkinter.Label(self.competition, text="Select which group to delete:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				select_group_delete_label.place(rely=0.288, relx=0.355, anchor='center')
 
-				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+				conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 				c = conn.cursor()
 
 				singles_competitionID_list = []
@@ -2683,7 +2688,7 @@ class NewCompetitionContent:
 				select_group_delete_label = tkinter.Label(self.competition, text="Select which group to delete:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				select_group_delete_label.place(rely=0.288, relx=0.355, anchor='center')
 
-				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+				conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 				c = conn.cursor()
 
 				doubles_competitionID_list = []
@@ -2744,7 +2749,7 @@ class NewCompetitionContent:
 		presentDate = datetime.datetime.now()
 		current_date = presentDate.strftime("%d/%m/%Y")
 
-		conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+		conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 		c = conn.cursor()
 
 		c.execute("SELECT * From SinglesCompetition")
@@ -2796,6 +2801,7 @@ class NewCompetitionContent:
 						pass
 
 
+		# Variables Used
 		MatchType=IntVar()
 		CompetitionStatus=IntVar()
 		UpdateSelectionSingles=IntVar()
@@ -2814,7 +2820,7 @@ class NewCompetitionContent:
 		ToolTips = Pmw.Balloon()
 
 
-
+		# Tkinter labels, entry boxes, buttons, tree views, etc.
 		match_type_label = tkinter.Label(self.competition, text="Type of Match:", font=('serif', 12, 'bold'), fg='black', bg='white')
 		match_type_label.place(rely=0.128, relx=0.33, anchor='center')
 

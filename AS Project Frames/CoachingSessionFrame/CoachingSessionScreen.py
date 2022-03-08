@@ -25,10 +25,11 @@ class CoachingSessionContent:
 	PeopleCounter = 0
 
 	# Initiates main screen window
-	def __init__(self, mainScreen):
+	def __init__(self, mainScreen, filepath):
 		self.coachSession = mainScreen
-		self.conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+		self.conn = sqlite3.connect(filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 		self.c = self.conn.cursor()
+		self.filepath = filepath
 
 
 		# Creates coachSessionDetails database table if it does not exist
@@ -111,7 +112,7 @@ class CoachingSessionContent:
 				messagebox.showinfo("Validation Error", "The start date cannot be before the current date", icon='error')
 				return False
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * From coachSessionDetails")
@@ -165,7 +166,7 @@ class CoachingSessionContent:
 		def validate_group(value, label):
 			GroupExistsCounter = 0
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * From member")
@@ -265,7 +266,7 @@ class CoachingSessionContent:
 			title_label.place(rely=0.027,relx=0.5,anchor=CENTER)
 
 
-			CourtsImage = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/courts.png")
+			CourtsImage = PhotoImage(file=self.filepath + '\\_databases_images_doc\\Images\\courts.png')
 
 
 			Court1label =Label(courts, text = 'Court 1', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
@@ -391,7 +392,7 @@ class CoachingSessionContent:
 
 		# Selects the group required
 		def groupRequired():
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			groupNumber = tkinter.simpledialog.askstring("Response","Enter the group number that you want the coaching session for (1-20)")
@@ -425,7 +426,7 @@ class CoachingSessionContent:
 		def treeviewPopulate():
 			clearTv()
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * From coachSessionDetails")
@@ -494,7 +495,7 @@ class CoachingSessionContent:
 
 		# Updates coaching sessions time top-level
 		def updateCoachSessionTime(frame):
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			frame.withdraw()
@@ -538,7 +539,7 @@ class CoachingSessionContent:
 
 		# Updates coaching sessions time
 		def confirmNewTimes(frame, username):
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			frame.withdraw()
@@ -572,7 +573,7 @@ class CoachingSessionContent:
 		# Updates coaching sessions date
 		def updateCoachSessionDate(frame):
 			def new_assign_dob(username):
-				conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+				conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 				c = conn.cursor()
 
 				newEventDate.set(newcal.get_date())
@@ -593,7 +594,7 @@ class CoachingSessionContent:
 				treeviewPopulate()
 				changeCalendarColour()
 
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			frame.withdraw()
@@ -616,7 +617,7 @@ class CoachingSessionContent:
 
 		# Updates coaching sessions courts top-level
 		def updateCoachSessionCourts(frame):
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			frame.withdraw()
@@ -635,7 +636,7 @@ class CoachingSessionContent:
 					title_label =Label(courts, cursor="tcross",text = 'Update the Number of Courts Required', fg ='black',bg='white',font=('serif',11,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 					title_label.place(rely=0.027,relx=0.5,anchor=CENTER)
 
-					CourtsImage = PhotoImage(file="C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/courts.png")
+					CourtsImage = PhotoImage(file=self.filepath + '\\_databases_images_doc\\Images\\courts.png')
 
 
 					Court1label =Label(courts, text = 'Court 1', fg ='black',bg='white',font=('serif',7,'bold'), bd=2, relief="ridge", padx=10, pady=3)
@@ -770,7 +771,7 @@ class CoachingSessionContent:
 
 		# Updates coaching sessions technique top-level
 		def updateCoachSessionTechnique(frame):
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			frame.withdraw()
@@ -812,7 +813,7 @@ class CoachingSessionContent:
 
 		# Updates coaching sessions technique
 		def techniqueUpdate(frame, username):
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			frame.withdraw()
@@ -845,7 +846,7 @@ class CoachingSessionContent:
 
 		# Updates coaching session calendar to include a message outlining the details of a coaching session
 		def CalendarSelection(event):
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			date = cal.get_date()
@@ -880,7 +881,7 @@ class CoachingSessionContent:
 		# This is based on all the dates in the coachSessionDetails database table
 		def changeCalendarColour():
 			cal.calevent_remove("all")
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			c.execute("SELECT * FROM coachSessionDetails")
@@ -899,7 +900,7 @@ class CoachingSessionContent:
 		presentDate = datetime.datetime.now()
 		current_date = presentDate.strftime("%d/%m/%Y")
 
-		conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+		conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 		c = conn.cursor()
 
 		c.execute("SELECT * From coachSessionDetails")
@@ -929,7 +930,7 @@ class CoachingSessionContent:
 
 		# Delete coaching session details from coachSessionDetails database table
 		def deleteCoachSessionDetails(self):
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			response = askyesno("Question", "Do you want to delete a coach session?", icon='question')
@@ -964,7 +965,7 @@ class CoachingSessionContent:
 
 		# Search coaching session details from coachSessionDetails database table
 		def searchCoachSessionDetails():
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			response = askyesno("Question", "Do you want to search a coach's session?", icon='question')
@@ -997,7 +998,7 @@ class CoachingSessionContent:
 		# Will generate a document containing all details stored about the member
 		# This will subsequently be sent to the member's whos group has been selected for the coaching session
 		def submitCoachSession():
-			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			AllEmailsComplete = 0
@@ -1256,7 +1257,7 @@ class CoachingSessionContent:
 
 
 	def get_coach_details(self):
-		conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+		conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 		c = conn.cursor()
 
 		coach_name_list = []
