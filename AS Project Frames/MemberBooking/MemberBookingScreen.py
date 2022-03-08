@@ -172,7 +172,7 @@ class BookingContent:
 					count+=1
 
 
-		# If user doubles clicks a certain user, an image of that user's selected sport will be presented within a canvas below the tree view
+		# If you double click a certain user, an image of that user's selected sport will be presented within a canvas below the tree view
 		def GetInformation(imageviewer2, event):
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -724,7 +724,9 @@ class BookingContent:
 						return squashselectedcourts[0]
 
 
-		# Submits member booking, sending an image and the information of the booking to the member
+		# Submits member booking
+		# Will generate a document containing all details stored about the member
+		# This will subsequently be sent to the member who made the booking
 		def SubmitBooking(badminton1, badminton2, badminton3, badminton4, badminton5, badminton6, badminton7, badminton8, badminton9, badminton10, badminton11, badminton12, tennis1, tennis2, tennis3, tennis4, squash1, squash2, badminton1l, badminton2l, badminton3l, badminton4l, badminton5l, badminton6l, badminton7l, badminton8l, badminton9l, badminton10l, badminton11l, badminton12l, tennis1l, tennis2l, tennis3l, tennis4l, squash1l, squash2l, floorplan):
 
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
@@ -829,37 +831,7 @@ class BookingContent:
 						BookingPopulate()
 
 
-		presentDate = datetime.datetime.now()
-		current_date = presentDate.strftime("%d/%m/%Y")
-
-		conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
-		c = conn.cursor()
-
-		c.execute("SELECT * From MemberBooking")
-		items = c.fetchall()
-
-		for row in items:
-			rowsplitdate = str(row[3]).split('/')
-			currentdatesplit = current_date.split('/')
-
-			if rowsplitdate[2] < currentdatesplit[2]:
-				c.execute('DELETE FROM MemberBooking WHERE bookingID=:ID', {
-					"ID": row[5]
-				})
-			else:
-				if rowsplitdate[2] >= currentdatesplit[2] and rowsplitdate[1] < currentdatesplit[1]:
-					c.execute('DELETE FROM MemberBooking WHERE bookingID=:ID', {
-						"ID": row[5]
-					})
-				else:
-					if rowsplitdate[2] >= currentdatesplit[2] and rowsplitdate[1] >= currentdatesplit[1] and rowsplitdate[0] < currentdatesplit[0]:
-						c.execute('DELETE FROM MemberBooking WHERE bookingID=:ID', {
-							"ID": row[5]
-						})
-					else:
-						pass
-
-
+		# Variables Used
 		eventDate=StringVar()
 		court = StringVar()
 
@@ -869,6 +841,7 @@ class BookingContent:
 		ToolTips = Pmw.Balloon()
 
 
+		# Tkinter labels, entry boxes, buttons, tree views, etc.
 		username_label = tkinter.Label(self.booking, text="Username:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		username_label.place(rely=0.15, relx=0.1, anchor='center')
 

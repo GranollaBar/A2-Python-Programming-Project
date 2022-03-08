@@ -1,51 +1,54 @@
+# Member Home Screen
+
 from tkinter import ttk
 from tkinter import messagebox
 import tkinter.simpledialog
-from tkinter.messagebox import showinfo
-from tkinter.messagebox import askyesno
 import sqlite3
-from tkinter import simpledialog
 from tkinter import *
 from functools import partial
 from tkcalendar import Calendar
-from CoachingSessionFrame.CoachingSessionEmail import SessionEmail
-import time
 from time import strftime
 from datetime import date, datetime,timedelta
 import datetime
 from PIL import Image, ImageTk
-import calendar
 import webbrowser
 
-i = 0
 
+
+# Member Home Class
 class MemberHomeScreenContent:
 
+	i = 0
+
+	# Initiates main screen window
 	def __init__(self, mainScreen):
 		self.MemberHome = mainScreen
 		self.conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 		self.c = self.conn.cursor()
 
 
+	# Generate member home content
 	def generateMemberHomeScreenContnt(self, FinalUsername):
 
+		# Calculates the current time
 		def time():
 			string = strftime('%H:%M:%S %p')
 			clock.config(text=string)
 			clock.after(1000, time)
 
 
+		# Showcases the Lisburn Racquets Club badminton, tennis and squash facilities with an image slider
 		def ImageSlider():
-			global i, show
-			if i >= (len(images)-1):
-				i = 0
-				slide_image.config(image=images[i])
+			if self.i >= (len(images)-1):
+				self.i = 0
+				slide_image.config(image=images[self.i])
 			else:
-				i = i + 1
-				slide_image.configure(image=images[i])
-			show = slide_image.after(2000, ImageSlider)
+				self.i = self.i + 1
+				slide_image.configure(image=images[self.i])
+			show = slide_image.after(3000, ImageSlider)
 
 
+		# Find member's first name and surname and returns the value
 		def findfirstandsurname():
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -59,6 +62,8 @@ class MemberHomeScreenContent:
 			return labelusername
 
 
+		# Will present a message box to any coaching session, competition or booking which hasn't been completed yet
+		# An error will be presented if an invalid date has been selected
 		def AllCalendarSelection(cal, event=None):
 			AllChangeSelection = False
 
@@ -161,6 +166,9 @@ class MemberHomeScreenContent:
 				messagebox.showinfo('Error', "There is currently no event for " + FinalUsername + " on the date selected", icon='error')
 
 
+		# Will change the calendar's colour from black to SpringGreen3
+		# This is based on all the dates in the coachSessionDetails database table
+		# However, a coaching session will only change colour if a member is a part of that certain group selected
 		def changeCalendarColour(cal):
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -185,6 +193,8 @@ class MemberHomeScreenContent:
 			conn.close()
 
 
+		# Will change the calendar's colour from black to SpringGreen3
+		# This is based on all the dates in the SinglesCompetition database table
 		def SinglesChangeCalendarColour(cal):
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -230,6 +240,8 @@ class MemberHomeScreenContent:
 			conn.close()
 
 
+		# Will change the calendar's colour from black to SpringGreen3
+		# This is based on all the dates in the DoublesCompetition database table
 		def DoublesChangeCalendarColour(cal):
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -275,21 +287,25 @@ class MemberHomeScreenContent:
 			conn.close()
 
 
+		# Opens a link to the specific google maps location of Lisburn Racquets Club
 		def GoogleMapsLocation():
 			webbrowser.open("https://www.google.com/maps/place/Lisburn+Racquets+Club/@54.5173416,-6.0428075,15z/data=!4m5!3m4!1s0x4861044f4e4d451b:0x9a328c6b732d12eb!8m2!3d54.5173416!4d-6.0340528")
 
 
+		# Removes the ability to resize all tree views
 		def treeviewresizedisable(treeview, event):
 			if treeview.identify_region(event.x, event.y) == "separator":
 				return "break"
 
 
+		# Clears past events tree view data
 		def clearTv(treeview):
 			record=treeview.get_children()
 			for elements in record:
 				treeview.delete(elements)
 
 
+		# Past events tree view populate
 		def treeviewPopulate(treeview):
 			clearTv(treeview)
 
@@ -307,13 +323,14 @@ class MemberHomeScreenContent:
 					pass
 				else:
 					if count%2==0:
-						treeview.insert('','end',text=row[1],values=(row[2],row[3]))
+						treeview.insert('','end',text=row[0],values=(row[1],row[2]))
 					else:
-						treeview.insert('','end',text=row[1],values=(row[2],row[3]))
+						treeview.insert('','end',text=row[0],values=(row[1],row[2]))
 					count+=1
 
 
 
+		# Tkinter labels, entry boxes, buttons, tree views, etc.
 		title_label = tkinter.Label(self.MemberHome, text="Main Menu: Member", font=('serif', 18, 'bold','underline'), fg='black', bg='white', bd=4, relief='groove', padx=10, pady=4)
 		title_label.place(rely=0.17, relx=0.18, anchor='center')
 
@@ -362,11 +379,11 @@ class MemberHomeScreenContent:
 
 		images = [image1, image2, image3, image4, image5, image6]
 
-		i = 0
-		slide_image = Label(self.MemberHome, image=images[i], bd=10, relief='ridge', bg='green')
+		self.i = 0
+		slide_image = Label(self.MemberHome, image=images[self.i], bd=10, relief='ridge', bg='green')
 		slide_image.place(rely=0.732, relx=0.19, anchor='center')
 
-		treeview_label =Label(self.MemberHome, text = findfirstandsurname() + "'s Past Events", fg ='black',bg='white',font=('serif',8,'bold'), bd=2, relief="ridge", padx=5, pady=2)
+		treeview_label =Label(self.MemberHome, text ="Past Events", fg ='black',bg='white',font=('serif',8,'bold'), bd=2, relief="ridge", padx=5, pady=2)
 		treeview_label.place(rely=0.127,relx=0.81,anchor=CENTER)
 		past_event_Tv=ttk.Treeview(self.MemberHome,height=9,columns=('Date','Status'))
 		past_event_Tv.place(relx=0.81,rely=0.3,anchor=CENTER)

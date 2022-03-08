@@ -312,7 +312,7 @@ class MemberContent:
 			ageReturn.config(fg="black")
 
 
-		# Updates member details
+		# Updates member details, such as: telephone and postcode
 		def updateAccountDetails(self):
 			response = askyesno("Question", "Do you want to update a students details?", icon='question')
 			if response == False:
@@ -416,7 +416,7 @@ class MemberContent:
 			treeviewPopulate()
 
 
-		# Delete member details
+		# Delete member details from member database table
 		def deleteAccountDetails(self):
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -452,7 +452,7 @@ class MemberContent:
 			treeviewPopulate()
 
 
-		# Search member details
+		# Search member details from member database table
 		def searchAccountDetails():
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -483,7 +483,9 @@ class MemberContent:
 			treeviewPopulate()
 
 
-		# Submit member details, generating and sending a word document to the member's email containg their details
+		# Submit member details
+		# Will generate a document containing all details stored about the member
+		# This will subsequently be sent to the member's email
 		def saveAccountDetails():
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -564,6 +566,7 @@ class MemberContent:
 
 
 
+		# Variables Used
 		username = StringVar()
 		password = StringVar()
 		firstname=StringVar()
@@ -574,6 +577,8 @@ class MemberContent:
 
 		ToolTips = Pmw.Balloon()
 
+
+		# Tkinter labels, entry boxes, buttons, tree views, etc.
 		username_label = tkinter.Label(self.member, text="Username:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		username_label.place(rely=0.15, relx=0.09, anchor='center')
 
@@ -695,7 +700,8 @@ class MemberContent:
 
 
 
-		# A pop-up will be produced if a user right-clicks the member details treeview, allowing them to update/delete that members details
+		# A pop-up will be produced if a user right-clicks the member details tree view
+		# This allows them to update/delete that member's details
 		def onTreeviewPopup(tvPopup, event=None):
 			try:
 				rowItem = member_search_Tv.identify_row(event.y)

@@ -1,46 +1,48 @@
+# Coach Home Screen
+
 from tkinter import ttk
 from tkinter import messagebox
 import tkinter.simpledialog
-from tkinter.messagebox import showinfo
-from tkinter.messagebox import askyesno
 import sqlite3
-from tkinter import simpledialog
 from tkinter import *
 from functools import partial
 from tkcalendar import Calendar
-from CoachingSessionFrame.CoachingSessionEmail import SessionEmail
-import time
 from time import strftime
 from datetime import date, datetime,timedelta
 import datetime
 from PIL import Image, ImageTk
-import calendar
 import webbrowser
 
-i = 0
-PassedLogin = False
 
+
+# Coach Home Class
 class CoachHomeScreenContent:
 
+	i = 0
+	PassedLogin = False
+
+	# Initiates main screen window
 	def __init__(self, mainScreen):
 		self.CoachHome = mainScreen
 		self.conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 		self.c = self.conn.cursor()
 
 
+	# Generate coach home content
 	def generateCoachHomeScreenContnt(self, FinalUsername, main):
 
+		# Showcases the Lisburn Racquets Club badminton, tennis and squash facilities with an image slider
 		def ImageSlider():
-			global i, show
-			if i >= (len(images)-1):
-				i = 0
-				slide_image.config(image=images[i])
+			if self.i >= (len(images)-1):
+				self.i = 0
+				slide_image.config(image=images[self.i])
 			else:
-				i = i + 1
-				slide_image.configure(image=images[i])
+				self.i = self.i + 1
+				slide_image.configure(image=images[self.i])
 			show = slide_image.after(3000, ImageSlider)
 
 
+		# Find coach's first name and surname and returns the value
 		def findfirstandsurname():
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -53,6 +55,9 @@ class CoachHomeScreenContent:
 
 			return labelusername
 
+
+		# Will present a message box to any coaching session or competition which hasn't been completed yet
+		# An error will be presented if an invalid date has been selected
 		def AllCalendarSelection(cal, event=None):
 			AllChangeSelection = False
 
@@ -155,37 +160,30 @@ class CoachHomeScreenContent:
 				messagebox.showinfo('Error', "There is currently no event for " + FinalUsername + " on the date selected", icon='error')
 
 
+		# Will change the calendar's colour from black to SpringGreen3
+		# This is based on all the dates in the coachSessionDetails database table
 		def changeCalendarColour(cal):
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
-			c.execute("SELECT * FROM member WHERE username=:memberusername", {
-				"memberusername": FinalUsername
-			})
-			group_array = c.fetchone()
-			membergroup = group_array[7]
+			c.execute("SELECT * FROM coachSessionDetails")
+			row = c.fetchall()
 
-			c.execute("SELECT * FROM coachSessionDetails WHERE membergroup=:membergroup", {
-				"membergroup": membergroup
-			})
-			session_array = c.fetchall()
-
-			for row in session_array:
-				cal.calevent_create(datetime.date(int(row[3][6:10]), int(row[3][3:5]), int(row[3][0:2])),"View Coaching Session Details","message")
+			for values in row:
+				cal.calevent_create(datetime.date(int(values[3][6:10]), int(values[3][3:5]), int(values[3][0:2])),"View Coaching Session Details","message")
 
 			cal.tag_config("message", background="SpringGreen3", foreground="black")
 
-			conn.commit()
 			conn.close()
 
 
+		# Will change the calendar's colour from black to SpringGreen3
+		# This is based on all the dates in the SinglesCompetition database table
 		def SinglesChangeCalendarColour(cal):
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
-			c.execute("SELECT * FROM SinglesCompetition WHERE username=:memberusername OR username2=:memberusername", {
-				"memberusername": FinalUsername
-			})
+			c.execute("SELECT * FROM SinglesCompetition")
 			singles_competition_array = c.fetchall()
 
 			for dates in singles_competition_array:
@@ -224,13 +222,13 @@ class CoachHomeScreenContent:
 			conn.close()
 
 
+		# Will change the calendar's colour from black to SpringGreen3
+		# This is based on all the dates in the DoublesCompetition database table
 		def DoublesChangeCalendarColour(cal):
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
-			c.execute("SELECT * FROM DoublesCompetition WHERE username=:memberusername OR username2=:memberusername OR username3=:memberusername OR username4=:memberusername", {
-				"memberusername": FinalUsername
-			})
+			c.execute("SELECT * FROM DoublesCompetition")
 			doubles_competition_array = c.fetchall()
 
 			for dates in doubles_competition_array:
@@ -269,11 +267,13 @@ class CoachHomeScreenContent:
 			conn.close()
 
 
+		# Will calculate the current week day for the coach
 		def GetCurrentWeeday():
 			Weekday = datetime.datetime.today().strftime('%A')
 			weekday.config(text=Weekday)
 
 
+		# Shows the start and end of the coaches shift time (i.e. time on the system)
 		def CoachShiftTime():
 			Weekday = datetime.datetime.today().strftime('%A')
 
@@ -287,7 +287,9 @@ class CoachHomeScreenContent:
 			StrippedWeedayTime = [i.strip(',') for i in WeedayTime]
 
 			if 'n/a' in StrippedWeedayTime:
-				print('got into n/a')
+				messagebox.showinfo('Error', 'Coach ' + findfirstandsurname() + ' cannot enter the system at this time. You will now be returned to the login screen', icon='error')
+				main.destroy()
+				from LoginFrame import LoginMainScreen
 			else:
 				time = str(StrippedWeedayTime[0])
 				strippedTime = time.split('-')
@@ -305,9 +307,9 @@ class CoachHomeScreenContent:
 					to_time.config(text=strippedTime[1] + 'pm')
 
 
+		# Shows a countdown for when the coach will be logged out of the system
+		# This is based on the weekday and the start and end time selected
 		def countdown():
-			global PassedLogin
-
 			Weekday = datetime.datetime.today().strftime('%A')
 
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
@@ -321,12 +323,10 @@ class CoachHomeScreenContent:
 
 			if 'n/a' in StrippedWeedayTime:
 				messagebox.showinfo('Error', 'Coach ' + findfirstandsurname() + ' cannot enter the system at this time. You will now be returned to the login screen', icon='error')
-
 				main.destroy()
-
 				from LoginFrame import LoginMainScreen
 			else:
-				PassedLogin = True
+				self.PassedLogin = True
 
 				time = str(StrippedWeedayTime[0])
 				strippedTime = time.split('-')
@@ -355,21 +355,25 @@ class CoachHomeScreenContent:
 					timer_label.after(1000, countdown)
 
 
+		# Opens a link to the specific google maps location of Lisburn Racquets Club
 		def GoogleMapsLocation():
 			webbrowser.open("https://www.google.com/maps/place/Lisburn+Racquets+Club/@54.5173416,-6.0428075,15z/data=!4m5!3m4!1s0x4861044f4e4d451b:0x9a328c6b732d12eb!8m2!3d54.5173416!4d-6.0340528")
 
 
+		# Removes the ability to resize all tree views
 		def treeviewresizedisable(treeview, event):
 			if treeview.identify_region(event.x, event.y) == "separator":
 				return "break"
 
 
+		# Clears past events tree view data
 		def clearTv(treeview):
 			record=treeview.get_children()
 			for elements in record:
 				treeview.delete(elements)
 
 
+		# Past events tree view populate
 		def treeviewPopulate(treeview):
 			clearTv(treeview)
 
@@ -383,18 +387,18 @@ class CoachHomeScreenContent:
 
 			count=0
 			for row in items:
-				if row == []:
+				if row == [] or row[3] == 'member':
 					pass
 				else:
 					if count%2==0:
-						treeview.insert('','end',text=row[1],values=(row[2],row[3]))
+						treeview.insert('','end',text=row[0],values=(row[1],row[2]))
 					else:
-						treeview.insert('','end',text=row[1],values=(row[2],row[3]))
+						treeview.insert('','end',text=row[0],values=(row[1],row[2]))
 					count+=1
 
 
 
-
+		# Tkinter labels, entry boxes, buttons, tree views, etc.
 		title_label = tkinter.Label(self.CoachHome, text="Main Menu: Coach", font=('serif', 18, 'bold','underline'), fg='black', bg='white', bd=4, relief='groove', padx=10, pady=4)
 		title_label.place(rely=0.16, relx=0.17, anchor='center')
 
@@ -452,11 +456,11 @@ class CoachHomeScreenContent:
 
 		images = [image1, image2, image3, image4, image5, image6]
 
-		i = 0
-		slide_image = Label(self.CoachHome, image=images[i], bd=10, relief='ridge', bg='green')
+		self.i = 0
+		slide_image = Label(self.CoachHome, image=images[self.i], bd=10, relief='ridge', bg='green')
 		slide_image.place(rely=0.732, relx=0.19, anchor='center')
 
-		treeview_label =Label(self.CoachHome, text = findfirstandsurname() + "'s Past Events", fg ='black',bg='white',font=('serif',8,'bold'), bd=2, relief="ridge", padx=5, pady=2)
+		treeview_label =Label(self.CoachHome, text ="Past Events", fg ='black',bg='white',font=('serif',8,'bold'), bd=2, relief="ridge", padx=5, pady=2)
 		treeview_label.place(rely=0.127,relx=0.81,anchor=CENTER)
 		past_event_Tv=ttk.Treeview(self.CoachHome,height=9,columns=('Date','Status'))
 		past_event_Tv.place(relx=0.81,rely=0.3,anchor=CENTER)
@@ -476,11 +480,11 @@ class CoachHomeScreenContent:
 
 
 		countdown()
-		if PassedLogin == True:
+		if self.PassedLogin == True:
 			ImageSlider()
 			CoachShiftTime()
 			GetCurrentWeeday()
-			# changeCalendarColour(cal)
+			changeCalendarColour(cal)
 			treeviewPopulate(past_event_Tv)
-			# SinglesChangeCalendarColour(cal)
-			# DoublesChangeCalendarColour(cal)
+			SinglesChangeCalendarColour(cal)
+			DoublesChangeCalendarColour(cal)

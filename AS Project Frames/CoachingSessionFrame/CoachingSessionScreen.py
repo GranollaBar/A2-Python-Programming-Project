@@ -462,7 +462,7 @@ class CoachingSessionContent:
 			techniqueReturn.config(fg="black")
 
 
-		# Updates coaching sessions
+		# Updates coaching sessions, such as: time, date, courts and technique
 		def updateCoachSessionDetails(self):
 			response = askyesno("Question", "Do you want to update a coach's session?", icon='question')
 			if response == False:
@@ -876,7 +876,8 @@ class CoachingSessionContent:
 			conn.close()
 
 
-		# Updates coaching session calendar's colour from black to SpringGreen3 based on all th dates in the coachSessionDetails database table
+		# Updates coaching session calendar's colour from black to SpringGreen3
+		# This is based on all the dates in the coachSessionDetails database table
 		def changeCalendarColour():
 			cal.calevent_remove("all")
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
@@ -926,7 +927,7 @@ class CoachingSessionContent:
 						pass
 
 
-		# Delete coaching session details
+		# Delete coaching session details from coachSessionDetails database table
 		def deleteCoachSessionDetails(self):
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -961,7 +962,7 @@ class CoachingSessionContent:
 			treeviewPopulate()
 
 
-		# Search coaching session details
+		# Search coaching session details from coachSessionDetails database table
 		def searchCoachSessionDetails():
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -992,7 +993,9 @@ class CoachingSessionContent:
 			treeviewPopulate()
 
 
-		# Submit coaching session details and send email to all members included, along with the information of the session
+		# Submit coaching session details
+		# Will generate a document containing all details stored about the member
+		# This will subsequently be sent to the member's whos group has been selected for the coaching session
 		def submitCoachSession():
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -1095,7 +1098,7 @@ class CoachingSessionContent:
 			treeviewPopulate()
 
 
-
+		# Variables used
 		timeStart=StringVar()
 		timeEnd=StringVar()
 		eventDate=StringVar()
@@ -1111,6 +1114,7 @@ class CoachingSessionContent:
 		ToolTips = Pmw.Balloon()
 
 
+		# Tkinter labels, entry boxes, buttons, tree views, etc.
 		username_label = tkinter.Label(self.coachSession, text="Username:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		username_label.place(rely=0.36, relx=0.12, anchor='center')
 

@@ -65,6 +65,8 @@ class ManagerReportsContent:
 
 		ToolTips = Pmw.Balloon()
 
+
+		# Tkinter labels, entry boxes, buttons, tree views, etc.
 		title_label = tkinter.Label(self.Reports, text=Capitalizedfindfirstandsurname() + "'s Reports", font=('serif', 14, 'bold','underline'), fg='black', bg='white', bd=4, relief='groove', padx=10, pady=4)
 		title_label.place(rely=0.145, relx=0.5, anchor='center')
 

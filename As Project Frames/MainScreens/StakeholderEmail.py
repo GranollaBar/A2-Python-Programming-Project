@@ -23,7 +23,7 @@ def Email(subject, msg, recipientemail, doc, label):
 		messagebox.showinfo('info','The email was not sent successfully to '+ recipientemail + "\n" + "Make sure the username entered exists", icon='error')
 		return False
 
-# Builds the entire message to the user
+# Builds the entire message for sending to the user
 def buildEmailMsg(subject, msgBody, recipientemail, attachment):
 	msg = MIMEMultipart()
 	msg['From'] = "gamblingwolf113@gmail.com"

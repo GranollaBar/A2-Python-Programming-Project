@@ -40,7 +40,7 @@ def openMemberBooking(mainScreen, content):
 
 # Log off system
 def openLogoffContent(mainScreen):
-    logoffcontent = LogoffContent(mainScreen)
+    logoffcontent = LogoffContent()
     logoffcontent.generateLogoffContnt(mainScreen)
 
 

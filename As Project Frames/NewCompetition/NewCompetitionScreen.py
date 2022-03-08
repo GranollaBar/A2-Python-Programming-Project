@@ -128,8 +128,6 @@ class NewCompetitionContent:
 						ColourDates.append(date_2)
 						break
 
-			print(ColourDates)
-
 			for row in ColourDates:
 				if value == row:
 					label.config(fg="red")
@@ -1129,9 +1127,7 @@ class NewCompetitionContent:
 
 					for i in range(0,int(length_inbetween)+1):
 						add=str(d1+timedelta(days=i)).strip('datetime.date(')
-						print(add)
 						add=str(d1+timedelta(days=i)).strip('00:00:00')
-						print(add)
 						add=add.split('-')
 						add=add[2].strip(',')+'/'+add[1].strip(',')+'/'+add[0].strip(',')
 						all_days_inbetween.append(add)

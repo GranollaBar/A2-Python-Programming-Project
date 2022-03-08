@@ -2,7 +2,7 @@ import docx
 from docx.shared import Inches
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 
-# Builds the most recently added coach into a word document
+# Builds the most recently added coach into a word document, which will then be sent to coaches
 def buildCoachDocument(username, password, firstname, surname, gender, DOB, postcode, monday, tuesday, wednesday, thursday, friday, saturday, sunday):
     doc = docx.Document()
     heading = doc.add_heading('Lisburn Racquets Coach Details',0)

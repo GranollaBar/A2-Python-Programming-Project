@@ -11,6 +11,8 @@ from tkinter import *
 import webbrowser
 from MainScreens.ChangingPasswordEmail import ChangePassword
 import Pmw
+from datetime import datetime
+import datetime
 
 
 
@@ -165,7 +167,8 @@ class LoginContent:
             return True
 
 
-        # An existant user can create a new password if they have forgotten their old password
+        # An existent user can create a new password if they have forgotten their old password
+        # An email will be sent to the user containing the verification code
         def forgot_system():
             conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
             c = conn.cursor()
@@ -219,7 +222,7 @@ class LoginContent:
                         email_toplevel.destroy()
 
 
-        # Password will be updated for the user
+        # Password will be validated and then will be updated for the user
         def newPasswordUpdate(newPassword, verificationCode, verification_entry, frame, value, value2, finalname):
             conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
             c = conn.cursor()
@@ -266,6 +269,7 @@ class LoginContent:
 
 
         # This will only occur for the first user entering the system (i.e. manager)
+        # The first user in the system will be assigned management
         def first_login_submit(username, password, firstname, surname):
             conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
             c = conn.cursor()
@@ -315,7 +319,8 @@ class LoginContent:
                 ManagerMainScreen.main()
 
 
-        # Login Details entered will be submitted to ensure the entered username and password exist in the system. If so, the user may enter the main system.
+        # Login Details entered will be submitted to ensure the entered username and password exist in the system
+        # The user will be logged in based on their system level
         def login_submit(login_username, login_password):
             conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
             c = conn.cursor()
@@ -376,6 +381,99 @@ class LoginContent:
 
                 loginUsername.set('')
                 loginPassword.set('')
+
+
+        # This will remove all coaching session, member bookings and competitions made in the system that have expired
+        # It will place these events in the database table: PastEvents and delete them from their respective tables
+        def RemoveDates():
+            presentDate = datetime.datetime.now()
+            today=datetime.datetime(int(presentDate.year),int(presentDate.month),int(presentDate.day))
+
+            conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+            c = conn.cursor()
+
+            c.execute("SELECT * From coachSessionDetails")
+            coachitems = c.fetchall()
+
+            for row in coachitems:
+                coachrowsplitdate = str(row[3]).split('/')
+                coachdate=datetime.datetime(int(coachrowsplitdate[2]),int(coachrowsplitdate[1]),int(coachrowsplitdate[0]))
+
+                if (coachdate < today)==True:
+                    c.execute("INSERT INTO PastEvents VALUES (:username, :event, :date, :status)",
+                              {
+                                  'username': row[0],
+                                  'event': 'Coaching Session',
+                                  'date': row[3],
+                                  'status': 'coach/member',
+                              })
+
+                    c.execute('DELETE FROM coachSessionDetails WHERE sessionID=:ID', {
+                        "ID": row[8]
+                    })
+
+            c.execute("SELECT * From SinglesCompetition")
+            singlesitems = c.fetchall()
+
+            for items in singlesitems:
+                singlesrowsplitdate = str(items[3]).split('/')
+                singlesdate=datetime.datetime(int(singlesrowsplitdate[2]),int(singlesrowsplitdate[1]),int(singlesrowsplitdate[0]))
+
+                if (singlesdate < today)==True:
+                    c.execute("INSERT INTO PastEvents VALUES (:username, :event, :date, :status)",
+                              {
+                                  'username': items[0],
+                                  'event': 'Singles Competition',
+                                  'date': items[3],
+                                  'status': 'coach/member',
+                              })
+
+                    c.execute('DELETE FROM SinglesCompetition WHERE singlescompetitionID=:ID', {
+                        "ID": items[5]
+                    })
+
+            c.execute("SELECT * From DoublesCompetition")
+            doublesitems = c.fetchall()
+
+            for values in doublesitems:
+                doublesrowsplitdate = str(values[3]).split('/')
+                doublesdate=datetime.datetime(int(doublesrowsplitdate[2]),int(doublesrowsplitdate[1]),int(doublesrowsplitdate[0]))
+
+                if (doublesdate < today)==True:
+                    c.execute("INSERT INTO PastEvents VALUES (:username, :event, :date, :status)",
+                              {
+                                  'username': values[0],
+                                  'event': 'Doubles Competition',
+                                  'date': values[3],
+                                  'status': 'coach/member'
+                              })
+
+                    c.execute('DELETE FROM DoublesCompetition WHERE doublescompetitionID=:ID', {
+                        "ID": values[9]
+                    })
+
+            c.execute("SELECT * From MemberBooking")
+            bookingitems = c.fetchall()
+
+            for data in bookingitems:
+                bookingrowsplitdate = str(data[3]).split('/')
+                bookingdate=datetime.datetime(int(bookingrowsplitdate[2]),int(bookingrowsplitdate[1]),int(bookingrowsplitdate[0]))
+
+                if (bookingdate < today)==True:
+                    c.execute("INSERT INTO PastEvents VALUES (:username, :event, :date, :status)",
+                              {
+                                  'username': data[1],
+                                  'event': 'Member Booking',
+                                  'date': data[3],
+                                  'status': 'member'
+                              })
+
+                    c.execute('DELETE FROM MemberBooking WHERE bookingID=:ID', {
+                        "ID": data[5]
+                    })
+
+            conn.commit()
+            conn.close()
 
 
         # Will add and remove placeholder text into the username entry box
@@ -464,15 +562,16 @@ class LoginContent:
         c.execute("SELECT * FROM account")
         row = c.fetchall()
 
-
+        # Variables used
         loginUsername = StringVar()
         loginPassword = StringVar()
         loginfirstname = StringVar()
         loginsurname = StringVar()
-        choosing=IntVar()
 
         ToolTips = Pmw.Balloon()
 
+
+        # Tkinter labels, entry boxes, buttons, tree views, etc.
         if len(row) != 0:
             title_label = tkinter.Label(self.login, text="Welcome To Lisburn Racquets Club", font=('serif', 18, 'underline', 'bold'), fg='SpringGreen3', bg='white')
             title_label.place(rely=0.06, relx=0.5, anchor='center')
@@ -647,3 +746,6 @@ class LoginContent:
             login_button = tkinter.Button(self.login, cursor="tcross",text="Login", command=firstcompleteLogin, fg='white', bg='black', bd=6, relief='groove', font=('serif', 16, 'bold'), padx=50)
             login_button.place(rely=0.9, relx=0.73, anchor='center')
             ToolTips.bind(login_button, 'Login to the system')
+
+
+        RemoveDates()

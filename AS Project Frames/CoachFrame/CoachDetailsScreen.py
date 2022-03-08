@@ -248,7 +248,7 @@ class CoachContent:
 			return True
 
 
-		# Ensures DOB selected conforms to the rules
+		# Ensures date of birth selected conforms to the rules
 		def validate_DOB(value, label):
 			presentDate = datetime.datetime.now()
 			date_formated = presentDate.strftime("%d/%m/%Y")
@@ -409,7 +409,7 @@ class CoachContent:
 				address_entry.config(fg='grey')
 
 
-		# Returns black colouring to all labels
+		# Returns black colouring to all labels (from green)
 		def returnColour(usernameReturn, passwordReturn, firstnameReturn, surnameReturn, genderReturn, DOBReturn, addressReturn, mondayReturn, tuesdayReturn, wednesdayReturn, thursdayReturn, fridayReturn, saturdayReturn, sundayReturn):
 			usernameReturn.config(fg="black")
 			passwordReturn.config(fg="black")
@@ -511,7 +511,7 @@ class CoachContent:
 				sunday_to_combobox.config(state="readonly")
 
 
-		# Updates coaches details
+		# Updates coaches details, such as: postcode and availability
 		def updateCoachDetails(self):
 			response = askyesno("Question", "Do you want to update a coach's details?", icon='question')
 			if response == False:
@@ -668,7 +668,7 @@ class CoachContent:
 			timestreeviewPopulate()
 
 
-		# Delete coaches details
+		# Delete coaches details from coach and coachTimetable database tables
 		def deleteCoachDetails(self):
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -706,7 +706,7 @@ class CoachContent:
 			timestreeviewPopulate()
 
 
-		# Search coaches details
+		# Search coaches details from coach and coachTimetable database tables
 		def searchCoachDetails():
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -741,7 +741,9 @@ class CoachContent:
 			timestreeviewPopulate()
 
 
-		# Submit coaches details and send a generated word document to the coaches email
+		# Submit coaches details
+		# Will generate a document containing all details stored about the member
+		# This will subsequently be sent to the member's email address
 		def saveCoachDetails():
 			conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -910,7 +912,7 @@ class CoachContent:
 
 
 
-
+		# Variables Used
 		username = StringVar()
 		password = StringVar()
 		firstname=StringVar()
@@ -934,6 +936,7 @@ class CoachContent:
 		saturdayNewAvaliability=IntVar()
 		sundayNewAvaliability=IntVar()
 
+		# Times array
 		monday_from_Avaliability_times = ["9.00","10.00","11.00","12.00","13.00","14.00","15.00","16.00","17.00","18.00","19.00","20.00","21.00"]
 		tuesday_from_Avaliability_times = ["9.00","10.00","11.00","12.00","13.00","14.00","15.00","16.00","17.00","18.00","19.00","20.00","21.00"]
 		wednesday_from_Avaliability_times = ["9.00","10.00","11.00","12.00","13.00","14.00","15.00","16.00","17.00","18.00","19.00","20.00","21.00"]
@@ -954,6 +957,7 @@ class CoachContent:
 		ToolTips = Pmw.Balloon()
 
 
+		# Tkinter labels, entry boxes, buttons, tree views, etc.
 		username_label = tkinter.Label(self.coach, text="Username:", font=('serif', 14, 'bold'), fg='black', bg='white')
 		username_label.place(rely=0.13, relx=0.09, anchor='center')
 
@@ -1264,7 +1268,8 @@ class CoachContent:
 		timestreeviewPopulate()
 
 
-		# A pop-up will be produced if a user right-clicks the coach details or coach timetable treeview, allowing them to update/delete that coaches details
+		# A pop-up will be produced if a user right-clicks the coach details or coach timetable treeview
+		# This allows them to update/delete that coaches details
 		def onTreeviewPopup(tvPopup, event=None):
 			try:
 				rowItem = coach_search_Tv.identify_row(event.y)

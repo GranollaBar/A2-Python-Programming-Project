@@ -20,7 +20,7 @@ def SessionEmail(subject, msg, recipientemail, label):
 		messagebox.showinfo('info','The email was not sent successfully to '+ recipientemail + "\n" + "Make sure the username entered exists", icon='error')
 		return False
 
-# Builds the entire message to the member
+# Builds the entire message for sending to the member
 def buildEmailMsg(subject, msgBody, recipientemail):	
 	msg = MIMEMultipart()
 	msg['From'] = "gamblingwolf113@gmail.com"
