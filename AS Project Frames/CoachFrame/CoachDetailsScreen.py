@@ -21,36 +21,13 @@ import Pmw
 class CoachContent:
 
 	# Initiates main screen window
+	# Initiates Lisburn Racquets Club Database
+	# Initiates Filepath
 	def __init__(self, mainScreen, filepath):
 		self.coach = mainScreen
 		self.conn = sqlite3.connect(filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 		self.c = self.conn.cursor()
 		self.filepath = filepath
-
-
-		# Creates coach database table if it does not exist
-		self.c.execute("""CREATE TABLE IF NOT EXISTS coach (
-					username text,
-					password text,
-					firstname text,
-					surname text,
-					gender text,
-					DOB text,
-					address text,
-					availability text
-					)""")
-
-		# Creates coachTimetable database table if it does not exist
-		self.c.execute("""CREATE TABLE IF NOT EXISTS coachTimetable (
-					username text,
-					Monday text,
-					Tuesday text,
-					Wednesday text,
-					Thursday text,
-					Friday text,
-					Saturday text,
-					Sunday text
-					)""")
 
 
 	# Generate coach details content
@@ -70,9 +47,19 @@ class CoachContent:
 			ttk.Button(top, text="Select", command=assign_dob).pack()
 
 
-		# Ensures username entered conforms to the rules
+		# Ensures username entered is not empty
+		# Ensures username entered contains a @ symbol
+		# Ensures the username entered contains a .
+		# Ensures the username entered is not over 25 characters long
 		def validate_username(value, label):
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
+			c = conn.cursor()
+
 			if (value == ''):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The username field cannot be empty", icon='error')
+				return False
+			if (value == 'e.g. sooney@gmail.com'):
 				label.config(fg="red")
 				messagebox.showinfo("Validation Error", "The username field cannot be empty", icon='error')
 				return False
@@ -84,20 +71,41 @@ class CoachContent:
 				label.config(fg="red")
 				messagebox.showinfo("Validation Error", "The username field must contain a .", icon='error')
 				return False
+			if (len(value) > 25):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The username field cannot have more than 25 characters", icon='error')
+				return False
+
+			c.execute(f"SELECT * FROM member WHERE username=?", (value,))
+			data = c.fetchone()
+			c.execute(f"SELECT * FROM coach WHERE username=?", (value,))
+			data2 = c.fetchone()
+			c.execute(f"SELECT * FROM manager WHERE username=?", (value,))
+			data3 = c.fetchone()
+			if data or data2 or data3:
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The username entered already exists in the database", icon='error')
+				return False
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		# Ensures password entered conforms to the rules
+		# Ensures password entered is not empty
+		# Ensures password is not under 8 characters long
+		# Ensures password is not over 15 characters long
 		def validate_password(value, label):
 			if (value == ''):
 				label.config(fg="red")
 				messagebox.showinfo("Validation Error", "The password field cannot be empty", icon='error')
 				return False
+			if (value == 'e.g. Ch12ch12'):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The password field cannot be empty", icon='error')
+				return False
 			if (len(value) < 8):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The password field must contain more than 7 characters", icon='error')
+				messagebox.showinfo("Validation Error", "The password field cannot contain less than 8 characters", icon='error')
 				return False
 			if (len(value) > 15):
 				label.config(fg="red")
@@ -108,32 +116,19 @@ class CoachContent:
 			return True
 
 
-		# Ensures first name entered conforms to the rules
+		# Ensures first name entered is not empty
+		# Ensures first name entered is not numerical
+		# Ensures first name entered is not over 15 characters long
 		def validate_firstname(value, label):
 			if (value == ""):
 				label.config(fg="red")
 				messagebox.showinfo("Validation Error", "The firstname field cannot be empty", icon='error')
 				return False
-			if (value.isdigit()):
-				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The firstname field can only contain letters", icon='error')
-				return False
-			if (len(value) >15):
-				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The firstname field can only contain 15 characters", icon='error')
-				return False
-
-			label.config(fg="SpringGreen3")
-			return True
-
-
-		# Ensures surname entered conforms to the rules
-		def validate_surname(value, label):
-			if (value == ""):
+			if (value == "e.g. Connor"):
 				label.config(fg="red")
 				messagebox.showinfo("Validation Error", "The firstname field cannot be empty", icon='error')
 				return False
-			if (value.isdigit()):
+			if (any(char.isdigit() for char in value) == True):
 				label.config(fg="red")
 				messagebox.showinfo("Validation Error", "The firstname field can only contain letters", icon='error')
 				return False
@@ -146,9 +141,38 @@ class CoachContent:
 			return True
 
 
-		# Ensures address entered conforms to the rules
+		# Ensures surname entered is not empty
+		# Ensures surname entered is not numerical
+		# Ensures surname entered is not over 15 characters long
+		def validate_surname(value, label):
+			if (value == ""):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The surname field cannot be empty", icon='error')
+				return False
+			if (value == "e.g. Blair"):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The surname field cannot be empty", icon='error')
+				return False
+			if (any(char.isdigit() for char in value) == True):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The surname field can only contain letters", icon='error')
+				return False
+			if (len(value) >15):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The surname field can only contain 15 characters", icon='error')
+				return False
+
+			label.config(fg="SpringGreen3")
+			return True
+
+
+		# Ensures address entered is not empty
 		def validate_address(value, label):
 			if (value == ''):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The address field cannot be empty", icon='error')
+				return False
+			if (value == 'e.g. 47 star street'):
 				label.config(fg="red")
 				messagebox.showinfo("Validation Error", "The address field cannot be empty", icon='error')
 				return False
@@ -166,91 +190,125 @@ class CoachContent:
 			return True
 
 
-		# Ensures monday availability entered conforms to the rules
+		# Ensures monday availability does not have an start time greater than the end time
 		def validate_monday_availability(value, value2, label):
-			if (float(value) >= float(value2)):
-				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "Monday start time must be before the end time", icon='error')
-				return False
+			if (mondayAvaliability.get() ==0):
+				label.config(fg="SpringGreen3")
+				return True
+			else:
+				if (float(value) >= float(value2)):
+					label.config(fg="red")
+					messagebox.showinfo("Validation Error", "Monday start time must be before the end time", icon='error')
+					return False
 
-			label.config(fg="SpringGreen3")
-			return True
+				label.config(fg="SpringGreen3")
+				return True
 
 
-		# Ensures tuesday availability entered conforms to the rules
+		# Ensures tuesday availability does not have an start time greater than the end time
 		def validate_tuesday_availability(value, value2, label):
-			if (float(value) >= float(value2)):
-				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "Tuesday start time must be before the end time", icon='error')
-				return False
+			if (tuesdayAvaliability.get() ==0):
+				label.config(fg="SpringGreen3")
+				return True
+			else:
+				if (float(value) >= float(value2)):
+					label.config(fg="red")
+					messagebox.showinfo("Validation Error", "Tuesday start time must be before the end time", icon='error')
+					return False
 
-			label.config(fg="SpringGreen3")
-			return True
+				label.config(fg="SpringGreen3")
+				return True
 
 
-		# Ensures wednesday availability entered conforms to the rules
+		# Ensures wednesday availability does not have an start time greater than the end time
 		def validate_wednesday_availability(value, value2, label):
-			if (float(value) >= float(value2)):
-				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "Wednesday start time must be before the end time", icon='error')
-				return False
+			if (wednesdayAvaliability.get() ==0):
+				label.config(fg="SpringGreen3")
+				return True
+			else:
+				if (float(value) >= float(value2)):
+					label.config(fg="red")
+					messagebox.showinfo("Validation Error", "Wednesday start time must be before the end time", icon='error')
+					return False
 
-			label.config(fg="SpringGreen3")
-			return True
+				label.config(fg="SpringGreen3")
+				return True
 
 
-		# Ensures thursday availability entered conforms to the rules
+		# Ensures thursday availability does not have an start time greater than the end time
 		def validate_thursday_availability(value, value2, label):
-			if (float(value) >= float(value2)):
-				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "Thursday start time must be before the end time", icon='error')
-				return False
+			if (thursdayAvaliability.get() ==0):
+				label.config(fg="SpringGreen3")
+				return True
+			else:
+				if (float(value) >= float(value2)):
+					label.config(fg="red")
+					messagebox.showinfo("Validation Error", "Thursday start time must be before the end time", icon='error')
+					return False
 
-			label.config(fg="SpringGreen3")
-			return True
+				label.config(fg="SpringGreen3")
+				return True
 
 
-		# Ensures friday availability entered conforms to the rules
+		# Ensures friday availability does not have an start time greater than the end time
 		def validate_friday_availability(value, value2, label):
-			if (float(value) >= float(value2)):
-				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "Friday start time must be before the end time", icon='error')
-				return False
+			if (fridayAvaliability.get() ==0):
+				label.config(fg="SpringGreen3")
+				return True
+			else:
+				if (float(value) >= float(value2)):
+					label.config(fg="red")
+					messagebox.showinfo("Validation Error", "Friday start time must be before the end time", icon='error')
+					return False
 
-			label.config(fg="SpringGreen3")
-			return True
+				label.config(fg="SpringGreen3")
+				return True
 
 
-		# Ensures saturday availability entered conforms to the rules
+		# Ensures saturday availability does not have an start time greater than the end time
 		def validate_saturday_availability(value, value2, label):
-			if (float(value) >= float(value2)):
-				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "Saturday start time must be before the end time", icon='error')
-				return False
+			if (saturdayAvaliability.get() ==0):
+				label.config(fg="SpringGreen3")
+				return True
+			else:
+				if (float(value) >= float(value2)):
+					label.config(fg="red")
+					messagebox.showinfo("Validation Error", "Saturday start time must be before the end time", icon='error')
+					return False
 
-			label.config(fg="SpringGreen3")
-			return True
+				label.config(fg="SpringGreen3")
+				return True
 
 
-		# Ensures sunday availability entered conforms to the rules
+		# Ensures sunday availability does not have an start time greater than the end time
 		def validate_sunday_availability(value, value2, label):
-			if (float(value) >= float(value2)):
-				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "Sunday start time must be before the end time", icon='error')
-				return False
+			if (sundayAvaliability.get() ==0):
+				label.config(fg="SpringGreen3")
+				return True
+			else:
+				if (float(value) >= float(value2)):
+					label.config(fg="red")
+					messagebox.showinfo("Validation Error", "Sunday start time must be before the end time", icon='error')
+					return False
 
-			label.config(fg="SpringGreen3")
-			return True
+				label.config(fg="SpringGreen3")
+				return True
 
 
-		# Ensures gender selected conforms to the rules
+		# Ensures gender selected conforms to the rules (Will always conform to the rules)
 		def validate_gender(label):
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		# Ensures date of birth selected conforms to the rules
+		# Ensures date of birth selected is not empty
+		# Ensures date of birth selected is not after the current day
 		def validate_DOB(value, label):
+			if (value == ''):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The date of birth cannot be empty", icon='error')
+				return False
+
 			presentDate = datetime.datetime.now()
 			date_formated = presentDate.strftime("%d/%m/%Y")
 
@@ -259,17 +317,17 @@ class CoachContent:
 
 			if d1>d2:
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The date selected cannot be after the current date", icon='error')
+				messagebox.showinfo("Validation Error", "The date of birth selected cannot be after the current date", icon='error')
 				return False
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		# Ensures monday availability entered conforms to the rules
+		# Ensures at least one availability is selected
 		def validate_new_availability(value, value2, value3, value4, value5, value6, value7):
 			if (value ==0 and value2 ==0 and value3 ==0 and value4 ==0 and value5 ==0 and value6 ==0 and value7 ==0):
-				messagebox.showinfo("Validation Error", "One avaliablity day should be selected", icon='error')
+				messagebox.showinfo("Validation Error", "One availability day should be selected", icon='error')
 				return False
 
 			return True
@@ -295,7 +353,7 @@ class CoachContent:
 				coach_times_search_Tv.delete(elements)
 
 
-		# Coach details tree view populate
+		# Coach details tree view populate based on details in the coach database
 		def treeviewPopulate():
 			clearTv()
 
@@ -305,7 +363,6 @@ class CoachContent:
 			c.execute("SELECT * From coach")
 			items = c.fetchall()
 			conn.commit()
-			conn.close()
 
 			count=0
 			for row in items:
@@ -319,7 +376,7 @@ class CoachContent:
 					count+=1
 
 
-		# Coach timetable populate
+		# Coach timetable populate based on the details in the coachTimetable database
 		def timestreeviewPopulate():
 			clearTimesTv()
 
@@ -329,7 +386,6 @@ class CoachContent:
 			c.execute("SELECT * From coachTimetable")
 			items = c.fetchall()
 			conn.commit()
-			conn.close()
 
 			count=0
 			for row in items:
@@ -410,6 +466,16 @@ class CoachContent:
 				address_entry.config(fg='grey')
 
 
+		# Returns black colouring to all labels (from green) when updating availability
+		def returnColourUpdate(mondayReturn, tuesdayReturn, wednesdayReturn, thursdayReturn, fridayReturn, saturdayReturn, sundayReturn):
+			mondayReturn.config(fg="black")
+			tuesdayReturn.config(fg="black")
+			wednesdayReturn.config(fg="black")
+			thursdayReturn.config(fg="black")
+			fridayReturn.config(fg="black")
+			saturdayReturn.config(fg="black")
+			sundayReturn.config(fg="black")
+
 		# Returns black colouring to all labels (from green)
 		def returnColour(usernameReturn, passwordReturn, firstnameReturn, surnameReturn, genderReturn, DOBReturn, addressReturn, mondayReturn, tuesdayReturn, wednesdayReturn, thursdayReturn, fridayReturn, saturdayReturn, sundayReturn):
 			usernameReturn.config(fg="black")
@@ -428,7 +494,7 @@ class CoachContent:
 			sundayReturn.config(fg="black")
 
 
-		# Activates & deactivates functionality of monday work hours based on checkbox response
+		# Activates & deactivates functionality of monday work hours based on if the checkbox is active or not active
 		def check_monday_checkbox(value):
 			if (value.get() == 0):
 				monday_from_combobox.config(state="disable")
@@ -440,7 +506,7 @@ class CoachContent:
 				monday_to_combobox.config(state="readonly")
 
 
-		# Activates & deactivates functionality of tuesday work hours based on checkbox response
+		# Activates & deactivates functionality of tuesday work hours based on if the checkbox is active or not active
 		def check_tuesday_checkbox(value):
 			if (value.get() == 0):
 				tuesday_from_combobox.config(state="disable")
@@ -452,7 +518,7 @@ class CoachContent:
 				tuesday_to_combobox.config(state="readonly")
 
 
-		# Activates & deactivates functionality of wednesday work hours based on checkbox response
+		# Activates & deactivates functionality of wednesday work hours based on if the checkbox is active or not active
 		def check_wednesday_checkbox(value):
 			if (value.get() == 0):
 				wednesday_from_combobox.config(state="disable")
@@ -464,7 +530,7 @@ class CoachContent:
 				wednesday_to_combobox.config(state="readonly")
 
 
-		# Activates & deactivates functionality of thursday work hours based on checkbox response
+		# Activates & deactivates functionality of thursday work hours based on if the checkbox is active or not active
 		def check_thursday_checkbox(value):
 			if (value.get() == 0):
 				thursday_from_combobox.config(state="disable")
@@ -476,7 +542,7 @@ class CoachContent:
 				thursday_to_combobox.config(state="readonly")
 
 
-		# Activates & deactivates functionality of friday work hours based on checkbox response
+		# Activates & deactivates functionality of friday work hours based on if the checkbox is active or not active
 		def check_friday_checkbox(value):
 			if (value.get() == 0):
 				friday_from_combobox.config(state="disable")
@@ -488,7 +554,7 @@ class CoachContent:
 				friday_to_combobox.config(state="readonly")
 
 
-		# Activates & deactivates functionality of saturday work hours based on checkbox response
+		# Activates & deactivates functionality of saturday work hours based on if the checkbox is active or not active
 		def check_saturday_checkbox(value):
 			if (value.get() == 0):
 				saturday_from_combobox.config(state="disable")
@@ -500,7 +566,7 @@ class CoachContent:
 				saturday_to_combobox.config(state="readonly")
 
 
-		# Activates & deactivates functionality of sunday work hours based on checkbox response
+		# Activates & deactivates functionality of sunday work hours based on if the checkbox is active or not active
 		def check_sunday_checkbox(value):
 			if (value.get() == 0):
 				sunday_from_combobox.config(state="disable")
@@ -512,8 +578,9 @@ class CoachContent:
 				sunday_to_combobox.config(state="readonly")
 
 
-		# Updates coaches details, such as: postcode and availability
-		def updateCoachDetails(self):
+		# Updates coaches details, such as: address and availability
+		# Pop-up will allow manager to select which update he wants to perform
+		def updateCoachDetails(self, value, value2, value3, value4, value5, value6, value7, value8, value9, value10, value11, value12, value13, value14, value15, value16, value17, value18, value19):
 			response = askyesno("Question", "Do you want to update a coach's details?", icon='question')
 			if response == False:
 				messagebox.showinfo("Info", "Update cancelled", icon='info')
@@ -525,17 +592,18 @@ class CoachContent:
 				title_label =Label(updateCoach,text = 'Update Coach' , fg ='SpringGreen3',bg='white',font=('serif',15,'bold'))
 				title_label.place(rely=0.13,relx=0.5,anchor=CENTER)
 
-				update_postcode=Button(updateCoach,text = 'Update Postcode', command = lambda : update_coach_postcode(updateCoach), fg ='white', bg='black', relief= 'groove', font = ('serif',10,'bold'), padx =20, pady =8)
-				update_postcode.place(rely=0.43,relx=0.5,anchor=CENTER)
-				ToolTips.bind(update_postcode, "Update the coach's postcode")
+				update_address=Button(updateCoach,text = 'Update Address', command = lambda : update_coach_address(updateCoach), fg ='white', bg='black', relief= 'groove', font = ('serif',10,'bold'), padx =20, pady =8)
+				update_address.place(rely=0.43,relx=0.5,anchor=CENTER)
+				ToolTips.bind(update_address, "Update the coach's address")
 
-				update_availiability=Button(updateCoach,text = 'Update Availability', command = lambda : update_coach_availability(updateCoach), fg ='white', bg='black', relief= 'groove', font = ('serif',10,'bold'), padx =20, pady =8)
+				update_availiability=Button(updateCoach,text = 'Update Availability', command = lambda : update_coach_availability(updateCoach, value, value2, value3, value4, value5, value6, value7, value8, value9, value10, value11, value12, value13, value14, value15, value16, value17, value18, value19), fg ='white', bg='black', relief= 'groove', font = ('serif',10,'bold'), padx =20, pady =8)
 				update_availiability.place(rely=0.75,relx=0.5,anchor=CENTER)
 				ToolTips.bind(update_availiability, "Update the coach's availiability")
 
 
-		# Updates coaches postcode
-		def update_coach_postcode(frame):
+		# Updates coaches address based on the username entered by the manager
+		# Username must be valid and in the database
+		def update_coach_address(frame):
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
@@ -550,20 +618,20 @@ class CoachContent:
 
 				else:
 
-					new_postcode = simpledialog.askstring("Response", "Enter your new postcode")
+					new_address = simpledialog.askstring("Response", "Enter your new Address")
 
-					if new_postcode != '' and len(new_postcode) < 9 and ' ' in new_postcode:
+					if new_address != '' and len(new_address) < 30:
 
-						c.execute("""UPDATE coach SET postcode = :new_postcode WHERE username=:username""", {
-							"new_postcode": str(new_postcode),
+						c.execute("""UPDATE coach SET address=:new_address WHERE username=:username""", {
+							"new_address": str(new_address),
 							"username": coachUsername
 						})
 
-						messagebox.showinfo("Info", "The coach's postcode is now "+new_postcode, icon='info')
+						messagebox.showinfo("Info", "The coach's address is now "+new_address, icon='info')
 
 					else:
 
-						messagebox.showinfo("Error", "The postcode entered does not meet the rules", icon='error')
+						messagebox.showinfo("Error", "The address entered does not meet the rules", icon='error')
 
 			else:
 
@@ -575,8 +643,8 @@ class CoachContent:
 			treeviewPopulate()
 
 
-		# Updates coaches availability top-level
-		def update_coach_availability(frame):
+		# This will remove all other entry boxes, etc. in order for the manager to update availability of a coach
+		def update_coach_availability(frame, value, value2, value3, value4, value5, value6, value7, value8, value9, value10, value11, value12, value13, value14, value15, value16, value17, value18, value19):
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
@@ -591,86 +659,186 @@ class CoachContent:
 
 				else:
 
-					updateAvailiability=Toplevel(bg="white")
-					updateAvailiability.geometry('200x200')
+					returnColour(username_label, password_label, firstname_label, surname_label, gender_label, DOB_label, address_label, monday_label, tuesday_label, wednesday_label, thursday_label, friday_label, saturday_label, sunday_label)
 
-					title_label =Label(updateAvailiability,text ="Select Available Days" , fg ='SpringGreen3',bg='white',font=('serif',11,'bold','underline'))
-					title_label.place(rely=0.07,relx=0.5,anchor=CENTER)
+					value.place_forget()
+					value2.place_forget()
+					value3.place_forget()
+					value4.place_forget()
+					value5.place_forget()
+					value6.place_forget()
+					value7.place_forget()
+					value8.place_forget()
+					value9.place_forget()
+					value10.place_forget()
+					value11.place_forget()
+					value12.place_forget()
+					value13.place_forget()
+					value14.place_forget()
+					value15.place_forget()
+					value16.place_forget()
+					value17.place_forget()
+					value18.place_forget()
+					value19.place_forget()
 
-					avaliability_monday = Checkbutton(updateAvailiability, cursor="tcross",text="Monday", variable=mondayNewAvaliability,bg="white",bd=2, relief="sunken", font=('serif', 8,'bold'),onvalue=1, offvalue=0)
-					avaliability_monday.place(rely=0.3, relx=0.28, anchor='center')
+					username.set('')
+					password.set('')
+					firstname.set('')
+					surname.set('')
+					gender.set('1')
+					address.set('')
+					mondayAvaliability.set('0')
+					tuesdayAvaliability.set('0')
+					wednesdayAvaliability.set('0')
+					thursdayAvaliability.set('0')
+					fridayAvaliability.set('0')
+					saturdayAvaliability.set('0')
+					sundayAvaliability.set('0')
+					check_monday_checkbox(mondayAvaliability)
+					check_tuesday_checkbox(tuesdayAvaliability)
+					check_wednesday_checkbox(wednesdayAvaliability)
+					check_thursday_checkbox(thursdayAvaliability)
+					check_friday_checkbox(fridayAvaliability)
+					check_saturday_checkbox(saturdayAvaliability)
+					check_sunday_checkbox(sundayAvaliability)
 
-					avaliability_tuesday = Checkbutton(updateAvailiability, cursor="tcross",text="Tuesday", variable=tuesdayNewAvaliability,bg="white",bd=2, relief="sunken", font=('serif', 8,'bold'),onvalue=1, offvalue=0)
-					avaliability_tuesday.place(rely=0.3, relx=0.72, anchor='center')
+					update_availability_button = tkinter.Button(self.coach, cursor="tcross",text="Update Availability", command=lambda : availableUpdate(coachUsername, update_availability_button, value, value2, value3, value4, value5, value6, value7, value8, value9, value10, value11, value12, value13, value14, value15, value16, value17, value18, value19), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 10, 'bold'), padx=30)
+					update_availability_button.place(rely=0.95, relx=0.77, anchor='center')
+					ToolTips.bind(update_availability_button, 'Update availability of a coach')
 
-					avaliability_wednesday = Checkbutton(updateAvailiability, cursor="tcross",text="Wednesday", variable=wednesdayNewAvaliability,bg="white",bd=2, relief="sunken", font=('serif', 8,'bold'),onvalue=1, offvalue=0)
-					avaliability_wednesday.place(rely=0.45, relx=0.25, anchor='center')
-
-					avaliability_thursday = Checkbutton(updateAvailiability, cursor="tcross",text="Thursday", variable=thursdayNewAvaliability,bg="white",bd=2, relief="sunken", font=('serif', 8,'bold'),onvalue=1, offvalue=0)
-					avaliability_thursday.place(rely=0.45, relx=0.75, anchor='center')
-
-					avaliability_friday = Checkbutton(updateAvailiability, cursor="tcross",text="Friday", variable=fridayNewAvaliability,bg="white",bd=2, relief="sunken", font=('serif', 8,'bold'),onvalue=1, offvalue=0)
-					avaliability_friday.place(rely=0.6, relx=0.28, anchor='center')
-
-					avaliability_saturday = Checkbutton(updateAvailiability, cursor="tcross",text="Saturday", variable=saturdayNewAvaliability,bg="white",bd=2, relief="sunken", font=('serif', 8,'bold'),onvalue=1, offvalue=0)
-					avaliability_saturday.place(rely=0.6, relx=0.72, anchor='center')
-
-					avaliability_sunday = Checkbutton(updateAvailiability, cursor="tcross",text="Sunday", variable=sundayNewAvaliability,bg="white",bd=2, relief="sunken", font=('serif', 8,'bold'),onvalue=1, offvalue=0)
-					avaliability_sunday.place(rely=0.75, relx=0.5, anchor='center')
-
-					availiable_update_button=Button(updateAvailiability,text = 'Confirm Update', command = lambda : availableUpdate(updateAvailiability, coachUsername), fg ='white', bg='black', relief= 'groove', font = ('serif',11,'bold'), padx =30)
-					availiable_update_button.place(rely=0.93,relx=0.5,anchor=CENTER)
-					ToolTips.bind(availiable_update_button, "Update the coach's availiability")
-
-			conn.commit()
 			conn.close()
 
 
-		# Updates coaches availability
-		def availableUpdate(frame, username):
+		# Updates coaches availability based on the username entered
+		# Username and all availabilities must be validated correctly in order for the update to authenticate
+		def availableUpdate(username, button, value, value2, value3, value4, value5, value6, value7, value8, value9, value10, value11, value12, value13, value14, value15, value16, value17, value18, value19):
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
-			frame.withdraw()
-
 			isValid = True
-			isValid = isValid and validate_new_availability(mondayNewAvaliability.get(), tuesdayNewAvaliability.get(), wednesdayNewAvaliability.get(), thursdayNewAvaliability.get(), fridayNewAvaliability.get(), saturdayNewAvaliability.get(), sundayNewAvaliability.get(), "Availability")
+			isValid = isValid and validate_new_availability(mondayAvaliability.get(), tuesdayAvaliability.get(), wednesdayAvaliability.get(), thursdayAvaliability.get(), fridayAvaliability.get(), saturdayAvaliability.get(), sundayAvaliability.get())
+			isValid = isValid and validate_monday_availability(monday_from_combobox.get(),monday_to_combobox.get(), monday_label)
+			isValid = isValid and validate_tuesday_availability(tuesday_from_combobox.get(),tuesday_to_combobox.get(), tuesday_label)
+			isValid = isValid and validate_wednesday_availability(wednesday_from_combobox.get(),wednesday_to_combobox.get(), wednesday_label)
+			isValid = isValid and validate_thursday_availability(thursday_from_combobox.get(),thursday_to_combobox.get(), thursday_label)
+			isValid = isValid and validate_friday_availability(friday_from_combobox.get(),friday_to_combobox.get(), friday_label)
+			isValid = isValid and validate_saturday_availability(saturday_from_combobox.get(),saturday_to_combobox.get(), saturday_label)
+			isValid = isValid and validate_sunday_availability(sunday_from_combobox.get(),sunday_to_combobox.get(), sunday_label)
 
 			if isValid:
-				new_final_avaliability = ""
-				if (mondayNewAvaliability.get() ==1):
-					new_final_avaliability = new_final_avaliability + 'monday, '
-				if (tuesdayNewAvaliability.get() ==1):
-					new_final_avaliability = new_final_avaliability +  'tuesday, '
-				if (wednesdayNewAvaliability.get() ==1):
-					new_final_avaliability = new_final_avaliability + 'wednesday, '
-				if (thursdayNewAvaliability.get() ==1):
-					new_final_avaliability = new_final_avaliability + 'thursday, '
-				if (fridayNewAvaliability.get() ==1):
-					new_final_avaliability = new_final_avaliability + 'friday, '
-				if (saturdayNewAvaliability.get() ==1):
-					new_final_avaliability = new_final_avaliability + 'saturday, '
-				if (sundayNewAvaliability.get() ==1):
-					new_final_avaliability = new_final_avaliability + 'sunday'
 
-				c.execute("""UPDATE coach SET availability = :new_availability WHERE username=:username""", {
+				AllAvaliability = [mondayAvaliability.get(),tuesdayAvaliability.get(),wednesdayAvaliability.get(),thursdayAvaliability.get(),fridayAvaliability.get(),saturdayAvaliability.get(),sundayAvaliability.get()]
+				AllFinalAvaliability = ['monday, ','tuesday, ','wednesday, ','thursday, ','friday, ','saturday, ','sunday, ']
+
+				new_final_avaliability = ''
+
+				for index in range(len(AllAvaliability)):
+					item = AllAvaliability[index]
+					if item == 1:
+						new_final_avaliability = new_final_avaliability + AllFinalAvaliability[index]
+
+				new_final_avaliability = new_final_avaliability[:-2]
+
+
+				mondayFinalAvaliability = ""
+				tuesdayFinalAvaliability = ""
+				wednesdayFinalAvaliability = ""
+				thursdayFinalAvaliability = ""
+				fridayFinalAvaliability = ""
+				saturdayFinalAvaliability = ""
+				sundayFinalAvaliability = ""
+
+				AllTimes = [mondayAvaliability.get(),tuesdayAvaliability.get(),wednesdayAvaliability.get(),thursdayAvaliability.get(),fridayAvaliability.get(),saturdayAvaliability.get(),sundayAvaliability.get()]
+				WeekdaysAvailaiblity = [mondayFinalAvaliability,tuesdayFinalAvaliability,wednesdayFinalAvaliability,thursdayFinalAvaliability,fridayFinalAvaliability,saturdayFinalAvaliability,sundayFinalAvaliability]
+
+				AllFinalTimes = [monday_from_combobox.get(),monday_to_combobox.get(),tuesday_from_combobox.get(),
+								 tuesday_to_combobox.get(), wednesday_from_combobox.get(), wednesday_to_combobox.get(),
+								 thursday_from_combobox.get(), thursday_to_combobox.get(), friday_from_combobox.get(),
+								 friday_to_combobox.get(), saturday_from_combobox.get(), saturday_to_combobox.get(),
+								 sunday_from_combobox.get(), sunday_to_combobox.get()]
+
+				finalvaluedates = []
+
+				for rows in AllTimes:
+					index = AllTimes.index(rows)
+					if rows == 1:
+						fromindex = index * 2
+						toindex = fromindex + 1
+						WeekdaysAvailaiblity[index] = AllFinalTimes[fromindex] + "-" + AllFinalTimes[toindex]
+						finalvaluedates.append(WeekdaysAvailaiblity[index])
+					else:
+						WeekdaysAvailaiblity[index] = 'n/a'
+						finalvaluedates.append(WeekdaysAvailaiblity[index])
+
+
+				c.execute("UPDATE coach SET availability = :new_availability WHERE username=:username", {
 					"new_availability": str(new_final_avaliability),
 					"username": username
 				})
 
+				c.execute("UPDATE coachTimetable SET Monday=:monday, Tuesday=:tuesday, Wednesday=:wednesday, Thursday=:thursday, Friday=:friday, Saturday=:saturday, Sunday=:sunday WHERE username=:username",
+						  {
+							  "monday": finalvaluedates[0],
+							  "tuesday": finalvaluedates[1],
+							  "wednesday": finalvaluedates[2],
+							  "thursday": finalvaluedates[3],
+							  "friday": finalvaluedates[4],
+							  "saturday": finalvaluedates[5],
+							  "sunday": finalvaluedates[6],
+							  "username": username
+						  })
+
+				conn.commit()
+				conn.close()
+
 				messagebox.showinfo("Info", "The coach's availability is now "+new_final_avaliability, icon='info')
 
+				value.place(rely=0.13, relx=0.09, anchor='center')
+				value2.place(rely=0.133, relx=0.25, anchor='center')
+				value3.place(rely=0.2, relx=0.09, anchor='center')
+				value4.place(rely=0.203, relx=0.25, anchor='center')
+				value5.place(rely=0.27, relx=0.09, anchor='center')
+				value6.place(rely=0.273, relx=0.25, anchor='center')
+				value7.place(rely=0.34, relx=0.09, anchor='center')
+				value8.place(rely=0.343, relx=0.25, anchor='center')
+				value9.place(rely=0.415, relx=0.09, anchor='center')
+				value10.place(rely=0.418, relx=0.2, anchor='center')
+				value11.place(rely=0.418, relx=0.3, anchor='center')
+				value12.place(rely=0.495, relx=0.09, anchor='center')
+				value13.place(rely=0.498, relx=0.25, anchor='center')
+				value14.place(rely=0.57, relx=0.09, anchor='center')
+				value15.place(rely=0.573, relx=0.25, anchor='center')
+				value16.place(rely=0.95, relx=0.49, anchor='center')
+				value17.place(rely=0.95, relx=0.77, anchor='center')
+				value18.place(rely=0.95, relx=0.63, anchor='center')
+				value19.place(rely=0.95, relx=0.91, anchor='center')
 
+				button.place_forget()
 
-			conn.commit()
-			conn.close()
+			mondayAvaliability.set('0')
+			tuesdayAvaliability.set('0')
+			wednesdayAvaliability.set('0')
+			thursdayAvaliability.set('0')
+			fridayAvaliability.set('0')
+			saturdayAvaliability.set('0')
+			sundayAvaliability.set('0')
+			check_monday_checkbox(mondayAvaliability)
+			check_tuesday_checkbox(tuesdayAvaliability)
+			check_wednesday_checkbox(wednesdayAvaliability)
+			check_thursday_checkbox(thursdayAvaliability)
+			check_friday_checkbox(fridayAvaliability)
+			check_saturday_checkbox(saturdayAvaliability)
+			check_sunday_checkbox(sundayAvaliability)
+
+			returnColourUpdate(monday_label, tuesday_label, wednesday_label, thursday_label, friday_label, saturday_label, sunday_label)
 
 			treeviewPopulate()
 			timestreeviewPopulate()
 
 
-		# Delete coaches details from coach and coachTimetable database tables
-		def deleteCoachDetails(self):
+		# Delete coaches details from coach and coachTimetable database tables based on the username entered by the manager
+		# All associated details of the coach will be deleted as well, including their login
+		def deleteCoachDetails(event):
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
@@ -694,6 +862,7 @@ class CoachContent:
 						c.execute(f"DELETE FROM coach WHERE username =?", (coachUsername,))
 						c.execute(f"DELETE FROM coachTimetable WHERE username =?", (coachUsername,))
 						c.execute(f"DELETE FROM account WHERE username =?", (coachUsername,))
+						c.execute(f"DELETE FROM coachSessionDetails WHERE username =?", (coachUsername,))
 						messagebox.showinfo("Info", "The coach with username "+coachUsername+" has been deleted from the database", icon='info')
 
 				else:
@@ -707,7 +876,8 @@ class CoachContent:
 			timestreeviewPopulate()
 
 
-		# Search coaches details from coach and coachTimetable database tables
+		# Search coaches details from coach and coachTimetable database tables based on the username entered by the manager
+		# A message box will show all the specific details of the coach searched
 		def searchCoachDetails():
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -721,13 +891,12 @@ class CoachContent:
 				coachUsername = simpledialog.askstring("Response", "Enter the username of the coach you want to see information for")
 				if coachUsername != '' and len(coachUsername) <25 and '@' in coachUsername and '.' in coachUsername:
 					coachDetails1 = c.execute(f"SELECT * FROM coach WHERE username=?", (coachUsername,))
-					coachDetails2 = c.execute(f"SELECT * FROM coachTimetable WHERE username=?", (coachUsername,))
 					data = coachDetails1.fetchone()
+					coachDetails2 = c.execute(f"SELECT * FROM coachTimetable WHERE username=?", (coachUsername,))
 					data2 = coachDetails2.fetchone()
 					if not data:
 						messagebox.showinfo("Error", "The username entered was not found in the database", icon='error')
 					else:
-
 						messagebox.showinfo("Info", "The coach's details are listed below" + "\n\n" + "Username: " + str(data[0]) + "\n" + "Password: " + str(data[1]) + "\n" + "Firstname: " + str(data[2]) + "\n" + "Surname: " + str(data[3]) + "\n" + "Gender: " + str(data[4]) + "\n" + "DOB: " + str(data[5]) + "\n" + "Address: " + str(data[6]) + "\n" + "Availability: " + str(data[7]), icon='info')
 						messagebox.showinfo("Info", "The coach's Timetable is listed below" + "\n\n" + "Username: " + str(data2[0]) + "\n" + "Monday: " + str(data2[1]) + "\n" + "Tuesday: " + str(data2[2]) + "\n" + "Wednesday: " + str(data2[3]) + "\n" + "Thursday: " + str(data2[4]) + "\n" + "Friday: " + str(data2[5]) + "\n" + "Saturday: " + str(data2[6]) + "\n" + "Sunday: " + str(data2[7]), icon='info')
 
@@ -735,17 +904,17 @@ class CoachContent:
 
 					messagebox.showinfo("Error", "The username entered does not meet the rules", icon='error')
 
-			conn.commit()
 			conn.close()
 
 			treeviewPopulate()
 			timestreeviewPopulate()
 
 
-		# Submit coaches details
-		# Will generate a document containing all details stored about the member
-		# This will subsequently be sent to the member's email address
-		def saveCoachDetails():
+		# Submit coaches details to the coach and coachTimetable databases
+		# Will generate a document containing all details stored about the coach
+		# This will subsequently be sent to the coach's email address
+		# The coach will also have a login account created in order to login to the system
+		def SubmitCoachDetails():
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
@@ -758,20 +927,13 @@ class CoachContent:
 			isValid = isValid and validate_DOB(dateOfBirth.get(), DOB_label)
 			isValid = isValid and validate_address(address.get(), address_label)
 			isValid = isValid and validate_all_availability(mondayAvaliability.get(), tuesdayAvaliability.get(), wednesdayAvaliability.get(), thursdayAvaliability.get(), fridayAvaliability.get(), saturdayAvaliability.get(), sundayAvaliability.get())
-			if (mondayAvaliability.get() ==1):
-				isValid = isValid and validate_monday_availability(monday_from_combobox.get(),monday_to_combobox.get(), monday_label)
-			if (tuesdayAvaliability.get() ==1):
-				isValid = isValid and validate_tuesday_availability(tuesday_from_combobox.get(),tuesday_to_combobox.get(), tuesday_label)
-			if (wednesdayAvaliability.get() ==1):
-				isValid = isValid and validate_wednesday_availability(wednesday_from_combobox.get(),wednesday_to_combobox.get(), wednesday_label)
-			if (thursdayAvaliability.get() ==1):
-				isValid = isValid and validate_thursday_availability(thursday_from_combobox.get(),thursday_to_combobox.get(), thursday_label)
-			if (fridayAvaliability.get() ==1):
-				isValid = isValid and validate_friday_availability(friday_from_combobox.get(),friday_to_combobox.get(), friday_label)
-			if (saturdayAvaliability.get() ==1):
-				isValid = isValid and validate_saturday_availability(saturday_from_combobox.get(),saturday_to_combobox.get(), saturday_label)
-			if (sundayAvaliability.get() ==1):
-				isValid = isValid and validate_sunday_availability(sunday_from_combobox.get(),sunday_to_combobox.get(), sunday_label)
+			isValid = isValid and validate_monday_availability(monday_from_combobox.get(),monday_to_combobox.get(), monday_label)
+			isValid = isValid and validate_tuesday_availability(tuesday_from_combobox.get(),tuesday_to_combobox.get(), tuesday_label)
+			isValid = isValid and validate_wednesday_availability(wednesday_from_combobox.get(),wednesday_to_combobox.get(), wednesday_label)
+			isValid = isValid and validate_thursday_availability(thursday_from_combobox.get(),thursday_to_combobox.get(), thursday_label)
+			isValid = isValid and validate_friday_availability(friday_from_combobox.get(),friday_to_combobox.get(), friday_label)
+			isValid = isValid and validate_saturday_availability(saturday_from_combobox.get(),saturday_to_combobox.get(), saturday_label)
+			isValid = isValid and validate_sunday_availability(sunday_from_combobox.get(),sunday_to_combobox.get(), sunday_label)
 
 			if isValid:
 				coach_username = username.get()
@@ -787,21 +949,18 @@ class CoachContent:
 				else:
 					final_coach_gender = 'Female'
 
-				final_avaliability = ""
-				if (mondayAvaliability.get() ==1):
-					final_avaliability = final_avaliability + 'monday, '
-				if (tuesdayAvaliability.get() ==1):
-					final_avaliability = final_avaliability + 'tuesday, '
-				if (wednesdayAvaliability.get() ==1):
-					final_avaliability = final_avaliability + 'wednesday, '
-				if (thursdayAvaliability.get() ==1):
-					final_avaliability = final_avaliability + 'thursday, '
-				if (fridayAvaliability.get() ==1):
-					final_avaliability = final_avaliability + 'friday, '
-				if (saturdayAvaliability.get() ==1):
-					final_avaliability = final_avaliability + 'saturday, '
-				if (sundayAvaliability.get() ==1):
-					final_avaliability = final_avaliability + 'sunday'
+				AllAvaliability = [mondayAvaliability.get(),tuesdayAvaliability.get(),wednesdayAvaliability.get(),thursdayAvaliability.get(),fridayAvaliability.get(),saturdayAvaliability.get(),sundayAvaliability.get()]
+				AllFinalAvaliability = ['monday, ','tuesday, ','wednesday, ','thursday, ','friday, ','saturday, ','sunday, ']
+
+				new_final_avaliability = ''
+
+				for index in range(len(AllAvaliability)):
+					item = AllAvaliability[index]
+					if item == 1:
+						new_final_avaliability = new_final_avaliability + AllFinalAvaliability[index]
+
+				new_final_avaliability = new_final_avaliability[:-2]
+
 
 				mondayFinalAvaliability = ""
 				tuesdayFinalAvaliability = ""
@@ -810,34 +969,28 @@ class CoachContent:
 				fridayFinalAvaliability = ""
 				saturdayFinalAvaliability = ""
 				sundayFinalAvaliability = ""
-				if (mondayAvaliability.get() ==0):
-					mondayFinalAvaliability = "n/a"
-				if (mondayAvaliability.get() ==1):
-					mondayFinalAvaliability = monday_from_combobox.get() + "-" + monday_to_combobox.get()
-				if (tuesdayAvaliability.get() ==0):
-					tuesdayFinalAvaliability = "n/a"
-				if (tuesdayAvaliability.get() ==1):
-					tuesdayFinalAvaliability = tuesday_from_combobox.get() + "-" + tuesday_to_combobox.get()
-				if (wednesdayAvaliability.get() ==0):
-					wednesdayFinalAvaliability = "n/a"
-				if (wednesdayAvaliability.get() ==1):
-					wednesdayFinalAvaliability = wednesday_from_combobox.get() + "-" + wednesday_to_combobox.get()
-				if (thursdayAvaliability.get() ==0):
-					thursdayFinalAvaliability = "n/a"
-				if (thursdayAvaliability.get() ==1):
-					thursdayFinalAvaliability = thursday_from_combobox.get() + "-" + thursday_to_combobox.get()
-				if (fridayAvaliability.get() ==0):
-					fridayFinalAvaliability = "n/a"
-				if (fridayAvaliability.get() ==1):
-					fridayFinalAvaliability = friday_from_combobox.get() + "-" + friday_to_combobox.get()
-				if (saturdayAvaliability.get() ==0):
-					saturdayFinalAvaliability = "n/a"
-				if (saturdayAvaliability.get() ==1):
-					saturdayFinalAvaliability = saturday_from_combobox.get() + "-" + saturday_to_combobox.get()
-				if (sundayAvaliability.get() ==0):
-					sundayFinalAvaliability = "n/a"
-				if (sundayAvaliability.get() ==1):
-					sundayFinalAvaliability = sunday_from_combobox.get() + "-" + sunday_to_combobox.get()
+
+				AllTimes = [mondayAvaliability.get(),tuesdayAvaliability.get(),wednesdayAvaliability.get(),thursdayAvaliability.get(),fridayAvaliability.get(),saturdayAvaliability.get(),sundayAvaliability.get()]
+				WeekdaysAvailaiblity = [mondayFinalAvaliability,tuesdayFinalAvaliability,wednesdayFinalAvaliability,thursdayFinalAvaliability,fridayFinalAvaliability,saturdayFinalAvaliability,sundayFinalAvaliability]
+
+				AllFinalTimes = [monday_from_combobox.get(),monday_to_combobox.get(),tuesday_from_combobox.get(),
+								 tuesday_to_combobox.get(), wednesday_from_combobox.get(), wednesday_to_combobox.get(),
+								 thursday_from_combobox.get(), thursday_to_combobox.get(), friday_from_combobox.get(),
+								 friday_to_combobox.get(), saturday_from_combobox.get(), saturday_to_combobox.get(),
+								 sunday_from_combobox.get(), sunday_to_combobox.get()]
+
+				finalvaluedates = []
+
+				for rows in AllTimes:
+					index = AllTimes.index(rows)
+					if rows == 1:
+						fromindex = index * 2
+						toindex = fromindex + 1
+						WeekdaysAvailaiblity[index] = AllFinalTimes[fromindex] + "-" + AllFinalTimes[toindex]
+						finalvaluedates.append(WeekdaysAvailaiblity[index])
+					else:
+						WeekdaysAvailaiblity[index] = 'n/a'
+						finalvaluedates.append(WeekdaysAvailaiblity[index])
 
 
 				response = askyesno("Question", "Are you sure that all information above is correct?", icon='question')
@@ -847,7 +1000,7 @@ class CoachContent:
 				else:
 
 					doc = buildCoachDocument(coach_username, coach_password, coach_firstname, coach_surname, final_coach_gender, coach_DOB, coach_address, mondayFinalAvaliability, tuesdayFinalAvaliability, wednesdayFinalAvaliability, thursdayFinalAvaliability, fridayFinalAvaliability, saturdayFinalAvaliability, sundayFinalAvaliability)
-					found = Email("Lisburn Racquets Coach Added", "Good work on securing a coach position at Lisburn Racquets Club" + "\n" + "Your details can be found in the document below." + "\n\n" + "Thanks for choosing Lisburn Racquets Club", coach_username, doc, username_label)
+					found = Email("Lisburn Racquets Coach Added", "Good work on securing a coach position at Lisburn Racquets Club" + "\n" + "Your details can be found in the document below." + "\n\n" + "Thanks for choosing Lisburn Racquets Club", coach_username, doc, username_label, 'Coach_Account_Details.docx')
 					if found:
 
 						c.execute("INSERT INTO coach VALUES (:username, :password, :firstname, :surname, :gender, :DOB, :address, :availabilty)",
@@ -859,19 +1012,19 @@ class CoachContent:
 									  'gender': final_coach_gender,
 									  'DOB': coach_DOB,
 									  'address': coach_address,
-									  'availabilty': final_avaliability,
+									  'availabilty': new_final_avaliability,
 								  })
 
 						c.execute("INSERT INTO coachTimetable VALUES (:username, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday)",
 								  {
 									  'username': coach_username,
-									  'monday': mondayFinalAvaliability,
-									  'tuesday': tuesdayFinalAvaliability,
-									  'wednesday': wednesdayFinalAvaliability,
-									  'thursday': thursdayFinalAvaliability,
-									  'friday': fridayFinalAvaliability,
-									  'saturday': saturdayFinalAvaliability,
-									  'sunday': sundayFinalAvaliability,
+									  'monday': finalvaluedates[0],
+									  'tuesday': finalvaluedates[1],
+									  'wednesday': finalvaluedates[2],
+									  'thursday': finalvaluedates[3],
+									  'friday': finalvaluedates[4],
+									  'saturday': finalvaluedates[5],
+									  'sunday': finalvaluedates[6],
 								  })
 
 						c.execute("INSERT INTO account VALUES (:username, :password, :status)",
@@ -928,14 +1081,6 @@ class CoachContent:
 		fridayAvaliability=IntVar()
 		saturdayAvaliability=IntVar()
 		sundayAvaliability=IntVar()
-
-		mondayNewAvaliability=IntVar()
-		tuesdayNewAvaliability=IntVar()
-		wednesdayNewAvaliability=IntVar()
-		thursdayNewAvaliability=IntVar()
-		fridayNewAvaliability=IntVar()
-		saturdayNewAvaliability=IntVar()
-		sundayNewAvaliability=IntVar()
 
 		# Times array
 		monday_from_Avaliability_times = ["9.00","10.00","11.00","12.00","13.00","14.00","15.00","16.00","17.00","18.00","19.00","20.00","21.00"]
@@ -1196,7 +1341,7 @@ class CoachContent:
 		sunday_to_combobox.config(state="disable")
 
 
-		submit_button = tkinter.Button(self.coach, cursor="tcross",text="Submit", command=saveCoachDetails, fg='white', bg='black', bd=4, relief='ridge', font=('serif', 10, 'bold'), padx=30)
+		submit_button = tkinter.Button(self.coach, cursor="tcross",text="Submit", command=SubmitCoachDetails, fg='white', bg='black', bd=4, relief='ridge', font=('serif', 10, 'bold'), padx=30)
 		submit_button.place(rely=0.95, relx=0.49, anchor='center')
 		ToolTips.bind(submit_button, 'Submit coach details entered into database')
 
@@ -1204,7 +1349,7 @@ class CoachContent:
 		search_button.place(rely=0.95, relx=0.63, anchor='center')
 		ToolTips.bind(search_button, 'Search a coach from database')
 
-		update_button = tkinter.Button(self.coach, cursor="tcross",text="Update", command=lambda : updateCoachDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 10, 'bold'), padx=30)
+		update_button = tkinter.Button(self.coach, cursor="tcross",text="Update", command=lambda : updateCoachDetails(self, username_label, username_entry, password_label, password_entry, firstname_label, firstname_entry, surname_label, surname_entry, gender_label, male_radiobutton, female_radiobutton, DOB_label, DOB_button, address_label, address_entry, submit_button, update_button, search_button, delete_button), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 10, 'bold'), padx=30)
 		update_button.place(rely=0.95, relx=0.77, anchor='center')
 		ToolTips.bind(update_button, 'Update details of a coach in the database')
 
@@ -1269,7 +1414,7 @@ class CoachContent:
 		timestreeviewPopulate()
 
 
-		# A pop-up will be produced if a user right-clicks the coach details or coach timetable treeview
+		# A pop-up will be produced if a user right-clicks the coach details or coach timetable tree view
 		# This allows them to update/delete that coaches details
 		def onTreeviewPopup(tvPopup, event=None):
 			try:

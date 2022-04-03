@@ -19,12 +19,16 @@ import Pmw
 # Coach Session Class
 class CoachingSessionContent:
 
+	# Instance variables
 	CourtsTrue = False
 	GroupTrue = False
 	GroupFinder = 0
 	PeopleCounter = 0
+	FinalSelectedCourts = ''
 
 	# Initiates main screen window
+	# Initiates Lisburn Racquets Club Database
+	# Initiates Filepath
 	def __init__(self, mainScreen, filepath):
 		self.coachSession = mainScreen
 		self.conn = sqlite3.connect(filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -32,24 +36,10 @@ class CoachingSessionContent:
 		self.filepath = filepath
 
 
-		# Creates coachSessionDetails database table if it does not exist
-		self.c.execute("""CREATE TABLE IF NOT EXISTS coachSessionDetails (
-					username text,
-					startTime text,
-					endTime text,
-					date text,
-					courts text,
-					membergroup integer,
-					people text,
-					technique text,
-					sessionID text
-					)""")
-
-
 	# Generate coach session content
 	def generateCoachSessionContnt(self):
 
-		# Ensures username entered conform to the rules
+		# Ensures username entered is not empty
 		def validate_username(value, label):
 			if (value == ''):
 				label.config(fg="red")
@@ -60,16 +50,8 @@ class CoachingSessionContent:
 			return True
 
 
-		# Ensures start time selected conform to the rules
+		# Ensures start time selected is not greater than the end time selected
 		def validate_start_time(value, value2, label):
-			if (float(value) <8.00):
-				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The start time cannot be before 8am", icon='error')
-				return False
-			if (float(value) >22.00):
-				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The start time cannot be past 10pm", icon='error')
-				return False
 			if (float(value) >= float(value2)):
 				label.config(fg="red")
 				messagebox.showinfo("Validation Error", "The start time cannot be higher than the end time", icon='error')
@@ -79,23 +61,19 @@ class CoachingSessionContent:
 			return True
 
 
-		# Ensures end time selected conform to the rules
-		def validate_end_time(value, label):
-			if (float(value) <9.00):
-				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The end time cannot be before 9am", icon='error')
-				return False
-			if (float(value) >23.00):
-				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The end time cannot be after 11pm", icon='error')
-				return False
-
+		# Ensures end time selected conform to the rules (Will allow conform to the rules)
+		def validate_end_time(label):
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		# Ensures date selected conform to the rules
+		# Ensures date selected is not empty
+		# Ensures date selected is not less than the current date
+		# Ensures the date selected does not exist in the coachingSessionDetails database already
 		def validate_date(value, label):
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
+			c = conn.cursor()
+
 			if (value == ''):
 				label.config(fg="red")
 				messagebox.showinfo("Validation Error", "The date cannot be empty", icon='error')
@@ -112,9 +90,6 @@ class CoachingSessionContent:
 				messagebox.showinfo("Validation Error", "The start date cannot be before the current date", icon='error')
 				return False
 
-			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
-			c = conn.cursor()
-
 			c.execute("SELECT * From coachSessionDetails")
 			items = c.fetchall()
 
@@ -126,12 +101,49 @@ class CoachingSessionContent:
 				else:
 					pass
 
+			conn.close()
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		# Ensures courts selected conform to the rules
+		# Ensures new date selected is not empty
+		# Ensures new date selected is not less than the current date
+		# Ensures the new date selected does not exist in the coachingSessionDetails database already
+		def validate_new_date(value):
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
+			c = conn.cursor()
+
+			if (value == ''):
+				messagebox.showinfo("Validation Error", "The date cannot be empty", icon='error')
+				return False
+
+			presentDate = datetime.datetime.now()
+			date_formated = presentDate.strftime("%d/%m/%Y")
+
+			d1 = datetime.datetime.strptime(value, "%d/%m/%Y").date()
+			d2 = datetime.datetime.strptime(str(date_formated), "%d/%m/%Y").date()
+
+			if d2>d1:
+				messagebox.showinfo("Validation Error", "The start date cannot be before the current date", icon='error')
+				return False
+
+			c.execute("SELECT * From coachSessionDetails")
+			items = c.fetchall()
+
+			for SessionDates in items:
+				if (value == SessionDates[3]):
+					messagebox.showinfo('Validation Error', 'There is already a coaching session on ' + str(value) + '. There can only be one coaching session per day', icon='error')
+					return False
+				else:
+					pass
+
+			conn.close()
+
+			return True
+
+
+		# Ensures at least one court is selected
 		def validate_courts(value, label):
 			if (value != True):
 				label.config(fg="red")
@@ -142,32 +154,40 @@ class CoachingSessionContent:
 			return True
 
 
-		# Ensures group entered conform to the rules
-		def validate_entry_group(value):
+		# Ensures group entered is not empty
+		# Ensures group entered is not non-numerical
+		# Ensures group entered is not over 20
+		# Ensures group entered is not below 0
+		def validate_entry_group(value, label):
 			if value is None:
 				return False
 			if (value == ''):
+				label.config(fg='red')
 				messagebox.showinfo("Validation Error", "The group cannot be empty", icon='error')
 				return False
-			if (value.isnumeric==False):
+			if (any(char.isdigit() for char in value) == False):
+				label.config(fg='red')
 				messagebox.showinfo("Validation Error", "The group can only contain numbers", icon='error')
 				return False
 			if (int(value)>20):
+				label.config(fg='red')
 				messagebox.showinfo("Validation Error", "The group cannot be over 20, as it doesn't exist", icon='error')
 				return False
 			if (int(value)<0):
+				label.config(fg='red')
 				messagebox.showinfo("Validation Error", "The group cannot be below 0, as it doesn't exist", icon='error')
 				return False
 
 			return True
 
 
-		# Ensures group entered conform to the rules
+		# Will check the member database to see if the group entered contains any members
+		# If not, an error will be presented to the coach
 		def validate_group(value, label):
-			GroupExistsCounter = 0
-
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
+
+			GroupExistsCounter = 0
 
 			c.execute("SELECT * From member")
 			items = c.fetchall()
@@ -183,59 +203,23 @@ class CoachingSessionContent:
 					pass
 					if (GroupExistsCounter == len(items)):
 						group_label.config(fg='red')
-						messagebox.showinfo('Validation Error', 'There are no members in group ' + str(self.GroupFinder) + '. You must choose a group with members in order to create a valid coaching session', icon='error')
+						messagebox.showinfo('Validation Error', 'There are no members in group ' + str(self.GroupFinder) + '. '
+								'You must choose a group with members in order to create a valid coaching session', icon='error')
 						return False
+
+			conn.close()
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		# Ensures technique selected conform to the rules
+		# Ensures technique selected conform to the rules (Will always conform to the rules)
 		def validate_techniques(label):
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		# Ensures new start time selected conform to the rules
-		def validate_new_start_time(value, value2):
-			if (float(value) <8.00):
-				messagebox.showinfo("Validation Error", "The start time cannot be before 8am", icon='error')
-				return False
-			if (float(value) >22.00):
-				messagebox.showinfo("Validation Error", "The start time cannot be after 10pm", icon='error')
-				return False
-			if (float(value) > float(value2)):
-				messagebox.showinfo("Validation Error", "The start time cannot be higher than the end time", icon='error')
-				return False
-
-			return True
-
-
-		# Ensures new end time selected conform to the rules
-		def validate_new_end_time(value, value2):
-			if (float(value2) <9.00):
-				messagebox.showinfo("Validation Error", "The end time cannot be before 9am", icon='error')
-				return False
-			if (float(value2) >23.00):
-				messagebox.showinfo("Validation Error", "The end time cannot be after 11pm", icon='error')
-				return False
-			if (float(value) == float(value2)):
-				messagebox.showinfo("Validation Error", "The start and end time cannot equal each other", icon='error')
-				return False
-
-			return True
-
-
-		# Ensures new technique entered conform to the rules
-		def validate_new_techniques(value, fieldname):
-			if (value ==0):
-				messagebox.showinfo("Validation Error", "The Value For Field " + fieldname + " must have at least 1 selected")
-				return False
-
-			return True
-
-
-		# Ensures date selected conform to the rules
+		# Allows user to the select the date of the coaching session
 		def dateEntryCheck(dob):
 			def assign_dob():
 				eventDate.set(cal.get_date())
@@ -249,7 +233,7 @@ class CoachingSessionContent:
 			ttk.Button(top, text="ok", command=assign_dob).pack()
 
 
-		# Courts selected will change background colour to SpringGreen3 or black
+		# Courts selected will change background colour to green from black or vice versa
 		def ClickedCourt(courtvalue):
 			if (courtvalue.cget('bg') == 'black'):
 				courtvalue.config(bg='SpringGreen3')
@@ -358,10 +342,8 @@ class CoachingSessionContent:
 			ToolTips.bind(SelectCourtsButton, 'Pick the courts required for the coaching session')
 
 
-		# Finalises court selection
+		# Finalises court selection, where multiple can be selected
 		def SelectCourts(frame, courtvalue, courtvalue2, courtvalue3, courtvalue4, courtvalue5, courtvalue6, courtvalue7, courtvalue8, courtvalue9, courtvalue10, courtvalue11, courtvalue12):
-			global FinalSelectedCourts
-
 			counter = 1
 			SelectedCourts = []
 
@@ -381,38 +363,41 @@ class CoachingSessionContent:
 
 					counter += 1
 
-				FinalSelectedCourts = ''
+				self.FinalSelectedCourts = ''
 				for court in SelectedCourts:
-					FinalSelectedCourts = FinalSelectedCourts + court + ", "
+					self.FinalSelectedCourts = self.FinalSelectedCourts + court + ", "
 
-				FinalSelectedCourts = FinalSelectedCourts[0: len(FinalSelectedCourts) - 2]
+				self.FinalSelectedCourts = self.FinalSelectedCourts[0: len(self.FinalSelectedCourts) - 2]
 
-				return FinalSelectedCourts
+				return self.FinalSelectedCourts
 
 
-		# Selects the group required
+		# Selects the group required for the coaching session (if it's valid)
 		def groupRequired():
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			groupNumber = tkinter.simpledialog.askstring("Response","Enter the group number that you want the coaching session for (1-20)")
-			monkey = groupNumber
 
-			isValid = True
-			isValid = isValid and validate_entry_group(str(monkey))
+			if groupNumber is not None:
+				isValid = True
+				isValid = isValid and validate_entry_group(str(groupNumber), group_label)
 
-			if isValid:
-				self.GroupTrue = True
-				self.GroupFinder = groupNumber
+				if isValid:
+					self.GroupTrue = True
+					self.GroupFinder = groupNumber
 
-				c.execute("SELECT * From member")
-				items = c.fetchall()
+					c.execute("SELECT * From member")
+					items = c.fetchall()
 
-				for row in items:
-					if str(row[7]) != str(groupNumber) or row == []:
-						pass
-					else:
-						self.PeopleCounter += 1
+					for row in items:
+						if str(row[7]) != str(groupNumber) or row == []:
+							pass
+						else:
+							self.PeopleCounter += 1
+
+			conn.close()
+
 
 
 		# Clears coach session tree view data
@@ -422,7 +407,7 @@ class CoachingSessionContent:
 				coachsession_search_Tv.delete(elements)
 
 
-		# Coaching session tree view populate
+		# Coaching session tree view populate based on the data in the coachingSessionDetails database table
 		def treeviewPopulate():
 			clearTv()
 
@@ -464,6 +449,7 @@ class CoachingSessionContent:
 
 
 		# Updates coaching sessions, such as: time, date, courts and technique
+		# Pop-up will allow coach to select which update he wants to perform
 		def updateCoachSessionDetails(self):
 			response = askyesno("Question", "Do you want to update a coach's session?", icon='question')
 			if response == False:
@@ -493,7 +479,7 @@ class CoachingSessionContent:
 				ToolTips.bind(update_technique, 'Update the technique used for the coaching session')
 
 
-		# Updates coaching sessions time top-level
+		# Top-level which allows a coach to update a member's times based on the username entered by the coach
 		def updateCoachSessionTime(frame):
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -527,26 +513,26 @@ class CoachingSessionContent:
 					update_endtime_spinbox = Spinbox(updateTimes, width=7,font=("serif",8, 'bold'), bd=3, relief='ridge', cursor="tcross", textvariable=new_end_time, values=('9.00', '9.15', '9.30', '9.45', '10.00', '10.15', '10.30', '10.45', '11.00', '11.15', '11.30', '11.45', '12.00', '12.15','12.30','12.45','13.00','13.15','13.30','13.45','14.00','14.15','14.30','14.45','15.00','15.15','15.30','15.45','16.00','16.15','16.30','16.45','17.00','17.15','17.30','17.45','18.00','18.15','18.30','18.45','19.00','19.15','19.30','19.45','20.00','20.15','20.30','20.45','21.00','21.15','21.30','21.45','22.00','22.15','22.30','22.45','23.00'))
 					update_endtime_spinbox.place(rely=0.553, relx=0.79, anchor='center')
 
-					update_time_button = Button(updateTimes, text='Confirm Update',font=("serif",10, 'bold'), fg='white', bg='black',cursor="tcross",command=lambda : confirmNewTimes(updateTimes, coachUsername), padx=10, bd=4, relief="ridge")
+					update_time_button = Button(updateTimes, text='Confirm Update',font=("serif",10, 'bold'), fg='white', bg='black',cursor="tcross",command=lambda : confirmNewTimes(updateTimes, coachUsername, update_starttime_label, update_endtime_label), padx=10, bd=4, relief="ridge")
 					update_time_button.place(rely=0.85, relx=0.5, anchor='center')
 					ToolTips.bind(update_time_button, 'Confirm new time')
 
-			conn.commit()
 			conn.close()
 
 			treeviewPopulate()
 
 
-		# Updates coaching sessions time
-		def confirmNewTimes(frame, username):
+		# Updates coaching sessions time based on the username selected
+		# Validates start and end time to ensure they conform to the rules for updating
+		def confirmNewTimes(frame, username, start_label, end_label):
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			frame.withdraw()
 
 			isValid = True
-			isValid = isValid and validate_new_start_time(new_start_time.get(), new_end_time.get())
-			isValid = isValid and validate_new_end_time(new_start_time.get(), new_end_time.get())
+			isValid = isValid and validate_start_time(new_start_time.get(), new_end_time.get(), start_label)
+			isValid = isValid and validate_end_time(end_label)
 
 			if isValid:
 				newCoachSessionStartTime = new_start_time.get()
@@ -570,32 +556,34 @@ class CoachingSessionContent:
 			treeviewPopulate()
 
 
-		# Updates coaching sessions date
+		# Updates coaching sessions date based on the username entered
+		# Will update as long as the username is validated successfully
 		def updateCoachSessionDate(frame):
-			def new_assign_dob(username):
-				conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
-				c = conn.cursor()
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
+			c = conn.cursor()
 
+			def new_assign_dob(username):
 				newEventDate.set(newcal.get_date())
 				top.withdraw()
 
-				newCoachSessionDate = newEventDate.get()
+				isValid = True
+				isValid = isValid and validate_new_date(newEventDate.get())
 
-				c.execute("""UPDATE coachSessionDetails SET date = :newDate WHERE username=:username""", {
-					"newDate": str(newCoachSessionDate),
-					"username": username
-				})
+				if isValid:
+					newCoachSessionDate = newEventDate.get()
 
-				messagebox.showinfo("Info", "The coach's session date is now " + newCoachSessionDate, icon='info')
+					c.execute("""UPDATE coachSessionDetails SET date = :newDate WHERE username=:username""", {
+						"newDate": str(newCoachSessionDate),
+						"username": username
+					})
+
+					messagebox.showinfo("Info", "The coach's session date is now " + newCoachSessionDate, icon='info')
 
 				conn.commit()
 				conn.close()
 
 				treeviewPopulate()
 				changeCalendarColour()
-
-			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
-			c = conn.cursor()
 
 			frame.withdraw()
 
@@ -615,7 +603,7 @@ class CoachingSessionContent:
 					ttk.Button(top, text="Update", command= lambda : new_assign_dob(coachUsername)).pack()
 
 
-		# Updates coaching sessions courts top-level
+		# Top-level which allows a coach to update a member's courts based on the username entered by the coach
 		def updateCoachSessionCourts(frame):
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -630,11 +618,13 @@ class CoachingSessionContent:
 					messagebox.showinfo("Error", "The username entered was not found in the database", icon='error')
 
 				else:
+
 					courts = Toplevel(self.coachSession, bg="white")
 					courts.geometry('500x500')
 
 					title_label =Label(courts, cursor="tcross",text = 'Update the Number of Courts Required', fg ='black',bg='white',font=('serif',11,'bold'), bd=2, relief="ridge", padx=10, pady=3)
 					title_label.place(rely=0.027,relx=0.5,anchor=CENTER)
+
 
 					CourtsImage = PhotoImage(file=self.filepath + '\\_databases_images_doc\\Images\\courts.png')
 
@@ -727,9 +717,14 @@ class CoachingSessionContent:
 					SelectCourtsButton.place(rely=0.095,relx=0.5,anchor=CENTER)
 					ToolTips.bind(SelectCourtsButton, 'Pick the courts required for the coaching session')
 
+			conn.close()
 
-		# Updates coaching sessions courts
+
+		# Updates coaching sessions courts based on the username entered by the coach
+		# Validates courts to ensure at least one is selected for updating the details of a member
 		def updateCourts(frame, username, courtvalue, courtvalue2, courtvalue3, courtvalue4, courtvalue5, courtvalue6, courtvalue7, courtvalue8, courtvalue9, courtvalue10, courtvalue11, courtvalue12):
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
+			c = conn.cursor()
 
 			counter = 1
 			SelectedCourts = []
@@ -750,18 +745,18 @@ class CoachingSessionContent:
 
 					counter += 1
 
-				FinalSelectedCourts = ''
+				self.FinalSelectedCourts = ''
 				for court in SelectedCourts:
-					FinalSelectedCourts = FinalSelectedCourts + court + ", "
+					self.FinalSelectedCourts = self.FinalSelectedCourts + court + ", "
 
-				FinalSelectedCourts = FinalSelectedCourts[0: len(FinalSelectedCourts) - 2]
+				self.FinalSelectedCourts = self.FinalSelectedCourts[0: len(self.FinalSelectedCourts) - 2]
 
 				c.execute("UPDATE coachSessionDetails SET courts = :newCourts WHERE username=:username", {
-					"newCourts": FinalSelectedCourts,
+					"newCourts": self.FinalSelectedCourts,
 					"username": username
 				})
 
-				messagebox.showinfo("Info", "The session's new courts are now "+FinalSelectedCourts, icon='info')
+				messagebox.showinfo("Info", "The session's new courts are now "+ self.FinalSelectedCourts, icon='info')
 
 			conn.commit()
 			conn.close()
@@ -769,7 +764,7 @@ class CoachingSessionContent:
 			treeviewPopulate()
 
 
-		# Updates coaching sessions technique top-level
+		# Top-level which allows a coach to update a member's technique based on the username entered by the coach
 		def updateCoachSessionTechnique(frame):
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -802,41 +797,31 @@ class CoachingSessionContent:
 
 					technique4_radiobutton = Radiobutton(updateTechnique, text="Back Court", variable=newtechnique, value=4, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 					technique4_radiobutton.place(rely=0.715, relx=0.5, anchor='center')
+					newtechnique.set("1")
 
 					technique_update_button=Button(updateTechnique,text = 'Confirm Update', command = lambda : techniqueUpdate(updateTechnique, coachUsername), fg ='white', bg='black', relief= 'groove', font = ('serif',10,'bold'), padx =10)
 					technique_update_button.place(rely=0.9,relx=0.5,anchor=CENTER)
 					ToolTips.bind(technique_update_button, 'Confirm new technique')
 
-			conn.commit()
 			conn.close()
 
 
-		# Updates coaching sessions technique
+		# Updates coaching sessions technique based on the username entered
+		# Validates the techinque to ensure it conforms to the rules for updating
 		def techniqueUpdate(frame, username):
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
 			frame.withdraw()
 
-			isValid = True
-			isValid = isValid and validate_new_techniques(newtechnique.get(), "Technique")
+			TechniqueType = ['Net Play','Smash','Rally','Back Court']
 
-			if isValid:
-				if (newtechnique.get() ==1):
-					final_technique = 'Net Play'
-				if (newtechnique.get() ==2):
-					final_technique = 'Smash'
-				if (newtechnique.get() ==3):
-					final_technique = 'Rally'
-				if (newtechnique.get() ==4):
-					final_technique = 'Back Court'
+			c.execute("""UPDATE coachSessionDetails SET technique = :newTechnique WHERE username=:username""", {
+				"newTechnique": str(TechniqueType[newtechnique.get()-1]),
+				"username": username
+			})
 
-				c.execute("""UPDATE coachSessionDetails SET technique = :newTechnique WHERE username=:username""", {
-					"newTechnique": str(final_technique),
-					"username": username
-				})
-
-				messagebox.showinfo("Info", "The session's new technique is now "+ str(final_technique), icon='info')
+			messagebox.showinfo("Info", "The session's new technique is now "+ str(TechniqueType[newtechnique.get()-1]), icon='info')
 
 			conn.commit()
 			conn.close()
@@ -845,6 +830,7 @@ class CoachingSessionContent:
 
 
 		# Updates coaching session calendar to include a message outlining the details of a coaching session
+		# Will give an error message if an invalid date has been selected
 		def CalendarSelection(event):
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -873,14 +859,14 @@ class CoachingSessionContent:
 									+ "No. People: " + str(items[6]) + "\n"
 									+ "Technique: " + items[7])
 
-			conn.commit()
 			conn.close()
 
 
-		# Updates coaching session calendar's colour from black to SpringGreen3
+		# Updates coaching session calendar's colour from black to green
 		# This is based on all the dates in the coachSessionDetails database table
 		def changeCalendarColour():
 			cal.calevent_remove("all")
+
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
@@ -892,44 +878,12 @@ class CoachingSessionContent:
 
 			cal.tag_config("message", background="SpringGreen3", foreground="black")
 
-			conn.commit()
 			conn.close()
 
 
-
-		presentDate = datetime.datetime.now()
-		current_date = presentDate.strftime("%d/%m/%Y")
-
-		conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
-		c = conn.cursor()
-
-		c.execute("SELECT * From coachSessionDetails")
-		items = c.fetchall()
-
-		for row in items:
-			rowsplitdate = str(row[3]).split('/')
-			currentdatesplit = current_date.split('/')
-
-			if rowsplitdate[2] < currentdatesplit[2]:
-				c.execute('DELETE FROM coachSessionDetails WHERE sessionID=:ID', {
-					"ID": row[8]
-				})
-			else:
-				if rowsplitdate[2] >= currentdatesplit[2] and rowsplitdate[1] < currentdatesplit[1]:
-					c.execute('DELETE FROM coachSessionDetails WHERE sessionID=:ID', {
-						"ID": row[8]
-					})
-				else:
-					if rowsplitdate[2] >= currentdatesplit[2] and rowsplitdate[1] >= currentdatesplit[1] and rowsplitdate[0] < currentdatesplit[0]:
-						c.execute('DELETE FROM coachSessionDetails WHERE sessionID=:ID', {
-							"ID": row[8]
-						})
-					else:
-						pass
-
-
-		# Delete coaching session details from coachSessionDetails database table
-		def deleteCoachSessionDetails(self):
+		# Delete coaching session details from coachSessionDetails database table based on the username entered by the coach
+		# All associated details of the coaching session will be deleted as well
+		def deleteCoachSessionDetails(event):
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
@@ -963,7 +917,8 @@ class CoachingSessionContent:
 			treeviewPopulate()
 
 
-		# Search coaching session details from coachSessionDetails database table
+		# Search coaching session details from coachSessionDetails database table based on a username entered by a coach
+		# Details will be shown in a message box presented to the user
 		def searchCoachSessionDetails():
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -988,7 +943,6 @@ class CoachingSessionContent:
 
 					messagebox.showinfo("Error", "The username entered does not meet the rules", icon='error')
 
-			conn.commit()
 			conn.close()
 
 			treeviewPopulate()
@@ -1006,7 +960,7 @@ class CoachingSessionContent:
 			isValid = True
 			isValid = isValid and validate_username(self.coachNamesAndPasswords.get(), username_label)
 			isValid = isValid and validate_start_time(timeStart.get(), timeEnd.get(), starttime_label)
-			isValid = isValid and validate_end_time(timeEnd.get(), endtime_label)
+			isValid = isValid and validate_end_time(endtime_label)
 			isValid = isValid and validate_date(eventDate.get(), date_label)
 			isValid = isValid and validate_courts(self.CourtsTrue, courts_needed_label)
 			isValid = isValid and validate_group(self.GroupTrue, group_label)
@@ -1026,21 +980,16 @@ class CoachingSessionContent:
 				final_coach_starttime = format(float(coachsession_starttime), '.2f')
 				final_coach_endtime = format(float(coachsession_endtime), '.2f')
 
-				if (technique.get() ==1):
-					final_technique = 'Net Play'
-				if (technique.get() ==2):
-					final_technique = 'Smash'
-				if (technique.get() ==3):
-					final_technique = 'Rally'
-				if (technique.get() ==4):
-					final_technique = 'Clears'
+				TechniqueType = ['Net Play','Smash','Rally','Back Court']
 
+				final_technique = str(TechniqueType[technique.get()-1])
 
 				response = askyesno("Question", "Are you sure that all information above is correct?", icon='question')
 				if response == False:
 					showinfo("Info", "submition cancelled", icon='info')
 
 				else:
+
 					finalgroup = self.GroupFinder
 					finalnopeople = self.PeopleCounter
 
@@ -1064,7 +1013,7 @@ class CoachingSessionContent:
 								'startTime': final_coach_starttime,
 								'endTime': final_coach_endtime,
 								'date': coachsession_date,
-								'courts': FinalSelectedCourts,
+								'courts': self.FinalSelectedCourts,
 								'membergroup': finalgroup,
 								'people': finalnopeople,
 								'technique': final_technique,
@@ -1083,9 +1032,6 @@ class CoachingSessionContent:
 										  'memberbookingfee': '',
 									  })
 
-					conn.commit()
-					conn.close()
-
 					changeCalendarColour()
 
 					self.coachNamesAndPasswords.set('')
@@ -1095,6 +1041,9 @@ class CoachingSessionContent:
 
 					returnColour(username_label, starttime_label, endtime_label, date_label, courts_needed_label, group_label, techniques_label)
 					messagebox.showinfo("Info", "Details have been successfully stored", icon='info')
+
+			conn.commit()
+			conn.close()
 
 			treeviewPopulate()
 
@@ -1169,7 +1118,6 @@ class CoachingSessionContent:
 
 		technique4_radiobutton = Radiobutton(self.coachSession, text="Clears", variable=technique, value=4, font=("serif",9, 'bold'), cursor="tcross", bg="white", bd=2, relief="ridge")
 		technique4_radiobutton.place(rely=0.87, relx=0.355, anchor='center')
-		technique.set("1")
 
 
 		delete_button = tkinter.Button(self.coachSession, cursor="tcross",text="Delete", command=lambda : deleteCoachSessionDetails(self), fg='white', bg='black', bd=4, relief='ridge', font=('serif', 12, 'bold'), padx=10, pady=5)
@@ -1225,25 +1173,6 @@ class CoachingSessionContent:
 
 		treeviewPopulate()
 		changeCalendarColour()
-
-
-		def onTreeviewPopup(tvPopup, event=None):
-			try:
-				rowItem = coachsession_search_Tv.identify_row(event.y)
-				tvPopup.selection = coachsession_search_Tv.set(rowItem)
-
-				coachsession_search_Tv.selection_set(rowItem)
-				coachsession_search_Tv.focus(rowItem)
-				tvPopup.post(event.x_root, event.y_root)
-			finally:
-				tvPopup.grab_release()
-
-		tvPopup = Menu(self.coachSession, tearoff = 0)
-		tvPopup.add_command(label = "Update", command = partial(updateCoachSessionDetails, True))
-		tvPopup.add_separator()
-		tvPopup.add_command(label = "Delete", command = partial(deleteCoachSessionDetails,True))
-
-		coachsession_search_Tv.bind("<Button-3>", partial(onTreeviewPopup, tvPopup))
 
 
 	def coachSelection(self):

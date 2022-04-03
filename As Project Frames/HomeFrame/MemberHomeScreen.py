@@ -18,9 +18,12 @@ import webbrowser
 # Member Home Class
 class MemberHomeScreenContent:
 
+	# Instance variables
 	i = 0
 
 	# Initiates main screen window
+	# Initiates Lisburn Racquets Club Database
+	# Initiates Filepath
 	def __init__(self, mainScreen, filepath):
 		self.MemberHome = mainScreen
 		self.conn = sqlite3.connect(filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -31,7 +34,7 @@ class MemberHomeScreenContent:
 	# Generate member home content
 	def generateMemberHomeScreenContnt(self, FinalUsername):
 
-		# Calculates the current time
+		# Calculates the current time in hours, minutes and seconds
 		def time():
 			string = strftime('%H:%M:%S %p')
 			clock.config(text=string)
@@ -39,6 +42,7 @@ class MemberHomeScreenContent:
 
 
 		# Showcases the Lisburn Racquets Club badminton, tennis and squash facilities with an image slider
+		# There are a total of 6 images all taken around Lisburn Racquets Club
 		def ImageSlider():
 			if self.i >= (len(images)-1):
 				self.i = 0
@@ -50,6 +54,7 @@ class MemberHomeScreenContent:
 
 
 		# Find member's first name and surname and returns the value
+		# Based on the member entered into the system
 		def findfirstandsurname():
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -63,7 +68,8 @@ class MemberHomeScreenContent:
 			return labelusername
 
 
-		# Will present a message box to any coaching session, competition or booking which hasn't been completed yet
+		# Will present a message box of any coaching session or competition which hasn't been completed yet
+		# Details of the competition/coaching session will be shown to the coach
 		# An error will be presented if an invalid date has been selected
 		def AllCalendarSelection(cal, event=None):
 			AllChangeSelection = False
@@ -167,7 +173,7 @@ class MemberHomeScreenContent:
 				messagebox.showinfo('Error', "There is currently no event for " + FinalUsername + " on the date selected", icon='error')
 
 
-		# Will change the calendar's colour from black to SpringGreen3
+		# Will change the calendar's colour from black to green
 		# This is based on all the dates in the coachSessionDetails database table
 		# However, a coaching session will only change colour if a member is a part of that certain group selected
 		def changeCalendarColour(cal):
@@ -194,7 +200,7 @@ class MemberHomeScreenContent:
 			conn.close()
 
 
-		# Will change the calendar's colour from black to SpringGreen3
+		# Will change the calendar's colour from black to green
 		# This is based on all the dates in the SinglesCompetition database table
 		def SinglesChangeCalendarColour(cal):
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -241,7 +247,7 @@ class MemberHomeScreenContent:
 			conn.close()
 
 
-		# Will change the calendar's colour from black to SpringGreen3
+		# Will change the calendar's colour from black to green
 		# This is based on all the dates in the DoublesCompetition database table
 		def DoublesChangeCalendarColour(cal):
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -306,7 +312,7 @@ class MemberHomeScreenContent:
 				treeview.delete(elements)
 
 
-		# Past events tree view populate
+		# Past events tree view populate based on the data inside the PastEvents database table
 		def treeviewPopulate(treeview):
 			clearTv(treeview)
 
@@ -330,6 +336,39 @@ class MemberHomeScreenContent:
 					count+=1
 
 
+		# Calculates the total fees for the member logged into the system
+		# Each coaching session will cost £3.00 and a booking will cost £5.00
+		# The member's total will be calculated from these two results
+		def GetMembersFees():
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
+			c = conn.cursor()
+
+			c.execute("SELECT * FROM fees WHERE username=:username", {
+				"username": FinalUsername
+			})
+			row = c.fetchall()
+
+			finalsessioncost = 0
+			finalbookingcost = 0
+
+			for items in row:
+				if items[1] != '':
+					cutsessionfee = str(items[1])[1:]
+					finalsessioncost = finalsessioncost + float(cutsessionfee)
+					newfinalsessioncost = format(float(finalsessioncost), '.2f')
+				else:
+					cutbookingfee = str(items[2])[1:]
+					finalbookingcost = finalbookingcost + float(cutbookingfee)
+					newfinalbookingcost = format(float(finalbookingcost), '.2f')
+
+			finalcost = finalsessioncost + finalbookingcost
+			finalcost = format(float(finalcost), '.2f')
+			finalcost = '£' + str(finalcost)
+
+			payment_amount_label.config(text=finalcost)
+
+
+
 
 		# Tkinter labels, entry boxes, buttons, tree views, etc.
 		title_label = tkinter.Label(self.MemberHome, text="Main Menu: Member", font=('serif', 18, 'bold','underline'), fg='black', bg='white', bd=4, relief='groove', padx=10, pady=4)
@@ -344,13 +383,13 @@ class MemberHomeScreenContent:
 
 		clock_label = tkinter.Label(self.MemberHome, text="Current Time:", font=('serif', 16, 'bold'), fg='black', bg='white')
 		clock_label.place(rely=0.29, relx=0.1, anchor='center')
-		clock = Label(self.MemberHome, font=('serif', 16, 'bold'), fg='black', bg='white', bd=3, relief='sunken')
+		clock = Label(self.MemberHome, font=('serif', 16, 'bold'), fg='black', bg='white', bd=3, relief='sunken', padx=5, pady=2)
 		clock.place(rely=0.29, relx=0.27, anchor='center')
 
 		payment_status_label = tkinter.Label(self.MemberHome, text="Payment Fee:", font=('serif', 16, 'bold'), fg='black', bg='white')
 		payment_status_label.place(rely=0.395, relx=0.1, anchor='center')
-		paid_successfully_label = tkinter.Label(self.MemberHome, text="Not Paid", font=('serif', 16, 'bold'), fg='red', bg='white')
-		paid_successfully_label.place(rely=0.395, relx=0.27, anchor='center')
+		payment_amount_label = tkinter.Label(self.MemberHome, font=('serif', 16, 'bold'), fg='black', bg='white', bd=3, relief='sunken', padx=5, pady=2)
+		payment_amount_label.place(rely=0.395, relx=0.27, anchor='center')
 
 		googlemapsphoto = PhotoImage(file=self.filepath + '\\_databases_images_doc\\Images\\Googlemaps.png')
 
@@ -405,6 +444,7 @@ class MemberHomeScreenContent:
 
 		time()
 		ImageSlider()
+		GetMembersFees()
 		changeCalendarColour(cal)
 		treeviewPopulate(past_event_Tv)
 		SinglesChangeCalendarColour(cal)

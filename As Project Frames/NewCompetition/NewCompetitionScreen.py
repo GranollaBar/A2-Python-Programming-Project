@@ -19,10 +19,13 @@ import Pmw
 # Competition Class
 class NewCompetitionContent:
 
+	# Instance variables
 	CourtsTrue = False
 	FinalSelectedCourts = ''
 
 	# Initiates main screen window
+	# Initiates Lisburn Racquets Club Database
+	# Initiates Filepath
 	def __init__(self, mainScreen, filepath):
 		self.competition = mainScreen
 		self.conn = sqlite3.connect(filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -30,35 +33,10 @@ class NewCompetitionContent:
 		self.filepath = filepath
 
 
-		# Creates SinglesCompetition database table if it does not exist
-		self.c.execute("""CREATE TABLE IF NOT EXISTS SinglesCompetition (
-					username text,
-					username2 text,
-					start_date text,
-					end_date text,
-					court text,
-					singlescompetitionID integer
-					)""")
-
-		# Creates DoublesCompetition database table if it does not exist
-		self.c.execute("""CREATE TABLE IF NOT EXISTS DoublesCompetition (
-					username text,
-					username2 text,
-					username3 text,
-					username4 text,
-					start_date text,
-					end_date text,
-					court text,
-					team1 text,
-					team2 text,
-					doublescompetitionID integer
-					)""")
-
-
 	# Generate competition content
 	def generateCompetitionContnt(self):
 
-		# Select the start date of the booking
+		# Allows the coach to select the start date of the competition
 		def startDateCheck(dob):
 			def assign_start_date():
 				startDate.set(start_cal.get_date())
@@ -72,7 +50,7 @@ class NewCompetitionContent:
 			ttk.Button(startDateTop, text="ok", command=assign_start_date).pack()
 
 
-		# Select the end date of the booking
+		# Allows the coach to select the end date of the competition
 		def endDateCheck(dob):
 			def assign_end_date():
 				endDate.set(end_cal.get_date())
@@ -86,7 +64,9 @@ class NewCompetitionContent:
 			ttk.Button(endDateTop, text="ok", command=assign_end_date).pack()
 
 
-		# Ensures singles start date selected conforms to the rules
+		# Ensures singles start date selected is not empty
+		# Ensures singles start date selected is not before the current date
+		# Ensures singles start date selected is not already existant within the database or within a range of dates in the database
 		def validate_singles_competition_start_date(value, label):
 			if (value == ''):
 				label.config(fg="red")
@@ -112,30 +92,42 @@ class NewCompetitionContent:
 
 			ColourDates = []
 
-			for i in singles_competition_array:
-				date_1 = datetime.datetime.strptime(i[2], "%d/%m/%Y")
-				stringdate = date_1.date()
-				ColourDates.append(i[2])
-				ColourDates.append(i[3])
+			for dates in singles_competition_array:
+				start_date = dates[2]
+				end_date = dates[3]
 
-				if i[2] != i[3]:
-					while stringdate != i[3]:
-						stringdateadd = stringdate + datetime.timedelta(days=1)
-						finaldate=str(stringdateadd).split('-')
-						finalnewdate=finaldate[0],finaldate[1],finaldate[2]
-						a_date = datetime.date(int(finalnewdate[0]),int(finalnewdate[1]), int(finalnewdate[2]))
+				d1=start_date.split('/')
+				d2=end_date.split('/')
 
-						date_2 = a_date.strftime("%d/%m/%Y")
-						ColourDates.append(date_2)
-						break
+				d1= datetime.datetime(int(d1[2]),int(d1[1]),int(d1[0]))
+				d2= datetime.datetime(int(d2[2]),int(d2[1]),int(d2[0]))
 
-			for row in ColourDates:
-				if value == row:
-					label.config(fg="red")
-					messagebox.showinfo("Validation Error", "You cannot create a competition on top of an already existing singles competition", icon='error')
-					return False
+				length_inbetween=str(d2-d1).strip(' days, 0:00:00')
+				if length_inbetween == '':
+					length_inbetween = '1'
 				else:
-					pass
+					int(length_inbetween)+1
+
+				d3=start_date.split('/')
+				d3= datetime.datetime(int(d3[2]),int(d3[1]),int(d3[0]))
+
+				for i in range(0,int(length_inbetween)):
+					add=str(d3+timedelta(days=i)).strip('datetime.date(')
+					add=str(d3+timedelta(days=i)).strip(' 00:00:00')
+					add=add.split('-')
+					add=add[2].strip(',')+'/'+add[1].strip(',')+'/'+add[0].strip(',')
+					ColourDates.append(add)
+
+				if end_date not in ColourDates:
+					ColourDates.append(end_date)
+
+				for row in ColourDates:
+					if value == row:
+						label.config(fg="red")
+						messagebox.showinfo("Validation Error", "You cannot create a competition on top of an already existing doubles competition", icon='error')
+						return False
+					else:
+						pass
 
 			conn.commit()
 			conn.close()
@@ -144,7 +136,10 @@ class NewCompetitionContent:
 			return True
 
 
-		# Ensures doubles start date selected conforms to the rules
+
+		# Ensures doubles start date selected is not empty
+		# Ensures doubles start date selected is not before the current date
+		# Ensures doubles start date selected is not already existant within the database or within a range of dates in the database
 		def validate_doubles_competition_start_date(value, label):
 			if (value == ''):
 				label.config(fg="red")
@@ -166,33 +161,46 @@ class NewCompetitionContent:
 			c = conn.cursor()
 
 			c.execute("SELECT * FROM DoublesCompetition")
-			singles_competition_array = c.fetchall()
+			doubles_competition_array = c.fetchall()
 
 			ColourDates = []
 
-			for i in singles_competition_array:
-				date_1 = datetime.datetime.strptime(i[4], "%d/%m/%Y")
-				stringdate = date_1.date()
-				ColourDates.append(i[4])
-				ColourDates.append(i[5])
+			for dates in doubles_competition_array:
+				start_date = dates[4]
+				end_date = dates[5]
 
-				while stringdate != i[5]:
-					stringdateadd = stringdate + datetime.timedelta(days=1)
-					finaldate=str(stringdateadd).split('-')
-					finalnewdate=finaldate[0],finaldate[1],finaldate[2]
-					a_date = datetime.date(int(finalnewdate[0]),int(finalnewdate[1]), int(finalnewdate[2]))
+				d1=start_date.split('/')
+				d2=end_date.split('/')
 
-					date_2 = a_date.strftime("%d/%m/%Y")
-					ColourDates.append(date_2)
-					break
+				d1= datetime.datetime(int(d1[2]),int(d1[1]),int(d1[0]))
+				d2= datetime.datetime(int(d2[2]),int(d2[1]),int(d2[0]))
 
-			for row in ColourDates:
-				if value == row:
-					label.config(fg="red")
-					messagebox.showinfo("Validation Error", "You cannot create a competition on top of an already existing doubles competition", icon='error')
-					return False
+				length_inbetween=str(d2-d1).strip(' days, 0:00:00')
+				if length_inbetween == '':
+					length_inbetween = '1'
 				else:
-					pass
+					int(length_inbetween)+1
+
+				d3=start_date.split('/')
+				d3= datetime.datetime(int(d3[2]),int(d3[1]),int(d3[0]))
+
+				for i in range(0,int(length_inbetween)):
+					add=str(d3+timedelta(days=i)).strip('datetime.date(')
+					add=str(d3+timedelta(days=i)).strip(' 00:00:00')
+					add=add.split('-')
+					add=add[2].strip(',')+'/'+add[1].strip(',')+'/'+add[0].strip(',')
+					ColourDates.append(add)
+
+				if end_date not in ColourDates:
+					ColourDates.append(end_date)
+
+				for row in ColourDates:
+					if value == row:
+						label.config(fg="red")
+						messagebox.showinfo("Validation Error", "You cannot create a competition on top of an already existing doubles competition", icon='error')
+						return False
+					else:
+						pass
 
 			conn.commit()
 			conn.close()
@@ -201,7 +209,10 @@ class NewCompetitionContent:
 			return True
 
 
-		# Ensures singles end date selected conforms to the rules
+		# Ensures singles end date selected is not empty
+		# Ensures singles end date selected is greater then the start date
+		# Ensures singles end date selected is not over a week long
+		# Ensures singles end date selected is not already existant within the database or within a range of dates in the database
 		def validate_singles_competition_end_date(value, value2, label2):
 			if (value2 == ''):
 				label2.config(fg="red")
@@ -228,8 +239,6 @@ class NewCompetitionContent:
 				label2.config(fg='red')
 				messagebox.showinfo("Validation Error", "The competition can only be ran for seven days total", icon='error')
 				return False
-			else:
-				pass
 
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -239,29 +248,43 @@ class NewCompetitionContent:
 
 			ColourDates = []
 
-			for i in singles_competition_array:
-				date_1 = datetime.datetime.strptime(i[2], "%d/%m/%Y")
-				stringdate = date_1.date()
-				ColourDates.append(i[2])
-				ColourDates.append(i[3])
+			for dates in singles_competition_array:
+				start_date = dates[2]
+				end_date = dates[3]
 
-				while stringdate != i[3]:
-					stringdateadd = stringdate + datetime.timedelta(days=1)
-					finaldate=str(stringdateadd).split('-')
-					finalnewdate=finaldate[0],finaldate[1],finaldate[2]
-					a_date = datetime.date(int(finalnewdate[0]),int(finalnewdate[1]), int(finalnewdate[2]))
+				d1=start_date.split('/')
+				d2=end_date.split('/')
 
-					date_2 = a_date.strftime("%d/%m/%Y")
-					ColourDates.append(date_2)
-					break
+				d1= datetime.datetime(int(d1[2]),int(d1[1]),int(d1[0]))
+				d2= datetime.datetime(int(d2[2]),int(d2[1]),int(d2[0]))
 
-			for row in ColourDates:
-				if value2 == row:
-					label2.config(fg="red")
-					messagebox.showinfo("Validation Error", "You cannot create a competition on top of an already existing singles competition", icon='error')
-					return False
+				length_inbetween=str(d2-d1).strip(' days, 0:00:00')
+				if length_inbetween == '':
+					length_inbetween = '1'
 				else:
-					pass
+					int(length_inbetween)+1
+
+				d3=start_date.split('/')
+				d3= datetime.datetime(int(d3[2]),int(d3[1]),int(d3[0]))
+
+				for i in range(0,int(length_inbetween)):
+					add=str(d3+timedelta(days=i)).strip('datetime.date(')
+					add=str(d3+timedelta(days=i)).strip(' 00:00:00')
+					add=add.split('-')
+					add=add[2].strip(',')+'/'+add[1].strip(',')+'/'+add[0].strip(',')
+					ColourDates.append(add)
+
+				if end_date not in ColourDates:
+					ColourDates.append(end_date)
+
+				for row in ColourDates:
+					if value2 == row:
+						label2.config(fg="red")
+						messagebox.showinfo("Validation Error", "You cannot create a competition on top of "
+																"an already existing doubles competition", icon='error')
+						return False
+					else:
+						pass
 
 			conn.commit()
 			conn.close()
@@ -270,7 +293,10 @@ class NewCompetitionContent:
 			return True
 
 
-		# Ensures doubles end date selected conforms to the rules
+		# Ensures doubles end date selected is not empty
+		# Ensures doubles end date selected is greater then the start date
+		# Ensures doubles end date selected is not over a week long
+		# Ensures doubles end date selected is not already existant within the database or within a range of dates in the database
 		def validate_doubles_competition_end_date(value, value2, label2):
 			if (value2 == ''):
 				label2.config(fg="red")
@@ -304,33 +330,47 @@ class NewCompetitionContent:
 			c = conn.cursor()
 
 			c.execute("SELECT * FROM DoublesCompetition")
-			singles_competition_array = c.fetchall()
+			doubles_competition_array = c.fetchall()
 
 			ColourDates = []
 
-			for i in singles_competition_array:
-				date_1 = datetime.datetime.strptime(i[4], "%d/%m/%Y")
-				stringdate = date_1.date()
-				ColourDates.append(i[4])
-				ColourDates.append(i[5])
+			for dates in doubles_competition_array:
+				start_date = dates[4]
+				end_date = dates[5]
 
-				while stringdate != i[5]:
-					stringdateadd = stringdate + datetime.timedelta(days=1)
-					finaldate=str(stringdateadd).split('-')
-					finalnewdate=finaldate[0],finaldate[1],finaldate[2]
-					a_date = datetime.date(int(finalnewdate[0]),int(finalnewdate[1]), int(finalnewdate[2]))
+				d1=start_date.split('/')
+				d2=end_date.split('/')
 
-					date_2 = a_date.strftime("%d/%m/%Y")
-					ColourDates.append(date_2)
-					break
+				d1= datetime.datetime(int(d1[2]),int(d1[1]),int(d1[0]))
+				d2= datetime.datetime(int(d2[2]),int(d2[1]),int(d2[0]))
 
-			for row in ColourDates:
-				if value2 == row:
-					label2.config(fg="red")
-					messagebox.showinfo("Validation Error", "You cannot create a competition on top of an already existing doubles competition", icon='error')
-					return False
+				length_inbetween=str(d2-d1).strip(' days, 0:00:00')
+				if length_inbetween == '':
+					length_inbetween = '1'
 				else:
-					pass
+					int(length_inbetween)+1
+
+				d3=start_date.split('/')
+				d3= datetime.datetime(int(d3[2]),int(d3[1]),int(d3[0]))
+
+				for i in range(0,int(length_inbetween)):
+					add=str(d3+timedelta(days=i)).strip('datetime.date(')
+					add=str(d3+timedelta(days=i)).strip(' 00:00:00')
+					add=add.split('-')
+					add=add[2].strip(',')+'/'+add[1].strip(',')+'/'+add[0].strip(',')
+					ColourDates.append(add)
+
+				if end_date not in ColourDates:
+					ColourDates.append(end_date)
+
+				for row in ColourDates:
+					if value2 == row:
+						label2.config(fg="red")
+						messagebox.showinfo("Validation Error", "You cannot create a competition on top of an already existing doubles competition", icon='error')
+						return False
+					else:
+						pass
+
 
 			conn.commit()
 			conn.close()
@@ -338,8 +378,12 @@ class NewCompetitionContent:
 			label2.config(fg="SpringGreen3")
 			return True
 
-
-		# Ensures start date selected conforms to the rules
+		# When updating a competitions dates, ensures singles start date selected is not empty
+		# When updating a competitions dates, ensures singles start date selected is not before the current date
+		# When updating a competitions dates, ensures singles start date selected is not already existant within the database or within a range of dates in the database
+		# When updating a competitions dates, ensures doubles start date selected is not empty
+		# When updating a competitions dates, ensures doubles start date selected is not before the current date
+		# When updating a competitions dates, ensures doubles start date selected is not already existant within the database or within a range of dates in the database
 		def validate_startdate_update(value, label, SinglesTrue):
 			if (value == ''):
 				label.config(fg="red")
@@ -354,7 +398,7 @@ class NewCompetitionContent:
 
 			if d2>d1:
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The start date before the current date", icon='error')
+				messagebox.showinfo("Validation Error", "The new start date cannot be before the current date", icon='error')
 				return False
 
 			if (SinglesTrue == True):
@@ -366,85 +410,112 @@ class NewCompetitionContent:
 
 				ColourDates = []
 
-				for i in singles_competition_array:
-					date_1 = datetime.datetime.strptime(i[2], "%d/%m/%Y")
-					stringdate = date_1.date()
-					ColourDates.append(i[2])
-					ColourDates.append(i[3])
+				for dates in singles_competition_array:
+					start_date = dates[2]
+					end_date = dates[3]
 
-					while stringdate != i[3]:
-						stringdateadd = stringdate + datetime.timedelta(days=1)
-						finaldate=str(stringdateadd).split('-')
-						finalnewdate=finaldate[0],finaldate[1],finaldate[2]
-						a_date = datetime.date(int(finalnewdate[0]),int(finalnewdate[1]), int(finalnewdate[2]))
+					d1=start_date.split('/')
+					d2=end_date.split('/')
 
-						date_2 = a_date.strftime("%d/%m/%Y")
-						ColourDates.append(date_2)
-						break
+					d1= datetime.datetime(int(d1[2]),int(d1[1]),int(d1[0]))
+					d2= datetime.datetime(int(d2[2]),int(d2[1]),int(d2[0]))
 
-				for row in ColourDates:
-					if value == row:
-						label.config(fg="red")
-						messagebox.showinfo("Validation Error", "You cannot create a competition on top of an already existing singles competition", icon='error')
-						return False
+					length_inbetween=str(d2-d1).strip(' days, 0:00:00')
+					if length_inbetween == '':
+						length_inbetween = '1'
 					else:
-						pass
+						int(length_inbetween)+1
 
-				conn.commit()
-				conn.close()
+					d3=start_date.split('/')
+					d3= datetime.datetime(int(d3[2]),int(d3[1]),int(d3[0]))
 
-				label.config(fg="SpringGreen3")
-				return True
+					for i in range(0,int(length_inbetween)):
+						add=str(d3+timedelta(days=i)).strip('datetime.date(')
+						add=str(d3+timedelta(days=i)).strip(' 00:00:00')
+						add=add.split('-')
+						add=add[2].strip(',')+'/'+add[1].strip(',')+'/'+add[0].strip(',')
+						ColourDates.append(add)
+
+					if end_date not in ColourDates:
+						ColourDates.append(end_date)
+
+					for row in ColourDates:
+						if value == row:
+							label.config(fg="red")
+							messagebox.showinfo("Validation Error", "You cannot create a competition on top of an already existing singles competition", icon='error')
+							return False
+						else:
+							pass
 
 			else:
+
 				conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 				c = conn.cursor()
 
 				c.execute("SELECT * FROM DoublesCompetition")
-				singles_competition_array = c.fetchall()
+				doubles_competition_array = c.fetchall()
 
 				ColourDates = []
 
-				for i in singles_competition_array:
-					date_1 = datetime.datetime.strptime(i[4], "%d/%m/%Y")
-					stringdate = date_1.date()
-					ColourDates.append(i[4])
-					ColourDates.append(i[5])
+				for dates in doubles_competition_array:
+					start_date = dates[4]
+					end_date = dates[5]
 
-					while stringdate != i[5]:
-						stringdateadd = stringdate + datetime.timedelta(days=1)
-						finaldate=str(stringdateadd).split('-')
-						finalnewdate=finaldate[0],finaldate[1],finaldate[2]
-						a_date = datetime.date(int(finalnewdate[0]),int(finalnewdate[1]), int(finalnewdate[2]))
+					d1=start_date.split('/')
+					d2=end_date.split('/')
 
-						date_2 = a_date.strftime("%d/%m/%Y")
-						ColourDates.append(date_2)
-						break
+					d1= datetime.datetime(int(d1[2]),int(d1[1]),int(d1[0]))
+					d2= datetime.datetime(int(d2[2]),int(d2[1]),int(d2[0]))
 
-				for row in ColourDates:
-					if value == row:
-						label.config(fg="red")
-						messagebox.showinfo("Validation Error", "You cannot create a competition on top of an already existing singles competition", icon='error')
-						return False
+					length_inbetween=str(d2-d1).strip(' days, 0:00:00')
+					if length_inbetween == '':
+						length_inbetween = '1'
 					else:
-						pass
+						int(length_inbetween)+1
 
-				conn.commit()
-				conn.close()
+					d3=start_date.split('/')
+					d3= datetime.datetime(int(d3[2]),int(d3[1]),int(d3[0]))
 
-				label.config(fg="SpringGreen3")
-				return True
+					for i in range(0,int(length_inbetween)):
+						add=str(d3+timedelta(days=i)).strip('datetime.date(')
+						add=str(d3+timedelta(days=i)).strip(' 00:00:00')
+						add=add.split('-')
+						add=add[2].strip(',')+'/'+add[1].strip(',')+'/'+add[0].strip(',')
+						ColourDates.append(add)
+
+					if end_date not in ColourDates:
+						ColourDates.append(end_date)
+
+					for row in ColourDates:
+						if value == row:
+							label.config(fg="red")
+							messagebox.showinfo("Validation Error", "You cannot create a competition on top of an already existing doubles competition", icon='error')
+							return False
+						else:
+							pass
+
+			conn.close()
+
+			label.config(fg="SpringGreen3")
+			return True
 
 
-		# Ensures end date entered conforms to the rules
+		# When updating a competitions dates, ensures singles end date selected is not empty
+		# When updating a competitions dates, ensures singles end date selected is greater then the start date
+		# When updating a competitions dates, ensures singles end date selected is not over a week long
+		# When updating a competitions dates, ensures singles end date selected is not already existant within the database or within a range of dates in the database
+		# When updating a competitions dates, ensures doubles end date selected is not empty
+		# When updating a competitions dates, ensures doubles end date selected is greater then the start date
+		# When updating a competitions dates, ensures doubles end date selected is not over a week long
+		# When updating a competitions dates, ensures doubles end date selected is not already existant within the database or within a range of dates in the database
 		def validate_enddate_update(value, value2, label, DoublesTrue):
 			if (value2 == ''):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The end date cannot be empty", icon='error')
+				messagebox.showinfo("Validation Error", "The new end date cannot be empty", icon='error')
 				return False
 			if (value > value2):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The end date cannot be before the start date", icon='error')
+				messagebox.showinfo("Validation Error", "The new end date cannot be before the start date", icon='error')
 				return False
 
 			date = value
@@ -459,9 +530,9 @@ class NewCompetitionContent:
 
 			numberdate = ((a_date2-a_date).days)
 
-			if (numberdate >= 3):
+			if (numberdate >= 8):
 				label.config(fg='red')
-				messagebox.showinfo("Validation Error", "The competition can only be ran for three days total", icon='error')
+				messagebox.showinfo("Validation Error", "The competition can only be ran for seven days total", icon='error')
 				return False
 			else:
 				pass
@@ -475,81 +546,103 @@ class NewCompetitionContent:
 
 				ColourDates = []
 
-				for i in singles_competition_array:
-					date_1 = datetime.datetime.strptime(i[2], "%d/%m/%Y")
-					stringdate = date_1.date()
-					ColourDates.append(i[2])
-					ColourDates.append(i[3])
+				for dates in singles_competition_array:
+					start_date = dates[2]
+					end_date = dates[3]
 
-					while stringdate != i[3]:
-						stringdateadd = stringdate + datetime.timedelta(days=1)
-						finaldate=str(stringdateadd).split('-')
-						finalnewdate=finaldate[0],finaldate[1],finaldate[2]
-						a_date = datetime.date(int(finalnewdate[0]),int(finalnewdate[1]), int(finalnewdate[2]))
+					d1=start_date.split('/')
+					d2=end_date.split('/')
 
-						date_2 = a_date.strftime("%d/%m/%Y")
-						ColourDates.append(date_2)
-						break
+					d1= datetime.datetime(int(d1[2]),int(d1[1]),int(d1[0]))
+					d2= datetime.datetime(int(d2[2]),int(d2[1]),int(d2[0]))
 
-				for row in ColourDates:
-					if value2 == row:
-						label.config(fg="red")
-						messagebox.showinfo("Validation Error", "You cannot create a competition on top of an already existing singles competition", icon='error')
-						return False
+					length_inbetween=str(d2-d1).strip(' days, 0:00:00')
+					if length_inbetween == '':
+						length_inbetween = '1'
 					else:
-						pass
+						int(length_inbetween)+1
 
-				conn.commit()
-				conn.close()
+					d3=end_date.split('/')
+					d3= datetime.datetime(int(d3[2]),int(d3[1]),int(d3[0]))
 
-				label.config(fg="SpringGreen3")
-				return True
+					for i in range(0,int(length_inbetween)):
+						add=str(d3+timedelta(days=i)).strip('datetime.date(')
+						add=str(d3+timedelta(days=i)).strip(' 00:00:00')
+						add=add.split('-')
+						add=add[2].strip(',')+'/'+add[1].strip(',')+'/'+add[0].strip(',')
+						ColourDates.append(add)
+
+					if end_date not in ColourDates:
+						ColourDates.append(end_date)
+
+					for row in ColourDates:
+						if value2 == row:
+							label.config(fg="red")
+							messagebox.showinfo("Validation Error", "You cannot create a competition on top of an already existing doubles competition", icon='error')
+							return False
+						else:
+							pass
 
 			else:
+
 				conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 				c = conn.cursor()
 
 				c.execute("SELECT * FROM DoublesCompetition")
-				singles_competition_array = c.fetchall()
+				doubles_competition_array = c.fetchall()
 
 				ColourDates = []
 
-				for i in singles_competition_array:
-					date_1 = datetime.datetime.strptime(i[4], "%d/%m/%Y")
-					stringdate = date_1.date()
-					ColourDates.append(i[4])
-					ColourDates.append(i[5])
+				for dates in doubles_competition_array:
+					start_date = dates[4]
+					end_date = dates[5]
 
-					while stringdate != i[4]:
-						stringdateadd = stringdate + datetime.timedelta(days=1)
-						finaldate=str(stringdateadd).split('-')
-						finalnewdate=finaldate[0],finaldate[1],finaldate[2]
-						a_date = datetime.date(int(finalnewdate[0]),int(finalnewdate[1]), int(finalnewdate[2]))
+					d1=start_date.split('/')
+					d2=end_date.split('/')
 
-						date_2 = a_date.strftime("%d/%m/%Y")
-						ColourDates.append(date_2)
-						break
+					d1= datetime.datetime(int(d1[2]),int(d1[1]),int(d1[0]))
+					d2= datetime.datetime(int(d2[2]),int(d2[1]),int(d2[0]))
 
-				for row in ColourDates:
-					if value2 == row:
-						label.config(fg="red")
-						messagebox.showinfo("Validation Error", "You cannot create a competition on top of an already existing singles competition", icon='error')
-						return False
+					length_inbetween=str(d2-d1).strip(' days, 0:00:00')
+					if length_inbetween == '':
+						length_inbetween = '1'
 					else:
-						pass
+						int(length_inbetween)+1
 
-				conn.commit()
-				conn.close()
+					d3=start_date.split('/')
+					d3= datetime.datetime(int(d3[2]),int(d3[1]),int(d3[0]))
 
-				label.config(fg="SpringGreen3")
-				return True
+					for i in range(0,int(length_inbetween)):
+						add=str(d3+timedelta(days=i)).strip('datetime.date(')
+						add=str(d3+timedelta(days=i)).strip(' 00:00:00')
+						add=add.split('-')
+						add=add[2].strip(',')+'/'+add[1].strip(',')+'/'+add[0].strip(',')
+						ColourDates.append(add)
+
+					if end_date not in ColourDates:
+						ColourDates.append(end_date)
+
+					for row in ColourDates:
+						if value2 == row:
+							label.config(fg="red")
+							messagebox.showinfo("Validation Error", "You cannot create a competition on top of an already existing doubles competition", icon='error')
+							return False
+						else:
+							pass
+
+			conn.commit()
+			conn.close()
+
+			label.config(fg="SpringGreen3")
+			return True
 
 
-		# Ensures singles first username entered conforms to the rules
+		# Ensures singles first username entered is not empty
+		# Ensures singles first username entered is qualified to do competitions
 		def validate_singles_first_member(value, label):
 			if (value == ''):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The username cannot be empty", icon='error')
+				messagebox.showinfo("Validation Error", "The member 1 username cannot be empty", icon='error')
 				return False
 
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -567,11 +660,13 @@ class NewCompetitionContent:
 			return True
 
 
-		# Ensures singles second username entered conforms to the rules
+		# Ensures singles second username entered is not empty
+		# Ensures singles second username entered is qualified to do competitions
+		# Ensures singles second username entered is not the same as singles first username
 		def validate_singles_second_member(value, value2, label, label2):
 			if (value2 == ''):
 				label2.config(fg="red")
-				messagebox.showinfo("Validation Error", "The username cannot be empty", icon='error')
+				messagebox.showinfo("Validation Error", "The member 2 username cannot be empty", icon='error')
 				return False
 
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -581,8 +676,9 @@ class NewCompetitionContent:
 			data = c.fetchone()
 
 			if ('no' in data[8]):
-				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "This member cannot be selected because they don't want to be involved with competitions", icon='error')
+				label2.config(fg="red")
+				messagebox.showinfo("Validation Error", "This member cannot be selected because they don't want "
+														"to be involved with competitions", icon='error')
 				return False
 
 			if (value == value2):
@@ -595,12 +691,12 @@ class NewCompetitionContent:
 			label2.config(fg="SpringGreen3")
 			return True
 
-
-		# Ensures doubles first username entered conforms to the rules
+		# Ensures doubles first username entered is not empty
+		# Ensures doubles first username entered is qualified to do competitions
 		def validate_doubles_first_member(value, label):
 			if (value == ''):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The username cannot be empty", icon='error')
+				messagebox.showinfo("Validation Error", "The member 1 username cannot be empty", icon='error')
 				return False
 
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -617,12 +713,13 @@ class NewCompetitionContent:
 			label.config(fg="SpringGreen3")
 			return True
 
-
-		# Ensures doubles second username entered conforms to the rules
+		# Ensures doubles second username entered is not empty
+		# Ensures doubles second username entered is qualified to do competitions
+		# Ensures doubles second username entered is not the same as doubles first username
 		def validate_doubles_second_member(value, value2, label):
 			if (value2 == ''):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The username cannot be empty", icon='error')
+				messagebox.showinfo("Validation Error", "The member 2 username cannot be empty", icon='error')
 				return False
 
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -645,11 +742,14 @@ class NewCompetitionContent:
 			return True
 
 
-		# Ensures doubles third username entered conforms to the rules
+		# Ensures doubles third username entered is not empty
+		# Ensures doubles third username entered is qualified to do competitions
+		# Ensures doubles third username entered is not the same as doubles first username
+		# Ensures doubles third username entered is not the same as doubles second username
 		def validate_doubles_third_member(value, value2, value3, label):
 			if (value3 == ''):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The username cannot be empty", icon='error')
+				messagebox.showinfo("Validation Error", "The memebr 3 username cannot be empty", icon='error')
 				return False
 
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -676,11 +776,15 @@ class NewCompetitionContent:
 			return True
 
 
-		# Ensures doubles fourth username entered conforms to the rules
+		# Ensures doubles fourth username entered is not empty
+		# Ensures doubles fourth username entered is qualified to do competitions
+		# Ensures doubles fourth username entered is not the same as doubles first username
+		# Ensures doubles fourth username entered is not the same as doubles second username
+		# Ensures doubles fourth username entered is not the same as doubles third username
 		def validate_doubles_fourth_member(value, value2, value3, value4, label):
 			if (value4 == ''):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The username cannot be empty", icon='error')
+				messagebox.showinfo("Validation Error", "The member 4 username cannot be empty", icon='error')
 				return False
 
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -711,8 +815,12 @@ class NewCompetitionContent:
 			return True
 
 
-		# Ensures username entered conforms to the rules
-		def validate_username_update(value, value2, label1, label2):
+		# When updating a competitions usernames, ensures singles first username entered is not empty
+		# When updating a competitions usernames, ensures singles first username entered is qualified to do competitions
+		# When updating a competitions usernames, ensures singles second username entered is not empty
+		# When updating a competitions usernames, ensures singles second username entered is qualified to do competitions
+		# When updating a competitions usernames, ensures singles second username entered is not the same as singles first username
+		def validate_singles_username_update(value, value2, label1, label2):
 			if (value == ''):
 				label1.config(fg="red")
 				messagebox.showinfo("Validation Error", "Username1 cannot be empty", icon='error')
@@ -732,7 +840,76 @@ class NewCompetitionContent:
 			return True
 
 
-		# Ensures court selected conforms to the rules
+		# When updating a competitions usernames, ensures doubles first username entered is not empty
+		# When updating a competitions usernames, ensures doubles first username entered is qualified to do competitions
+		# When updating a competitions usernames, ensures doubles second username entered is not empty
+		# When updating a competitions usernames, ensures doubles second username entered is qualified to do competitions
+		# When updating a competitions usernames, ensures doubles second username entered is not the same as doubles first username
+		# When updating a competitions usernames, ensures doubles third username entered is not empty
+		# When updating a competitions usernames, ensures doubles third username entered is qualified to do competitions
+		# When updating a competitions usernames, ensures doubles third username entered is not the same as doubles first username
+		# When updating a competitions usernames, ensures doubles third username entered is not the same as doubles second username
+		# When updating a competitions usernames, ensures doubles fourth username entered is not empty
+		# When updating a competitions usernames, ensures doubles fourth username entered is qualified to do competitions
+		# When updating a competitions usernames, ensures doubles fourth username entered is not the same as doubles first username
+		# When updating a competitions usernames, ensures doubles fourth username entered is not the same as doubles second username
+		# When updating a competitions usernames, ensures doubles fourth username entered is not the same as doubles third username
+		def validate_doubles_username_update(value, value2, value3, value4, label1, label2, label3, label4):
+			if (value == ''):
+				label1.config(fg="red")
+				messagebox.showinfo("Validation Error", "Username1 cannot be empty", icon='error')
+				return False
+			if (value2 == ''):
+				label2.config(fg="red")
+				messagebox.showinfo("Validation Error", "Username2 cannot be empty", icon='error')
+				return False
+			if (value == value2):
+				label1.config(fg="red")
+				label2.config(fg="red")
+				messagebox.showinfo("Validation Error", "Member 2 cannot have the same username as member 1", icon='error')
+				return False
+			if (value3 == ''):
+				label3.config(fg="red")
+				messagebox.showinfo("Validation Error", "Username3 cannot be empty", icon='error')
+				return False
+			if (value3 == value):
+				label1.config(fg="red")
+				label3.config(fg="red")
+				messagebox.showinfo("Validation Error", "Member 3 cannot have the same username as member 1", icon='error')
+				return False
+			if (value3 == value2):
+				label2.config(fg="red")
+				label3.config(fg="red")
+				messagebox.showinfo("Validation Error", "Member 3 cannot have the same username as member 2", icon='error')
+				return False
+			if (value4 == ''):
+				label4.config(fg="red")
+				messagebox.showinfo("Validation Error", "Username4 cannot be empty", icon='error')
+				return False
+			if (value4 == value):
+				label1.config(fg="red")
+				label4.config(fg="red")
+				messagebox.showinfo("Validation Error", "Member 4 cannot have the same username as member 1", icon='error')
+				return False
+			if (value4 == value2):
+				label2.config(fg="red")
+				label4.config(fg="red")
+				messagebox.showinfo("Validation Error", "Member 4 cannot have the same username as member 2", icon='error')
+				return False
+			if (value4 == value3):
+				label3.config(fg="red")
+				label4.config(fg="red")
+				messagebox.showinfo("Validation Error", "Member 4 cannot have the same username as member 3", icon='error')
+				return False
+
+			label1.config(fg="SpringGreen3")
+			label2.config(fg="SpringGreen3")
+			label3.config(fg="SpringGreen3")
+			label4.config(fg="SpringGreen3")
+			return True
+
+
+		# Ensures at least one court is selected
 		def validate_court(value, label):
 			if (value != True):
 				label.config(fg="red")
@@ -743,11 +920,11 @@ class NewCompetitionContent:
 			return True
 
 
-		# Ensures group entered conforms to the rules
+		# Ensures group entered is not empty
 		def validate_group_delete(value, label):
 			if (value == ''):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "There must be a group selected", icon='error')
+				messagebox.showinfo("Validation Error", "An ID must be selected", icon='error')
 				return False
 
 			label.config(fg='SpringGreen3')
@@ -761,7 +938,7 @@ class NewCompetitionContent:
 				treeview.delete(elements)
 
 
-		# Singles Competition tree view populate
+		# Singles Competition tree view populate based on the data inside the SinglesCompetition database table
 		def singlestreeviewPopulate(treeview):
 			clearTv(treeview)
 
@@ -786,7 +963,7 @@ class NewCompetitionContent:
 					count+=1
 
 
-		# Doubles competition tree view populate
+		# Doubles competition tree view populate based on the data inside the DoublesCompetition database table
 		def doublestreeviewPopulate(treeview):
 			clearTv(treeview)
 
@@ -853,7 +1030,7 @@ class NewCompetitionContent:
 			Updatemember4.config(fg='black')
 
 
-		# Courts selected will change background colour to SpringGreen3 or black
+		# Courts selected will change background colour to green or black
 		def ClickedCourt(courtvalue):
 			if (courtvalue.cget('bg') == 'black'):
 				courtvalue.config(bg='SpringGreen3')
@@ -958,13 +1135,13 @@ class NewCompetitionContent:
 			Court12Button.image = CourtsImage
 
 
-			SelectCourtsButton=Button(courts, cursor="tcross",text = 'Select Courts', command = lambda : ChangeCourtsColour(courts,Court1Button, Court2Button, Court3Button, Court4Button, Court5Button, Court6Button, Court7Button, Court8Button, Court9Button, Court10Button, Court11Button, Court12Button), fg ='white', bg='black', relief= 'groove', font = ('serif',8,'bold'), padx =15)
+			SelectCourtsButton=Button(courts, cursor="tcross",text = 'Select Courts', command = lambda : SelectCourts(courts,Court1Button, Court2Button, Court3Button, Court4Button, Court5Button, Court6Button, Court7Button, Court8Button, Court9Button, Court10Button, Court11Button, Court12Button), fg ='white', bg='black', relief= 'groove', font = ('serif',8,'bold'), padx =15)
 			SelectCourtsButton.place(rely=0.095,relx=0.5,anchor=CENTER)
 			ToolTips.bind(SelectCourtsButton, 'Confirm courts selected')
 
 
 		# Finalises court selection
-		def ChangeCourtsColour(frame, courtvalue, courtvalue2, courtvalue3, courtvalue4, courtvalue5, courtvalue6, courtvalue7, courtvalue8, courtvalue9, courtvalue10, courtvalue11, courtvalue12):
+		def SelectCourts(frame, courtvalue, courtvalue2, courtvalue3, courtvalue4, courtvalue5, courtvalue6, courtvalue7, courtvalue8, courtvalue9, courtvalue10, courtvalue11, courtvalue12):
 			counter = 1
 			SelectedCourts = []
 
@@ -1012,6 +1189,7 @@ class NewCompetitionContent:
 
 
 		# Updates singles competition calendar to include a message outlining the details of a singles competition
+		# An error message will be presented to the coach if an invalid data is selected
 		def SinglesCalendarSelection(cal, event=None):
 			ListComplete = False
 			AllListComplete = 0
@@ -1050,11 +1228,11 @@ class NewCompetitionContent:
 					messagebox.showinfo("Error", "There is no competition on this date", icon='error')
 
 
-			conn.commit()
 			conn.close()
 
 
 		# Updates doubles competition calendar to include a message outlining the details of a doubles competition
+		# An error message will be presented to the coach if an invalid data is selected
 		def DoublesCalendarSelection(cal, event=None):
 			ListComplete = False
 			AllListComplete = 0
@@ -1096,11 +1274,10 @@ class NewCompetitionContent:
 				if (ListComplete == False and AllListComplete == len(doubles_competition_array)):
 					messagebox.showinfo("Error", "There is no competition on this date", icon='error')
 
-			conn.commit()
 			conn.close()
 
 
-		# Updates singles competition calendar's colour from black to SpringGreen3
+		# Updates singles competition calendar's colour from black to green
 		# Based on all the dates in the SinglesCompetition database table
 		def SinglesChangeCalendarColour(cal):
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -1150,7 +1327,7 @@ class NewCompetitionContent:
 			conn.close()
 
 
-		# Updates doubles competition calendar's colour from black to SpringGreen3
+		# Updates doubles competition calendar's colour from black to green
 		# Based on all the dates in the DoublesCompetition database table
 		def DoublesChangeCalendarColour(cal):
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -1202,6 +1379,7 @@ class NewCompetitionContent:
 
 
 		# Delete singles competition details from SinglesCompetition database table
+		# Will delete all information stored about that singles competition
 		def SinglesDeleteCompetition(value, value2, value3):
 			isValid = True
 			isValid = isValid and validate_group_delete(value2.get(), value)
@@ -1276,6 +1454,7 @@ class NewCompetitionContent:
 
 
 		# Delete doubles competition details from DoublesCompetition database table
+		# Will delete all information stored about that doubles competition
 		def DoublesDeleteCompetition(value, value2, value3):
 			isValid = True
 			isValid = isValid and validate_group_delete(value2.get(), value)
@@ -1355,11 +1534,12 @@ class NewCompetitionContent:
 
 
 		# Update singles competition details, such as: usernames, dates and court
+		# This is based on the username entered and if the user chose a singles competition to update
 		def SinglesUpdateCompetition(label1, label2, label3, value1, value2, value3, treeview):
 			if (UpdateSelectionSingles.get() == 1):
 				isValid = True
 				isValid = isValid and validate_group_delete(value1.get(), label1)
-				isValid = isValid and validate_username_update(value2.get(), value3.get(), label2, label3)
+				isValid = isValid and validate_singles_username_update(value2.get(), value3.get(), label2, label3)
 
 				if isValid:
 					GroupSelected = value1.get()
@@ -1397,7 +1577,7 @@ class NewCompetitionContent:
 							value2.set('')
 							value3.set('')
 
-							return_two_colour(label1, label2)
+							return_three_colour(label1, label2, label3)
 
 							conn.commit()
 							conn.close()
@@ -1496,14 +1676,12 @@ class NewCompetitionContent:
 
 
 		# Update doubles competition details, such as: usernames, dates and court
+		# This is based on the username entered and if the user chose a doubles competition to update
 		def DoublesUpdateCompetition(label1, label2, label3, label4, label5, value1, value2, value3, value4, value5, treeview):
 			if (UpdateSelectionDoubles.get() == 1):
 				isValid = True
 				isValid = isValid and validate_group_delete(value1.get(), label1)
-				isValid = isValid and validate_doubles_first_member(value2.get(), label2)
-				isValid = isValid and validate_doubles_second_member(value2.get(), value3.get(), label3)
-				isValid = isValid and validate_doubles_third_member(value2.get(), value3.get(), value4.get(), label4)
-				isValid = isValid and validate_doubles_fourth_member(value2.get(), value3.get(), value4.get(), value5.get(), label5)
+				isValid = isValid and validate_doubles_username_update(value2.get(), value3.get(), value4.get(), value5.get(), label2, label3, label4, label5)
 
 				if isValid:
 					GroupSelected = value1.get()
@@ -1563,10 +1741,12 @@ class NewCompetitionContent:
 							doublestreeviewPopulate(treeview)
 
 			if (UpdateSelectionDoubles.get() == 2):
+				SinglesStartDateUpdate = False
+				SinglesEndDateUpdate = False
 				isValid = True
 				isValid = isValid and validate_group_delete(value1.get(), label1)
-				isValid = isValid and validate_startdate_update(startDate.get(), label2, None)
-				isValid = isValid and validate_enddate_update(startDate.get(), endDate.get(), label3, None)
+				isValid = isValid and validate_startdate_update(startDate.get(), label2, SinglesStartDateUpdate)
+				isValid = isValid and validate_enddate_update(startDate.get(), endDate.get(), label3, SinglesEndDateUpdate)
 
 				if isValid:
 					GroupSelected = value1.get()
@@ -1653,6 +1833,7 @@ class NewCompetitionContent:
 
 		# Submit singles competition details
 		# An email address containing all the information will be sent to members involved
+		# This will occur only if the usernames, start date, end date and court are all validated correctly
 		def SubmitNewSingles(label1, label2, label3, label4, label5, cal, treeview):
 			AllEmailsComplete = 0
 
@@ -1722,6 +1903,7 @@ class NewCompetitionContent:
 
 		# Submit doubles competition details
 		# An email address containing all the information will be sent to members involved
+		# This will occur only if the usernames, start date, end date and court are all validated correctly
 		def SubmitNewDoubles(label1, label2, label3, label4, label5, cal, treeview):
 			AllEmailsComplete = 0
 
@@ -1812,7 +1994,7 @@ class NewCompetitionContent:
 								AllEmailsComplete += 1
 
 					if (AllEmailsComplete == len(items)):
-						messagebox.showinfo('Info', 'All members involved have been sent information about the upcoming doublescompetition', icon='info')
+						messagebox.showinfo('Info', 'All members involved have been sent information about the upcoming doubles competition', icon='info')
 
 					team1 = finalUsername1 + ' / ' + finalUsername2
 					team2 = finalUsername3 + ' / ' + finalUsername4
@@ -1853,6 +2035,7 @@ class NewCompetitionContent:
 
 
 		# Confirmation of singles update
+		# The coach can decide which part of the singles competition to update: usernames, dates or court
 		def UpdateSinglesSelectionConfirmation(value, value2, value3, value4, value5):
 			value.config(fg='grey')
 			value2.config(state='disabled')
@@ -1890,7 +2073,7 @@ class NewCompetitionContent:
 				singlestreeviewPopulate(singles_competition_treeview)
 
 
-				select_singles_group_label = tkinter.Label(self.competition, text="Select group:", font=('serif', 12, 'bold'), fg='black', bg='white')
+				select_singles_group_label = tkinter.Label(self.competition, text="Select ID:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				select_singles_group_label.place(rely=0.92, relx=0.1, anchor='center')
 
 				conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -1972,7 +2155,7 @@ class NewCompetitionContent:
 				singlestreeviewPopulate(singles_competition_treeview)
 
 
-				select_singles_group_label = tkinter.Label(self.competition, text="Select group:", font=('serif', 12, 'bold'), fg='black', bg='white')
+				select_singles_group_label = tkinter.Label(self.competition, text="Select ID:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				select_singles_group_label.place(rely=0.92, relx=0.1, anchor='center')
 
 				conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -2040,7 +2223,7 @@ class NewCompetitionContent:
 				singlestreeviewPopulate(singles_competition_treeview)
 
 
-				select_singles_group_label = tkinter.Label(self.competition, text="Select group:", font=('serif', 12, 'bold'), fg='black', bg='white')
+				select_singles_group_label = tkinter.Label(self.competition, text="Select ID:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				select_singles_group_label.place(rely=0.92, relx=0.1, anchor='center')
 
 				conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -2078,6 +2261,7 @@ class NewCompetitionContent:
 
 
 		# Confirmation of doubles update
+		# The coach can decide which part of the doubles competition to update: usernames, dates or court
 		def UpdateDoublesSelectionConfirmation(value1, value2, value3, value4, value5):
 			value1.config(fg='grey')
 			value2.config(state='disabled')
@@ -2123,7 +2307,7 @@ class NewCompetitionContent:
 				doublestreeviewPopulate(doubles_competition_treeview)
 
 
-				select_doubles_group_label = tkinter.Label(self.competition, text="Select group:", font=('serif', 12, 'bold'), fg='black', bg='white')
+				select_doubles_group_label = tkinter.Label(self.competition, text="Select ID:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				select_doubles_group_label.place(rely=0.884, relx=0.1, anchor='center')
 
 				conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -2227,7 +2411,7 @@ class NewCompetitionContent:
 				doublestreeviewPopulate(doubles_competition_treeview)
 
 
-				select_doubles_group_label = tkinter.Label(self.competition, text="Select group:", font=('serif', 12, 'bold'), fg='black', bg='white')
+				select_doubles_group_label = tkinter.Label(self.competition, text="Select ID:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				select_doubles_group_label.place(rely=0.92, relx=0.1, anchor='center')
 
 				conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -2303,7 +2487,7 @@ class NewCompetitionContent:
 				doublestreeviewPopulate(doubles_competition_treeview)
 
 
-				select_doubles_group_label = tkinter.Label(self.competition, text="Select group:", font=('serif', 12, 'bold'), fg='black', bg='white')
+				select_doubles_group_label = tkinter.Label(self.competition, text="Select ID:", font=('serif', 12, 'bold'), fg='black', bg='white')
 				select_doubles_group_label.place(rely=0.92, relx=0.1, anchor='center')
 
 				conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -2341,6 +2525,7 @@ class NewCompetitionContent:
 
 
 		# Type of match confirmation
+		# There is a chose between singles or doubles competition
 		def MatchTypeConfirmation(value, value2, value3, value4):
 			value.config(fg='grey')
 			value2.config(state='disabled')
@@ -2744,61 +2929,6 @@ class NewCompetitionContent:
 
 				doublestreeviewPopulate(doubles_competition_treeview)
 
-
-
-		presentDate = datetime.datetime.now()
-		current_date = presentDate.strftime("%d/%m/%Y")
-
-		conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
-		c = conn.cursor()
-
-		c.execute("SELECT * From SinglesCompetition")
-		items = c.fetchall()
-
-		for row in items:
-			rowsplitdate = str(row[3]).split('/')
-			currentdatesplit = current_date.split('/')
-
-			if rowsplitdate[2] < currentdatesplit[2]:
-				c.execute('DELETE FROM SinglesCompetition WHERE singlescompetitionID=:ID', {
-					"ID": row[5]
-				})
-			else:
-				if rowsplitdate[2] >= currentdatesplit[2] and rowsplitdate[1] < currentdatesplit[1]:
-					c.execute('DELETE FROM SinglesCompetition WHERE singlescompetitionID=:ID', {
-						"ID": row[5]
-					})
-				else:
-					if rowsplitdate[2] >= currentdatesplit[2] and rowsplitdate[1] >= currentdatesplit[1] and rowsplitdate[0] < currentdatesplit[0]:
-						c.execute('DELETE FROM SinglesCompetition WHERE singlescompetitionID=:ID', {
-							"ID": row[5]
-						})
-					else:
-						pass
-
-		c.execute("SELECT * From DoublesCompetition")
-		items2 = c.fetchall()
-
-		for row2 in items2:
-			rowsplitdate = str(row2[5]).split('/')
-			currentdatesplit = current_date.split('/')
-
-			if rowsplitdate[2] < currentdatesplit[2]:
-				c.execute('DELETE FROM DoublesCompetition WHERE doublescompetitionID=:ID', {
-					"ID": row2[9]
-				})
-			else:
-				if rowsplitdate[2] >= currentdatesplit[2] and rowsplitdate[1] < currentdatesplit[1]:
-					c.execute('DELETE FROM DoublesCompetition WHERE doublescompetitionID=:ID', {
-						"ID": row2[9]
-					})
-				else:
-					if rowsplitdate[2] >= currentdatesplit[2] and rowsplitdate[1] >= currentdatesplit[1] and rowsplitdate[0] < currentdatesplit[0]:
-						c.execute('DELETE FROM DoublesCompetition WHERE doublescompetitionID=:ID', {
-							"ID": row2[9]
-						})
-					else:
-						pass
 
 
 		# Variables Used

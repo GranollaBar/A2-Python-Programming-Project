@@ -18,6 +18,8 @@ import random
 class CoachReportsContent:
 
 	# Initiates main screen window
+	# Initiates Lisburn Racquets Club Database
+	# Initiates Filepath
 	def __init__(self, mainScreen, filepath):
 		self.Reports = mainScreen
 		self.conn = sqlite3.connect(filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -43,6 +45,7 @@ class CoachReportsContent:
 
 
 		# Find coach's first name and surname and returns the value (capitalized form)
+		# Based on the coach entered into the system
 		def Capitalizedfindfirstandsurname():
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -56,17 +59,21 @@ class CoachReportsContent:
 			return labelusername
 
 
-		# Opens the member account doc (most recently added member)
+		# Opens the member account doc
+		# This contains all the information about the most recently added member into the system
 		def OpenMemberAccountDoc():
 			os.startfile(self.filepath + '\\_databases_images_doc\\Doc\\Member_Account_Details.docx')
 
 
-		# Opens the competition doc (most recently added competition - singles & doubles)
+		# Opens the competition doc
+		# This contains all the information about the most recently added competition into the system
+		# It will not matter what type of competition has been added, only the information of the most recent will be viewwable
 		def OpenCompetitionDoc():
 			os.startfile(self.filepath + '\\_databases_images_doc\\Doc\\Current_Competition_Results.docx')
 
 
 		# Draws the most recently finished singles competition
+		# Final results of the member's scores will also be provided
 		def StartUpFinishedSinglesGraph():
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -155,6 +162,7 @@ class CoachReportsContent:
 
 
 		# Draws the most recently finished doubles competition
+		# Final results of the member's scores will also be provided
 		def StartUpFinishedDoublesGraph():
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -274,6 +282,9 @@ class CoachReportsContent:
 		wordlogo2['relief'] = 'sunken'
 		ToolTips.bind(wordlogo, 'Click to see the latest singles/doubles competition completed')
 
+
+		# Creation of the pie chart showing the percentage of each event which has been added to the system
+		# The colour of the pie chart will be randomised each time the screen is entered
 		style.use('seaborn-darkgrid')
 
 		font = {'family': 'serif',

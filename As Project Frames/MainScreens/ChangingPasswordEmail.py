@@ -10,8 +10,9 @@ def ChangePassword(subject, msg, recipientemail):
 		server.ehlo()
 		server.starttls()
 		server.login("gamblingwolf113@gmail.com", "WPKa4VAqpuHxdQyt")
+		print('hello')
 		emailText = buildEmailMsg(subject, msg, recipientemail)
-		server.sendmail("josnoble113@gmail.com",recipientemail,emailText)
+		server.sendmail("gamblingwolf113@gmail.com",recipientemail,emailText)
 		server.quit()
 		return True
 

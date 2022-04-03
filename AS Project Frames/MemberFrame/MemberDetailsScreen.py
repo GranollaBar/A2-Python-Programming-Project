@@ -20,6 +20,8 @@ import Pmw
 class MemberContent:
 
 	# Initiates main screen window
+	# Initiates Lisburn Racquets Club Database
+	# Initiates Filepath
 	def __init__(self, mainScreen, filepath):
 		self.member = mainScreen
 		self.conn = sqlite3.connect(filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -27,26 +29,23 @@ class MemberContent:
 		self.filepath = filepath
 
 
-		# Creates member database table if it does not exist
-		self.c.execute("""CREATE TABLE IF NOT EXISTS member (
-					username text,
-					password text,
-					firstname text,
-					surname text,
-					telephone text,
-					postcode text,
-					age integer,
-					member_group integer,
-					competitions string
-					)""")
-
-
 	# Generate member details content
 	def generateMemberContnt(self):
 
-		# Ensures username entered conforms to the rules
+		# Ensures username entered is not empty
+		# Ensures username entered contains an @ symbol
+		# Ensures username entered contains a .
+		# Ensures username entered is less than 25 characters
+		# Ensures username entered does not exists in the system already
 		def validate_username(value, label):
+			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
+			c = conn.cursor()
+
 			if (value == ''):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The username field cannot be empty", icon='error')
+				return False
+			if (value == 'e.g. bobby564@gmail.com'):
 				label.config(fg="red")
 				messagebox.showinfo("Validation Error", "The username field cannot be empty", icon='error')
 				return False
@@ -58,20 +57,42 @@ class MemberContent:
 				label.config(fg="red")
 				messagebox.showinfo("Validation Error", "The username field must contain a .", icon='error')
 				return False
+			if (len(value) > 25):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The username field cannot have more than 25 characters", icon='error')
+				return False
+
+			c.execute(f"SELECT * FROM member WHERE username=?", (value,))
+			data = c.fetchone()
+			c.execute(f"SELECT * FROM coach WHERE username=?", (value,))
+			data2 = c.fetchone()
+			c.execute(f"SELECT * FROM manager WHERE username=?", (value,))
+			data3 = c.fetchone()
+			if data or data2 or data3:
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The username entered already exists in the database", icon='error')
+				return False
+
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		# Ensures password entered conforms to the rules
+		# Ensures password entered is not empty
+		# Ensures password entered does not have less than 8 characters
+		# Ensures password entered does not contain more than 15 characters
 		def validate_password(value, label):
 			if (value == ''):
 				label.config(fg="red")
 				messagebox.showinfo("Validation Error", "The password field cannot be empty", icon='error')
 				return False
+			if (value == 'e.g. RossBob24'):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The password field cannot be empty", icon='error')
+				return False
 			if (len(value) < 8):
 				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The password field must contain more than 7 characters", icon='error')
+				messagebox.showinfo("Validation Error", "The password field cannot contain less than 8 characters", icon='error')
 				return False
 			if (len(value) > 15):
 				label.config(fg="red")
@@ -82,9 +103,15 @@ class MemberContent:
 			return True
 
 
-		# Ensures telephone entered conforms to the rules
+		# Ensures telephone entered is not empty
+		# Ensures telephone entered is not less than 11 characters
+		# Ensures telephone entered is not more than 11 characters
 		def validate_telephone(value, label):
 			if (value == ''):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The telephone field cannot be empty", icon='error')
+				return False
+			if (value == 'e.g. 03358629462'):
 				label.config(fg="red")
 				messagebox.showinfo("Validation Error", "The telephone field cannot be empty", icon='error')
 				return False
@@ -101,32 +128,19 @@ class MemberContent:
 			return True
 
 
-		# Ensures first name entered conforms to the rules
+		# Ensures first name entered is not empty
+		# Ensures first name entered is not numerical
+		# Ensures first name entered is not more than 15 characters
 		def validate_firstname(value, label):
 			if (value == ""):
 				label.config(fg="red")
 				messagebox.showinfo("Validation Error", "The firstname field cannot be empty", icon='error')
 				return False
-			if (value.isdigit()):
-				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The firstname field can only contain letters", icon='error')
-				return False
-			if (len(value) >15):
-				label.config(fg="red")
-				messagebox.showinfo("Validation Error", "The firstname field can only contain 15 characters", icon='error')
-				return False
-
-			label.config(fg="SpringGreen3")
-			return True
-
-
-		# Ensures surname entered conforms to the rules
-		def validate_surname(value, label):
-			if (value == ""):
+			if (value == 'e.g. Johhny'):
 				label.config(fg="red")
 				messagebox.showinfo("Validation Error", "The firstname field cannot be empty", icon='error')
 				return False
-			if (value.isdigit()):
+			if (any(char.isdigit() for char in value) == True):
 				label.config(fg="red")
 				messagebox.showinfo("Validation Error", "The firstname field can only contain letters", icon='error')
 				return False
@@ -139,20 +153,59 @@ class MemberContent:
 			return True
 
 
-		# Ensures postcode entered conforms to the rules
+		# Ensures surname entered is not empty
+		# Ensures surname entered is not numerical
+		# Ensures surname entered is not more than 15 characters
+		def validate_surname(value, label):
+			if (value == ""):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The surname field cannot be empty", icon='error')
+				return False
+			if (value == 'e.g. Synders'):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The surname field cannot be empty", icon='error')
+				return False
+			if (any(char.isdigit() for char in value) == True):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The surname field can only contain letters", icon='error')
+				return False
+			if (len(value) >15):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The surname field can only contain 15 characters", icon='error')
+				return False
+
+			label.config(fg="SpringGreen3")
+			return True
+
+
+		# Ensures postcode entered is not empty
+		# Ensures postcode entered is not more than 9 characters
 		def validate_postcode(value, label):
 			if (value == ''):
 				label.config(fg="red")
 				messagebox.showinfo("Validation Error", "The postcode field cannot be empty", icon='error')
 				return False
+			if (value == 'e.g. BT12 4RF'):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The postcode field cannot be empty", icon='error')
+				return False
+			if (len(value) > 9):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The postcode field cannot have more than 9 characters", icon='error')
+				return False
 
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		# Ensures age entered conforms to the rules
+		# Ensures age entered is not empty
+		# Ensures age entered is not over 100
 		def validate_age(value, label):
-			if (value ==''):
+			if (str(value) ==''):
+				label.config(fg="red")
+				messagebox.showinfo("Validation Error", "The age field cannot be empty", icon='error')
+				return False
+			if (value == 'e.g. 27'):
 				label.config(fg="red")
 				messagebox.showinfo("Validation Error", "The age field cannot be empty", icon='error')
 				return False
@@ -165,9 +218,9 @@ class MemberContent:
 			return True
 
 
-		# Caculates the correct group for the member
+		# Calculates the correct group for the member by using DIV
 		def ageToGroup(value):
-			return math.ceil(value.get()/5)
+			return math.ceil(int(value.get())//5)
 
 
 		# Will add and remove placeholder text in the username name entry box
@@ -271,7 +324,7 @@ class MemberContent:
 				member_search_Tv.delete(elements)
 
 
-		# Member details tree view populate
+		# Member details tree view populate based on the data in the member dtaabase table
 		def treeviewPopulate():
 			clearTv()
 
@@ -313,7 +366,7 @@ class MemberContent:
 			ageReturn.config(fg="black")
 
 
-		# Updates member details, such as: telephone and postcode
+		# Updates member details, such as: telephone and postcode based on the username entered
 		def updateAccountDetails(event):
 			response = askyesno("Question", "Do you want to update a students details?", icon='question')
 			if response == False:
@@ -335,7 +388,7 @@ class MemberContent:
 				ToolTips.bind(update_postcode, "Update the member's postcode")
 
 
-		# Updates member's telephone
+		# Updates member's telephone based on the username entered by the coach
 		def update_member_telephone(frame):
 			frame.withdraw()
 
@@ -353,7 +406,7 @@ class MemberContent:
 
 					new_telephone = simpledialog.askstring("Response", "Enter the new telephone number of the member")
 
-					if new_telephone != '' and len(new_telephone) < 30:
+					if new_telephone != '' and len(new_telephone) == 11:
 
 						c.execute("""UPDATE member SET telephone = :new_telephone WHERE username=:username""", {
 							"new_telephone": str(new_telephone),
@@ -376,7 +429,7 @@ class MemberContent:
 			treeviewPopulate()
 
 
-		# Updates member's postcode
+		# Updates member's postcode based on the username entered by the coach
 		def update_member_postcode(frame):
 			frame.withdraw()
 
@@ -417,7 +470,8 @@ class MemberContent:
 			treeviewPopulate()
 
 
-		# Delete member details from member database table
+		# Delete member details from member database table based on the username entered
+		# This will simultaneously delete all information stored about that user, includng their login account
 		def deleteAccountDetails(event):
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -441,6 +495,14 @@ class MemberContent:
 
 						c.execute(f"DELETE FROM member WHERE username =?", (accountUsername,))
 						c.execute(f"DELETE FROM account WHERE username =?", (accountUsername,))
+						c.execute(f"DELETE FROM fees WHERE username =?", (accountUsername,))
+						c.execute(f"DELETE FROM MemberBooking WHERE username =?", (accountUsername,))
+						c.execute(f"DELETE FROM SinglesCompetition WHERE username=:username OR username2=:username", {
+							"username": accountUsername
+						})
+						c.execute(f"DELETE FROM DoublesCompetition WHERE username=:username OR username2=:username OR username3=:username OR username4=:username", {
+							"username": accountUsername
+						})
 						messagebox.showinfo("info", "The member with username "+accountUsername+" has been deleted from the system")
 
 				else:
@@ -453,7 +515,7 @@ class MemberContent:
 			treeviewPopulate()
 
 
-		# Search member details from member database table
+		# Search member details from member database table based on the username entered by the coach
 		def searchAccountDetails():
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -487,7 +549,8 @@ class MemberContent:
 		# Submit member details
 		# Will generate a document containing all details stored about the member
 		# This will subsequently be sent to the member's email
-		def saveAccountDetails():
+		# Will create a login account for the member entered
+		def SubmitAccountDetails():
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
@@ -525,7 +588,7 @@ class MemberContent:
 					else:
 
 						doc = buildMemberDocument(account_username, account_password, account_firstname, account_surname, account_telephone, account_postcode, account_age, account_group)
-						found = Email("Lisburn Racquets Account Added", "You have been accepted into Lisburn Raquets Club." + "\n" + "Your details can be found in the document below." + "\n\n" + "Thanks for choosing Lisburn Racquets Club", account_username, doc, username_label)
+						found = Email("Lisburn Racquets Account Added", "You have been accepted into Lisburn Raquets Club." + "\n" + "Your details can be found in the document below." + "\n\n" + "Thanks for choosing Lisburn Racquets Club", account_username, doc, username_label, 'Member_Account_Details.docx')
 						if found:
 
 							c.execute("INSERT INTO member VALUES (:username, :password, :firstname, :surname, :telephone, :postcode, :age, :member_group, :competitions)",
@@ -548,7 +611,7 @@ class MemberContent:
 										  'status': 'member',
 									  })
 
-							messagebox.showinfo("Info","The members has been assigned to group " + str(account_group) + " because he/she is " + str(account_age) + " years old", icon='info')
+							messagebox.showinfo("Info","The member has been assigned to group " + str(account_group) + " because he/she is " + str(account_age) + " years old", icon='info')
 
 							username.set('')
 							password.set('')
@@ -574,7 +637,8 @@ class MemberContent:
 		surname=StringVar()
 		number=StringVar()
 		postcode=StringVar()
-		age=IntVar()
+		age=StringVar()
+
 
 		ToolTips = Pmw.Balloon()
 
@@ -617,35 +681,35 @@ class MemberContent:
 		password_entry.config(fg='grey')
 
 		firstname_entry = tkinter.Entry(self.member, width=15, textvariable=firstname, bd=3, relief='ridge', cursor="tcross")
-		firstname_entry.place(rely=0.155, relx=0.56, anchor='center')
+		firstname_entry.place(rely=0.15, relx=0.56, anchor='center')
 		firstname_entry.insert(0, 'e.g. Johhny')
 		firstname_entry.bind('<FocusIn>', firstname_click)
 		firstname_entry.bind('<FocusOut>', firstname_unclick)
 		firstname_entry.config(fg='grey')
 
 		surname_entry = tkinter.Entry(self.member, width=15, textvariable=surname, bd=3, relief='ridge', cursor="tcross")
-		surname_entry.place(rely=0.235, relx=0.483, anchor='center')
+		surname_entry.place(rely=0.23, relx=0.483, anchor='center')
 		surname_entry.insert(0, 'e.g. Synders')
 		surname_entry.bind('<FocusIn>', surname_click)
 		surname_entry.bind('<FocusOut>', surname_unclick)
 		surname_entry.config(fg='grey')
 
 		telephone_entry = tkinter.Entry(self.member, width=25, textvariable=number, bd=3, relief='ridge', cursor="tcross")
-		telephone_entry.place(rely=0.155, relx=0.85, anchor='center')
+		telephone_entry.place(rely=0.15, relx=0.85, anchor='center')
 		telephone_entry.insert(0, 'e.g. 03358629462')
 		telephone_entry.bind('<FocusIn>', telephone_click)
 		telephone_entry.bind('<FocusOut>', telephone_unclick)
 		telephone_entry.config(fg='grey')
 
 		postcode_entry = tkinter.Entry(self.member, width=12, textvariable=postcode, bd=3, relief='ridge', cursor="tcross")
-		postcode_entry.place(rely=0.234, relx=0.743, anchor='center')
+		postcode_entry.place(rely=0.23, relx=0.743, anchor='center')
 		postcode_entry.insert(0, 'e.g. BT12 4RF')
 		postcode_entry.bind('<FocusIn>', postcode_click)
 		postcode_entry.bind('<FocusOut>', postcode_unclick)
 		postcode_entry.config(fg='grey')
 
 		age_entry = tkinter.Entry(self.member, width=7, textvariable=age, bd=3, relief='ridge', cursor="tcross")
-		age_entry.place(rely=0.233, relx=0.905, anchor='center')
+		age_entry.place(rely=0.23, relx=0.905, anchor='center')
 		age.set('')
 		age_entry.insert(0, 'e.g. 27')
 		age_entry.bind('<FocusIn>', age_click)
@@ -666,7 +730,7 @@ class MemberContent:
 		search_button.place(rely=0.41, relx=0.63, anchor='center')
 		ToolTips.bind(search_button, 'Search for a user in the database')
 
-		create_button = tkinter.Button(self.member, cursor="tcross",text="Save Member", command=saveAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('serif', 10, 'bold'), padx=50)
+		create_button = tkinter.Button(self.member, cursor="tcross",text="Save Member", command=SubmitAccountDetails, fg='white', bg='black', bd=4, relief='ridge', font=('serif', 10, 'bold'), padx=50)
 		create_button.place(rely=0.33, relx=0.63, anchor='center')
 		ToolTips.bind(create_button, 'Create new member with data inputted')
 

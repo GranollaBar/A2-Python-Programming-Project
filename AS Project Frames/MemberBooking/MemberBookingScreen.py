@@ -20,10 +20,13 @@ from io import BytesIO
 # Member Booking Class
 class BookingContent:
 
+	# Instance variables
 	previous = ''
 	courts = False
 
 	# Initiates main screen window
+	# Initiates Lisburn Racquets Club Database
+	# Initiates Filepath
 	def __init__(self, mainScreen, filepath):
 		self.booking = mainScreen
 		self.conn = sqlite3.connect(filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -31,21 +34,10 @@ class BookingContent:
 		self.filepath = filepath
 
 
-		# Creates MemberBooking database table if it does not exist
-		self.c.execute("""CREATE TABLE IF NOT EXISTS MemberBooking (
-					image BlOB,
-					username text,
-					type text,
-					date text,
-					court text,
-					bookingID integer
-					)""")
-
-
 	# Generate member booking content
 	def generateBookingContnt(self):
 
-		# Select the date of the booking
+		# Allows the member to select the date of the booking
 		def dateEntryCheck(dob):
 			def assign_dob():
 				eventDate.set(cal.get_date())
@@ -59,7 +51,7 @@ class BookingContent:
 			ttk.Button(top, text="ok", command=assign_dob).pack()
 
 
-		# Ensures username entered conforms to the rules
+		# Ensures username entered is not empty
 		def validate_username(value, label):
 			if (value == ''):
 				label.config(fg="red")
@@ -70,7 +62,8 @@ class BookingContent:
 			return True
 
 
-		# Ensures date selected conforms to the rules
+		# Ensures date selected is not empty
+		# Ensures date entered is not before the current date
 		def validate_date(value, label):
 			if (value == ''):
 				label.config(fg="red")
@@ -88,26 +81,11 @@ class BookingContent:
 				messagebox.showinfo("Validation Error", "The start date cannot be before the current date", icon='error')
 				return False
 
-			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
-			c = conn.cursor()
-
-			c.execute("SELECT * From coachSessionDetails")
-			items = c.fetchall()
-
-			for SessionDates in items:
-				if (value == SessionDates[3]):
-					date_label.config(fg='red')
-					messagebox.showinfo('Validation Error', 'There is already a coaching session on ' + str(value) + '. There can only be one coaching session per day', icon='error')
-					return False
-				else:
-					pass
-
-
 			label.config(fg="SpringGreen3")
 			return True
 
 
-		# Courts selected will change background colour to SpringGreen3 or black
+		# Courts selected will change background colour to green or black depending on the previous colour
 		def ClickedCourt(courtvalue):
 			if (courtvalue.cget('bg') == 'black'):
 				courtvalue.config(bg='SpringGreen3')
@@ -122,6 +100,7 @@ class BookingContent:
 
 
 		# Returns the photo based on the member's chose of competition selected
+		# The photo will either be badminton.png, tennis.png or squash.png
 		def ConvertPic():
 			if RacquetType_combobox.get() == 'Badminton':
 				filename = self.filepath + '\\_databases_images_doc\\Images\\Badmintonblob.png'
@@ -149,7 +128,7 @@ class BookingContent:
 				member_booking_Tv.delete(elements)
 
 
-		# Member Booking tree view populate
+		# Member Booking tree view populate based on the data in the booking database table
 		def BookingPopulate():
 			clearTv()
 
@@ -173,8 +152,9 @@ class BookingContent:
 					count+=1
 
 
-		# If you double click a certain user, an image of that user's selected sport will be presented within a canvas below the tree view
-		def GetInformation(imageviewer2, event):
+		# If member double clicks a certain user, an image of that user's selected sport will be presented within a canvas below the tree view
+		# This is done by reading the database for an image, and using BytesIO to make the image readable for PhotoImage
+		def SportImage(imageviewer2, event):
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
@@ -727,7 +707,8 @@ class BookingContent:
 
 		# Submits member booking
 		# Will generate a document containing all details stored about the member
-		# This will subsequently be sent to the member who made the booking
+		# This will subsequently be sent to the member's email who made the booking
+		# A £5.00 fee will be attached to that user
 		def SubmitBooking(badminton1, badminton2, badminton3, badminton4, badminton5, badminton6, badminton7, badminton8, badminton9, badminton10, badminton11, badminton12, tennis1, tennis2, tennis3, tennis4, squash1, squash2, badminton1l, badminton2l, badminton3l, badminton4l, badminton5l, badminton6l, badminton7l, badminton8l, badminton9l, badminton10l, badminton11l, badminton12l, tennis1l, tennis2l, tennis3l, tennis4l, squash1l, squash2l, floorplan):
 
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -1064,7 +1045,7 @@ class BookingContent:
 		member_booking_Tv.heading("#4",text='ID')
 		member_booking_Tv.column("#4",minwidth=0,width=50)
 		member_booking_Tv.bind('<Button-1>', partial(treeviewresizedisable, member_booking_Tv))
-		member_booking_Tv.bind("<Button-1>", partial(GetInformation, imageviewer2))
+		member_booking_Tv.bind("<Button-1>", partial(SportImage, imageviewer2))
 
 		member_booking_ysearch_scrollbar = Scrollbar(self.booking, orient = 'vertical', command = member_booking_Tv.yview, cursor="tcross")
 		member_booking_ysearch_scrollbar.place(relx=0.969,rely=0.24,anchor='center',height=127)

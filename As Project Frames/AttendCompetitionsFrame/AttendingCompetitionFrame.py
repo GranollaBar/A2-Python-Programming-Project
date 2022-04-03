@@ -23,10 +23,13 @@ from AttendCompetitionsFrame.CurrentCompetitionDocument import buildcompetitiond
 # Attending Competition Class
 class AttendingContent:
 
+    # Instance variables
     previous1 = 0
     previous2 = 0
 
     # Initiates main screen window
+    # Initiates Lisburn Racquets Club Database
+    # Initiates Filepath
     def __init__(self, mainScreen, filepath):
         self.attend = mainScreen
         self.conn = sqlite3.connect(filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -58,28 +61,25 @@ class AttendingContent:
     # Generate attending competition content
     def generateAttendingContnt(self):
 
-        # Ensures member_team_scores entered conform to the rules
+        # Ensures member_team_scores entered are not empty
+        # Ensures member_team_scores entered are only increased by 1 each increase cycle
+        # Ensures member_team_scores entered are not the same are after increase or if kept the same
         def validate_member_team_score(value1, value2):
             if value1 <= (self.previous1 - 1):
                 messagebox.showinfo("Validation Error", "Score 1 must not be less than the previous score entered", icon='error')
                 return False
-
             if value2 <= (self.previous2 - 1):
                 messagebox.showinfo("Validation Error", "Score 2 must not be less than the previous score entered", icon='error')
                 return False
-
             if value1 > (self.previous1 + 1):
                 messagebox.showinfo("Validation Error", "Score 1 can only be increased by 1 each cycle", icon='error')
                 return False
-
             if value2 > (self.previous2 + 1):
                 messagebox.showinfo("Validation Error", "Score 2 can only be increased by 1 each cycle", icon='error')
                 return False
-
             if value1 == self.previous1 and value2 == self.previous2:
                 messagebox.showinfo("Validation Error", "One score must be increased by 1 each cycle", icon='error')
                 return False
-
             if value1 == self.previous1+1 and value2 == self.previous2+1:
                 messagebox.showinfo("Validation Error", "Only one score can be increased each cycle", icon='error')
                 return False
@@ -112,6 +112,7 @@ class AttendingContent:
         # Singles tree view populate
         # Will only populate the singles competition which is on the current date
         # Alternatively, it will also populate a singles competition where the current date is between the start date and the end date
+        # Will decipher between doubles and singles competitions
         def UnplayedSinglesPopulate():
             ClearSinglesTV()
 
@@ -158,9 +159,8 @@ class AttendingContent:
             p = 1
 
             for starting in Allrows:
-                c.execute("SELECT * FROM SinglesCompetition WHERE start_date>:realstartdate AND end_date<:realenddate AND singlescompetitionID=:ID", {
+                c.execute("SELECT * FROM SinglesCompetition WHERE start_date>:realstartdate AND singlescompetitionID=:ID", {
                     "realstartdate": finaldatesarray[0],
-                    "realenddate": finaldatesarray[14],
                     "ID": p
                 })
                 singlerow = c.fetchone()
@@ -267,9 +267,6 @@ class AttendingContent:
 
                     items = c.fetchone()
 
-                    conn.commit()
-                    conn.close()
-
                     count=0
                     if items == []:
                         pass
@@ -279,6 +276,8 @@ class AttendingContent:
                         else:
                             unplayed_singles_competitions_Tv.insert('','end',text='Singles',values=(findfirstandsurnamemember(items[0]),findfirstandsurnamemember(items[1]),items[5]))
                         count+=1
+
+                    conn.close()
 
                 else:
                     unplayed_singles_competitions_Tv.insert('','end',text='',values=('','',''))
@@ -336,9 +335,8 @@ class AttendingContent:
             p = 1
 
             for starting in Allrows:
-                c.execute("SELECT * FROM DoublesCompetition WHERE start_date>:realstartdate AND end_date<:realenddate AND doublescompetitionID=:ID", {
+                c.execute("SELECT * FROM DoublesCompetition WHERE start_date>:realstartdate AND doublescompetitionID=:ID", {
                     "realstartdate": finaldatesarray[0],
-                    "realenddate": finaldatesarray[14],
                     "ID": p
                 })
                 doublerow = c.fetchone()
@@ -445,9 +443,6 @@ class AttendingContent:
 
                     items = c.fetchone()
 
-                    conn.commit()
-                    conn.close()
-
                     count=0
                     if items == []:
                         pass
@@ -457,6 +452,8 @@ class AttendingContent:
                         else:
                             unplayed_doubles_competitions_Tv.insert('','end',text='Doubles',values=(items[7],items[8],items[9]))
                         count+=1
+
+                    conn.close()
 
                 else:
                     unplayed_doubles_competitions_Tv.insert('','end',text='',values=('','',''))
@@ -499,7 +496,9 @@ class AttendingContent:
 
 
         # Depending on the competition type and ID selected, different competitions will be performed
-        # It will ensure that the ID and competition type selected are valid and can be permoed on the current date
+        # It will ensure that the ID and competition type selected are valid and can be performed on the current date
+        # Different competitions will have to be played at different times i.e. doubles competition first then singles competition another time
+        # Will only work if a doubles or singles competition exist on the current day
         def SelectTypeandID():
             conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
             c = conn.cursor()
@@ -508,6 +507,10 @@ class AttendingContent:
             row = c.fetchall()
 
             if len(row) <= 0:
+
+                if len(ID_entry.get()) == 0 or len(ID_entry.get()) == 6:
+                    id_label.config(fg='red')
+                    messagebox.showinfo("Validation Error", "The id must not be empty", icon='error')
 
                 IDSelected = CompetitionID.get()
                 competitiontext = CompetitionType_combobox.get()
@@ -556,9 +559,8 @@ class AttendingContent:
                     p = 1
 
                     for starting in Allrows:
-                        c.execute("SELECT * FROM SinglesCompetition WHERE start_date>:realstartdate AND end_date<:realenddate AND singlescompetitionID=:ID", {
+                        c.execute("SELECT * FROM SinglesCompetition WHERE start_date>:realstartdate AND singlescompetitionID=:ID", {
                             "realstartdate": finaldatesarray[0],
-                            "realenddate": finaldatesarray[14],
                             "ID": p
                         })
                         singlerow = c.fetchone()
@@ -662,7 +664,6 @@ class AttendingContent:
                                 "enddate":finallastday,
                                 "startdate": finalfirstday
                             })
-
                             singlesrow2 = c.fetchone()
 
                             if IDSelected == singlesrow2[5]:
@@ -674,6 +675,7 @@ class AttendingContent:
                                               'Time': currentTime,
                                               'CurrentID': CompetitionID.get(),
                                           })
+
                                 conn.commit()
                                 conn.close()
 
@@ -696,7 +698,6 @@ class AttendingContent:
                             messagebox.showinfo('Error', 'The ID entered does not have a singles competition on: ' + currentday, icon='error')
                     else:
                         messagebox.showinfo('Error', 'There are no singles competitions currently listed for the date: ' + currentday, icon='error')
-
 
                 if competitiontext == 'Doubles':
                     currentday = datetime.datetime.today().strftime('%d/%m/%Y')
@@ -739,9 +740,8 @@ class AttendingContent:
                     p = 1
 
                     for starting in Allrows:
-                        c.execute("SELECT * FROM DoublesCompetition WHERE start_date>:realstartdate AND end_date<:realenddate AND doublescompetitionID=:ID", {
+                        c.execute("SELECT * FROM DoublesCompetition WHERE start_date>:realstartdate AND doublescompetitionID=:ID", {
                             "realstartdate": finaldatesarray[0],
-                            "realenddate": finaldatesarray[14],
                             "ID": p
                         })
                         doublerow = c.fetchone()
@@ -857,6 +857,7 @@ class AttendingContent:
                                               'Time': currentTime,
                                               'CurrentID': CompetitionID.get(),
                                           })
+
                                 conn.commit()
                                 conn.close()
 
@@ -882,6 +883,7 @@ class AttendingContent:
 
 
         # Draws the single competition selected onto a canvas using matplotlib line graphs
+        # This graph will show the score of each singles members as well as the overall time each point took
         def DrawLineGraphSingles(singlessubmitbutton):
             conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
             c = conn.cursor()
@@ -946,6 +948,7 @@ class AttendingContent:
 
 
         # Draws the double competition selected onto a canvas using matplotlib line graphs
+        # This graph will show the score of each doubles members as well as the overall time each point took
         def DrawLineGraphDoubles(doublessubmitbutton):
             conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
             c = conn.cursor()
@@ -1009,8 +1012,8 @@ class AttendingContent:
                 FinishedDoublesGraph(doublessubmitbutton, canvas)
 
 
-        # Once the singles competition selected has been finished (i.e. one users score is 21),
-        # details will be inserted into FinshedCompetitions
+        # Once the singles competition selected has been finished (i.e. one users score is 21), details will be inserted into FinshedCompetitions
+        # Current competitions will be deleted from their respective database as well as the current competition database
         def FinishedSinglesGraph(singlessubmitbutton, singlescanvas):
             conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
             c = conn.cursor()
@@ -1040,6 +1043,7 @@ class AttendingContent:
                           'Final_time_seconds': finaltime,
                           'CurrentID': row[0][4],
                       })
+
             conn.commit()
 
             CompetitionType_combobox.config(state="normal")
@@ -1386,6 +1390,7 @@ class AttendingContent:
 
 
         # Submits singles scores entered from spin-boxes into the CurrentCompetitionScores database table
+        # This will update the singles competition graph
         def SubmitSinglesResults(singlessubmitbutton):
             member_team1_score = score1.get()
             member_team2_score = score2.get()
@@ -1417,6 +1422,7 @@ class AttendingContent:
 
 
         # Submits doubles scores entered from spin-boxes into the CurrentCompetitionScores database table
+        # This will update the doubles competition graph
         def SubmitDoublesResults(doublessubmitbutton):
             member_team1_score = score1.get()
             member_team2_score = score2.get()

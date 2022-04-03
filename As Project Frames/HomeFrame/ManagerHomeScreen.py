@@ -13,9 +13,12 @@ import webbrowser
 # Manager Home Class
 class ManagerHomeScreenContent:
 
+	# Instance variables
 	i = 0
 
 	# Initiates main screen window
+	# Initiates Lisburn Racquets Club Database
+	# Initiates Filepath
 	def __init__(self, mainScreen, filepath):
 		self.ManagerHome = mainScreen
 		self.conn = sqlite3.connect(filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -23,10 +26,50 @@ class ManagerHomeScreenContent:
 		self.filepath = filepath
 
 
+		# Creates member database table if it does not exist
+		self.c.execute("""CREATE TABLE IF NOT EXISTS member (
+					username text,
+					password text,
+					firstname text,
+					surname text,
+					telephone text,
+					postcode text,
+					age integer,
+					member_group integer,
+					competitions string
+					)""")
+
+
+		# Creates coach database table if it does not exist
+		self.c.execute("""CREATE TABLE IF NOT EXISTS coach (
+					username text,
+					password text,
+					firstname text,
+					surname text,
+					gender text,
+					DOB text,
+					address text,
+					availability text
+					)""")
+
+		# Creates coachTimetable database table if it does not exist
+		self.c.execute("""CREATE TABLE IF NOT EXISTS coachTimetable (
+					username text,
+					Monday text,
+					Tuesday text,
+					Wednesday text,
+					Thursday text,
+					Friday text,
+					Saturday text,
+					Sunday text
+					)""")
+
+
 	# Generate manager home content
 	def generateManagerHomeScreenContnt(self, FinalUsername):
 
 		# Showcases the Lisburn Racquets Club badminton, tennis and squash facilities with an image slider
+		# There are a total of 6 images all taken around Lisburn Racquets Club
 		def ImageSlider():
 			if self.i >= (len(images)-1):
 				self.i = 0
@@ -37,7 +80,7 @@ class ManagerHomeScreenContent:
 			show = slide_image.after(3000, ImageSlider)
 
 
-		# Will calculate how many members and coaches have been added to the system
+		# Will calculate how many members and coaches have been added to the system and place the number inside a label
 		def Memberandcoachcounter():
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -67,7 +110,7 @@ class ManagerHomeScreenContent:
 			no_coaches.config(text=coachcounter)
 
 
-		# Will calculate the current week day for the coach
+		# Will calculate the current week day for the manager and place it inside a label
 		def GetCurrentWeeday():
 			Weekday = datetime.datetime.today().strftime('%A')
 			weekday.config(text=Weekday)

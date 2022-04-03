@@ -20,6 +20,8 @@ import numpy as np
 class ManagerReportsContent:
 
 	# Initiates main screen window
+	# Initiates Lisburn Racquets Club Database
+	# Initiates Filepath
 	def __init__(self, mainScreen, filepath):
 		self.Reports = mainScreen
 		self.conn = sqlite3.connect(filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -31,6 +33,7 @@ class ManagerReportsContent:
 	def generateManagerReportsContnt(self, FinalUsername):
 
 		# Find manager's first name and surname and returns the value
+		# Based on the manager entered into the system
 		def findfirstandsurname():
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -45,6 +48,7 @@ class ManagerReportsContent:
 
 
 		# Find manager's first name and surname and returns the value (capitalized form)
+		# Based on the manager entered into the system
 		def Capitalizedfindfirstandsurname():
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -58,7 +62,8 @@ class ManagerReportsContent:
 			return labelusername
 
 
-		# Opens the coach account doc (most recently added coach)
+		# Opens the coach account doc
+		# This contains all the information about the most recently added coach into the system
 		def OpenCoachAccountDoc():
 			os.startfile(self.filepath + '\\_databases_images_doc\\Doc\\coach_Account_Details.docx')
 
@@ -85,6 +90,7 @@ class ManagerReportsContent:
 		ToolTips.bind(wordlogo, 'Click to see the latest coach added to the system')
 
 
+		# Creation of a bar chart showing the number of bookings for each type of competition by members
 		style.use('seaborn-darkgrid')
 
 		font = {'family': 'serif',
@@ -130,6 +136,9 @@ class ManagerReportsContent:
 		finishedcanvas.draw()
 
 
+		# Creation of a bar chart showing the total fees for each member
+		# This is divided into two separate bar charts beside each other
+		# One shows the fees of that member's coaching sessions while the other are the fees of each of their bookings
 		c.execute("SELECT * FROM fees")
 		data = c.fetchall()
 
@@ -185,6 +194,7 @@ class ManagerReportsContent:
 			fulltitle = rowdata[2] + ' ' + rowdata[3]
 			fullnames.append(fulltitle)
 
+
 		fig2 = plt.figure(figsize=(6.1,4.1), dpi=65, tight_layout=True)
 		ax2 = fig2.add_subplot(111)
 
@@ -205,6 +215,7 @@ class ManagerReportsContent:
 		finishedfeescanvas.draw()
 
 
+		# The creation of a pie chart which shows the perecentage of fees for both coaching sessions and member bookings
 		c.execute("SELECT * FROM fees")
 		row = c.fetchall()
 

@@ -18,10 +18,13 @@ import webbrowser
 # Coach Home Class
 class CoachHomeScreenContent:
 
+	# Instance variables
 	i = 0
 	PassedLogin = False
 
 	# Initiates main screen window
+	# Initiates Lisburn Racquets Club Database
+	# Initiates Filepath
 	def __init__(self, mainScreen, filepath):
 		self.CoachHome = mainScreen
 		self.conn = sqlite3.connect(filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -29,10 +32,20 @@ class CoachHomeScreenContent:
 		self.filepath = filepath
 
 
+		# Creates PastEvents database table if it does not exist
+		self.c.execute("""CREATE TABLE IF NOT EXISTS PastEvents (
+							username text,
+							event text,
+							date text,
+							status text
+							)""")
+
+
 	# Generate coach home content
 	def generateCoachHomeScreenContnt(self, FinalUsername, main):
 
 		# Showcases the Lisburn Racquets Club badminton, tennis and squash facilities with an image slider
+		# There are a total of 6 images all taken around Lisburn Racquets Club
 		def ImageSlider():
 			if self.i >= (len(images)-1):
 				self.i = 0
@@ -44,6 +57,7 @@ class CoachHomeScreenContent:
 
 
 		# Find coach's first name and surname and returns the value
+		# Based on the coach entered into the system
 		def findfirstandsurname():
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
@@ -57,7 +71,8 @@ class CoachHomeScreenContent:
 			return labelusername
 
 
-		# Will present a message box to any coaching session or competition which hasn't been completed yet
+		# Will present a message box of any coaching session or competition which hasn't been completed yet
+		# Details of the competition/coaching session will be shown to the coach
 		# An error will be presented if an invalid date has been selected
 		def AllCalendarSelection(cal, event=None):
 			AllChangeSelection = False
@@ -87,8 +102,6 @@ class CoachHomeScreenContent:
 									+ "No. People: " + str(items[6]) + "\n"
 									+ "Technique: " + items[7])
 
-			conn.commit()
-
 
 			c.execute("SELECT * FROM SinglesCompetition WHERE username=:memberusername OR username2=:memberusername", {
 				"memberusername": FinalUsername
@@ -117,8 +130,6 @@ class CoachHomeScreenContent:
 										+ "End Date: " + str(i[3]) + "\n"
 										+ "Court: " + str(i[4]) + "\n"
 										, icon='info')
-
-			conn.commit()
 
 
 			c.execute("SELECT * FROM DoublesCompetition WHERE username=:memberusername OR username2=:memberusername OR username3=:memberusername OR username4=:memberusername", {
@@ -153,15 +164,13 @@ class CoachHomeScreenContent:
 										+ "Team 2: " + str(i[8]) + "\n"
 										, icon='info')
 
-			conn.commit()
 			conn.close()
-
 
 			if (AllChangeSelection == False):
 				messagebox.showinfo('Error', "There is currently no event for " + FinalUsername + " on the date selected", icon='error')
 
 
-		# Will change the calendar's colour from black to SpringGreen3
+		# Will change the calendar's colour from black to green
 		# This is based on all the dates in the coachSessionDetails database table
 		def changeCalendarColour(cal):
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
@@ -178,13 +187,15 @@ class CoachHomeScreenContent:
 			conn.close()
 
 
-		# Will change the calendar's colour from black to SpringGreen3
+		# Will change the calendar's colour from black to green
 		# This is based on all the dates in the SinglesCompetition database table
 		def SinglesChangeCalendarColour(cal):
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
-			c.execute("SELECT * FROM SinglesCompetition")
+			c.execute("SELECT * FROM SinglesCompetition WHERE username=:memberusername OR username2=:memberusername", {
+				"memberusername": FinalUsername
+			})
 			singles_competition_array = c.fetchall()
 
 			for dates in singles_competition_array:
@@ -198,15 +209,19 @@ class CoachHomeScreenContent:
 				d2= datetime.datetime(int(d2[2]),int(d2[1]),int(d2[0]))
 
 				length_inbetween=str(d2-d1).strip(' days, 0:00:00')
+				if length_inbetween == '':
+					length_inbetween = '1'
+				else:
+					int(length_inbetween)+1
 
-				d1=start_date.split('/')
-				d1= datetime.datetime(int(d1[2]),int(d1[1]),int(d1[0]))
+				d3=start_date.split('/')
+				d3= datetime.datetime(int(d3[2]),int(d3[1]),int(d3[0]))
 
 				all_days_inbetween=[]
 
-				for i in range(0,int(length_inbetween)+1):
-					add=str(d1+timedelta(days=i)).strip('datetime.date(')
-					add=str(d1+timedelta(days=i)).strip(') 00:00:00')
+				for i in range(0,int(length_inbetween)):
+					add=str(d3+timedelta(days=i)).strip('datetime.date(')
+					add=str(d3+timedelta(days=i)).strip('00:00:00')
 					add=add.split('-')
 					add=add[2].strip(',')+'/'+add[1].strip(',')+'/'+add[0].strip(',')
 					all_days_inbetween.append(add)
@@ -223,13 +238,15 @@ class CoachHomeScreenContent:
 			conn.close()
 
 
-		# Will change the calendar's colour from black to SpringGreen3
+		# Will change the calendar's colour from black to green
 		# This is based on all the dates in the DoublesCompetition database table
 		def DoublesChangeCalendarColour(cal):
 			conn = sqlite3.connect(self.filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
 			c = conn.cursor()
 
-			c.execute("SELECT * FROM DoublesCompetition")
+			c.execute("SELECT * FROM DoublesCompetition WHERE username=:memberusername OR username2=:memberusername OR username3=:memberusername OR username4=:memberusername", {
+				"memberusername": FinalUsername
+			})
 			doubles_competition_array = c.fetchall()
 
 			for dates in doubles_competition_array:
@@ -243,15 +260,19 @@ class CoachHomeScreenContent:
 				d2= datetime.datetime(int(d2[2]),int(d2[1]),int(d2[0]))
 
 				length_inbetween=str(d2-d1).strip(' days, 0:00:00')
+				if length_inbetween == '':
+					length_inbetween = '1'
+				else:
+					int(length_inbetween)+1
 
-				d1=start_date.split('/')
-				d1= datetime.datetime(int(d1[2]),int(d1[1]),int(d1[0]))
+				d3=start_date.split('/')
+				d3= datetime.datetime(int(d3[2]),int(d3[1]),int(d3[0]))
 
 				all_days_inbetween=[]
 
 				for i in range(0,int(length_inbetween)+1):
-					add=str(d1+timedelta(days=i)).strip('datetime.date(')
-					add=str(d1+timedelta(days=i)).strip(') 00:00:00')
+					add=str(d3+timedelta(days=i)).strip('datetime.date(')
+					add=str(d3+timedelta(days=i)).strip('00:00:00')
 					add=add.split('-')
 					add=add[2].strip(',')+'/'+add[1].strip(',')+'/'+add[0].strip(',')
 					all_days_inbetween.append(add)
@@ -268,13 +289,14 @@ class CoachHomeScreenContent:
 			conn.close()
 
 
-		# Will calculate the current week day for the coach
+		# Will calculate the current week day for the coach and place it inside a label
 		def GetCurrentWeeday():
 			Weekday = datetime.datetime.today().strftime('%A')
 			weekday.config(text=Weekday)
 
 
 		# Shows the start and end of the coaches shift time (i.e. time on the system)
+		# Once this time has reached its capacity, the coach will be logged out of the system
 		def CoachShiftTime():
 			Weekday = datetime.datetime.today().strftime('%A')
 
@@ -309,7 +331,8 @@ class CoachHomeScreenContent:
 
 
 		# Shows a countdown for when the coach will be logged out of the system
-		# This is based on the weekday and the start and end time selected
+		# This is based on the weekday and the start and end time selected by the manager when creating the coach
+		# Once countdown reaches 0, the coach will be forcibly logged out of the system
 		def countdown():
 			Weekday = datetime.datetime.today().strftime('%A')
 
@@ -374,7 +397,7 @@ class CoachHomeScreenContent:
 				treeview.delete(elements)
 
 
-		# Past events tree view populate
+		# Past events tree view populate based on the data inside the PastEvents database table
 		def treeviewPopulate(treeview):
 			clearTv(treeview)
 

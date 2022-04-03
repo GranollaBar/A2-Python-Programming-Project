@@ -20,4 +20,4 @@ class LogoffContent:
 
 			main.destroy()
 
-			from LoginFrame import LoginMainScreen
+			import LoginMainScreen
