@@ -350,6 +350,7 @@ class LoginContent:
             conn.commit()
             conn.close()
 
+
         # This will only occur for the first user entering the system
         # The first user in the system will be assigned management
         def first_login_submit(username, password, firstname, surname):
@@ -399,6 +400,7 @@ class LoginContent:
                 from MainScreens import ManagerMainScreen
                 ManagerMainScreen.passLoginScreen(self)
                 ManagerMainScreen.main(self.filepath)
+
 
         # Login Details entered will be submitted to ensure the entered username and password exist in the system
         # The user will be logged in based on their system level i.e. member, coach or manager
@@ -483,6 +485,7 @@ class LoginContent:
                 firstname_label.config(fg='black')
                 surname_label.config(fg='black')
 
+
         # This will remove all coaching sessions, member bookings and competitions made in the system that have expired
         # It will place these events in the database table PastEvents and delete them from their respective tables
         def RemoveDates():
@@ -562,7 +565,6 @@ class LoginContent:
                 bookingrowsplitdate = str(data[3]).split('/')
                 bookingdate = datetime.datetime(int(bookingrowsplitdate[2]), int(bookingrowsplitdate[1]),
                                                 int(bookingrowsplitdate[0]))
-
                 if (bookingdate < today) == True:
                     c.execute("INSERT INTO PastEvents VALUES (:username, :event, :date, :status)",
                               {
@@ -670,24 +672,20 @@ class LoginContent:
                                         font=('serif', 18, 'underline', 'bold'), fg='SpringGreen3', bg='white')
             title_label.place(rely=0.06, relx=0.5, anchor='center')
 
-            username_label = tkinter.Label(self.login, text="Username:", font=('serif', 18, 'bold'), fg='black',
-                                           bg='white')
+            username_label = tkinter.Label(self.login, text="Username:", font=('serif', 18, 'bold'), fg='black',bg='white')
             username_label.place(rely=0.45, relx=0.295, anchor='center')
 
-            password_label = tkinter.Label(self.login, text="Password:", font=('serif', 18, 'bold'), fg='black',
-                                           bg='white')
+            password_label = tkinter.Label(self.login, text="Password:", font=('serif', 18, 'bold'), fg='black', bg='white')
             password_label.place(rely=0.6, relx=0.3, anchor='center')
 
-            username_entry = tkinter.Entry(self.login, width=30, textvariable=loginUsername, bd=4, relief='ridge',
-                                           cursor="tcross")
+            username_entry = tkinter.Entry(self.login, width=30, textvariable=loginUsername, bd=4, relief='ridge', cursor="tcross")
             username_entry.place(rely=0.454, relx=0.655, anchor='center')
             username_entry.insert(0, 'e.g. greg@gmail.com')
             username_entry.bind('<FocusIn>', username_click)
             username_entry.bind('<FocusOut>', username_unclick)
             username_entry.config(fg='grey')
 
-            password_entry = tkinter.Entry(self.login, width=30, textvariable=loginPassword, bd=4, relief='ridge',
-                                           cursor="tcross")
+            password_entry = tkinter.Entry(self.login, width=30, textvariable=loginPassword, bd=4, relief='ridge', cursor="tcross")
             password_entry.place(rely=0.604, relx=0.655, anchor='center')
             password_entry.insert(0, 'e.g. password123')
             password_entry.bind('<FocusIn>', password_click)

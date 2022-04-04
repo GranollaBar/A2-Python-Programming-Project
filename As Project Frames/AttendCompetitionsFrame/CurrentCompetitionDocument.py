@@ -3,8 +3,8 @@ from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 import sqlite3
 
 # Builds the most recently completed competition into a word document, which will then be sent to members
-def buildcompetitiondocument():
-    conn = sqlite3.connect('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Databases/LisburnRacquetsDatabase.db')
+def buildcompetitiondocument(filepath):
+    conn = sqlite3.connect(filepath + '\\_databases_images_doc\\Databases\\LisburnRacquetsDatabase.db')
     c = conn.cursor()
 
     c.execute("SELECT * FROM CurrentCompetitionScores")

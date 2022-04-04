@@ -222,15 +222,20 @@ class ManagerReportsContent:
 		finalsessioncost = 0
 		finalbookingcost = 0
 
-		for items in row:
-			if items[1] != '':
-				cutsessionfee = str(items[1])[1:]
-				finalsessioncost = finalsessioncost + float(cutsessionfee)
-				newfinalsessioncost = format(float(finalsessioncost), '.2f')
-			else:
-				cutbookingfee = str(items[2])[1:]
-				finalbookingcost = finalbookingcost + float(cutbookingfee)
-				newfinalbookingcost = format(float(finalbookingcost), '.2f')
+		if len(row) > 0:
+			for items in row:
+				if items[1] != '':
+					cutsessionfee = str(items[1])[1:]
+					finalsessioncost = finalsessioncost + float(cutsessionfee)
+					newfinalsessioncost = format(float(finalsessioncost), '.2f')
+				else:
+					cutbookingfee = str(items[2])[1:]
+					finalbookingcost = finalbookingcost + float(cutbookingfee)
+					newfinalbookingcost = format(float(finalbookingcost), '.2f')
+
+		else:
+			newfinalsessioncost = 0
+			newfinalbookingcost = 0
 
 		sessioncosts = [newfinalsessioncost]
 		bookingcosts = [newfinalbookingcost]

@@ -999,7 +999,7 @@ class CoachContent:
 
 				else:
 
-					doc = buildCoachDocument(coach_username, coach_password, coach_firstname, coach_surname, final_coach_gender, coach_DOB, coach_address, mondayFinalAvaliability, tuesdayFinalAvaliability, wednesdayFinalAvaliability, thursdayFinalAvaliability, fridayFinalAvaliability, saturdayFinalAvaliability, sundayFinalAvaliability)
+					doc = buildCoachDocument(coach_username, coach_password, coach_firstname, coach_surname, final_coach_gender, coach_DOB, coach_address, mondayFinalAvaliability, tuesdayFinalAvaliability, wednesdayFinalAvaliability, thursdayFinalAvaliability, fridayFinalAvaliability, saturdayFinalAvaliability, sundayFinalAvaliability, self.filepath)
 					found = Email("Lisburn Racquets Coach Added", "Good work on securing a coach position at Lisburn Racquets Club" + "\n" + "Your details can be found in the document below." + "\n\n" + "Thanks for choosing Lisburn Racquets Club", coach_username, doc, username_label, 'Coach_Account_Details.docx')
 					if found:
 

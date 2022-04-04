@@ -3,7 +3,7 @@ from docx.shared import Inches
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 
 # Builds the most recently added coach into a word document, which will then be sent to coaches
-def buildCoachDocument(username, password, firstname, surname, gender, DOB, postcode, monday, tuesday, wednesday, thursday, friday, saturday, sunday):
+def buildCoachDocument(username, password, firstname, surname, gender, DOB, postcode, monday, tuesday, wednesday, thursday, friday, saturday, sunday, filepath):
     doc = docx.Document()
     heading = doc.add_heading('Lisburn Racquets Coach Details',0)
     heading.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
@@ -27,6 +27,6 @@ def buildCoachDocument(username, password, firstname, surname, gender, DOB, post
     parag.add_run("\n\n" + "Thanks for choosing Lisburn Racquets Club").bold=True
     doc.add_picture('C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Images/lisburnraquetsclub.png',width=Inches(3))
 
-    filename = "C:/Users/Josh/pyqt tutorial/AS-Programming-Project/AS Project Frames/_databases_images_doc/Doc/Coach_Account_Details.docx"
+    filename = filepath + '\\_databases_images_doc\\Doc\\Coach_Account_Details.docx'
     doc.save(filename)
     return open(filename,'rb')

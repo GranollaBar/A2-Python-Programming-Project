@@ -222,15 +222,19 @@ class MemberHomeScreenContent:
 				d2= datetime.datetime(int(d2[2]),int(d2[1]),int(d2[0]))
 
 				length_inbetween=str(d2-d1).strip(' days, 0:00:00')
+				if length_inbetween == '':
+					length_inbetween = '1'
+				else:
+					int(length_inbetween)+1
 
-				d1=start_date.split('/')
-				d1= datetime.datetime(int(d1[2]),int(d1[1]),int(d1[0]))
+				d3=start_date.split('/')
+				d3= datetime.datetime(int(d3[2]),int(d3[1]),int(d3[0]))
 
 				all_days_inbetween=[]
 
 				for i in range(0,int(length_inbetween)+1):
-					add=str(d1+timedelta(days=i)).strip('datetime.date(')
-					add=str(d1+timedelta(days=i)).strip(') 00:00:00')
+					add=str(d3+timedelta(days=i)).strip('datetime.date(')
+					add=str(d3+timedelta(days=i)).strip(') 00:00:00')
 					add=add.split('-')
 					add=add[2].strip(',')+'/'+add[1].strip(',')+'/'+add[0].strip(',')
 					all_days_inbetween.append(add)
@@ -269,15 +273,19 @@ class MemberHomeScreenContent:
 				d2= datetime.datetime(int(d2[2]),int(d2[1]),int(d2[0]))
 
 				length_inbetween=str(d2-d1).strip(' days, 0:00:00')
+				if length_inbetween == '':
+					length_inbetween = '1'
+				else:
+					int(length_inbetween)+1
 
-				d1=start_date.split('/')
-				d1= datetime.datetime(int(d1[2]),int(d1[1]),int(d1[0]))
+				d3=start_date.split('/')
+				d3= datetime.datetime(int(d3[2]),int(d3[1]),int(d3[0]))
 
 				all_days_inbetween=[]
 
 				for i in range(0,int(length_inbetween)+1):
-					add=str(d1+timedelta(days=i)).strip('datetime.date(')
-					add=str(d1+timedelta(days=i)).strip(') 00:00:00')
+					add=str(d3+timedelta(days=i)).strip('datetime.date(')
+					add=str(d3+timedelta(days=i)).strip(') 00:00:00')
 					add=add.split('-')
 					add=add[2].strip(',')+'/'+add[1].strip(',')+'/'+add[0].strip(',')
 					all_days_inbetween.append(add)
@@ -439,7 +447,6 @@ class MemberHomeScreenContent:
 		past_event_scrollbar = Scrollbar(self.MemberHome, orient='vertical', command=past_event_Tv.yview, cursor="tcross")
 		past_event_scrollbar.place(relx=0.975,rely=0.3,anchor='center',height=207)
 		past_event_Tv.configure(yscrollcommand=past_event_scrollbar.set)
-
 
 
 		time()

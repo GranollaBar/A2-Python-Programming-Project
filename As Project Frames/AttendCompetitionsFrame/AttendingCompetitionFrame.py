@@ -1061,7 +1061,7 @@ class AttendingContent:
 
             clearcanvas(singlescanvas)
 
-            buildcompetitiondocument()
+            buildcompetitiondocument(self.filepath)
 
             c.execute("DELETE FROM CurrentCompetitionScores")
             conn.commit()
@@ -1249,7 +1249,7 @@ class AttendingContent:
 
             clearcanvas(doublescanvas)
 
-            buildcompetitiondocument()
+            buildcompetitiondocument(self.filepath)
 
             c.execute("DELETE FROM CurrentCompetitionScores")
             conn.commit()
